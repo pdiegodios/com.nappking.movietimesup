@@ -2,25 +2,26 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.facebook.android.friendsmash.R;
+import com.google.gson.Gson;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.adapter.MovieListAdapter;
 import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
+import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ActionBar.LayoutParams;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -29,7 +30,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FilmGridActivity extends Activity{
 	
@@ -37,6 +37,9 @@ public class FilmGridActivity extends Activity{
 	TextView txPoints;
 	TextView txSeconds;
 	User user;
+	DBHelper helper;
+	Dao<Movie, Integer> daoMovie;
+	Dao<User, Integer> daoUser;
 	static final int result_sent = 0;
 	
 	@Override
@@ -50,7 +53,7 @@ public class FilmGridActivity extends Activity{
      	grid = (GridView) findViewById(R.id.grid);
      	txPoints = (TextView) findViewById(R.id.points);
      	txSeconds = (TextView) findViewById(R.id.seconds);
-     	
+		helper = OpenHelperManager.getHelper(this, DBHelper.class);
 		update();
 		setListeners();
 	}
@@ -63,9 +66,6 @@ public class FilmGridActivity extends Activity{
 	
 	private void update(){     	
 		//We obtain all the movies & the user
-		DBHelper helper = OpenHelperManager.getHelper(this, DBHelper.class);
-		Dao<Movie, Integer> daoMovie;
-		Dao<User, Integer> daoUser;
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		try {
 			daoMovie = helper.getMovieDAO();
@@ -76,8 +76,7 @@ public class FilmGridActivity extends Activity{
 			e.printStackTrace();
 		}		
 		//MovieListAdapter to show correctly the movies
-		MovieListAdapter movieAdapter = new MovieListAdapter(this, 
-				android.R.layout.simple_list_item_1, movies);		
+		MovieListAdapter movieAdapter = new MovieListAdapter(this, android.R.layout.simple_list_item_1, movies);		
 		grid.setAdapter(movieAdapter);
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
@@ -91,11 +90,45 @@ public class FilmGridActivity extends Activity{
 				Movie movie = (Movie) grid.getAdapter().getItem(position);
 				//Context context = getBaseContext();
 				if(movie.isLocked(FilmGridActivity.this)){
-		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.PauseDialog);
+		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
 		            dialog.setContentView(R.layout.clapperdialog);
 		            dialog.setCancelable(true);
-					TextView text = (TextView) dialog.findViewById(R.id.text);
-					text.setText("The movie #"+movie.getId()+" is locked!");
+		            //instantiate elements in the dialog
+		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+		            Button unlockButton = (Button) dialog.findViewById(R.id.unlockButton);
+					TextView text = (TextView) dialog.findViewById(R.id.text);					
+					//set values & actions
+					final String idMovie = movie.getId()+"";
+					final int unlockSeconds = movie.getPoints()*50;
+					text.setText("Movie #"+idMovie+" is locked!\n"+
+							"Unlock costs "+unlockSeconds+" seconds");
+					cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
+					});
+					unlockButton.setOnClickListener(new OnClickListener() {	//Unlock					
+						@Override
+						public void onClick(View v) {
+							int secondsAvailable = user.getSeconds();
+							if(secondsAvailable>unlockSeconds){
+								//Unlock movie
+								user.setSeconds(secondsAvailable-unlockSeconds);
+								user.removeLockedMovie(idMovie);
+								try {
+									daoUser.update(user);
+									uploadUsers(daoUser.queryForAll());
+								} catch (SQLException e) {
+									e.printStackTrace();
+								}
+								dialog.dismiss();
+							}
+							else{
+								//Dialog inviting to buy seconds
+							}
+						}
+					});
 		            dialog.show();
 				}
 				else{
@@ -118,6 +151,20 @@ public class FilmGridActivity extends Activity{
         		}	
         		break; 
     	} 		
+	}
+	
+	private void uploadUsers(List<User> users){
+		WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
+		Gson gson = new Gson();
+		try {							
+			JSONArray jsonArray = new JSONArray(gson.toJson(users));
+			wsUser.addNameValuePair("users", jsonArray.toString());
+			Log.i(this.toString(), jsonArray.toString());
+	        wsUser.addNameValuePair("action", "UPDATE");        
+	        wsUser.execute(new String[] {WebServiceTask.URL+"users"});		
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

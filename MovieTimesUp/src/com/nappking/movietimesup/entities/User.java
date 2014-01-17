@@ -61,5 +61,14 @@ public class User implements Serializable{
 	public void setSeconds(int seconds)								{this.seconds=seconds;} 
     public void setLockedMovies(ArrayList<String> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<String> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
+    
+    public void removeLockedMovie(String idMovie){
+    	for(String id: this.lockedMovies){
+    		if(idMovie.equals(id)){
+    			this.lockedMovies.remove(id);
+    			break;
+    		}
+    	}
+    }
     	
 }

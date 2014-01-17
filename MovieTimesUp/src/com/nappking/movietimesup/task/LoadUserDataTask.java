@@ -100,8 +100,8 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 				// set the criteria like you would a QueryBuilder
 				updateBuilder.where().eq(User.USER, this._user.getUser());
 				// update the value of your field(s)
-				updateBuilder.updateColumnValue(User.UNLOCKED, user.getLockedMovies());
-				updateBuilder.updateColumnValue(User.LOCKED, user.getUnlockedMovies());
+				updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
+				updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
 				updateBuilder.update();
 				success = true;
 			}

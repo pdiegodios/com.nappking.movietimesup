@@ -42,4 +42,6 @@
     <string name="error_switching_screens">Error switching screens - Please try again</string>
     <string name="error_no_scores">"No scores to display"</string>
 
+    
+    <string name="unlock">Unlock</string>
 </resources>

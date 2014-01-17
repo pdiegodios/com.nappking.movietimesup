@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/clapperboard"
+	android:padding="20dp"
+    android:paddingTop="70dp"
+	android:paddingBottom="25dp"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <LinearLayout 
         android:orientation="horizontal"
-        android:layout_marginTop="70dp"
-        android:padding="20dp"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <ImageView 
             android:src="@drawable/lock"
             android:scaleType="fitXY"
@@ -26,5 +28,31 @@
 	        android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
 			android:gravity="center_vertical" />
+    </LinearLayout>
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"        
+        android:gravity="center">
+    <Button 
+        android:id="@+id/unlockButton"
+        android:text="@string/unlock"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_grey"
+        android:textSize="16sp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"/>    
+    <Button 
+        android:id="@+id/cancelButton"
+        android:text="@android:string/cancel"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/rounded_grey"
+        android:textSize="16sp"
+        android:gravity="center"/>        
     </LinearLayout>
 </LinearLayout>

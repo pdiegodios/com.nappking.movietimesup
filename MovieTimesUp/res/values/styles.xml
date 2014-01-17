@@ -62,17 +62,30 @@
 		<item name="android:background">@drawable/logout_button</item>
 	</style>
 	
-	<style name="PauseDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
+	<style name="SlideDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/SlideDialogAnimation</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
 	    <item name="android:windowNoTitle">true</item>
 	    <item name="android:windowIsFloating">true</item>
     </style>
 
-    <style name="PauseDialogAnimation">
+    <style name="SlideDialogAnimation">
         <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
     </style>
 
+	<style name="FadeDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/FadeDialogAnimation</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+	    <item name="android:windowNoTitle">true</item>
+	    <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="FadeDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+    
 </resources>
