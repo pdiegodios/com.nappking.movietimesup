@@ -20,7 +20,7 @@
 		    android:layout_height="match_parent" 
 		    android:layout_weight="1.5"
 		    android:layout_gravity="top"
-		    android:numColumns="auto_fit"
+		    android:numColumns="3"
 		    android:stretchMode="columnWidth"
 		    android:verticalSpacing="30dp"
 		    android:horizontalSpacing="30dp"

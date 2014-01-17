@@ -123,6 +123,7 @@ public class FilmGridActivity extends Activity{
 									e.printStackTrace();
 								}
 								dialog.dismiss();
+								update();
 							}
 							else{
 								//Dialog inviting to buy seconds
