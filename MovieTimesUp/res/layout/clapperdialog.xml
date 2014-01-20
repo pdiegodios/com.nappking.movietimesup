@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/clapperboard"
-    android:paddingTop="75dp"
+    android:paddingTop="70dp"
     android:paddingLeft="20dp"
     android:paddingRight="24dp"
 	android:paddingBottom="24dp"
@@ -28,7 +28,7 @@
 	        android:textSize="18sp"
 	        android:textStyle="bold"        
 	        android:textColor="@android:color/white"
-	        android:layout_marginTop="25dp"
+	        android:layout_marginTop="20dp"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
@@ -42,7 +42,7 @@
         android:layout_gravity="center"        
         android:gravity="center">
     <Button 
-        android:id="@+id/unlockButton"
+        android:id="@+id/actionButton"
         android:text="@string/unlock"
         android:layout_width="90dp"
         android:layout_height="wrap_content"

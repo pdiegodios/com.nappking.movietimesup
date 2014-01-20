@@ -11,9 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,43 +44,30 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     	ImageView iMovie = (ImageView) v.findViewById(R.id.movieButton);
     	ImageView iForeground = (ImageView) v.findViewById(R.id.foreground);
     	TextView txTitle = (TextView) v.findViewById(R.id.title);
-    	TextView txId = (TextView) v.findViewById(R.id.movieid);
     	TextView txPoints = (TextView) v.findViewById(R.id.moviepoints);
-    	TextView txStarPoints = (TextView) v.findViewById(R.id.starmoviepoints);
         
     	if (iMovie != null) {
-    		txId.setText(String.format("%04d",movie.getId()));
-    		txPoints.setText(String.format("%04d",movie.getPoints()));
-    		txStarPoints.setText(movie.getPoints()+"");
-    		RotateAnimation ranim = (RotateAnimation)AnimationUtils.loadAnimation(_context, R.anim.animrotate);
-    		ranim.setFillAfter(true);
-    		txId.setAnimation(ranim);
-    		txPoints.setAnimation(ranim);
-    		txStarPoints.setVisibility(View.INVISIBLE);
+    		txPoints.setText(movie.getPoints()+"");
         	if(movie.isLocked(this._context)) {
         		//Movie was locked and you can see anything about that
-        		iMovie.setImageResource(R.drawable.ticket);
-        		iForeground.setImageResource(R.drawable.lock);
+            	new DownloadImageTask(iMovie).execute(movie.getPoster());
+        		iForeground.setImageResource(R.drawable.locked);
         		iForeground.setVisibility(View.VISIBLE);
         		txTitle.setVisibility(View.INVISIBLE);
-        		v.setAlpha((float) 0.6);
         	}	
             else if (movie.isUnlocked(this._context)){
             	//Movie was unlocked so you can see the poster and see the specific data
-        		iMovie.setImageResource(R.drawable.ticket);
+            	new DownloadImageTask(iMovie).execute(movie.getPoster());
         		iForeground.setVisibility(View.INVISIBLE);
         		txTitle.setVisibility(View.VISIBLE);
         		txTitle.setText(movie.getTitle());
-        		txStarPoints.setVisibility(View.VISIBLE);
-        		v.setAlpha((float) 1);
             }
             else{
             	//Movie is ready to play
-            	iMovie.setImageResource(R.drawable.ticket);
-            	iForeground.setImageResource(R.drawable.question);
+            	new DownloadImageTask(iMovie).execute(movie.getPoster());
+            	iForeground.setImageResource(R.drawable.hidden);
             	iForeground.setVisibility(View.VISIBLE);
             	txTitle.setVisibility(View.INVISIBLE);
-            	v.setAlpha((float) 1);
             }
         	
         	/*
@@ -102,7 +86,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     	}        
     }  
     
-    /*
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     	ImageView bmImage;
 
@@ -125,10 +108,8 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
 
     	protected void onPostExecute(Bitmap result) {
     		bmImage.setImageBitmap(result);
-    	}
-    	
+    	}    	
     }
-    */
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {

@@ -95,13 +95,14 @@ public class FilmGridActivity extends Activity{
 		            dialog.setCancelable(true);
 		            //instantiate elements in the dialog
 		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-		            Button unlockButton = (Button) dialog.findViewById(R.id.unlockButton);
-					TextView text = (TextView) dialog.findViewById(R.id.text);					
+		            Button unlockButton = (Button) dialog.findViewById(R.id.actionButton);
+					TextView text = (TextView) dialog.findViewById(R.id.text);			
+					TextView subText = (TextView) dialog.findViewById(R.id.subText);				
 					//set values & actions
 					final String idMovie = movie.getId()+"";
 					final int unlockSeconds = movie.getPoints()*50;
-					text.setText("Movie #"+idMovie+" is locked!\n"+
-							"Unlock costs "+unlockSeconds+" seconds");
+					text.setText("Movie #"+idMovie+" is locked!");
+					subText.setText("Unlock costs "+unlockSeconds+" seconds");
 					cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
 						@Override
 						public void onClick(View v) {
@@ -127,6 +128,30 @@ public class FilmGridActivity extends Activity{
 							}
 							else{
 								//Dialog inviting to buy seconds
+								dialog.dismiss();
+								final Dialog dialogBuy = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
+								dialogBuy.setContentView(R.layout.clapperdialog);
+								dialogBuy.setCancelable(true);
+					            Button cancelButton = (Button) dialogBuy.findViewById(R.id.cancelButton);
+					            Button buyButton = (Button) dialogBuy.findViewById(R.id.actionButton);
+								TextView text = (TextView) dialogBuy.findViewById(R.id.text);			
+								TextView subText = (TextView) dialogBuy.findViewById(R.id.subText);
+								buyButton.setText(R.string.buy);
+								text.setText("You don't have enough seconds");
+								subText.setText("Buy seconds to beat your friends");
+								cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
+									@Override
+									public void onClick(View v) {
+										dialogBuy.dismiss();
+									}
+								});
+								buyButton.setOnClickListener(new OnClickListener() { //Buy									
+									@Override
+									public void onClick(View v) { //Call operations to buy some seconds
+										
+									}
+								});
+								dialogBuy.show();
 							}
 						}
 					});
