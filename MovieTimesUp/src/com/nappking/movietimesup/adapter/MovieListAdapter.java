@@ -1,6 +1,7 @@
 package com.nappking.movietimesup.adapter;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import android.content.Context;
@@ -50,41 +51,27 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     		txPoints.setText(movie.getPoints()+"");
         	if(movie.isLocked(this._context)) {
         		//Movie was locked and you can see anything about that
-            	new DownloadImageTask(iMovie).execute(movie.getPoster());
+            	//new DownloadImageTask(iMovie).execute(movie.getPoster());
         		iForeground.setImageResource(R.drawable.locked);
         		iForeground.setVisibility(View.VISIBLE);
         		txTitle.setVisibility(View.INVISIBLE);
         	}	
             else if (movie.isUnlocked(this._context)){
             	//Movie was unlocked so you can see the poster and see the specific data
-            	new DownloadImageTask(iMovie).execute(movie.getPoster());
+            	//new DownloadImageTask(iMovie).execute(movie.getPoster());
         		iForeground.setVisibility(View.INVISIBLE);
         		txTitle.setVisibility(View.VISIBLE);
         		txTitle.setText(movie.getTitle());
             }
             else{
             	//Movie is ready to play
-            	new DownloadImageTask(iMovie).execute(movie.getPoster());
+            	//new DownloadImageTask(iMovie).execute(movie.getPoster());
             	iForeground.setImageResource(R.drawable.hidden);
             	iForeground.setVisibility(View.VISIBLE);
             	txTitle.setVisibility(View.INVISIBLE);
-            }
-        	
-        	/*
-        	iMovie.setOnClickListener(new OnClickListener() {				
-				@Override
-				public void onClick(View v) {
-					if(movie.isUnlocked(v.getContext())){
-						//showFilmRecord(movie);
-					}	
-					else if(movie.isUnlocked(v.getContext())){
-						//startGame(movie);
-					}
-				}
-			});*/
-        	
+            }        	
     	}        
-    }  
+    }
     
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     	ImageView bmImage;
@@ -110,7 +97,7 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     		bmImage.setImageBitmap(result);
     	}    	
     }
-
+    
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;

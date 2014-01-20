@@ -1,9 +1,20 @@
 package com.nappking.movietimesupWS.test;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+
+import sun.misc.BASE64Encoder;
+
 
 import com.nappking.movietimesupWS.model.Movie;
 import com.nappking.movietimesupWS.util.PSON;
@@ -22,34 +33,56 @@ public class AddMovie {
 		
 		//VALUES
 		int 	id = 14;
-		int 	year = 1999;
+		int 	year = 2013;
 		int 	points = 1;
 		String  action = SAVE;
-		String 	title = "Prueba2";
-		String 	alternative_title = "-";
-		String 	original_title = "-";
-		String 	country = "-";
-		String 	continent = "-";
-		String 	director = "-";
-		String 	genre = "-";
-		String 	poster = "-";
-		String 	actor1="-";
-		String 	actor2="-";
-		String 	actor3="-";
-		String 	character1="-";
-		String 	character2="-";
-		String 	character3="-";
-		String 	quote1 ="-";
-		String 	quote2 ="-";
-		String 	quote3 ="-";
-		String 	other1="-";
-		String 	other2="-";
-		String 	other3="-";
-		String 	plot = "-";
+		String 	title = "Gravity";
+		String 	alternative_title = "Gravity";
+		String 	original_title = "Gravity";
+		String 	country = "USA";
+		String 	continent = "America";
+		String 	director = "Alfonso Cuarón";
+		String 	genre = "Sci-Fi";
+		String 	poster = "http://ia.media-imdb.com/images/M/MV5BMjA2Mzc0NTU2N15BMl5BanBnXkFtZTcwOTUwMjUyMQ@@._V1_SY317_CR5,0,214,317_.jpg";
+		String 	actor1="Phaldut Sharma";
+		String 	actor2="George Clooney";
+		String 	actor3="Sandra Bullock";
+		String 	character1="Ryan Stone";
+		String 	character2="Matt Kowalski";
+		String 	character3="Shariff";
+		String 	quote1 ="-¿Quieres saber una buena noticia? -¿Qué? -Voy a romper el récord de Anatoly";
+		String 	quote2 ="Deberías ver el sol brillando sobre el Ganges, es increíble";
+		String 	quote3 ="-¿Qué es lo que más te gusta del espacio? -El silencio...podría acostumbrarme a él";
+		String 	other1="Globos de Oro: Mejor director.";
+		String 	other2="La película fue mundialmente aclamada por los aspectos técnicos";
+		String 	other3="Película de inauguración en el Festival de Venecia.";
+		String 	plot = "Mientras reparan un satélite fuera de su nave, dos astronautas " +
+				"sufren un grave accidente y quedan flotando en el espacio. Son la doctora " +
+				"X, una brillante ingeniera que realiza su primera misión espacial, y el veterano " +
+				"astronauta Y. La misión exterior parecía rutinaria, pero una lluvia de basura " +
+				"espacial les alcanza y se produce el desastre: el satélite y parte de la nave " +
+				"quedan destrozados, dejando a X y Y completamente solos, momento a partir del cual " +
+				"intentarán por todos los medios buscar una solución para volver a la Tierra. ";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
+		
+		String imageString = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            URL url = new URL(poster);
+            BufferedImage image = ImageIO.read(url);
+            ImageIO.write(image, "jpeg", bos);
+            byte[] imageBytes = bos.toByteArray();
+
+            BASE64Encoder encoder = new BASE64Encoder();
+            imageString = encoder.encode(imageBytes);
+
+            bos.close();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
 		
 		//JSON
 		WebResource service = client.resource(getBaseURI());
@@ -85,7 +118,7 @@ public class AddMovie {
 	}
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://localhost:8081/MovieTimesUpWS").build();
+		return UriBuilder.fromUri("http://movietimesup.gestores.cloudbees.net").build();
 	}
 
 
