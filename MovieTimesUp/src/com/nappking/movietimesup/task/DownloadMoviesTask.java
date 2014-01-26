@@ -137,6 +137,8 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 					JSONObject itemjson = jsonContent.getJSONObject(i);
 					Movie movie = gson.fromJson(itemjson.toString(), Movie.class);
 					movieDao.create(movie);	
+					//If you want to download the poster
+	    			new DownloadPosterTask(movie.getId(),null, this._context).execute(movie.getPoster());  
 				}
 				_filmCounter=numItems-j;
 				result=0;		

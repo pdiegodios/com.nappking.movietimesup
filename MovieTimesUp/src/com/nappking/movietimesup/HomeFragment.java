@@ -257,9 +257,18 @@ public class HomeFragment extends Fragment {
 				User user=null;
 				if(!users.isEmpty()){
 					user=users.get(0);
+					ArrayList<String> ejemplo1 = new ArrayList<String>();
+					ArrayList<String> ejemplo2 = new ArrayList<String>();
+					ejemplo1.add("3");
+					ejemplo1.add("5");
+					ejemplo2.add("7");
+					ejemplo2.add("11");
+					ejemplo2.add("12");
+					user.setLockedMovies(ejemplo1);
+					user.setUnlockedMovies(ejemplo2);
+					daoUser.update(user);
 				}	
 				if(user==null){
-					//Doesn't exist user in the local sqlite DB
 					user = new User();
 					user.setName(application.getCurrentFBUser().getName());
 					user.setLockedMovies(new ArrayList<String>());
@@ -276,7 +285,6 @@ public class HomeFragment extends Fragment {
 					new LoadUserDataTask(this.getActivity(),user).execute();
 				}
 				else{
-					//We upload the local data to the server MySQL DB accessed by the REST WS
 					WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
 					Gson gson = new Gson();
 					try {							

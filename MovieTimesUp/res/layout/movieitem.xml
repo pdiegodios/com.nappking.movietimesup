@@ -8,6 +8,8 @@
 
     <ImageView
         android:id="@+id/movieButton"    
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:background="@android:color/transparent"
         android:src="@drawable/filmstrip"
         android:layout_gravity="center"
@@ -18,22 +20,31 @@
     <ImageView 
         android:id="@+id/foreground"
         android:background="@android:color/transparent"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:src="@drawable/hidden"
         android:layout_gravity="center"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_width="107dp"
+	    android:layout_height="165dp"
 	    android:scaleType="fitXY"/>    
-    
+    <ImageView 
+        android:id="@+id/starpoints"
+        android:background="@android:color/transparent"
+        android:src="@drawable/movie_points"
+        android:layout_gravity="center"
+        android:layout_marginTop="31dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
     <TextView 
         android:id="@+id/moviepoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="31dp"
         android:layout_gravity="center"
-        android:textColor="@color/reddark"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
     
     <TextView
         android:id="@+id/title"
@@ -41,8 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:textSize="11sp"
         android:gravity="center"
         android:textColor="@color/white"
         android:background="#99000000"

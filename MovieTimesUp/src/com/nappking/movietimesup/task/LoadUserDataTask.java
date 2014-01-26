@@ -102,8 +102,6 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 				// update the value of your field(s)
 				updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
 				updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
-				updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
-				updateBuilder.updateColumnValue(User.SCORE, user.getScore());
 				updateBuilder.update();
 				success = true;
 			}

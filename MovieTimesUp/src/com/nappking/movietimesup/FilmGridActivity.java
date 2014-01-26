@@ -89,7 +89,10 @@ public class FilmGridActivity extends Activity{
 				//Click over each film. The behaviour depends on the state.
 				Movie movie = (Movie) grid.getAdapter().getItem(position);
 				//Context context = getBaseContext();
+				
+				
 				if(movie.isLocked(FilmGridActivity.this)){
+					//Locked movie
 		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
 		            dialog.setContentView(R.layout.clapperdialog);
 		            dialog.setCancelable(true);
@@ -157,12 +160,18 @@ public class FilmGridActivity extends Activity{
 					});
 		            dialog.show();
 				}
+				
+				else if(movie.isUnlocked(FilmGridActivity.this)){
+					//Solved movie: We show the film information
+				}
+				
 				else{
-					Intent myIntent = new Intent(getBaseContext(), GameActivity.class);
+					//Movie ready to play: We start the bet and we send the movie to play
+					Intent myIntent = new Intent(getBaseContext(),FilmActivity.class);
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
 					myIntent.putExtras(myBundle);
-					startActivityForResult(myIntent,result_sent);
+					startActivity(myIntent);
 				}
 			}
 		});		
@@ -191,6 +200,5 @@ public class FilmGridActivity extends Activity{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 }
