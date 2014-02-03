@@ -49,12 +49,12 @@
     <string name="decade">decade</string>
     <string name="actor">actor</string>
     <string name="character">character</string>
-    <string name="quote">memorable quote</string>
-    <string name="synopsis">synopsis</string>
+    <string name="quote">quote</string>
+    <string name="synopsis">storyline</string>
     <string name="continent">continent</string>
     <string name="country">country</string>
     <string name="director">director</string>
-    <string name="others">awards, curiosities or reviews</string>
+    <string name="others">trivia</string>
     <string name="genre">genre</string>
     
 </resources>

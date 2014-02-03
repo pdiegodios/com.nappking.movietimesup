@@ -75,6 +75,7 @@
             android:name="com.nappking.movietimesup.FilmActivity"
             android:label="@string/title_activity_home" 
             android:theme="@style/Theme.gradient"
+            android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
