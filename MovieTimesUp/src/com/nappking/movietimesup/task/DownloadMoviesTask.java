@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,10 +16,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.facebook.android.friendsmash.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.HomeActivity;
@@ -42,60 +44,49 @@ import android.widget.Toast;
  * @author Nappking - pdiego
  */
 public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
-	//private ProgressDialog _dialog;
-	private Context _context;
-	private String _path = "movies";
-	boolean _service = false;
-	int _filmCounter = 0;
+	private Context mContext;
+	private DBHelper mDBHelper;
+	private String mPath = "movies";
+	private boolean mService = false;
+	private int mFilmCounter = 0;
 	
 	public DownloadMoviesTask(Context c){
-		this._context=c;
-		/**if(this._dialog==null)
-			this._dialog= new ProgressDialog(_context);*/
+		this.mContext=c;
 	}
 	
 	public DownloadMoviesTask(Context c, boolean isService){
 		Log.i(NotificationService.class.toString(), "Check if there are new movies");
-		this._context=c;
-		this._service = isService;
-	}
-	
-	protected void onPreExecute(){
-		/**this._dialog.setMessage("Downloading movies from WS");
-		if (!_dialog.isShowing())
-			_dialog.show();*/
+		this.mContext=c;
+		this.mService = isService;
 	}
 	
 	@Override
 	protected void onPostExecute(final Integer result){
-		/**if(_dialog.isShowing()){
-			_dialog.dismiss();
-		}*/
 		String text="";
-		if(!_service){
+		if(!mService){
 			//If it was not called from NotificationService
 			switch(result){
-			case 0: text= "Downloaded new movies!";break;
-			case 1: text= "You already have all the movies!";break;
-			case 2: text= "Impossible to connect. Check your network!";break;
-			default: break;
+				case 0: text= "Downloaded new movies!";break;
+				case 1: text= "You already have all the movies!";break;
+				case 2: text= "Impossible to connect. Check your network!";break;
+				default: break;
 			}
 			//When it finishes, we have to start main menu and finish the splash screen
-			Toast.makeText(this._context, text, Toast.LENGTH_SHORT).show();
-	  		Intent mainActivity = new Intent(this._context, HomeActivity.class);
-	        _context.startActivity(mainActivity);
-	        ((SplashActivity) this._context).finish();
+			Toast.makeText(this.mContext, text, Toast.LENGTH_SHORT).show();
+	  		Intent mainActivity = new Intent(this.mContext, HomeActivity.class);
+	        mContext.startActivity(mainActivity);
+	        ((SplashActivity) this.mContext).finish();
 		}
 		else{
 			//It was called from NotificationService
 			if(result==0){ 
 				//There are new movies downloaded
-				text= "You got "+_filmCounter*100+" points and "+_filmCounter+" new movies to guess";
-				Intent intent = new Intent(this._context, HomeActivity.class);
-        		PendingIntent pIntent = PendingIntent.getActivity(this._context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				text= "You got "+mFilmCounter*100+" points and "+mFilmCounter+" new movies to guess";
+				Intent intent = new Intent(this.mContext, HomeActivity.class);
+        		PendingIntent pIntent = PendingIntent.getActivity(this.mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         		// Construimos la notificación. Podemos también añadir acciones
-        		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this._context)
+        		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this.mContext)
         		        .setContentTitle("Películas!!")
         		        .setContentText(text)
         		        .setLights(0xff0000ff, 100, 100)
@@ -103,7 +94,7 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
         		        .setContentIntent(pIntent);
         		Notification notification = notBuilder.build();            		  
         		NotificationManager notificationManager = 
-        		  (NotificationManager) _context.getSystemService(NotificationService.NOTIFICATION_SERVICE);
+        		  (NotificationManager) mContext.getSystemService(NotificationService.NOTIFICATION_SERVICE);
 
         		// Flag para ocultar la notificación después de su selección y añadimos sonido, luz y vibración
         		notification.defaults |= Notification.DEFAULT_SOUND;
@@ -113,38 +104,42 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
         		
         		notificationManager.notify(NotificationService.MOVIEID, notification);                
 			}
-			_context.stopService(new Intent(_context,NotificationService.class));
+			mContext.stopService(new Intent(mContext,NotificationService.class));
 		}
+        if (mDBHelper != null) {
+            OpenHelperManager.releaseHelper();
+            mDBHelper = null;
+        }
 	}
 	
 	protected Integer doInBackground(String... arg0) {
 		int result=2;
-		String read_movies = readMovieFeed(WebServiceTask.URL+_path);
+		String read_movies = readMovieFeed(WebServiceTask.URL+mPath);
 		try{
 			JSONArray jsonContent = new JSONArray(read_movies);
 			int numItems = jsonContent.length();
-			Gson gson = new Gson();
-			DBHelper helper = OpenHelperManager.getHelper(this._context, DBHelper.class);
-			Dao<Movie,Integer> movieDao = helper.getMovieDAO();
-			Dao<User,Integer> userDao = helper.getUserDAO();
-			int j=movieDao.queryForAll().size();
-			List<User> users = userDao.queryForAll();
+			final Dao<Movie,Integer> movieDao = getHelper().getMovieDAO();
+			final Dao<User,Integer> userDao = getHelper().getUserDAO();
+			int j= (int) movieDao.countOf();
+			User user = userDao.queryForId(0);
 			if(j>=numItems){
 				result= 1;
 			}	
 			else{
-				for(int i=j; i<numItems;i++){
-					JSONObject itemjson = jsonContent.getJSONObject(i);
-					Movie movie = gson.fromJson(itemjson.toString(), Movie.class);
-					movieDao.create(movie);	
-					//If you want to download the poster
-	    			new DownloadPosterTask(movie.getId(),null, this._context).execute(movie.getPoster());  
-				}
-				_filmCounter=numItems-j;
+    			Type listMovieType = new TypeToken<List<Movie>>(){}.getType();
+    			final List<Movie> moviesToInsert = new Gson().fromJson(jsonContent.toString(), listMovieType);
+    			movieDao.callBatchTasks(new Callable<Void>() {
+    			    public Void call() throws Exception {
+    			        for (Movie movie : moviesToInsert) {
+    			            movieDao.create(movie);
+    			        }
+    			        return null;
+    			    }
+    			});
+				mFilmCounter=numItems-j;
 				result=0;		
-				if(!users.isEmpty()){
-					User user = users.get(0);
-					user.setSeconds(user.getSeconds()+_filmCounter*100);
+				if(user!=null){
+					user.setSeconds(user.getSeconds()+mFilmCounter*100);
 					userDao.update(user);
 				}
 			}
@@ -182,4 +177,10 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		return builder.toString();
 	}
 
+	private DBHelper getHelper(){
+		if(mDBHelper==null){
+			mDBHelper = OpenHelperManager.getHelper(mContext, DBHelper.class);
+		}
+		return mDBHelper;
+	}
 }

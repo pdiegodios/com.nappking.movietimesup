@@ -54,7 +54,6 @@ public class NotificationService extends Service {
      * It's called when onStart/onStartCommand is called from the system. We call to the asynctask
      * to download new movies which return the number of new movies with a notification.
      */
-    @SuppressWarnings({ "deprecation" })
 	private void handleIntent(Intent intent) {
         // obtain the wake lock
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
@@ -62,7 +61,7 @@ public class NotificationService extends Service {
         mWakeLock.acquire();
         // check the global background data setting
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (!cm.getBackgroundDataSetting()) {
+        if (!cm.getActiveNetworkInfo().isConnected()) {
             stopSelf();
             return;
         }        

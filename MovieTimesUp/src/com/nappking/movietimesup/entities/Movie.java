@@ -22,7 +22,8 @@ public class Movie implements Serializable{
     public static final String TABLE = "Movie";
     
     //Columns
-    public static final String ROWID = "id";
+    public static final String ROWID = "_id";
+    public static final String ID = "id";
     public static final String TITLE = "title";
     public static final String ALTERNATIVE_TITLE = "alternativeTitle";
     public static final String ORIGINAL_TITLE = "originalTitle";
@@ -41,7 +42,9 @@ public class Movie implements Serializable{
 	
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
-    private long 		id;
+    private int 		_id;
+    @DatabaseField(columnName = ID)
+    private int 		id;
     @DatabaseField(columnName = TITLE)
     private String 		title;
     @DatabaseField(columnName = ALTERNATIVE_TITLE)
@@ -96,10 +99,14 @@ public class Movie implements Serializable{
 		try {
 			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
 			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForAll().get(0);
-			ArrayList<String> unlockedMovies = user.getUnlockedMovies();
-			if (unlockedMovies.contains(this.id+""))
-				result = true;
+			User user = daoUser.queryForId(0);
+			helper = null;
+			OpenHelperManager.releaseHelper();
+			if(user!=null){
+				ArrayList<String> unlockedMovies = user.getUnlockedMovies();
+				if (unlockedMovies.contains(this.id+""))
+					result = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -111,10 +118,14 @@ public class Movie implements Serializable{
 		try {
 			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
 			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForAll().get(0);
-			ArrayList<String> lockedMovies = user.getLockedMovies();
-			if (lockedMovies.contains(this.id+""))
-				result = true;
+			User user = daoUser.queryForId(0);
+			helper = null;
+			OpenHelperManager.releaseHelper();
+			if(user!=null){
+				ArrayList<String> lockedMovies = user.getLockedMovies();
+				if (lockedMovies.contains(this.id+""))
+					result = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -122,7 +133,8 @@ public class Movie implements Serializable{
 	}
 	
 	//SETTERS
-	public void setId(long id) 						{this.id = id;}
+	public void setRowid(int _id)					{this._id = _id;}
+	public void setId(int id) 						{this.id = id;}
 	public void setTitle(String title) 				{this.title = title;}
 	public void setAlternativeTitle(String a_title) {this.alternativeTitle = a_title;}
 	public void setOriginalTitle(String o_title) 	{this.originalTitle = o_title;}

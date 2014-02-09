@@ -88,11 +88,8 @@ public class FilmGridActivity extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				//Click over each film. The behaviour depends on the state.
 				Movie movie = (Movie) grid.getAdapter().getItem(position);
-				//Context context = getBaseContext();
 				
-				
-				if(movie.isLocked(FilmGridActivity.this)){
-					//Locked movie
+				if(movie.isLocked(FilmGridActivity.this)){ //Locked movie
 		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
 		            dialog.setContentView(R.layout.clapperdialog);
 		            dialog.setCancelable(true);
@@ -161,12 +158,10 @@ public class FilmGridActivity extends Activity{
 		            dialog.show();
 				}
 				
-				else if(movie.isUnlocked(FilmGridActivity.this)){
-					//Solved movie: We show the film information
+				else if(movie.isUnlocked(FilmGridActivity.this)){ //Solved movie: We show the film information
 				}
 				
-				else{
-					//Movie ready to play: We start the bet and we send the movie to play
+				else{ //Movie ready to play: We start the bet and we send the movie to play
 					Intent myIntent = new Intent(getBaseContext(),FilmActivity.class);
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
@@ -190,9 +185,8 @@ public class FilmGridActivity extends Activity{
 	
 	private void uploadUsers(List<User> users){
 		WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
-		Gson gson = new Gson();
 		try {							
-			JSONArray jsonArray = new JSONArray(gson.toJson(users));
+			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
 			wsUser.addNameValuePair("users", jsonArray.toString());
 			Log.i(this.toString(), jsonArray.toString());
 	        wsUser.addNameValuePair("action", "UPDATE");        

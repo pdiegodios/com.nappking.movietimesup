@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -50,9 +49,8 @@ import com.facebook.android.friendsmash.R;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-import com.nappking.movietimesup.database.DBHelper;
+import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.User;
 
 /**
@@ -60,8 +58,7 @@ import com.nappking.movietimesup.entities.User;
  *  also the login screen for the social version of the app - these screens will switch
  *  within this activity using Fragments.
  */
-public class HomeActivity extends FragmentActivity {    
-	private DBHelper _DBHelper;
+public class HomeActivity extends DBActivity {    
 	
 	// Tag used when logging messages
     private static final String TAG = HomeActivity.class.getSimpleName();
@@ -184,15 +181,10 @@ public class HomeActivity extends FragmentActivity {
 			if (session != null && session.isOpened() && ((FriendSmashApplication)getApplication()).getCurrentFBUser() != null) {
 				showFragment(HOME, false);
 			} else {
-				DBHelper helper = OpenHelperManager.getHelper(this, DBHelper.class);
 				Boolean isFirst = false;
 				try {
-					Dao<User,Integer> daoUser = helper.getUserDAO();
-					List<User> users = daoUser.queryForAll();
-					User user=null;
-					if(!users.isEmpty()){
-						user=users.get(0);
-					}	
+					Dao<User,Integer> daoUser = getHelper().getUserDAO();
+					User user = daoUser.queryForId(0);
 					if(user!=null && user.getUser()!=null && !user.getUser().equals("")){
 						showFragment(FB_LOGGED_OUT_HOME,false);
 					}
@@ -250,10 +242,6 @@ public class HomeActivity extends FragmentActivity {
 	@Override
     public void onDestroy() {
  		super.onDestroy();
-        if (_DBHelper != null) {
-            OpenHelperManager.releaseHelper();
-            _DBHelper = null;
-        } 		
  		// Call onDestroy on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onDestroy();
     }
@@ -503,16 +491,5 @@ public class HomeActivity extends FragmentActivity {
 			loginButton.clearPermissions();
 		}
     }
-	
-	/**
-	 * Función para instanciar la base de datos desde la actividad
-	 * @return
-	 */
-	protected DBHelper getHelper(){
-		if(_DBHelper==null){
-			_DBHelper = OpenHelperManager.getHelper(this, DBHelper.class);
-		}
-		return _DBHelper;
-	}
 	
 }

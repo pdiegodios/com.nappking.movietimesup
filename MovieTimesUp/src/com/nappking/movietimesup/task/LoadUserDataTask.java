@@ -32,58 +32,60 @@ import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.User;
 
 public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
-	private ProgressDialog _dialog;
-	private Context _context;
-	private String _path="users";
-	private User _user=null;
-	boolean _service = false;
+	private ProgressDialog mDialog;
+	private Context mContext;
+	private DBHelper mDBHelper;
+	private String mPath="users";
+	private User mUser=null;
+	boolean mService = false;
 	
 	public LoadUserDataTask(Context c, User u){
-		this._context=c;
-		this._user=u;
-		if(this._dialog==null)
-			this._dialog= new ProgressDialog(_context);
+		this.mContext=c;
+		this.mUser=u;
+		if(this.mDialog==null)
+			this.mDialog= new ProgressDialog(mContext);
 	}
 	
 	protected void onPreExecute(){
-		this._dialog.setMessage("Downloading user data from WS");
-		if (!_dialog.isShowing())
-			_dialog.show();
+		this.mDialog.setMessage("Downloading user data from WS");
+		if (!mDialog.isShowing())
+			mDialog.show();
 	}
 	
 	@Override
 	protected void onPostExecute(final Boolean success){
-		if(_dialog.isShowing()){
-			_dialog.dismiss();
+		if(mDialog.isShowing()){
+			mDialog.dismiss();
 		}
 		String text="";
-		//If it was not called from NotificationService
 		if(success){
 			text= "Updated user data";
 		}
 		else {
 			text= "Impossible to update user data. Check your network connection.";
 		}
-		//When it finishes, we have to start main menu and finish the splash screen
-		Toast.makeText(this._context, text, Toast.LENGTH_SHORT).show();
+        if (mDBHelper != null) {
+            OpenHelperManager.releaseHelper();
+            mDBHelper = null;
+        }
+		Toast.makeText(this.mContext, text, Toast.LENGTH_SHORT).show();
 	}
 	
 	protected Boolean doInBackground(String... arg0) {
 		boolean success = false;
-		String read_user = readUserFeed(WebServiceTask.URL+_path);
+		String read_user = readUserFeed(WebServiceTask.URL+mPath);
 		try{
 			if(read_user==null || read_user.equals("")){
 				//If there is not user associated in the server we have to create a new user in the WS
 				WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
-				Gson gson = new Gson();
 				List<User> users = new ArrayList<User>();
-				users.add(this._user);
+				users.add(this.mUser);
 				try {							
-					JSONArray jsonArray = new JSONArray(gson.toJson(users));
+					JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
 					wsUser.addNameValuePair("users", jsonArray.toString());
 					Log.i(this.toString(), jsonArray.toString());
 			        wsUser.addNameValuePair("action", "SAVE");        
-			        wsUser.execute(new String[] {WebServiceTask.URL+_path});	
+			        wsUser.execute(new String[] {WebServiceTask.URL+mPath});	
 					success=true;				
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -91,18 +93,16 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 			}
 			else{
 				JSONObject itemjson = new JSONObject(read_user);
-				Gson gson = new Gson();
-				DBHelper helper = OpenHelperManager.getHelper(this._context, DBHelper.class);
-				Dao<User,Integer> userDao = helper.getUserDAO();
+				Dao<User,Integer> userDao = getHelper().getUserDAO();
 				Log.i("User updated: ", itemjson.toString());
-				User user = gson.fromJson(itemjson.toString(), User.class);
+				User user = new Gson().fromJson(itemjson.toString(), User.class);
+				
 				UpdateBuilder<User, Integer> updateBuilder = userDao.updateBuilder();
-				// set the criteria like you would a QueryBuilder
-				updateBuilder.where().eq(User.USER, this._user.getUser());
-				// update the value of your field(s)
+				updateBuilder.where().eq(User.USER, this.mUser.getUser());
 				updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
 				updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
 				updateBuilder.update();
+				
 				success = true;
 			}
 		} catch (Exception e) {
@@ -114,7 +114,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 	private String readUserFeed(String url){
 	    StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url+"/"+this._user.getUser());
+		HttpGet httpGet = new HttpGet(url+"/"+this.mUser.getUser());
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
@@ -138,6 +138,13 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 			e.printStackTrace();
 		}
 		return builder.toString();
+	}
+
+	private DBHelper getHelper(){
+		if(mDBHelper==null){
+			mDBHelper = OpenHelperManager.getHelper(mContext, DBHelper.class);
+		}
+		return mDBHelper;
 	}
 
 }
