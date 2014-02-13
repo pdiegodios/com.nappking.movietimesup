@@ -27,7 +27,7 @@ public class User implements Serializable{
     
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
-    private long _id;
+    private int _id;
     @DatabaseField(columnName = USER)
     private String user;
     @DatabaseField(columnName = NAME)
@@ -54,7 +54,7 @@ public class User implements Serializable{
     public ArrayList<String> getUnlockedMovies(){return this.unlockedMovies;}
 
     //setters
-    public void setId(long id)										{this._id=id;}  
+    public void setId(int id)										{this._id=id;}  
     public void setUser(String user)								{this.user=user;}
     public void setName(String name)								{this.name=name;}
 	public void setScore(int score)									{this.score=score;} 
@@ -62,12 +62,27 @@ public class User implements Serializable{
     public void setLockedMovies(ArrayList<String> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<String> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
     
-    public void removeLockedMovie(String idMovie){
-    	for(String id: this.lockedMovies){
-    		if(idMovie.equals(id)){
-    			this.lockedMovies.remove(id);
+    public void removeLockedMovie(int idMovie){
+    	String id = String.valueOf(idMovie);
+    	for(String idlocked: this.lockedMovies){
+    		if(id.equals(idlocked)){
+    			this.lockedMovies.remove(idlocked);
     			break;
     		}
+    	}
+    }
+    
+    public void addLockedMovie(int idMovie){
+    	String id = String.valueOf(idMovie);
+    	if(!lockedMovies.contains(id)){
+    		lockedMovies.add(id);
+    	}
+    }
+
+    public void addUnlockedMovie(int idMovie){
+    	String id = String.valueOf(idMovie);
+    	if(!unlockedMovies.contains(id)){
+    		unlockedMovies.add(id);
     	}
     }
     	

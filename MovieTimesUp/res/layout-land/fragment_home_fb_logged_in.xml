@@ -147,7 +147,7 @@
 	      	android:layout_height="wrap_content"
 	      	android:layout_gravity="center"
 	      	style="@style/GameOverFont"
-         	android:text="@string/game_over"
+         	android:text="@string/times_up"
          	android:layout_marginBottom="5dp"
 	      />
   	</FrameLayout>

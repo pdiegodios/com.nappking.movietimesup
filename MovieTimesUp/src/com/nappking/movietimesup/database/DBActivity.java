@@ -1,6 +1,6 @@
 package com.nappking.movietimesup.database;
 
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
@@ -8,7 +8,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
  * Clase genérica para las actividades con acceso a la Base de Datos
  * @author pdiego
  */
-public abstract class DBActivity extends FragmentActivity{
+public abstract class DBActivity extends Activity{
 	protected static final String TAG = null;
 	private DBHelper _DBHelper;
 	

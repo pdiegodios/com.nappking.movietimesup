@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import org.apache.http.HttpEntity;
@@ -46,7 +48,8 @@ import android.widget.Toast;
 public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	private Context mContext;
 	private DBHelper mDBHelper;
-	private String mPath = "movies";
+	private String mCountPath = "movies/count";
+	private String mSincePath = "movies/since";
 	private boolean mService = false;
 	private int mFilmCounter = 0;
 	
@@ -114,33 +117,36 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	
 	protected Integer doInBackground(String... arg0) {
 		int result=2;
-		String read_movies = readMovieFeed(WebServiceTask.URL+mPath);
+		String counter = readMovieFeed(WebServiceTask.URL+mCountPath);
+		int moviesOnlineCount = Integer.parseInt(counter);
 		try{
-			JSONArray jsonContent = new JSONArray(read_movies);
-			int numItems = jsonContent.length();
-			final Dao<Movie,Integer> movieDao = getHelper().getMovieDAO();
-			final Dao<User,Integer> userDao = getHelper().getUserDAO();
-			int j= (int) movieDao.countOf();
-			User user = userDao.queryForId(0);
-			if(j>=numItems){
+			final Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
+			final Dao<User,Integer> daoUser = getHelper().getUserDAO();
+			int moviesDownloadedCount = (int) daoMovie.countOf();
+			if(moviesDownloadedCount>=moviesOnlineCount){
+				//We have all the movies downloaded
 				result= 1;
 			}	
 			else{
+				String read_movies = readMovieFeed(WebServiceTask.URL+mSincePath+"/"+moviesDownloadedCount);
+				JSONArray jsonContent = new JSONArray(read_movies);
+				User user = daoUser.queryForId(1);
     			Type listMovieType = new TypeToken<List<Movie>>(){}.getType();
     			final List<Movie> moviesToInsert = new Gson().fromJson(jsonContent.toString(), listMovieType);
-    			movieDao.callBatchTasks(new Callable<Void>() {
+    			Collections.shuffle(moviesToInsert, new Random(System.nanoTime()));
+    			daoMovie.callBatchTasks(new Callable<Void>() {
     			    public Void call() throws Exception {
     			        for (Movie movie : moviesToInsert) {
-    			            movieDao.create(movie);
+    			        	daoMovie.create(movie);
     			        }
     			        return null;
     			    }
     			});
-				mFilmCounter=numItems-j;
+				mFilmCounter=moviesOnlineCount-moviesDownloadedCount;
 				result=0;		
 				if(user!=null){
 					user.setSeconds(user.getSeconds()+mFilmCounter*100);
-					userDao.update(user);
+					daoUser.update(user);
 				}
 			}
 		} catch (Exception e) {
@@ -183,4 +189,5 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		}
 		return mDBHelper;
 	}
+	
 }

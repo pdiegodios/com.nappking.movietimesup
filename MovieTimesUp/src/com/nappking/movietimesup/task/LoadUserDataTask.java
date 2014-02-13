@@ -101,6 +101,8 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 				updateBuilder.where().eq(User.USER, this.mUser.getUser());
 				updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
 				updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
+				updateBuilder.updateColumnValue(User.SCORE, user.getScore());
+				updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
 				updateBuilder.update();
 				
 				success = true;

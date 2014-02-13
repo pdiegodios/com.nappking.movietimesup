@@ -77,7 +77,8 @@ public class Movie implements Serializable{
     private int 		points;
     
     //GETTERS
-	public long getId() 				{return id;}
+    public int getRowid()				{return _id;}
+	public int getId() 					{return id;}
 	public String getTitle() 			{return title;}
 	public String getAlternativeTitle()	{return alternativeTitle;}
 	public String getOriginalTitle()	{return originalTitle;}
@@ -99,7 +100,7 @@ public class Movie implements Serializable{
 		try {
 			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
 			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForId(0);
+			User user = daoUser.queryForId(1);
 			helper = null;
 			OpenHelperManager.releaseHelper();
 			if(user!=null){
@@ -118,7 +119,7 @@ public class Movie implements Serializable{
 		try {
 			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
 			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForId(0);
+			User user = daoUser.queryForId(1);
 			helper = null;
 			OpenHelperManager.releaseHelper();
 			if(user!=null){

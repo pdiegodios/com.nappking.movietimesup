@@ -27,7 +27,6 @@
     <string name="score">Score: 0</string>
     <string name="no_score">Let\'s smash some friends!</string>
     <string name="network_error">Please check your network connection</string>
-    <string name="game_over">Game Over!</string>
     <string name="error_dialog_title">Error</string>
     <string name="error_dialog_button_text">OK</string>
     <string name="error_dialog_default_text">No response from server.</string>
@@ -45,16 +44,32 @@
     
     <string name="unlock">Unlock</string>
     <string name="buy">Buy</string>
-    <string name="year">year</string>
-    <string name="decade">decade</string>
-    <string name="actor">actor</string>
-    <string name="character">character</string>
-    <string name="quote">quote</string>
-    <string name="synopsis">storyline</string>
-    <string name="continent">continent</string>
-    <string name="country">country</string>
-    <string name="director">director</string>
-    <string name="others">trivia</string>
-    <string name="genre">genre</string>
+    <string name="year">YEAR</string>
+    <string name="decade">DECADE</string>
+    <string name="actor">ACTOR</string>
+    <string name="character">CHARACTER</string>
+    <string name="quote">QUOTE</string>
+    <string name="synopsis">STORYLINE</string>
+    <string name="continent">CONTINENT</string>
+    <string name="country">COUNTRY</string>
+    <string name="director">DIRECTOR</string>
+    <string name="others">TRIVIA</string>
+    <string name="genre">GENRE</string>
+    
+    <string name="times_up">Time\'s Up!</string>
+    <string name="game_over_sub">the movie has been locked</string>
+    <string name="game_won">Congrats!</string>
+    <string name="game_won_sub">you got</string>
+    <string name="points">points</string>
+    <string name="not_enough_seconds">You don\'t have enough seconds</string>
+    <string name="buy_seconds">Buy seconds to beat your friends</string>
+    <string name="unlock_cost">Unlock costs</string>
+    <string name="seconds">seconds</string>
+    <string name="give_up_question">Coward, do you wanna give up?</string>
+    <string name="give_up">Give up</string>
+    <string name="play">Play!</string>
+    <string name="are_you_ready">Are you ready?</string>
+    <string name="initial_warning">You can\'t stop from this point</string>
+    <string name="movie_will_be_locked">This movie will be locked</string>
     
 </resources>

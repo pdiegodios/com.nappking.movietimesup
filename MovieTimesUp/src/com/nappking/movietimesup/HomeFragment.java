@@ -252,42 +252,15 @@ public class HomeFragment extends Fragment {
 			try {
 				Dao <User,Integer> daoUser = helper.getUserDAO();
 				Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
-				List<User> users = daoUser.queryForAll();
+				User user = daoUser.queryForId(1);
 				int moviesCount = daoMovie.queryForAll().size();
-				User user=null;
-				if(!users.isEmpty()){
-					user=users.get(0);
-					ArrayList<String> ejemplo1 = new ArrayList<String>();
-					ArrayList<String> ejemplo2 = new ArrayList<String>();
-					ejemplo1.add("3");
-					ejemplo1.add("5");
-					ejemplo2.add("7");
-					ejemplo2.add("11");
-					ejemplo2.add("12");
-					user.setLockedMovies(ejemplo1);
-					user.setUnlockedMovies(ejemplo2);
-					daoUser.update(user);
-				}	
-				if(user==null){
-					user = new User();
-					user.setName(application.getCurrentFBUser().getName());
-					user.setLockedMovies(new ArrayList<String>());
-					user.setUnlockedMovies(new ArrayList<String>());
-					user.setScore(0);
-					user.setSeconds(moviesCount*100);
-					user.setUser(application.getCurrentFBUser().getId());
-					daoUser.create(user);
-					/**
-					 * Now we have to consult if the FBUser played before to our game.
-					 * If there is not data associated to the user, the user is created,
-					 * otherwise the data is dowloaded to sqlite. 
-					 */
-					new LoadUserDataTask(this.getActivity(),user).execute();
-				}
-				else{
+
+				if(user!=null){
 					WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
 					Gson gson = new Gson();
 					try {							
+						List<User> users = new ArrayList<User>();
+						users.add(user);
 						JSONArray jsonArray = new JSONArray(gson.toJson(users));
 						wsUser.addNameValuePair("users", jsonArray.toString());
 						Log.i(this.toString(), jsonArray.toString());
@@ -297,8 +270,28 @@ public class HomeFragment extends Fragment {
 						e.printStackTrace();
 					}
 				}
+				else{
+					user = new User();
+					user.setName(application.getCurrentFBUser().getName());
+					user.setLockedMovies(new ArrayList<String>());
+					user.setUnlockedMovies(new ArrayList<String>());
+					user.setScore(0);
+					user.setSeconds(moviesCount*100);
+					user.setUser(application.getCurrentFBUser().getId());
+					daoUser.create(user);
+					helper = null;
+		            OpenHelperManager.releaseHelper();
+					/**
+					 * Now we have to consult if the FBUser played before to our game.
+					 * If there is not data associated to the user, the user is created,
+					 * otherwise the data is dowloaded to sqlite. 
+					 */
+					new LoadUserDataTask(this.getActivity(),user).execute();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				helper = null;
+	            OpenHelperManager.releaseHelper();
 			}
 			// Personalize this HomeFragment if the currentFBUser has been fetched			
 			// Set the id for the userImage ProfilePictureView

@@ -116,7 +116,7 @@
 	            android:textColor="@color/greydark"
 	            android:typeface="serif"
 	            android:gravity="center"
-	            android:textSize="40sp"/>
+	            android:textSize="38sp"/>
 	        <com.nappking.movietimesup.widget.AutoResizeTextView 
 	            android:id="@+id/textclue"
 	            android:layout_marginLeft="40dp"
@@ -134,6 +134,7 @@
 	    
 	    <!-- BUTTONS -->
 	    <LinearLayout 
+	        android:id="@+id/buttons"
 	        android:orientation="horizontal"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
@@ -248,5 +249,82 @@
 	            android:background="@android:color/transparent"/>
 	    </LinearLayout>
     
+	</LinearLayout>
+	<ImageView 
+	    android:id="@+id/endpicture"
+	    android:layout_height="300dp"
+	    android:layout_width="300dp"
+	    android:layout_gravity="center" 
+	    android:src="@drawable/happymask"/>
+	<ImageView 
+	    android:id="@+id/shot"
+	    android:src="@drawable/shot"
+	    android:layout_width="28dp"
+	    android:layout_height="28dp"
+	    android:layout_marginLeft="95dp"
+	    android:layout_marginTop="47dp"
+	    android:layout_gravity="center"/>
+	<LinearLayout 
+	    android:id="@+id/endline"
+	    android:layout_height="match_parent"
+	    android:layout_width="match_parent"
+	    android:orientation="vertical"
+	    android:layout_margin="60dp">
+		<com.nappking.movietimesup.widget.AutoResizeTextView 
+		    android:id="@+id/endtext"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:textSize="80sp"
+		    android:singleLine="true"
+		    android:textStyle="bold"
+		    android:typeface="monospace"
+		    android:textColor="@color/greydark"
+		    android:gravity="bottom|center_horizontal"  
+	        android:layout_weight="1"		    
+		    />
+		<com.nappking.movietimesup.widget.AutoResizeTextView 
+		    android:id="@+id/endsubtext"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" 
+		    android:textSize="25sp"
+		    android:singleLine="true"
+		    android:textColor="@color/greydark"
+		    android:typeface="monospace"
+		    android:layout_gravity="center"
+		    android:gravity="top|center_horizontal"
+	        android:layout_weight="1"	
+		    />
+	</LinearLayout>
+	<LinearLayout 
+		android:id="@+id/previouslinear"
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+		android:background="@color/oldcolor">
+		<LinearLayout
+		    android:orientation="vertical"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="5"
+		    android:gravity="top|left"
+		    android:padding="10dp">
+			<ImageView 
+			    android:id="@+id/camera"
+			    android:src="@drawable/camerablink"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:layout_weight="2"
+			    android:scaleType="fitCenter"/>	    
+			<ImageView 
+			    android:src="@android:color/transparent"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:layout_weight="1"/>
+		</LinearLayout>
+		<LinearLayout 
+		    android:orientation="horizontal"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"></LinearLayout>
 	</LinearLayout>
 </FrameLayout>

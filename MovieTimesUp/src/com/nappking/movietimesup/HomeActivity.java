@@ -50,7 +50,7 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.j256.ormlite.dao.Dao;
-import com.nappking.movietimesup.database.DBActivity;
+import com.nappking.movietimesup.database.DBFragmentActivity;
 import com.nappking.movietimesup.entities.User;
 
 /**
@@ -58,7 +58,7 @@ import com.nappking.movietimesup.entities.User;
  *  also the login screen for the social version of the app - these screens will switch
  *  within this activity using Fragments.
  */
-public class HomeActivity extends DBActivity {    
+public class HomeActivity extends DBFragmentActivity {    
 	
 	// Tag used when logging messages
     private static final String TAG = HomeActivity.class.getSimpleName();
@@ -184,7 +184,7 @@ public class HomeActivity extends DBActivity {
 				Boolean isFirst = false;
 				try {
 					Dao<User,Integer> daoUser = getHelper().getUserDAO();
-					User user = daoUser.queryForId(0);
+					User user = daoUser.queryForId(1);
 					if(user!=null && user.getUser()!=null && !user.getUser().equals("")){
 						showFragment(FB_LOGGED_OUT_HOME,false);
 					}

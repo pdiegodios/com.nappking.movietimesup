@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +55,8 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     		txPoints.setText(points+"");
     		float alpha =Float.valueOf("0.8");
         	if(movie.isLocked(this._context)) {
-        		//Movie was locked and you can see anything about that            	
+        		//Movie was locked and you can see anything about that   
+        		iMovie.setImageResource(R.drawable.filmstrip);         	
         		iForeground.setVisibility(View.VISIBLE);
         		iStar.setImageResource(R.drawable.movie_points_grey);
         		txTitle.setVisibility(View.INVISIBLE);
@@ -62,10 +65,10 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
         	}	
             else if (movie.isUnlocked(this._context)){
             	//Movie was unlocked so you can see the poster and see the specific data
-        		long id = movie.getId();
+        		int id = movie.getId();
         		Bitmap poster = getBitmapPoster(id); 
         		if(poster==null){
-        			new DownloadPosterTask(id,iMovie, this._context).execute(movie.getPoster());    			
+        			new DownloadPosterTask(id,iMovie, this._context).execute(movie.getPoster());      			
         		}
         		iMovie.setImageBitmap(poster);
         		iForeground.setVisibility(View.INVISIBLE);
@@ -78,6 +81,7 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
             }
             else{
             	//Movie is ready to play
+        		iMovie.setImageResource(R.drawable.filmstrip);
             	iForeground.setVisibility(View.INVISIBLE);
         		iStar.setImageResource(R.drawable.movie_points_green);
             	txTitle.setVisibility(View.INVISIBLE);

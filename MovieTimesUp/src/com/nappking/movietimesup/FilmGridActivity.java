@@ -9,10 +9,9 @@ import org.json.JSONException;
 
 import com.facebook.android.friendsmash.R;
 import com.google.gson.Gson;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.adapter.MovieListAdapter;
-import com.nappking.movietimesup.database.DBHelper;
+import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
@@ -31,15 +30,12 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class FilmGridActivity extends Activity{
+public class FilmGridActivity extends DBActivity{
 	
 	GridView grid;
 	TextView txPoints;
 	TextView txSeconds;
 	User user;
-	DBHelper helper;
-	Dao<Movie, Integer> daoMovie;
-	Dao<User, Integer> daoUser;
 	static final int result_sent = 0;
 	
 	@Override
@@ -53,7 +49,6 @@ public class FilmGridActivity extends Activity{
      	grid = (GridView) findViewById(R.id.grid);
      	txPoints = (TextView) findViewById(R.id.points);
      	txSeconds = (TextView) findViewById(R.id.seconds);
-		helper = OpenHelperManager.getHelper(this, DBHelper.class);
 		update();
 		setListeners();
 	}
@@ -68,8 +63,8 @@ public class FilmGridActivity extends Activity{
 		//We obtain all the movies & the user
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		try {
-			daoMovie = helper.getMovieDAO();
-			daoUser = helper.getUserDAO();
+			Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
+			Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			movies = (ArrayList<Movie>) daoMovie.queryForAll();
 			user = (User) daoUser.queryForAll().get(0);
 		} catch (SQLException e) {
@@ -96,13 +91,12 @@ public class FilmGridActivity extends Activity{
 		            //instantiate elements in the dialog
 		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
 		            Button unlockButton = (Button) dialog.findViewById(R.id.actionButton);
-					TextView text = (TextView) dialog.findViewById(R.id.text);			
-					TextView subText = (TextView) dialog.findViewById(R.id.subText);				
+					TextView text = (TextView) dialog.findViewById(R.id.text);						
 					//set values & actions
-					final String idMovie = movie.getId()+"";
+					final int idMovie = movie.getId();
 					final int unlockSeconds = movie.getPoints()*50;
-					text.setText("Movie #"+idMovie+" is locked!");
-					subText.setText("Unlock costs "+unlockSeconds+" seconds");
+					text.setText(getResources().getString(R.string.unlock_cost)+" "+unlockSeconds+" "+
+							getResources().getString(R.string.seconds));
 					cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
 						@Override
 						public void onClick(View v) {
@@ -113,11 +107,12 @@ public class FilmGridActivity extends Activity{
 						@Override
 						public void onClick(View v) {
 							int secondsAvailable = user.getSeconds();
-							if(secondsAvailable>unlockSeconds){
+							if(secondsAvailable>=unlockSeconds){
 								//Unlock movie
 								user.setSeconds(secondsAvailable-unlockSeconds);
 								user.removeLockedMovie(idMovie);
 								try {
+									Dao<User,Integer> daoUser = getHelper().getUserDAO();
 									daoUser.update(user);
 									uploadUsers(daoUser.queryForAll());
 								} catch (SQLException e) {
@@ -137,8 +132,8 @@ public class FilmGridActivity extends Activity{
 								TextView text = (TextView) dialogBuy.findViewById(R.id.text);			
 								TextView subText = (TextView) dialogBuy.findViewById(R.id.subText);
 								buyButton.setText(R.string.buy);
-								text.setText("You don't have enough seconds");
-								subText.setText("Buy seconds to beat your friends");
+								text.setText(getResources().getString(R.string.not_enough_seconds));
+								subText.setText(getResources().getString(R.string.buy_seconds));
 								cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
 									@Override
 									public void onClick(View v) {
