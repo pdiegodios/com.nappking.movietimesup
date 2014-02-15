@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -103,6 +104,10 @@ public class HomeFragment extends Fragment {
 	// TextView for the user's name
     private TextView welcomeTextView;
 	
+    //Background
+    private ImageView iBackground;
+    private AnimationDrawable animBackground;
+    
 	// Buttons ...
     private ImageView playButton;
     private ImageView scoresButton;

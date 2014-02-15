@@ -3,53 +3,59 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.facebook.android.friendsmash"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/street_background"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical"
-	    android:background="@drawable/gradientbackground" >
+	    android:background="@android:color/transparent" >
 	        		    
 	    <LinearLayout
 	        android:layout_width="match_parent"
-	        android:gravity="center_horizontal"
-	    	android:layout_height="wrap_content"
-	    	android:layout_marginLeft="5dp"
-	    	android:layout_marginRight="5dp"
-	        android:layout_marginTop="30dp"
+	    	android:layout_height="match_parent"
+	    	android:layout_weight="2"
+	        android:gravity="center"
+	    	android:layout_marginLeft="15dp"
+	    	android:layout_marginRight="15dp"
 	    	android:orientation="vertical">
 	    	
        	    <TextView
 		        android:id="@+id/welcomeTextView"
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_height="match_parent"
 		        android:gravity="center_vertical|center_horizontal"
+		        android:textStyle="bold"
+		        android:textSize="30sp"
 		        style="@style/WelcomeFont"
 		        android:text="@string/registration"/>
 	        
 	    </LinearLayout>
 	    
 	    
-	    <FrameLayout
+	    <LinearLayout
 	        android:layout_width="match_parent"
-	    	android:layout_height="match_parent">
+	    	android:layout_height="match_parent"
+	    	android:layout_weight="1"
+	    	android:gravity="center">
 		   	
 		   	<com.facebook.widget.LoginButton
 	            android:id="@+id/loginButton"
 	            custom:login_text=""
 	            custom:logout_text=""
-	            android:layout_gravity="center"
-	            android:layout_marginBottom="25dp"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            style="@style/login_button"/>
 	   	
-	   	</FrameLayout>
+	   	</LinearLayout>
 	
 	</LinearLayout>
-	
+
 	<FrameLayout android:id="@+id/progressContainer"
-	    android:background="@drawable/gradientbackground"
+	    android:background="@drawable/street_background"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:clickable="true">

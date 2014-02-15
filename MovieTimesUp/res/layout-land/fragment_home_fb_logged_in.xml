@@ -20,12 +20,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    
-	<LinearLayout
+    <ImageView 
+        android:id="@+id/background"
+        android:src="@drawable/street_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+	<LinearLayout	    
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical"
-	    android:background="@drawable/gradientbackground" >
+	    android:background="@android:color/transparent">
 	    
 	    <FrameLayout
 	        android:layout_width="match_parent"

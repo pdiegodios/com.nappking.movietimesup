@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
@@ -55,7 +57,9 @@ public class FBLoggedOutHomeFragment extends Fragment {
 		progressContainer.setVisibility(View.INVISIBLE);		
 		// Set an error listener for the login button
 		LoginButton loginButton = (LoginButton) v.findViewById(R.id.loginButton);
+		Animation bounce = AnimationUtils.loadAnimation(this.getActivity(), R.anim.bouncing);
 		if (loginButton != null) {
+			loginButton.startAnimation(bounce);
 			loginButton.setOnErrorListener(new OnErrorListener() {	
 				@Override
 				public void onError(FacebookException error) {

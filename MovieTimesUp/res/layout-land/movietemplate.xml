@@ -252,18 +252,10 @@
 	</LinearLayout>
 	<ImageView 
 	    android:id="@+id/endpicture"
-	    android:layout_height="300dp"
-	    android:layout_width="300dp"
+	    android:layout_height="match_parent"
+	    android:layout_width="match_parent"
 	    android:layout_gravity="center" 
 	    android:src="@drawable/happymask"/>
-	<ImageView 
-	    android:id="@+id/shot"
-	    android:src="@drawable/shot"
-	    android:layout_width="28dp"
-	    android:layout_height="28dp"
-	    android:layout_marginLeft="95dp"
-	    android:layout_marginTop="47dp"
-	    android:layout_gravity="center"/>
 	<LinearLayout 
 	    android:id="@+id/endline"
 	    android:layout_height="match_parent"

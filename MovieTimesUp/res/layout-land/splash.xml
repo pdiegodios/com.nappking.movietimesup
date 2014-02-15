@@ -5,18 +5,58 @@
      android:layout_height="match_parent" 
      android:layout_gravity="center_vertical|center_horizontal">
 
+     <LinearLayout 
+         android:orientation="vertical"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+         <LinearLayout 
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="3"></LinearLayout>
 	    <ImageView
-	        android:layout_width="230dp"
-	        android:layout_height="230dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
 	        android:src="@drawable/logo"
             android:adjustViewBounds="true" 
             android:layout_centerInParent="true"/>
-
-        <ProgressBar
-	      	style="@android:style/Widget.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible"/>
+	    
+         <LinearLayout 
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="3">
+			 <LinearLayout
+			     android:orientation="horizontal"
+			     android:layout_width="match_parent"
+			     android:layout_height="wrap_content"
+			     android:layout_gravity="center"
+			     android:gravity="center_horizontal|bottom">
+	             <TextView 
+	                 android:text="@string/loading"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="40dp"
+	                 android:textSize="30sp"
+	                 android:textColor="@color/reddark"
+	                 android:textStyle="bold|italic"
+	                 android:typeface="sans"
+	                 android:gravity="bottom"/>
+	             <LinearLayout 
+	                 android:orientation="horizontal"
+	                 android:layout_width="35dp"
+	                 android:layout_height="match_parent">
+		             <ImageView 
+		                 android:id="@+id/loading"
+		                 android:src="@drawable/ellipsis"
+		                 android:layout_width="wrap_content"
+		                 android:layout_height="wrap_content"
+		                 android:layout_gravity="left|bottom"     
+		                 android:layout_marginBottom="3dp"    
+		                 />
+	             </LinearLayout>
+             </LinearLayout>
+         </LinearLayout>
+	 </LinearLayout>
 
     </RelativeLayout>

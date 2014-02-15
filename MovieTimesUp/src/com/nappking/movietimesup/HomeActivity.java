@@ -35,6 +35,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
@@ -487,7 +489,9 @@ public class HomeActivity extends DBFragmentActivity {
 		
 		// Clear any permissions associated with the LoginButton
 		LoginButton loginButton = (LoginButton) findViewById(R.id.loginButton);
+		Animation bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
 		if (loginButton != null) {
+			loginButton.startAnimation(bounce);
 			loginButton.clearPermissions();
 		}
     }

@@ -10,9 +10,11 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 /**
  * Initial Splash Screen to present the app and to take the chance to download movies if
@@ -21,14 +23,24 @@ import android.view.WindowManager;
  * @author Nappking - pdiego
  */
 public class SplashActivity extends Activity{
+	ImageView iEllipsis;
+	AnimationDrawable animEllipsis;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        // Hide the notification bar
+        // Hide the notification barinitiate();
+        initiate();     	
      	this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         new DownloadMoviesTask(this).execute();
         checkNotifications();
+    }
+    
+    private void initiate(){
+        iEllipsis = (ImageView) findViewById(R.id.loading);
+        animEllipsis = (AnimationDrawable) iEllipsis.getDrawable();
+        animEllipsis.start();
     }
     
     private void checkNotifications(){
