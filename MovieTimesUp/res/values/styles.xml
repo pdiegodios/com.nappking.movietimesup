@@ -25,6 +25,15 @@
     <style name="Theme.gradient" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>
 	    <item name="android:windowBackground">@drawable/gradientbackground</item>
+	</style>	
+    <style name="Theme.street" parent="@android:style/Theme.Holo.Light">
+    	<item name="android:windowNoTitle">true</item>
+	    <item name="android:windowBackground">@drawable/street_background</item>
+	</style>
+	
+    <style name="Theme.street_dark" parent="@android:style/Theme.Holo.Light">
+    	<item name="android:windowNoTitle">true</item>
+	    <item name="android:windowBackground">@drawable/street_dark_background</item>
 	</style>
     <style name="AppTheme" parent="android:Theme.Light" >
     </style>
@@ -57,6 +66,9 @@
 	</style>
 	<style name="login_button" parent="@style/fb_button">
 		<item name="android:background">@drawable/login_button</item>
+	</style>
+	<style name="empty">
+		<item name="android:background">@android:color/transparent</item>
 	</style>
 	<style name="logout_button" parent="@style/fb_button">
 		<item name="android:background">@drawable/logout_button</item>

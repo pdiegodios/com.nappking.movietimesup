@@ -117,15 +117,20 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	
 	protected Integer doInBackground(String... arg0) {
 		int result=2;
-		String counter = readMovieFeed(WebServiceTask.URL+mCountPath);
-		int moviesOnlineCount = Integer.parseInt(counter);
 		try{
+			String counter = readMovieFeed(WebServiceTask.URL+mCountPath);
+			int moviesOnlineCount = 0;
+			if(counter!=null && !counter.isEmpty()){
+				moviesOnlineCount = Integer.parseInt(counter);
+			}
 			final Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
 			final Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			int moviesDownloadedCount = (int) daoMovie.countOf();
 			if(moviesDownloadedCount>=moviesOnlineCount){
 				//We have all the movies downloaded
-				result= 1;
+				if(moviesOnlineCount!=0){
+					result= 1;
+				}
 			}	
 			else{
 				String read_movies = readMovieFeed(WebServiceTask.URL+mSincePath+"/"+moviesDownloadedCount);

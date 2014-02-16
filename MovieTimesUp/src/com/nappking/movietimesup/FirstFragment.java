@@ -1,19 +1,26 @@
 package com.nappking.movietimesup;
 
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.android.friendsmash.R;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.OnErrorListener;
+import com.nappking.movietimesup.widget.AutoResizeTextView;
 
 public class FirstFragment extends Fragment {
 	
@@ -33,11 +40,46 @@ public class FirstFragment extends Fragment {
 		progressContainer = v.findViewById(R.id.progressContainer);
 		progressContainer.setVisibility(View.INVISIBLE);		
 		// Set an error listener for the login button
-		LoginButton loginButton = (LoginButton) v.findViewById(R.id.loginButton);
+		final ImageView loginButton = (ImageView) v.findViewById(R.id.loginButton);
+		final AutoResizeTextView welcomeText = (AutoResizeTextView) v.findViewById(R.id.welcomeTextView);
+		final ImageView closedGate = (ImageView) v.findViewById(R.id.closedGate);
+		final Animation animSlideOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slideouttop);
+		animSlideOut.setDuration(3400);
+		final LoginButton login = (LoginButton) v.findViewById(R.id.login);
 		Animation bounce = AnimationUtils.loadAnimation(this.getActivity(), R.anim.bouncing);
-		if (loginButton != null) {
+     	final MediaPlayer slideSound = MediaPlayer.create(this.getActivity(), R.raw.slide_metal_gate);
+     	slideSound.setOnCompletionListener(new OnCompletionListener(){
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				mp.release();
+				login.performClick();
+			}
+     	});
+		AnimationListener listenerClose = new AnimationListener() {			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				loginButton.setBackgroundResource(android.R.color.transparent);
+				slideSound.start();
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {}			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				closedGate.setVisibility(View.INVISIBLE);
+			}
+		};
+		animSlideOut.setAnimationListener(listenerClose);
+
+		if (loginButton != null && login!=null) {
 			loginButton.startAnimation(bounce);
-			loginButton.setOnErrorListener(new OnErrorListener() {	
+			loginButton.setOnClickListener(new OnClickListener() {			
+				@Override
+				public void onClick(View v) {					
+					welcomeText.setVisibility(View.INVISIBLE);
+					closedGate.startAnimation(animSlideOut);
+				}
+			});
+			login.setOnErrorListener(new OnErrorListener() {	
 				@Override
 				public void onError(FacebookException error) {
 					if (error != null && !(error instanceof FacebookOperationCanceledException)) {

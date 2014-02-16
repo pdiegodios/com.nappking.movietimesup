@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView 
+        android:id="@+id/closedGate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/street_background"/>
+        android:src="@drawable/closed_metal_gate"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
@@ -17,20 +18,23 @@
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	    	android:layout_height="match_parent"
-	    	android:layout_weight="2"
+	    	android:layout_weight="3"
 	        android:gravity="center"
-	    	android:layout_marginLeft="15dp"
-	    	android:layout_marginRight="15dp"
+	        android:layout_marginTop="20dp"
+	    	android:layout_marginLeft="20dp"
+	    	android:layout_marginRight="20dp"
 	    	android:orientation="vertical">
 	    	
-       	    <TextView
-		        android:id="@+id/welcomeTextView"
+       	    <com.nappking.movietimesup.widget.AutoResizeTextView
+		    	android:id="@+id/welcomeTextView"
+		    	android:padding="10dp"
 		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
+		        android:layout_height="wrap_content"
 		        android:gravity="center_vertical|center_horizontal"
 		        android:textStyle="bold"
-		        android:textSize="30sp"
-		        style="@style/WelcomeFont"
+		        android:textColor="@color/white"
+		        android:textSize="25sp"
+	    		android:background="@color/com_facebook_blue"
 		        android:text="@string/registration"/>
 	        
 	    </LinearLayout>
@@ -41,21 +45,24 @@
 	    	android:layout_height="match_parent"
 	    	android:layout_weight="1"
 	    	android:gravity="center">
-		   	
-		   	<com.facebook.widget.LoginButton
-	            android:id="@+id/loginButton"
+		 	<com.facebook.widget.LoginButton
+		 	    android:id="@+id/login"
 	            custom:login_text=""
 	            custom:logout_text=""
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            style="@style/login_button"/>
-	   	
+	            style="@style/empty"/>	   	
+		 	<ImageView
+	            android:id="@+id/loginButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/login_button"/>
 	   	</LinearLayout>
 	
 	</LinearLayout>
 
 	<FrameLayout android:id="@+id/progressContainer"
-	    android:background="@drawable/street_background"
+	    android:background="@drawable/street_dark_background"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:clickable="true">

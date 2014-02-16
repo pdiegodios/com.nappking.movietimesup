@@ -5,10 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +43,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
      */
     private void display(View v, final Movie movie){
     	ImageView iMovie = (ImageView) v.findViewById(R.id.movieButton);
-    	ImageView iForeground = (ImageView) v.findViewById(R.id.foreground);
     	ImageView iStar = (ImageView) v.findViewById(R.id.starpoints);
     	TextView txTitle = (TextView) v.findViewById(R.id.title);
     	TextView txPoints = (TextView) v.findViewById(R.id.moviepoints);
@@ -53,40 +50,30 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     	if (iMovie != null) {
     		int points = movie.getPoints();
     		txPoints.setText(points+"");
-    		float alpha =Float.valueOf("0.8");
         	if(movie.isLocked(this._context)) {
         		//Movie was locked and you can see anything about that   
-        		iMovie.setImageResource(R.drawable.filmstrip);         	
-        		iForeground.setVisibility(View.VISIBLE);
+        		iMovie.setImageResource(R.drawable.filmstrip_locked);   
         		iStar.setImageResource(R.drawable.movie_points_grey);
         		txTitle.setVisibility(View.INVISIBLE);
-        		iStar.setAlpha(alpha);
-        		txPoints.setAlpha(alpha);
         	}	
             else if (movie.isUnlocked(this._context)){
             	//Movie was unlocked so you can see the poster and see the specific data
         		int id = movie.getId();
         		Bitmap poster = getBitmapPoster(id); 
         		if(poster==null){
+        			iMovie.setImageResource(R.drawable.filmstrip);
         			new DownloadPosterTask(id,iMovie, this._context).execute(movie.getPoster());      			
         		}
         		iMovie.setImageBitmap(poster);
-        		iForeground.setVisibility(View.INVISIBLE);
         		iStar.setImageResource(R.drawable.movie_points);
         		txTitle.setVisibility(View.VISIBLE);
         		txTitle.setText(movie.getTitle());
-        		alpha = Float.valueOf("1");
-        		iStar.setAlpha(alpha);
-        		txPoints.setAlpha(alpha);
             }
             else{
             	//Movie is ready to play
         		iMovie.setImageResource(R.drawable.filmstrip);
-            	iForeground.setVisibility(View.INVISIBLE);
         		iStar.setImageResource(R.drawable.movie_points_green);
             	txTitle.setVisibility(View.INVISIBLE);
-        		iStar.setAlpha(alpha);
-        		txPoints.setAlpha(alpha);
             }        	
     	}        
     }
