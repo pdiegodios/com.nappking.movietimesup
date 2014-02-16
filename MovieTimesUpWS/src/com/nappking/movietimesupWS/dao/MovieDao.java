@@ -20,7 +20,7 @@ public class MovieDao implements IMovieDao{
 	private ResultSet _result;
 	private PreparedStatement _statement;
 	
-	private String table="", insert="", update="", delete="", selectAll="", selectByID="";
+	private String table="", insert="", update="", delete="", selectAll="", selectByID="", selectSince;
 		
 	public MovieDao(String language){
 		if (language.equalsIgnoreCase(EN)){
@@ -147,6 +147,39 @@ public class MovieDao implements IMovieDao{
 		return movies;
 	}
 
+	public List<Movie> getSince(long id) throws SQLException {
+		List<Movie> movies = new ArrayList<Movie>();
+		try {
+			_connection = new ConnectionDB().getConnection();
+			_statement = _connection.prepareStatement(selectSince);
+			_statement.setLong(1, id);
+			_result = _statement.executeQuery();				
+			while (_result.next()) {
+				Movie movie = new Movie();
+				movie.setId(_result.getLong(1));
+				movie.setTitle(_result.getString(2));
+				movie.setOriginalTitle(_result.getString(3));
+				movie.setAlternativeTitle(_result.getString(4));
+				movie.setYear(_result.getInt(5));
+				movie.setCountry(_result.getString(6));
+				movie.setContinent(_result.getString(7));
+				movie.setDirector(_result.getString(8));
+				movie.setGenre(_result.getString(9));
+				movie.setPlot(_result.getString(10));
+				movie.setCast(fromString(_result.getString(11)));
+				movie.setQuotes(fromString(_result.getString(12)));
+				movie.setOthers(fromString(_result.getString(13)));
+				movie.setCharacters(fromString(_result.getString(14)));
+				movie.setPoster(_result.getString(15));
+				movie.setPoints(_result.getInt(16));
+				movies.add(movie);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return movies;
+	}
+
 	public Movie get(long id) throws SQLException {
         Movie movie = null;		
 		try {
@@ -209,6 +242,7 @@ public class MovieDao implements IMovieDao{
 				" = ? WHERE "+Movie.ROWID +" = ?";
 		delete = "DELETE from "+table+" where "+Movie.ROWID+" = ?";
 		selectAll = "SELECT * from "+table;
+		selectSince = "SELECT * from "+table+" WHERE "+Movie.ROWID + " > ?";
 		selectByID = "SELECT * from "+table+" WHERE "+Movie.ROWID +"= ?";
 	}
 

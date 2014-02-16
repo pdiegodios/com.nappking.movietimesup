@@ -55,6 +55,15 @@ public class MoviesResource {
 		List<Movie> movies = iMovieDao.getAll();
 		return movies;  
 	}
+
+	// Return all movies since a specific movie id
+	@GET
+	@Path("/since/{id}")
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<Movie> getMovies(@PathParam("id") String id) throws NumberFormatException, SQLException{
+		List<Movie> movies = iMovieDao.getSince(Long.parseLong(id));
+		return movies;
+	}
 	
 	// Return the number of movies
 	@GET

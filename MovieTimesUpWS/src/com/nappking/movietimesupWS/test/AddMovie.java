@@ -1,11 +1,9 @@
 package com.nappking.movietimesupWS.test;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
 
@@ -14,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
 import sun.misc.BASE64Encoder;
-
 
 import com.nappking.movietimesupWS.model.Movie;
 import com.nappking.movietimesupWS.util.PSON;
@@ -32,10 +29,10 @@ public class AddMovie {
 	public static void main(String[] args) {
 		
 		//VALUES
-		int 	id = 14;
+		int 	id = 18;
 		int 	year = 2013;
 		int 	points = 1;
-		String  action = SAVE;
+		String  action = UPDATE;
 		String 	title = "Gravity";
 		String 	alternative_title = "Gravity";
 		String 	original_title = "Gravity";
@@ -43,7 +40,7 @@ public class AddMovie {
 		String 	continent = "America";
 		String 	director = "Alfonso Cuarón";
 		String 	genre = "Sci-Fi";
-		String 	poster = "http://ia.media-imdb.com/images/M/MV5BMjA2Mzc0NTU2N15BMl5BanBnXkFtZTcwOTUwMjUyMQ@@._V1_SY317_CR5,0,214,317_.jpg";
+		String 	poster = "http://ia.media-imdb.com/images/M/MV5BNjE5MzYwMzYxMF5BMl5BanBnXkFtZTcwOTk4MTk0OQ@@._V1_SY317_CR0,0,214,317_.jpg";
 		String 	actor1="Phaldut Sharma";
 		String 	actor2="George Clooney";
 		String 	actor3="Sandra Bullock";
@@ -62,27 +59,11 @@ public class AddMovie {
 				"astronauta Y. La misión exterior parecía rutinaria, pero una lluvia de basura " +
 				"espacial les alcanza y se produce el desastre: el satélite y parte de la nave " +
 				"quedan destrozados, dejando a X y Y completamente solos, momento a partir del cual " +
-				"intentarán por todos los medios buscar una solución para volver a la Tierra. ";
+				"intentarán por todos los medios buscar una solución para volver a la Tierra.";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
-		
-		String imageString = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            URL url = new URL(poster);
-            BufferedImage image = ImageIO.read(url);
-            ImageIO.write(image, "jpeg", bos);
-            byte[] imageBytes = bos.toByteArray();
-
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
-
-            bos.close();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
 		
 		//JSON
 		WebResource service = client.resource(getBaseURI());
@@ -118,7 +99,7 @@ public class AddMovie {
 	}
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://movietimesup.gestores.cloudbees.net").build();
+		return UriBuilder.fromUri("http://localhost:8081/MovieTimesUpWS").build();
 	}
 
 
