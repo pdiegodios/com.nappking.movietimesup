@@ -19,8 +19,8 @@ import com.nappking.movietimesup.entities.User;
  */
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 
-	private static final String DATABASE_NAME = "MyDB.db";
-    private static final int DATABASE_VERSION = 2;
+	private static final String DATABASE_NAME = "DBTimesUp.db";
+    private static final int DATABASE_VERSION = 1;
     
     //DAO's
     private Dao<User, Integer> _userDAO;

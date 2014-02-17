@@ -1,5 +1,6 @@
 package com.nappking.movietimesupWS.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +17,7 @@ public class User {
     public static final String SECONDS = 	"seconds";
     public static final String LOCKED = 	"locked";
     public static final String UNLOCKED = 	"unlocked";
-    public static final String HIDDEN = 	"hidden";
+    public static final String LAST_UPDATE = "lastUpdate";
     
 	//Fields
     private long _id;
@@ -25,6 +26,7 @@ public class User {
     private int seconds;
     private ArrayList<Integer> lockedMovies;
     private ArrayList<Integer> unlockedMovies;
+    private long lastUpdate;
     
     //creators
 	public User() {super();}
@@ -37,6 +39,7 @@ public class User {
     public int getSeconds()							{return this.seconds;}
     public ArrayList<Integer> getLockedMovies()		{return this.lockedMovies;}
     public ArrayList<Integer> getUnlockedMovies()	{return this.unlockedMovies;}
+    public long getLastUpdate()						{return this.lastUpdate;}
 
     //setters
     public void setId(long id)											{this._id=id;}  
@@ -46,5 +49,6 @@ public class User {
 	public void setSeconds(int seconds)									{this.seconds=seconds;} 
     public void setLockedMovies(ArrayList<Integer> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<Integer> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
-    	
+    public void setLastUpdate(long lastupdate)							{this.lastUpdate=lastupdate;}		
+    
 }

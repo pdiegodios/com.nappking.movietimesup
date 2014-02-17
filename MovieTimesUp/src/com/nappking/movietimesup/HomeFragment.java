@@ -19,6 +19,7 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -260,39 +261,26 @@ public class HomeFragment extends Fragment {
 				User user = daoUser.queryForId(1);
 				int moviesCount = daoMovie.queryForAll().size();
 
-				if(user!=null){
-					WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
-					Gson gson = new Gson();
-					try {							
-						List<User> users = new ArrayList<User>();
-						users.add(user);
-						JSONArray jsonArray = new JSONArray(gson.toJson(users));
-						wsUser.addNameValuePair("users", jsonArray.toString());
-						Log.i(this.toString(), jsonArray.toString());
-				        wsUser.addNameValuePair("action", "UPDATE");        
-				        wsUser.execute(new String[] {WebServiceTask.URL+"users"});		
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-				else{
+				if(user==null){
 					user = new User();
 					user.setName(application.getCurrentFBUser().getName());
 					user.setLockedMovies(new ArrayList<String>());
 					user.setUnlockedMovies(new ArrayList<String>());
+					user.setLastUpdate(Long.valueOf("0"));
 					user.setScore(0);
 					user.setSeconds(moviesCount*100);
 					user.setUser(application.getCurrentFBUser().getId());
 					daoUser.create(user);
 					helper = null;
 		            OpenHelperManager.releaseHelper();
-					/**
-					 * Now we have to consult if the FBUser played before to our game.
-					 * If there is not data associated to the user, the user is created,
-					 * otherwise the data is dowloaded to sqlite. 
-					 */
-					new LoadUserDataTask(this.getActivity(),user).execute();
 				}
+				/**
+				 * Now we have to consult if the FBUser played before to our game.
+				 * If there is not data associated to the user or it was updated before
+				 * local DB User, the user is created or updated, otherwise the data 
+				 * is dowloaded to sqlite. 
+				 */
+				new LoadUserDataTask(this.getActivity(),user).execute();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				helper = null;

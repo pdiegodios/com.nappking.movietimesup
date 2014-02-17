@@ -3,6 +3,8 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -144,16 +146,7 @@ public class FilmActivity extends DBActivity{
 	protected void onPause() {
 		super.onPause();
 		if(!mIsFinished){
-			//If game wasn't finished in the proper way the movie will be locked
-			try {
-				Dao<User,Integer> daoUser = getHelper().getUserDAO();
-				User user = daoUser.queryForId(1);
-				user.addLockedMovie(movie.getId());
-				daoUser.update(user);
-				uploadUsers(daoUser.queryForAll());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}			
+			uploadUsers(true);	
 		}
 	}
 	
@@ -240,31 +233,14 @@ public class FilmActivity extends DBActivity{
 			this.endsubtext.setText(getResources().getString(R.string.game_won_sub)+" "+
 					movie.getPoints()+" "+getResources().getString(R.string.points));
 			this.iAnswer.setImageResource(R.drawable.resolvetrue);
-			try {
-				Dao<User,Integer> daoUser = getHelper().getUserDAO();
-				User user = daoUser.queryForId(1);
-				user.setScore(user.getScore()+movie.getPoints());
-				user.addUnlockedMovie(movie.getId());
-				daoUser.update(user);
-				uploadUsers(daoUser.queryForAll());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			uploadUsers(false);
 		}
 		else{
 			//Lock movie
 			this.iEnding.setImageResource(R.drawable.timesup);
 			this.endtext.setText(null);
 			this.endsubtext.setText(null);
-			try {
-				Dao<User,Integer> daoUser = getHelper().getUserDAO();
-				User user = daoUser.queryForId(1);
-				user.addLockedMovie(movie.getId());
-				daoUser.update(user);
-				uploadUsers(daoUser.queryForAll());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}			
+			uploadUsers(true);
 		}
 		//undeploy title space and button to answer
 		displaySelectedClue(null, null);
@@ -715,15 +691,29 @@ public class FilmActivity extends DBActivity{
 	 * BACKGROUND METHODS
 	 */
 	
-	private void uploadUsers(List<User> users){
-		WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
-		Gson gson = new Gson();
-		try {							
-			JSONArray jsonArray = new JSONArray(gson.toJson(users));
+	private void uploadUsers(boolean locked){
+		try {
+			List<User> users = new ArrayList<User>();
+			Dao<User,Integer> daoUser = getHelper().getUserDAO();
+			User user = daoUser.queryForId(1);
+			if(locked){
+				user.addLockedMovie(movie.getId());
+			}
+			else{
+				user.addUnlockedMovie(movie.getId());
+				user.setScore(user.getScore()+movie.getPoints());
+			}
+			user.setLastUpdate(System.currentTimeMillis());
+			daoUser.update(user);
+			users.add(user);			
+			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);			
+			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
 			wsUser.addNameValuePair("users", jsonArray.toString());
 			Log.i(this.toString(), jsonArray.toString());
 	        wsUser.addNameValuePair("action", "UPDATE");        
-	        wsUser.execute(new String[] {WebServiceTask.URL+"users"});		
+	        wsUser.execute(new String[] {WebServiceTask.URL+"users"});	
+		} catch (SQLException e) {
+			e.printStackTrace();	
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

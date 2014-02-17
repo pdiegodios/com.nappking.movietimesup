@@ -19,10 +19,10 @@ public class UserDao implements IUserDao{
 	
 	//Statements
 	private String insert = "INSERT into "+User.TABLE+"("+User.USER+", "+User.NAME+", "+
-			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+")"+
-			" values(?, ?, ?, ?, ?, ?)";
-	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+
-			User.SCORE+" = ?, "+User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+
+			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LAST_UPDATE+")"+
+			" values(?, ?, ?, ?, ?, ?, ?)";
+	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+User.SCORE+" = ?, "+
+			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LAST_UPDATE+
 			" = ? WHERE "+User.USER +" = ?";
 	private String selectAll = "SELECT * from "+User.TABLE;
 	private String selectByID = "SELECT * from "+User.TABLE+" WHERE "+User.USER +"= ?";
@@ -38,6 +38,7 @@ public class UserDao implements IUserDao{
 			_statement.setInt(4, c.getSeconds());
 			_statement.setString(5, toString(c.getLockedMovies()));
 			_statement.setString(6, toString(c.getUnlockedMovies()));
+			_statement.setLong(7, c.getLastUpdate());
 			_statement.executeUpdate();			
 			_result = _statement.getGeneratedKeys();
 			if (_result.next()) {
@@ -62,7 +63,8 @@ public class UserDao implements IUserDao{
 			_statement.setInt(3, c.getSeconds());
 			_statement.setString(4, toString(c.getLockedMovies()));
 			_statement.setString(5, toString(c.getUnlockedMovies()));
-			_statement.setString(6, c.getUser());
+			_statement.setLong(6, c.getLastUpdate());
+			_statement.setString(7, c.getUser());
 			
 			nupdate = _statement.executeUpdate();
 		} catch (SQLException e) {
@@ -89,6 +91,7 @@ public class UserDao implements IUserDao{
 				user.setSeconds(_result.getInt(5));
 				user.setLockedMovies(fromString(_result.getString(6)));
 				user.setUnlockedMovies(fromString(_result.getString(7)));
+				user.setLastUpdate(_result.getInt(8));
 				users.add(user);
 			}			
 		} catch (SQLException e) {
@@ -113,6 +116,7 @@ public class UserDao implements IUserDao{
 				user.setSeconds(_result.getInt(5));
 				user.setLockedMovies(fromString(_result.getString(6)));
 				user.setUnlockedMovies(fromString(_result.getString(7)));
+				user.setLastUpdate(_result.getLong(8));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

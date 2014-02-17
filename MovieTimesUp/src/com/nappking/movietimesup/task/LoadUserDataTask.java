@@ -75,9 +75,9 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 		boolean success = false;
 		String read_user = readUserFeed(WebServiceTask.URL+mPath);
 		try{
+			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
 			if(read_user==null || read_user.equals("")){
 				//If there is not user associated in the server we have to create a new user in the WS
-				WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
 				List<User> users = new ArrayList<User>();
 				users.add(this.mUser);
 				try {							
@@ -92,19 +92,32 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 				}
 			}
 			else{
+				//Read the user from WS
 				JSONObject itemjson = new JSONObject(read_user);
 				Dao<User,Integer> userDao = getHelper().getUserDAO();
 				Log.i("User updated: ", itemjson.toString());
 				User user = new Gson().fromJson(itemjson.toString(), User.class);
-				
-				UpdateBuilder<User, Integer> updateBuilder = userDao.updateBuilder();
-				updateBuilder.where().eq(User.USER, this.mUser.getUser());
-				updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
-				updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
-				updateBuilder.updateColumnValue(User.SCORE, user.getScore());
-				updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
-				updateBuilder.update();
-				
+				if(mUser!=null && user!=null && user.getLastUpdate()>mUser.getLastUpdate()){
+					//If user from WS was updated after user from Database
+					UpdateBuilder<User, Integer> updateBuilder = userDao.updateBuilder();
+					updateBuilder.where().eq(User.USER, this.mUser.getUser());
+					updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
+					updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
+					updateBuilder.updateColumnValue(User.SCORE, user.getScore());
+					updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
+					updateBuilder.updateColumnValue(User.LASTUPDATE, user.getLastUpdate());
+					updateBuilder.update();
+				}
+				else{
+					//If user from Local DB was updated after user from WS
+					List<User> users = new ArrayList<User>();
+					users.add(user);
+					JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
+					wsUser.addNameValuePair("users", jsonArray.toString());
+					Log.i(this.toString(), jsonArray.toString());
+			        wsUser.addNameValuePair("action", "UPDATE");        
+			        wsUser.execute(new String[] {WebServiceTask.URL+"users"});	
+				}
 				success = true;
 			}
 		} catch (Exception e) {

@@ -2,6 +2,8 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -113,8 +115,11 @@ public class FilmGridActivity extends DBActivity{
 								user.removeLockedMovie(idMovie);
 								try {
 									Dao<User,Integer> daoUser = getHelper().getUserDAO();
+									user.setLastUpdate(System.currentTimeMillis());
 									daoUser.update(user);
-									uploadUsers(daoUser.queryForAll());
+									List<User> users = new ArrayList<User>();
+									users.add(user);
+									uploadUsers(users);
 								} catch (SQLException e) {
 									e.printStackTrace();
 								}
