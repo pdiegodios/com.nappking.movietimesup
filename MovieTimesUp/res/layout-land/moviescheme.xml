@@ -2,63 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
     <LinearLayout 
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"        
-	    android:paddingTop="25dp"
-	    android:paddingLeft="40dp"
-	    android:paddingRight="40dp"
-	    android:paddingBottom="35dp">
+        android:layout_weight="1.8"
+        android:padding="5dp"
+        android:background="@color/greylight">
+	    <ImageView 
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:padding="5dp"
+	        android:scaleType="fitCenter"
+	        android:src="@drawable/poster"/>
+    	<LinearLayout 
+    	    android:orientation="horizontal"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="match_parent"
+    	    android:gravity="center_vertical"
+    	    android:layout_margin="5dp"
+    	    android:layout_weight="5">
+    	    <ImageButton 
+    	        android:layout_width="40dp"
+    	        android:layout_height="40dp"
+    	        android:src="@drawable/filmaffinity_icon"
+    	        android:background="@android:color/transparent"
+    	        android:scaleType="fitXY"/>
+    	    <ImageButton 
+    	        android:layout_width="40dp"
+    	        android:layout_height="40dp"
+				android:layout_marginLeft="10dp"
+    	        android:src="@drawable/imdb_icon"
+    	        android:background="@android:color/transparent"
+    	        android:scaleType="fitXY"/>
+    	</LinearLayout>
+    </LinearLayout>
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"     
+	    android:padding="10dp">
         
         <!-- FIRST DATA LINE: YEAR, COUNTRY, GENRE, DIRECTOR -->
 	    <LinearLayout 
 	        android:orientation="horizontal"
 	        android:layout_width="match_parent"	        
-	        android:layout_height="wrap_content">	        
-	        
-	        <!-- DIRECTOR -->
-	        <LinearLayout 
-	            android:orientation="horizontal"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="0.8">
-	            <ImageButton 
-	                android:id="@+id/directorbutton"
-	                android:src="@drawable/director"	
-	                android:layout_gravity="center_vertical"               
-	                android:padding="3dp"	                
-	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
-	                android:layout_width="25dp"
-	                android:layout_height="25dp"
-	                android:scaleType="fitXY"/>
-	            <LinearLayout 
-	                android:orientation="vertical"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content">
-	                <TextView 
-	                    android:layout_width="match_parent"
-	                    android:layout_height="wrap_content"
-	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
-	                    android:gravity="bottom"
-	                    android:text="directed by"/>    
-		            <TextView 
-		                android:id="@+id/directortext"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="12sp"
-		                android:textStyle="bold"
-		                android:gravity="bottom"
-		                android:text="Lars Von Trier"/>	
-	            </LinearLayout>   
-	        </LinearLayout>
+	        android:layout_height="wrap_content">	   
 	        	        
 	        <!-- GENRE -->
 	        <LinearLayout 
@@ -66,13 +58,12 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1">
-	            <ImageButton 
-	                android:id="@+id/genrebutton"
+	            <ImageView 
 	                android:src="@drawable/genre"	
 	                android:layout_gravity="center_vertical"               
 	                android:padding="3dp"	                
 	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
+	                android:background="@android:color/transparent"
 	                android:layout_width="25dp"
 	                android:layout_height="25dp"
 	                android:scaleType="fitXY"/>
@@ -84,8 +75,8 @@
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
 	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
+		                android:textStyle="italic"
+		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
 	                    android:text="genre"/>    
 		            <TextView 
@@ -106,14 +97,14 @@
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
+	            android:gravity="center_horizontal"
 	            android:layout_weight="1">
-	            <ImageButton 
-	                android:id="@+id/yearbutton"
+	            <ImageView 
 	                android:src="@drawable/world"	
 	                android:layout_gravity="center_vertical"               
 	                android:padding="3dp"	                
 	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
+	                android:background="@android:color/transparent"
 	                android:layout_width="25dp"
 	                android:layout_height="25dp"
 	                android:scaleType="fitXY"/>
@@ -125,8 +116,8 @@
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
 	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
+		                android:textStyle="italic"
+		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
 	                    android:text="country"/>    
 		            <TextView 
@@ -148,14 +139,14 @@
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:layout_weight="1.1">
-	            <ImageButton 
-	                android:id="@+id/yearbutton"
+	            android:gravity="right"
+	            android:layout_weight="1">
+	            <ImageView 
 	                android:src="@drawable/calendar"	
 	                android:layout_gravity="center_vertical"               
 	                android:padding="3dp"
 	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
+	                android:background="@android:color/transparent"
 	                android:layout_width="25dp"
 	                android:layout_height="25dp"
 	                android:scaleType="fitXY"/>
@@ -167,8 +158,8 @@
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
 	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
+		                android:textStyle="italic"
+		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
 	                    android:text="year"/>    
 		            <TextView 
@@ -184,165 +175,170 @@
 	            </LinearLayout>   
 	        </LinearLayout>
 	    </LinearLayout>
-
-	    
-	    <!-- SECOND, THIRD DATA LINE: STARRING, CHARACTERS -->
-	    <LinearLayout 
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+     
 	        
-	        <!-- STARRING -->
+        <!-- DIRECTOR -->
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:layout_marginTop="3dp">
+            <ImageView 
+                android:src="@drawable/director"	
+                android:layout_gravity="center_vertical"               
+                android:padding="3dp"	                
+                android:layout_marginRight="5dp"
+                android:background="@android:color/transparent"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitXY"/>
             <LinearLayout 
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+	                android:textStyle="italic"
+	                android:textColor="@color/greydark"
+                    android:gravity="bottom"
+                    android:text="directed by"/>    
+	            <TextView 
+	                android:id="@+id/directortext"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="bottom"
+	                android:textColor="@color/black"
+	                android:textSize="12sp"
+	                android:textStyle="bold"
+	                android:gravity="bottom"
+	                android:text="Lars Von Trier"/>	
+            </LinearLayout>   
+        </LinearLayout>
+	    	        
+        <!-- STARRING -->
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:layout_marginTop="3dp">
+       	    <ImageView 
+       	        android:src="@drawable/actor"
+				android:padding="2dp"
+				android:layout_marginRight="5dp"
+				android:background="@android:color/transparent"
+				android:layout_width="25dp"
+				android:layout_height="25dp"
+				android:layout_gravity="center_vertical"
+       	        android:scaleType="fitXY"/>
+        	<LinearLayout 
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:orientation="vertical">
+            <TextView 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-            	android:layout_marginTop="3dp">
-           	    <ImageButton 
-           	        android:id="@+id/actorbutton"
-           	        android:src="@drawable/actor"
-	                android:padding="2dp"
-	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
-	                android:layout_width="25dp"
-	                android:layout_height="25dp"
-	                android:layout_gravity="center_vertical"
-           	        android:scaleType="fitXY"/>
-            	<LinearLayout 
-            	    android:layout_width="wrap_content"
-            	    android:layout_height="wrap_content"
-            	    android:layout_weight="1"
-            	    android:orientation="vertical">
-	                <TextView 
-	                    android:layout_width="match_parent"
-	                    android:layout_height="wrap_content"
-	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
-	                    android:gravity="bottom"
-	                    android:text="starred by:"/>
-	           	    <TextView 
-	           	        android:id="@+id/actortext"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="12sp"
-		                android:textStyle="bold"
-		                android:text="Brad Pitt | Uma Thurman | Michael Fassbender"
-		                android:gravity="bottom"/>	
-            	</LinearLayout>	            	
-            </LinearLayout>
-            
-            <!-- CHARACTERS -->
-            <LinearLayout 
-                android:orientation="horizontal"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textColor="@color/greydark"
+                android:gravity="bottom"
+                android:text="starred by"/>
+       	    <TextView 
+     	        android:id="@+id/actortext"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:textColor="@color/black"
+				android:textSize="12sp"
+				android:textStyle="bold"
+				android:text="Brad Pitt | Uma Thurman | Michael Fassbender"
+				android:gravity="bottom"/>	
+        	</LinearLayout>	            	
+        </LinearLayout>
+        
+        <!-- CHARACTERS -->
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:layout_marginTop="3dp">
+       	    <ImageView
+       	        android:src="@drawable/character"
+				android:padding="2dp"
+				android:layout_marginRight="5dp"
+				android:background="@android:color/transparent"
+				android:layout_width="25dp"
+				android:layout_height="25dp"
+				android:layout_gravity="center_vertical"
+       	        android:scaleType="fitXY"/>
+        	<LinearLayout 
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:orientation="vertical">
+            <TextView 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-            	android:layout_marginTop="3dp">
-           	    <ImageButton 
-           	        android:id="@+id/characterbutton"
-           	        android:src="@drawable/character"
-	                android:padding="2dp"
-	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
-	                android:layout_width="25dp"
-	                android:layout_height="25dp"
-	                android:layout_gravity="center_vertical"
-           	        android:scaleType="fitXY"/>
-            	<LinearLayout 
-            	    android:layout_width="wrap_content"
-            	    android:layout_height="wrap_content"
-            	    android:layout_weight="1"
-            	    android:orientation="vertical">
-	                <TextView 
-	                    android:layout_width="match_parent"
-	                    android:layout_height="wrap_content"
-	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
-	                    android:gravity="bottom"
-	                    android:text="characters:"/>
-	           	    <TextView 
-	           	        android:id="@+id/charactertext"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="12sp"
-		                android:textStyle="bold"
-	                	android:text="Billy 'The Kid' | Wolverine | Ian Curtis"
-		                android:gravity="bottom"/>	
-            	</LinearLayout>	            	
-            </LinearLayout>
-            
-            
-            <!-- QUOTES -->
-            <LinearLayout 
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-            	android:layout_marginTop="3dp">
-           	    <ImageButton 
-           	        android:id="@+id/quotesbutton"
-           	        android:src="@drawable/quotes"
-	                android:padding="2dp"
-	                android:layout_marginRight="5dp"
-	                android:background="@drawable/circle_darkergrey"
-	                android:layout_width="25dp"
-	                android:layout_height="25dp"
-	                android:layout_gravity="center_vertical"
-           	        android:scaleType="fitXY"/>
-            	<LinearLayout 
-            	    android:layout_width="wrap_content"
-            	    android:layout_height="wrap_content"
-            	    android:layout_weight="1"
-            	    android:orientation="vertical">
-	                <TextView 
-	                    android:layout_width="match_parent"
-	                    android:layout_height="wrap_content"
-	                    android:textSize="12sp"
-	                    android:textStyle="bold|italic"
-	                    android:textColor="@android:color/holo_red_dark"
-	                    android:gravity="bottom"
-	                    android:text="memorable quotes:"/>
-	           	    <TextView 
-	           	        android:id="@+id/quote1text"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="11sp"
-	                	android:text="'– Padre, vengo a que me bendiga. –No. Si obra bien, Dios le bendecirá. Si obra mal, mi bendición no le servirá de nada.'"
-		                android:gravity="bottom"/>	
-	           	    <TextView 
-	           	        android:id="@+id/quote2text"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="11sp"
-	                	android:text="'El mundo no es así, nosotros lo hemos hecho así, yo lo he hecho así.'"
-		                android:gravity="bottom"/>	
-	           	    <TextView 
-	           	        android:id="@+id/quote3text"
-		                android:layout_width="match_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="bottom"
-		                android:textColor="@color/black"
-		                android:textSize="11sp"
-	                	android:text="'Vuestra Santidad, el pequeño asunto que me trajo aquí, al más lejano confín de la Tierra, está ya resuelto, y los indios están libres de nuevo para ser esclavizados por los pobladores españoles y portugueses'"
-		                android:gravity="bottom"/>	
-            	</LinearLayout>	            	
-            </LinearLayout>
-            
-	    </LinearLayout>
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textColor="@color/greydark"
+                android:gravity="bottom"
+                android:text="characters"/>
+       	    <TextView 
+      	        android:id="@+id/charactertext"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:textColor="@color/black"
+				android:textSize="12sp"
+				android:textStyle="bold"
+             	android:text="Billy 'The Kid' | Wolverine | Ian Curtis"
+              	android:gravity="bottom"/>	
+        	</LinearLayout>	            	
+        </LinearLayout>    
 
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:orientation="vertical" >
-	    </LinearLayout>
-
+        
+        <!-- SYNOPSIS -->
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:layout_marginTop="3dp">
+       	    <ImageView 
+       	        android:src="@drawable/storyline"
+				android:padding="2dp"
+				android:layout_marginRight="5dp"
+				android:background="@android:color/transparent"
+				android:layout_width="25dp"
+				android:layout_height="25dp"
+				android:layout_gravity="top"
+       	        android:scaleType="fitXY"/>
+        	<LinearLayout 
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:orientation="vertical">
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textColor="@color/greydark"
+                android:gravity="bottom"
+                android:text="synopsis"/>
+       	    <TextView 
+      	        android:id="@+id/charactertext"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:textColor="@color/black"
+				android:textSize="12sp"
+				android:textStyle="bold"
+             	android:text="Año 2028, la compañía multinacional OmniCorp domina la tecnología robótica. Sus robots han ganado todo tipo de guerras fuera de los Estados Unidos y ahora quieren probarlos dentro del país. Por su parte, Alex Murphy es un policía de Detroit que se esfuerza por acabar con la ola de crímenes que arrasa la ciudad. Cuando Alex resulta gravemente herido en acto de servicio, OmniCorp utiliza sus conocimientos de ciencia robótica para salvarlo y, además, dotarlo de extraordinarios poderes, que lo obligarán a enfrentarse a problemas fuera de lo común."
+              	android:gravity="bottom"/>	
+        	</LinearLayout>	            	
+        </LinearLayout>    
     </LinearLayout>
 </LinearLayout>

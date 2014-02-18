@@ -17,7 +17,7 @@ public class User {
     public static final String SECONDS = 	"seconds";
     public static final String LOCKED = 	"locked";
     public static final String UNLOCKED = 	"unlocked";
-    public static final String LAST_UPDATE = "lastUpdate";
+    public static final String LASTUPDATE = "lastUpdate";
     
 	//Fields
     private long _id;

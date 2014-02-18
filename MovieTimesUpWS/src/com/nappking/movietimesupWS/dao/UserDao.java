@@ -19,10 +19,10 @@ public class UserDao implements IUserDao{
 	
 	//Statements
 	private String insert = "INSERT into "+User.TABLE+"("+User.USER+", "+User.NAME+", "+
-			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LAST_UPDATE+")"+
+			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LASTUPDATE+")"+
 			" values(?, ?, ?, ?, ?, ?, ?)";
 	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+User.SCORE+" = ?, "+
-			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LAST_UPDATE+
+			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LASTUPDATE+
 			" = ? WHERE "+User.USER +" = ?";
 	private String selectAll = "SELECT * from "+User.TABLE;
 	private String selectByID = "SELECT * from "+User.TABLE+" WHERE "+User.USER +"= ?";
