@@ -15,6 +15,7 @@
     <color name="black">#000000</color>
     <!-- ANOTHER -->
     <color name="greylight">#DCDCDC</color>
+    <color name="greylighter">#E2E2E2</color>
     <color name="greydark">#4D4D4D</color>
     <color name="background">#0044AA</color>
     <color name="bluelight">#BFEFFF</color>

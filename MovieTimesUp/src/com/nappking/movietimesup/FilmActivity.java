@@ -3,8 +3,6 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -127,19 +125,13 @@ public class FilmActivity extends DBActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.movietemplate);		
-		//Hide the notification bar && avoid to sleep or lock phone
-     	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(R.layout.movietemplate);	
+		//avoid to sleep the mobile device
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
      	//initiate elements
      	initiate();
 		setListeners();
 		displayInstructions();
-	}
-	
-	@Override
-	protected void onResume(){
-		super.onResume();
 	}
 	
 	@Override
@@ -165,8 +157,7 @@ public class FilmActivity extends DBActivity{
 	
 	/**
 	 * GAME ACTIONS METHODS
-	 */
-	
+	 */	
 	
 	private void displayInstructions(){
 		//Show how to play and warnings about block screen 
@@ -454,7 +445,7 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				if(movie.getGenre()!=null){
 					bgenre.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.genre),movie.getGenre());
+					displaySelectedClue(getResources().getString(R.string.genre).toUpperCase(),movie.getGenre());
 					movie.setGenre(null);
 				}
 			}
@@ -464,7 +455,7 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				if(movie.getDirector()!=null){
 					bdirector.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.director),movie.getDirector());
+					displaySelectedClue(getResources().getString(R.string.director).toUpperCase(),movie.getDirector());
 					movie.setDirector(null);
 				}
 			}
@@ -475,12 +466,12 @@ public class FilmActivity extends DBActivity{
 				if(mCounterLocation==0){
 					mCounterLocation = 1;
 					blocation.setImageResource(R.drawable.location1);
-					displaySelectedClue(getResources().getString(R.string.continent),movie.getContinent());
+					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(),movie.getContinent());
 				}
 				else if (mCounterLocation ==1){
 					mCounterLocation = 2;
 					blocation.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.country), movie.getCountry());
+					displaySelectedClue(getResources().getString(R.string.country).toUpperCase(), movie.getCountry());
 				}
 			}
 		});
@@ -492,12 +483,12 @@ public class FilmActivity extends DBActivity{
 					bdate.setImageResource(R.drawable.date1);
 					int year = movie.getYear();
 					year = year - (year % 10);
-					displaySelectedClue(getResources().getString(R.string.decade),year+"");
+					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(),year+"");
 				}
 				else if (mCounterDate ==1){
 					mCounterDate = 2;
 					bdate.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.year), movie.getYear()+"");
+					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(), movie.getYear()+"");
 				}
 			}
 		});
@@ -512,7 +503,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterActor == 2)
 						bactor.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.actor), movie.getCast()[mCounterActor]);
+					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(), movie.getCast()[mCounterActor]);
 					mCounterActor=mCounterActor+1;
 				}
 			}
@@ -528,7 +519,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterCharacter == 2)
 						bcharacter.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.character), movie.getCharacters()[mCounterCharacter]);
+					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(), movie.getCharacters()[mCounterCharacter]);
 					mCounterCharacter=mCounterCharacter+1;
 				}
 			}
@@ -544,7 +535,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterQuote == 2)
 						bquote.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.quote), movie.getQuotes()[mCounterQuote]);
+					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(), movie.getQuotes()[mCounterQuote]);
 					mCounterQuote=mCounterQuote+1;
 				}
 			}
@@ -560,7 +551,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterOther == 2)
 						btrivia.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.others), movie.getOthers()[mCounterOther]);
+					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(), movie.getOthers()[mCounterOther]);
 					mCounterOther=mCounterOther+1;
 				}
 			}
@@ -583,7 +574,7 @@ public class FilmActivity extends DBActivity{
 					String initialPoints="...";
 					if (start==0)
 						initialPoints="";
-					displaySelectedClue(getResources().getString(R.string.synopsis), initialPoints+movie.getPlot().substring(start, end)+"...");
+					displaySelectedClue(getResources().getString(R.string.synopsis).toUpperCase(), initialPoints+movie.getPlot().substring(start, end)+"...");
 					mCounterSynopsis=mCounterSynopsis+1;
 				}
 			}

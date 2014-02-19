@@ -48,7 +48,7 @@
    	</style>
    	<style name="ScoreFont" parent="@android:style/TextAppearance.Medium">
        	<item name="android:textColor">#FFFFFF</item>
-   	</style>
+   	</style>   
     <style name="GameOverFont">
         <item name="android:textSize">50sp</item>
        	<item name="android:textColor">#FFFFFF</item>

@@ -44,8 +44,6 @@ public class FilmGridActivity extends DBActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.filmgrid);		
-		//Hide the notification bar
-     	this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
      	//initiate elements
      	grid = (GridView) findViewById(R.id.grid);
@@ -159,6 +157,11 @@ public class FilmGridActivity extends DBActivity{
 				}
 				
 				else if(movie.isUnlocked(FilmGridActivity.this)){ //Solved movie: We show the film information
+					Intent myIntent = new Intent(getBaseContext(),FilmInfoActivity.class);
+					Bundle myBundle = new Bundle();
+					myBundle.putSerializable(Movie.class.toString(), movie);
+					myIntent.putExtras(myBundle);
+					startActivity(myIntent);
 				}
 				
 				else{ //Movie ready to play: We start the bet and we send the movie to play
