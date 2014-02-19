@@ -69,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:gravity="center_vertical"
             android:background="@color/bluedark">
 	        <TextView 
@@ -78,12 +79,26 @@
 	            android:layout_height="wrap_content"
 	            android:textStyle="bold"
 	            android:textColor="@color/white"/>
-	        <TextView 
-	            android:id="@+id/originalTitle"
+	        <LinearLayout
+	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:textColor="@color/greylight"
-	            android:textStyle="italic"/>
+	            android:layout_height="wrap_content">
+		        <TextView 
+		            android:id="@+id/originalTitle"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:textColor="@color/greylight"
+		            android:textStyle="italic"/>		        
+		        <TextView 
+		            android:id="@+id/country_year"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:gravity="right"
+		            android:textColor="@color/greylight"
+		            android:textStyle="italic"/>
+	        </LinearLayout>
         </LinearLayout>
         
         
@@ -102,133 +117,40 @@
 		    <LinearLayout 
 		        android:orientation="horizontal"
 		        android:layout_width="match_parent"	        
-		        android:layout_height="wrap_content">	   
-	
-		        <!-- GENRE -->
-		        <LinearLayout 
-		            android:orientation="horizontal"
-		            android:layout_width="match_parent"
-		            android:layout_height="match_parent"
-		            android:layout_weight="1">
+		        android:layout_height="wrap_content">	  
 
-		            <ImageView
-		                android:id="@+id/genre_icon"
-		                android:layout_width="wrap_content"
+	            <ImageView
+	                android:id="@+id/genre_icon"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:background="@android:color/transparent"
+	                android:padding="3dp"
+	                android:scaleType="fitXY"
+	                android:src="@drawable/genre" />
+
+	            <LinearLayout 
+	                android:orientation="vertical"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content">
+	                <TextView 
+		                android:id="@+id/genre_header"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+		                android:textStyle="italic"
+		                android:textColor="@color/greydark"
+	                    android:gravity="bottom"
+	                    android:text="@string/genre"/>    
+		            <TextView 
+		                android:id="@+id/genre_text"
+		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
-		                android:layout_gravity="center_vertical"
-		                android:layout_marginRight="5dp"
-		                android:background="@android:color/transparent"
-		                android:padding="3dp"
-		                android:scaleType="fitXY"
-		                android:src="@drawable/genre" />
-
-		            <LinearLayout 
-		                android:orientation="vertical"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content">
-		                <TextView 
-			                android:id="@+id/genre_header"
-		                    android:layout_width="match_parent"
-		                    android:layout_height="wrap_content"
-			                android:textStyle="italic"
-			                android:textColor="@color/greydark"
-		                    android:gravity="bottom"
-		                    android:text="@string/genre"/>    
-			            <TextView 
-			                android:id="@+id/genre_text"
-			                android:layout_width="match_parent"
-			                android:layout_height="wrap_content"
-			                android:layout_gravity="bottom"
-			                android:textColor="@color/black"
-			                android:textStyle="bold"
-			                android:gravity="bottom"/>	
-		            </LinearLayout>   
-		        </LinearLayout>
-	
-		        <!-- COUNTRY -->
-		        <LinearLayout 
-		            android:orientation="horizontal"
-		            android:layout_width="match_parent"
-		            android:layout_height="match_parent"
-		            android:gravity="center_horizontal"
-		            android:layout_weight="1.2">
-
-		            <ImageView
-		                android:id="@+id/country_icon"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="center_vertical"
-		                android:layout_marginRight="5dp"
-		                android:background="@android:color/transparent"
-		                android:padding="3dp"
-		                android:scaleType="fitXY"
-		                android:src="@drawable/world" />
-
-		            <LinearLayout 
-		                android:orientation="vertical"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content">
-		                <TextView 
-			                android:id="@+id/country_header"
-		                    android:layout_width="match_parent"
-		                    android:layout_height="wrap_content"
-			                android:textStyle="italic"
-			                android:textColor="@color/greydark"
-		                    android:gravity="bottom"
-		                    android:text="@string/country"/>    
-			            <TextView 
-			                android:id="@+id/country_text"
-			                android:layout_width="match_parent"
-			                android:layout_height="wrap_content"
-			                android:layout_gravity="bottom"
-			                android:textColor="@color/black"
-			                android:textStyle="bold"
-			                android:gravity="bottom"/>	
-		            </LinearLayout>   
-		        </LinearLayout>
-	
-	
-		        <!-- YEAR -->
-		        <LinearLayout 
-		            android:orientation="horizontal"
-		            android:layout_width="match_parent"
-		            android:layout_height="match_parent"
-		            android:gravity="right"
-		            android:layout_weight="1.2">
-
-		            <ImageView
-		                android:id="@+id/year_icon"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_gravity="center_vertical"
-		                android:layout_marginRight="5dp"
-		                android:background="@android:color/transparent"
-		                android:padding="3dp"
-		                android:scaleType="fitXY"
-		                android:src="@drawable/calendar" />
-
-		            <LinearLayout 
-		                android:orientation="vertical"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content">
-		                <TextView 
-			                android:id="@+id/year_header"
-		                    android:layout_width="match_parent"
-		                    android:layout_height="wrap_content"
-			                android:textStyle="italic"
-			                android:textColor="@color/greydark"
-		                    android:gravity="bottom"
-		                    android:text="@string/year"/>    
-			            <TextView 
-			                android:id="@+id/year_text"
-			                android:layout_width="match_parent"
-			                android:layout_height="wrap_content"
-			                android:layout_gravity="bottom"
-			                android:textColor="@color/black"
-			                android:textStyle="bold"
-			                android:gravity="bottom"/>	
-		            </LinearLayout>   
-		        </LinearLayout>
+		                android:layout_gravity="bottom"
+		                android:textColor="@color/black"
+		                android:textStyle="bold"
+		                android:gravity="bottom"/>	
+		        </LinearLayout>	
 		    </LinearLayout>
 	     
 	

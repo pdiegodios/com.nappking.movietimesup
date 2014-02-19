@@ -21,12 +21,11 @@ import com.nappking.movietimesup.entities.Movie;
 
 public class FilmInfoActivity extends DBActivity{
 	
-	private ImageView mPosterImage, mGenreImage, mCountryImage, mYearImage, mDirectorImage, 
+	private ImageView mPosterImage, mGenreImage, mDirectorImage, 
 			mActorImage, mCharacterImage, mStorylineImage, mQuotesImage, mTriviaImage;
-	private TextView mTitle, mOriginalTitle, mGenreHeader, mGenre, mCountryHeader, mCountry, 
-			mYearHeader, mYear, mDirectorHeader, mDirector, mActorHeader, mActor, mCharacter,
-			mCharacterHeader, mStorylineHeader, mStoryline, mQuotes, mQuotesHeader, mTrivia,
-			mTriviaHeader;
+	private TextView mTitle, mOriginalTitle, mGenreHeader, mGenre, mCountryYear, mDirectorHeader, 
+			mDirector, mActorHeader, mActor, mCharacter, mCharacterHeader, mStorylineHeader, 
+			mStoryline, mQuotes, mQuotesHeader, mTrivia, mTriviaHeader;
 	private ImageButton mFilmaffinityButton, mImdbButton; 
 	private Movie mMovie;
 	
@@ -57,10 +56,7 @@ public class FilmInfoActivity extends DBActivity{
      	mOriginalTitle = (TextView) findViewById(R.id.originalTitle);
      	mGenreHeader = (TextView) findViewById(R.id.genre_header);
      	mGenre = (TextView) findViewById(R.id.genre_text);
-     	mCountryHeader = (TextView) findViewById(R.id.country_header);
-     	mCountry = (TextView) findViewById(R.id.country_text);
-     	mYearHeader = (TextView) findViewById(R.id.year_header);
-     	mYear = (TextView) findViewById(R.id.year_text);
+     	mCountryYear = (TextView) findViewById(R.id.country_year);
      	mDirectorHeader = (TextView) findViewById(R.id.director_header);
      	mDirector = (TextView) findViewById(R.id.director_text);
      	mActorHeader = (TextView) findViewById(R.id.actor_header);
@@ -75,10 +71,8 @@ public class FilmInfoActivity extends DBActivity{
      	mStoryline = (TextView) findViewById(R.id.storyline_text);
      	mPosterImage = (ImageView) findViewById(R.id.poster);
 		mGenreImage = (ImageView) findViewById(R.id.genre_icon);
-		mCountryImage = (ImageView) findViewById(R.id.country_icon);
 		mQuotesImage = (ImageView) findViewById(R.id.quotes_icon);
 		mTriviaImage = (ImageView) findViewById(R.id.trivia_icon);
-		mYearImage = (ImageView) findViewById(R.id.year_icon);
 		mDirectorImage = (ImageView) findViewById(R.id.director_icon);
 		mActorImage = (ImageView) findViewById(R.id.actor_icon);
 		mCharacterImage = (ImageView) findViewById(R.id.character_icon);
@@ -92,10 +86,7 @@ public class FilmInfoActivity extends DBActivity{
 		mOriginalTitle.setTextSize(textSize*density);
 		mGenreHeader.setTextSize(textSize*density);
 		mGenre.setTextSize(textSize*density);
-		mCountryHeader.setTextSize(textSize*density);
-		mCountry.setTextSize(textSize*density);
-		mYearHeader.setTextSize(textSize*density);
-		mYear.setTextSize(textSize*density);
+		mCountryYear.setTextSize(textSize*density);
 		mDirectorHeader.setTextSize(textSize*density);
 		mDirector.setTextSize(textSize*density);
 		mActorHeader.setTextSize(textSize*density);
@@ -112,8 +103,6 @@ public class FilmInfoActivity extends DBActivity{
 		int iconResize = Math.round(iconSize*density);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconResize,iconResize);
 		mGenreImage.setLayoutParams(params);
-		mCountryImage.setLayoutParams(params);
-		mYearImage.setLayoutParams(params);
 		mDirectorImage.setLayoutParams(params);
 		mActorImage.setLayoutParams(params);
 		mCharacterImage.setLayoutParams(params);
@@ -163,8 +152,7 @@ public class FilmInfoActivity extends DBActivity{
 		mTitle.setText(mMovie.getTitle());		
 		mOriginalTitle.setText(mMovie.getOriginalTitle());
 		mGenre.setText(mMovie.getGenre());	
-		mCountry.setText(mMovie.getCountry());	
-		mYear.setText(mMovie.getYear()+"");	
+		mCountryYear.setText(mMovie.getCountry()+", "+mMovie.getYear());	
 		mDirector.setText(mMovie.getDirector());	
 		mActor.setText(actors);	
 		mCharacter.setText(characters);	
