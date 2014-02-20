@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -25,7 +27,7 @@ public class FilmInfoActivity extends DBActivity{
 			mActorImage, mCharacterImage, mStorylineImage, mQuotesImage, mTriviaImage;
 	private TextView mTitle, mOriginalTitle, mGenreHeader, mGenre, mCountryYear, mDirectorHeader, 
 			mDirector, mActorHeader, mActor, mCharacter, mCharacterHeader, mStorylineHeader, 
-			mStoryline, mQuotes, mQuotesHeader, mTrivia, mTriviaHeader;
+			mStoryline, mQuotes, mQuotesHeader, mTrivia, mTriviaHeader, mPoints;
 	private ImageButton mFilmaffinityButton, mImdbButton; 
 	private Movie mMovie;
 	
@@ -69,6 +71,7 @@ public class FilmInfoActivity extends DBActivity{
      	mTrivia = (TextView) findViewById(R.id.trivia_text);
      	mStorylineHeader = (TextView) findViewById(R.id.storyline_header);
      	mStoryline = (TextView) findViewById(R.id.storyline_text);
+     	mPoints = (TextView) findViewById(R.id.points);
      	mPosterImage = (ImageView) findViewById(R.id.poster);
 		mGenreImage = (ImageView) findViewById(R.id.genre_icon);
 		mQuotesImage = (ImageView) findViewById(R.id.quotes_icon);
@@ -82,6 +85,7 @@ public class FilmInfoActivity extends DBActivity{
 		
 		//Resize default values
 		mTitle.setTextSize(titleSize*density);
+		mPoints.setTextSize(titleSize*density);
 		
 		mOriginalTitle.setTextSize(textSize*density);
 		mGenreHeader.setTextSize(textSize*density);
@@ -150,6 +154,7 @@ public class FilmInfoActivity extends DBActivity{
 		Bitmap poster = getBitmapPoster(mMovie.getId()); 
 		mPosterImage.setImageBitmap(poster);
 		mTitle.setText(mMovie.getTitle());		
+		mPoints.setText(mMovie.getPoints()+"pts");		
 		mOriginalTitle.setText(mMovie.getOriginalTitle());
 		mGenre.setText(mMovie.getGenre());	
 		mCountryYear.setText(mMovie.getCountry()+", "+mMovie.getYear());	
@@ -166,14 +171,20 @@ public class FilmInfoActivity extends DBActivity{
 		mFilmaffinityButton.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-
+				String url=mMovie.getFilmaffinityURL("es");
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				startActivity(i);
 			}
 		});
 		
 		mImdbButton.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				
+				String url=mMovie.getImdbURL();
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				startActivity(i);
 			}
 		});
 	}

@@ -26,6 +26,8 @@ public class Movie {
 	public static final String CHARACTERS = "characters";
     public static final String POSTER = "poster";
     public static final String POINTS = "points";
+    public static final String FILMAFFINITY = "filmaffinity_id";
+    public static final String IMDB = "imdb_id";
 	
 	//Fields
     private long 		_id;
@@ -44,6 +46,8 @@ public class Movie {
     private String[] 	characters;
     private String 		poster;
     private int 		points;
+    private String 		filmaffinity_id;
+    private String		imdb_id;
     
     //creators
 	public Movie() {super();}
@@ -65,6 +69,8 @@ public class Movie {
 	public String[] getCharacters()		{return characters;}
 	public String getPoster()	 		{return poster;}
 	public int getPoints()	 			{return points;}
+	public String getFilmaffinityId()	{return filmaffinity_id;}
+	public String getImdbId()	 		{return imdb_id;}
 	
 	//SETTERS
 	public void setId(long id) 						{this._id = id;}
@@ -83,5 +89,7 @@ public class Movie {
 	public void setCharacters(String[] characters) 	{this.characters = characters;}
 	public void setPoster(String poster)			{this.poster = poster;}
 	public void setPoints(int points) 				{this.points = points;}
+	public void setFilmaffinityId(String fa_id)		{this.filmaffinity_id = fa_id;}
+	public void setImdbId(String imdb_id)			{this.imdb_id = imdb_id;}
 
 }

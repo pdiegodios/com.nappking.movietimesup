@@ -69,7 +69,7 @@
         <activity
             android:name="com.nappking.movietimesup.FilmGridActivity"
             android:label="@string/title_activity_home" 
-            android:theme="@style/Theme.gradient"
+            android:theme="@style/Theme.movie"
            	android:screenOrientation="landscape">
         </activity>
         <activity
@@ -81,8 +81,8 @@
         </activity>
         <activity
             android:name="com.nappking.movietimesup.FilmInfoActivity"
-            android:label="@string/title_activity_home" 
             android:theme="@style/Theme.gradient"
+            android:label="@string/title_activity_home" 
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>

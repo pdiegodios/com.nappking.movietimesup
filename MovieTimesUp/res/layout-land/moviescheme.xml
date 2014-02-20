@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
+    
+    <!-- LEFT SECTION: POSTER & LINKS -->
     <LinearLayout 
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -23,8 +25,15 @@
     	    android:orientation="horizontal"
     	    android:layout_width="match_parent"
     	    android:layout_height="match_parent"
-    	    android:gravity="center_vertical"
+    	    android:gravity="center"
     	    android:layout_weight="5">
+    	    <ImageButton 
+    	        android:layout_margin="5dp"
+    	        android:layout_width="match_parent"
+    	        android:layout_height="match_parent"
+    	        android:layout_weight="1"
+    	        android:background="@android:color/transparent"
+    	        android:scaleType="fitCenter"/>
     	    <ImageButton 
     	        android:id="@+id/filmaffinity"
     	        android:layout_margin="5dp"
@@ -50,20 +59,17 @@
     	        android:layout_weight="1"
     	        android:background="@android:color/transparent"
     	        android:scaleType="fitCenter"/>
-    	    <ImageButton 
-    	        android:layout_margin="5dp"
-    	        android:layout_width="match_parent"
-    	        android:layout_height="match_parent"
-    	        android:layout_weight="1"
-    	        android:background="@android:color/transparent"
-    	        android:scaleType="fitCenter"/>
     	</LinearLayout>
     </LinearLayout>
+    
+    <!-- RIGHT SECTION: TITLE & INFO -->
     <LinearLayout 
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">        
+        
+        <!-- HEADER: TITLE-POINTS; ORIGINAL_TITLE-COUNTRY,YEAR -->
         <LinearLayout 
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -72,13 +78,27 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:gravity="center_vertical"
-            android:background="@color/bluedark">
-	        <TextView 
-	            android:id="@+id/title"
+            android:background="@color/bluedark">    	    
+	        <LinearLayout
+	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:textStyle="bold"
-	            android:textColor="@color/white"/>
+	            android:layout_height="wrap_content">
+		        <TextView 
+		            android:id="@+id/title"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:textStyle="bold"
+		            android:textColor="@color/white"/>       
+		        <TextView 
+		            android:id="@+id/points"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="4.5"
+		            android:gravity="right"
+		            android:textColor="@color/white"
+		            android:textStyle="bold"/>
+		    </LinearLayout>
 	        <LinearLayout
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"

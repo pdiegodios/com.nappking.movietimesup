@@ -2,8 +2,6 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -18,18 +16,18 @@ import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FilmGridActivity extends DBActivity{
@@ -37,6 +35,10 @@ public class FilmGridActivity extends DBActivity{
 	GridView grid;
 	TextView txPoints;
 	TextView txSeconds;
+	ImageView leftCurtain;
+	ImageView rightCurtain;
+	ImageView spectators;
+	AnimationDrawable transition;
 	User user;
 	static final int result_sent = 0;
 	
@@ -46,9 +48,26 @@ public class FilmGridActivity extends DBActivity{
 		setContentView(R.layout.filmgrid);		
 		
      	//initiate elements
-     	grid = (GridView) findViewById(R.id.grid);
-     	txPoints = (TextView) findViewById(R.id.points);
-     	txSeconds = (TextView) findViewById(R.id.seconds);
+     	grid = 			(GridView) findViewById(R.id.grid);
+     	txPoints = 		(TextView) findViewById(R.id.points);
+     	txSeconds = 	(TextView) findViewById(R.id.seconds);
+     	leftCurtain = 	(ImageView) findViewById(R.id.leftcurtain);
+     	rightCurtain = 	(ImageView) findViewById(R.id.rightcurtain);
+     	spectators = 	(ImageView) findViewById(R.id.spectators);
+     	transition = 	(AnimationDrawable) grid.getBackground();
+
+		//Density to resize
+		float density = getResources().getDisplayMetrics().density;
+		
+		//sizes
+		int widthSize = (int) getResources().getDimension(R.dimen.grid_curtain_width);
+		int heightSize = (int) getResources().getDimension(R.dimen.grid_spectators_height);
+		int resize = Math.round(widthSize*density);
+     	leftCurtain.getLayoutParams().width = resize;
+     	rightCurtain.getLayoutParams().width = resize;
+     	resize = Math.round(heightSize*density);
+     	spectators.getLayoutParams().height = resize;
+     	transition.start();
 		update();
 		setListeners();
 	}
@@ -56,7 +75,14 @@ public class FilmGridActivity extends DBActivity{
 	@Override
 	protected void onResume(){
 		super.onResume();
+		transition.start();
 		update();
+	}
+	
+	@Override
+	protected void onPause() {
+		transition.stop();
+		super.onPause();
 	}
 	
 	private void update(){     	

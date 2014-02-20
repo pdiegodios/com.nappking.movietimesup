@@ -49,6 +49,6 @@ public class User {
 	public void setSeconds(int seconds)									{this.seconds=seconds;} 
     public void setLockedMovies(ArrayList<Integer> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<Integer> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
-    public void setLastUpdate(long lastupdate)							{this.lastUpdate=lastupdate;}		
+    public void setLastUpdate(long lastUpdate)							{this.lastUpdate=lastUpdate;}		
     
 }

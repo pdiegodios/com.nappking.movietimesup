@@ -91,7 +91,7 @@ public class UserDao implements IUserDao{
 				user.setSeconds(_result.getInt(5));
 				user.setLockedMovies(fromString(_result.getString(6)));
 				user.setUnlockedMovies(fromString(_result.getString(7)));
-				user.setLastUpdate(_result.getInt(8));
+				user.setLastUpdate(_result.getLong(8));
 				users.add(user);
 			}			
 		} catch (SQLException e) {

@@ -20,11 +20,17 @@
     >    
     <style name="Theme.filmstrip" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>
+    	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/texture</item>
 	</style>
     <style name="Theme.gradient" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>
+    	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/gradientbackground</item>
+	</style>	
+    <style name="Theme.movie" parent="@android:style/Theme.Holo.Light">
+    	<item name="android:windowNoTitle">true</item>
+	    <item name="android:windowBackground">@drawable/traintransition</item>
 	</style>	
     <style name="Theme.street" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>

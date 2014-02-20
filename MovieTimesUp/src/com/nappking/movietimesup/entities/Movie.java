@@ -1,5 +1,6 @@
 package com.nappking.movietimesup.entities;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class Movie implements Serializable{
 	public static final String CHARACTERS = "characters";
     public static final String POSTER = "poster";
     public static final String POINTS = "points";
+    public static final String FILMAFFINITY_ID = "filmaffinityId";
+    public static final String IMDB_ID = "imdbId";
+    
+    //Example-->http://www.filmaffinity.com/en/film745662.html
+    public static final String FILMAFFINITY_WEB = "http://www.filmaffinity.com/";
+    //Example-->http://www.imdb.com/title/tt0093870
+    public static final String IMDB_WEB = "http://www.imdb.com/title/";
 	
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
@@ -75,6 +83,10 @@ public class Movie implements Serializable{
     private String 		poster;
     @DatabaseField(columnName = POINTS)
     private int 		points;
+    @DatabaseField(columnName = FILMAFFINITY_ID)
+    private String		filmaffinityId;
+    @DatabaseField(columnName = IMDB_ID)
+    private String 		imdbId;
     
     //GETTERS
     public int getRowid()				{return _id;}
@@ -94,6 +106,16 @@ public class Movie implements Serializable{
 	public String[] getCharacters()		{return characters;}
 	public String getPoster()	 		{return poster;}
 	public int getPoints()	 			{return points;}
+	public String getFilmaffinityId()	{return filmaffinityId;}
+	public String getImdbId()	 		{return imdbId;}
+	
+	public String getFilmaffinityURL(String language){
+		return FILMAFFINITY_WEB+language+File.separator+"film"+filmaffinityId+".html";
+	}
+	
+	public String getImdbURL(){
+		return IMDB_WEB+imdbId;
+	}
 	
 	public boolean isUnlocked(Context context){
 		boolean result = false;
@@ -151,5 +173,7 @@ public class Movie implements Serializable{
 	public void setCharacters(String[] characters) 	{this.characters = characters;}
 	public void setPoster(String poster)			{this.poster = poster;}
 	public void setPoints(int points) 				{this.points = points;}
+	public void setFilmaffinityId(String faId)		{this.filmaffinityId = faId;}
+	public void setImdbID(String imdbId)			{this.imdbId = imdbId;}
 
 }

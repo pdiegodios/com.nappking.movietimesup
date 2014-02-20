@@ -32,7 +32,8 @@ public class SplashActivity extends Activity{
         setContentView(R.layout.splash);
         // Hide the notification barinitiate();
         initiate();     	
-     	this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         new DownloadMoviesTask(this).execute();
         checkNotifications();
     }

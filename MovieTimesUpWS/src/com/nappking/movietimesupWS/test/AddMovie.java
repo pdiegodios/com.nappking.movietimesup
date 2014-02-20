@@ -1,17 +1,10 @@
 package com.nappking.movietimesupWS.test;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URI;
-import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import sun.misc.BASE64Encoder;
 
 import com.nappking.movietimesupWS.model.Movie;
 import com.nappking.movietimesupWS.util.PSON;
@@ -33,33 +26,29 @@ public class AddMovie {
 		int 	year = 2013;
 		int 	points = 1;
 		String  action = UPDATE;
-		String 	title = "Gravity";
-		String 	alternative_title = "Gravity";
-		String 	original_title = "Gravity";
-		String 	country = "USA";
-		String 	continent = "America";
-		String 	director = "Alfonso Cuarón";
-		String 	genre = "Sci-Fi";
-		String 	poster = "http://ia.media-imdb.com/images/M/MV5BNjE5MzYwMzYxMF5BMl5BanBnXkFtZTcwOTk4MTk0OQ@@._V1_SY317_CR0,0,214,317_.jpg";
-		String 	actor1="Phaldut Sharma";
-		String 	actor2="George Clooney";
-		String 	actor3="Sandra Bullock";
-		String 	character1="Ryan Stone";
-		String 	character2="Matt Kowalski";
-		String 	character3="Shariff";
-		String 	quote1 ="-¿Quieres saber una buena noticia? -¿Qué? -Voy a romper el récord de Anatoly";
-		String 	quote2 ="Deberías ver el sol brillando sobre el Ganges, es increíble";
-		String 	quote3 ="-¿Qué es lo que más te gusta del espacio? -El silencio...podría acostumbrarme a él";
-		String 	other1="Globos de Oro: Mejor director.";
-		String 	other2="La película fue mundialmente aclamada por los aspectos técnicos";
-		String 	other3="Película de inauguración en el Festival de Venecia.";
-		String 	plot = "Mientras reparan un satélite fuera de su nave, dos astronautas " +
-				"sufren un grave accidente y quedan flotando en el espacio. Son la doctora " +
-				"X, una brillante ingeniera que realiza su primera misión espacial, y el veterano " +
-				"astronauta Y. La misión exterior parecía rutinaria, pero una lluvia de basura " +
-				"espacial les alcanza y se produce el desastre: el satélite y parte de la nave " +
-				"quedan destrozados, dejando a X y Y completamente solos, momento a partir del cual " +
-				"intentarán por todos los medios buscar una solución para volver a la Tierra.";
+		String 	title = "";
+		String 	alternative_title = "";
+		String 	original_title = "";
+		String 	country = "";
+		String 	continent = "";
+		String 	director = "";
+		String 	genre = "";
+		String 	poster = "";
+		String  filmaffinity_id = "";
+		String	imdb_id = "";
+		String 	actor1="";
+		String 	actor2="";
+		String 	actor3="";
+		String 	character1="";
+		String 	character2="";
+		String 	character3="";
+		String 	quote1 ="";
+		String 	quote2 ="";
+		String 	quote3 ="";
+		String 	other1="";
+		String 	other2="";
+		String 	other3="";
+		String 	plot = "";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();
@@ -83,6 +72,8 @@ public class AddMovie {
 		pson.put(Movie.CHARACTERS, new String[]{character1,character2,character3});
 		pson.put(Movie.POSTER, poster);
 		pson.put(Movie.POINTS, points);
+		pson.put(Movie.FILMAFFINITY, filmaffinity_id);
+		pson.put(Movie.IMDB, imdb_id);
 		if(action.equals(UPDATE))
 			pson.put(Movie.ROWID, id);
 		

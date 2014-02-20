@@ -32,4 +32,8 @@
     <dimen name="scheme_default_text_size">6sp</dimen>
     <dimen name="scheme_icon_size">20dp</dimen>
     
+    <dimen name="grid_curtain_width">50dp</dimen>
+    <dimen name="grid_spectators_height">33dp</dimen>
+    
+    
 </resources>
