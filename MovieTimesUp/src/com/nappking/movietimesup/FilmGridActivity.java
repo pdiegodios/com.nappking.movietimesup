@@ -18,7 +18,6 @@ import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +37,6 @@ public class FilmGridActivity extends DBActivity{
 	ImageView leftCurtain;
 	ImageView rightCurtain;
 	ImageView spectators;
-	AnimationDrawable transition;
 	User user;
 	static final int result_sent = 0;
 	
@@ -54,7 +52,6 @@ public class FilmGridActivity extends DBActivity{
      	leftCurtain = 	(ImageView) findViewById(R.id.leftcurtain);
      	rightCurtain = 	(ImageView) findViewById(R.id.rightcurtain);
      	spectators = 	(ImageView) findViewById(R.id.spectators);
-     	transition = 	(AnimationDrawable) grid.getBackground();
 
 		//Density to resize
 		float density = getResources().getDisplayMetrics().density;
@@ -67,7 +64,6 @@ public class FilmGridActivity extends DBActivity{
      	rightCurtain.getLayoutParams().width = resize;
      	resize = Math.round(heightSize*density);
      	spectators.getLayoutParams().height = resize;
-     	transition.start();
 		update();
 		setListeners();
 	}
@@ -75,13 +71,11 @@ public class FilmGridActivity extends DBActivity{
 	@Override
 	protected void onResume(){
 		super.onResume();
-		transition.start();
 		update();
 	}
 	
 	@Override
 	protected void onPause() {
-		transition.stop();
 		super.onPause();
 	}
 	
@@ -96,9 +90,15 @@ public class FilmGridActivity extends DBActivity{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
+
 		//MovieListAdapter to show correctly the movies
-		MovieListAdapter movieAdapter = new MovieListAdapter(this, android.R.layout.simple_list_item_1, movies);		
-		grid.setAdapter(movieAdapter);
+		if (grid.getAdapter() == null) {
+			MovieListAdapter movieAdapter = new MovieListAdapter(this, android.R.layout.simple_list_item_1, movies);		
+			grid.setAdapter(movieAdapter);
+			} else {
+			((MovieListAdapter)grid.getAdapter())
+			.reload(movies);
+		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
 	}

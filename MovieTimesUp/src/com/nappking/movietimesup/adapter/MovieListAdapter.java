@@ -1,13 +1,7 @@
 package com.nappking.movietimesup.adapter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +15,31 @@ import com.nappking.movietimesup.task.DownloadPosterTask;
 
 public class MovieListAdapter extends ArrayAdapter<Movie>{
 	
-	private List<Movie> _movies;
-	private Context _context;
+	private List<Movie> mMoviesList;
+	private Context mContext;
     
     public MovieListAdapter(Context context, int textViewResourceId, List<Movie> movies) {
         super(context, textViewResourceId, movies);
-        this._movies = movies;
-        this._context = context;
+        this.mMoviesList = movies;
+        this.mContext = context;
     }
     
     public List<Movie> getList(){
-    	return _movies;
+    	return mMoviesList;
+    }
+    
+    public void reload(List<Movie> movies) {
+    	this.mMoviesList.clear();
+    	this.mMoviesList.addAll(movies);
+    	notifyDataSetChanged();
+    }
+    
+    static class ViewHolder{
+    	ImageView poster;
+    	ImageView coin;
+    	TextView title;
+    	TextView points;
+    	int position;
     }
     
     /**
@@ -41,84 +49,57 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
      * @param v : Vista sobre la que se cargan las propiedades de la tarea
      * @param movie : Película visualizada
      */
-    private void display(View v, final Movie movie){
-    	ImageView iMovie = (ImageView) v.findViewById(R.id.movieButton);
-    	ImageView iStar = (ImageView) v.findViewById(R.id.starpoints);
-    	TextView txTitle = (TextView) v.findViewById(R.id.title);
-    	TextView txPoints = (TextView) v.findViewById(R.id.moviepoints);
-        
-    	if (iMovie != null) {
+    private void display(ViewHolder v, final Movie movie){
+    	 
+    	if (v.poster != null) {
     		int points = movie.getPoints();
-    		txPoints.setText(points+"");
-        	if(movie.isLocked(this._context)) {
+    		v.points.setText(points+"");
+        	if(movie.isLocked(this.mContext)) {
         		//Movie was locked and you can see anything about that   
-        		iMovie.setImageResource(R.drawable.filmstrip_locked);   
-        		iStar.setImageResource(R.drawable.movie_points_grey);
-        		txTitle.setVisibility(View.INVISIBLE);
+        		v.poster.setImageResource(R.drawable.filmstrip_locked);   
+        		v.coin.setImageResource(R.drawable.movie_points_grey);
+        		v.title.setVisibility(View.INVISIBLE);
         	}	
-            else if (movie.isUnlocked(this._context)){
+            else if (movie.isUnlocked(this.mContext)){
             	//Movie was unlocked so you can see the poster and see the specific data
         		int id = movie.getId();
-        		Bitmap poster = getBitmapPoster(id); 
-        		if(poster==null){
-        			iMovie.setImageResource(R.drawable.filmstrip);
-        			new DownloadPosterTask(id,iMovie, this._context).execute(movie.getPoster());      			
-        		}
-        		iMovie.setImageBitmap(poster);
-        		iStar.setImageResource(R.drawable.movie_points);
-        		txTitle.setVisibility(View.VISIBLE);
-        		txTitle.setText(movie.getTitle());
+        		v.poster.setImageResource(R.drawable.filmstrip);
+        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
+        		v.coin.setImageResource(R.drawable.movie_points);
+        		v.title.setVisibility(View.VISIBLE);
+        		v.title.setText(movie.getTitle());
             }
             else{
             	//Movie is ready to play
-        		iMovie.setImageResource(R.drawable.filmstrip);
-        		iStar.setImageResource(R.drawable.movie_points_green);
-            	txTitle.setVisibility(View.INVISIBLE);
+        		v.poster.setImageResource(R.drawable.filmstrip);
+        		v.coin.setImageResource(R.drawable.movie_points_green);
+            	v.title.setVisibility(View.INVISIBLE);
             }        	
     	}        
     }
-    
-	private Bitmap getBitmapPoster(long id) {
-	    // To be safe, check if the SDCard is mounted
-	    File path = null;
-		Bitmap bmap = null;
-		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-			File storageDir = new File(Environment.getExternalStorageDirectory()
-		            + "/Android/data/"+ this._context.getApplicationContext().getPackageName()
-		            + "/Posters"); 
-		    // Create the storage directory if it does not exist
-		    if (! storageDir.exists()){
-		        if (! storageDir.mkdirs()){
-		            return null;
-		        }
-		    } 
-		    String mImageName=id+".jpg";
-		    path = new File(storageDir.getPath() + File.separator + mImageName);  
-		    
-			if(path.exists()){
-			    try {
-			        bmap = BitmapFactory.decodeStream(new FileInputStream(path));
-			    } 
-			    catch (FileNotFoundException e) {
-			        e.printStackTrace();
-			    }
-			}
-		}
-	    return bmap;
-	}
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater layout = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layout.inflate(R.layout.movieitem, null);
+        ViewHolder holder;
+        if (convertView == null) {
+            LayoutInflater layout = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layout.inflate(R.layout.movieitem, null);
+            holder = new ViewHolder();
+            holder.poster = (ImageView) convertView.findViewById(R.id.movieButton);
+            holder.coin = (ImageView) convertView.findViewById(R.id.starpoints);
+            holder.title = (TextView) convertView.findViewById(R.id.title);
+            holder.points = (TextView) convertView.findViewById(R.id.moviepoints);
+            convertView.setTag(holder);
         }
-        Movie movie = (Movie) _movies.get(position);
+        else{
+        	holder = (ViewHolder) convertView.getTag();
+        }
+        
+        Movie movie = (Movie) mMoviesList.get(position);
         if (movie != null) {
-        	display(view,movie);	            
+        	display(holder,movie);	            
         }
-        return view;
+        return convertView;
     }    
 
 }

@@ -30,6 +30,9 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 		mView = view;
 		mContext = context;
         mPath = getExternalFile();
+        if(mPath==null){
+        	mPath = getInternalFile();
+        }
 	}
 
 	protected Bitmap doInBackground(String... urls) {
@@ -71,7 +74,7 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 	
 	private Bitmap loadImageFromStorage(){
 		Bitmap bmap = null;
-		if(mPath.exists()){
+		if(mPath!=null && mPath.exists()){
 		    try {
 		        bmap = BitmapFactory.decodeStream(new FileInputStream(mPath));
 		    } 

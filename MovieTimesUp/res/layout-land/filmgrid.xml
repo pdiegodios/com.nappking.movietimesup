@@ -14,7 +14,7 @@
 		    android:paddingBottom="15dp"
 		    android:paddingLeft="22dp"
 		    android:paddingRight="22dp"
-		    android:columnWidth="107dp"		
+		    android:columnWidth="120dp"		
 		    android:focusable="false"    
 		    android:focusableInTouchMode="false"	
 		    android:listSelector="@android:color/transparent"   
@@ -27,7 +27,7 @@
 		    android:numColumns="auto_fit"
 		    android:verticalSpacing="30dp"
 		    android:horizontalSpacing="30dp"
-		    android:background="@drawable/traintransition"
+		    android:background="@drawable/panel4"
 		    android:gravity="center"
 		    android:scrollbars="none">   
 		</GridView>

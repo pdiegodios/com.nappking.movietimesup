@@ -60,6 +60,7 @@
         android:text="@string/score"
     />
     
+    
     <FrameLayout android:id="@+id/progressContainer"
 	    android:background="@drawable/frontscreen_background"
 	    android:layout_width="match_parent"
@@ -73,5 +74,4 @@
 	      android:layout_gravity="center"
 	      />
   	</FrameLayout>
-    
 </FrameLayout>
