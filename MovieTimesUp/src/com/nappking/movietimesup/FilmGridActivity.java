@@ -64,14 +64,14 @@ public class FilmGridActivity extends DBActivity{
      	rightCurtain.getLayoutParams().width = resize;
      	resize = Math.round(heightSize*density);
      	spectators.getLayoutParams().height = resize;
-		update();
+		update(-1);
 		setListeners();
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
-		update();
+		update(-1);
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class FilmGridActivity extends DBActivity{
 		super.onPause();
 	}
 	
-	private void update(){     	
+	private void update(int idMovie){     	
 		//We obtain all the movies & the user
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		try {
@@ -97,7 +97,7 @@ public class FilmGridActivity extends DBActivity{
 			grid.setAdapter(movieAdapter);
 			} else {
 			((MovieListAdapter)grid.getAdapter())
-			.reload(movies);
+			.reload(movies, idMovie);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
@@ -148,7 +148,7 @@ public class FilmGridActivity extends DBActivity{
 									e.printStackTrace();
 								}
 								dialog.dismiss();
-								update();
+								update(idMovie);
 							}
 							else{
 								//Dialog inviting to buy seconds

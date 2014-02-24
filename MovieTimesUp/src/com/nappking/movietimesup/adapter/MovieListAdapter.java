@@ -16,6 +16,7 @@ import com.nappking.movietimesup.task.DownloadPosterTask;
 public class MovieListAdapter extends ArrayAdapter<Movie>{
 	
 	private List<Movie> mMoviesList;
+	private int mIdMovie=-1;
 	private Context mContext;
     
     public MovieListAdapter(Context context, int textViewResourceId, List<Movie> movies) {
@@ -28,9 +29,10 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     	return mMoviesList;
     }
     
-    public void reload(List<Movie> movies) {
+    public void reload(List<Movie> movies, int idMovie) {
     	this.mMoviesList.clear();
     	this.mMoviesList.addAll(movies);
+    	this.mIdMovie = idMovie;
     	notifyDataSetChanged();
     }
     
@@ -63,9 +65,11 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
             else if (movie.isUnlocked(this.mContext)){
             	//Movie was unlocked so you can see the poster and see the specific data
         		int id = movie.getId();
-        		v.poster.setImageResource(R.drawable.filmstrip);
-        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
-        		v.coin.setImageResource(R.drawable.movie_points);
+        		if(this.mIdMovie==-1 || this.mIdMovie == id){
+	        		v.poster.setImageResource(R.drawable.filmstrip);
+	        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
+	        		v.coin.setImageResource(R.drawable.movie_points);
+        		}
         		v.title.setVisibility(View.VISIBLE);
         		v.title.setText(movie.getTitle());
             }
@@ -89,6 +93,7 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
             holder.coin = (ImageView) convertView.findViewById(R.id.starpoints);
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.points = (TextView) convertView.findViewById(R.id.moviepoints);
+            holder.position = position;
             convertView.setTag(holder);
         }
         else{
