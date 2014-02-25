@@ -24,6 +24,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -40,10 +41,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class FilmActivity extends DBActivity{
 	private static int DEFAULT_TIME = 5000;
+    static final int TIME_TO_BET = 8000;
+    static final int INTERVAL = 100;
+    static final int DEFAULT_VALUE = 100;
 	
 	//POINTS
 	private static int GENRE = 15;
@@ -167,6 +173,7 @@ public class FilmActivity extends DBActivity{
 	
 	private void displayInitialClues(){
 		camerablink.start();
+		transition.start();		
 		cleanClues();
 		if(!mClues.isEmpty()){
 			Random r = new Random();
@@ -192,15 +199,46 @@ public class FilmActivity extends DBActivity{
 	
 	private void makeBet(){
 		//Allow to bet your seconds to play during some seconds
-		//TODO: Implement panel to bet
-		startGame();
+        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
+        dialog.setContentView(R.layout.clapperdialogbet);
+        dialog.setCancelable(false);
+        //instantiate elements in the dialog
+        final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
+        secondsPicked.setValue(DEFAULT_VALUE);
+        final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
+        final Button playButton = (Button) dialog.findViewById(R.id.actionButton);
+		playButton.setOnClickListener(new OnClickListener() {	//Unlock					
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+				mCurrentSeconds = secondsPicked.getValue();
+				startGame();
+			}
+		});
+        dialog.show();
+        
+        CountDownTimer timer;
+        progress.setProgress(TIME_TO_BET);
+        timer=new CountDownTimer(TIME_TO_BET,INTERVAL) {
+	        @Override
+	        public void onTick(long millisUntilFinished) {
+	            progress.setProgress((int)millisUntilFinished);
+	        }
+	
+	        @Override
+	        public void onFinish() {
+		        progress.setProgress(0);
+				playButton.performClick();
+		    }
+		};
+		timer.start();
 	}
 	
 	private void startGame(){
+		Log.i("SECONDS!!!", mCurrentSeconds+"");
 		this.linearPrevious.startAnimation(animFadeOut);
 		
 		//deploy title space and button to answer & buttons to get clues for seconds
-		transition.start();
 		this.linearButtons.startAnimation(animSlideInBottom);
 		this.title.startAnimation(animSlideInTop);
 		this.iAnswer.startAnimation(animSlideInTop);
