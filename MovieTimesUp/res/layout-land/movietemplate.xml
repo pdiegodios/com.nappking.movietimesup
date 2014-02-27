@@ -255,37 +255,23 @@
 	    android:layout_height="match_parent"
 	    android:layout_width="match_parent"
 	    android:layout_gravity="center" 
-	    android:src="@drawable/happymask"/>
+	    android:src="@drawable/coin"/>
 	<LinearLayout 
-	    android:id="@+id/endline"
-	    android:layout_height="match_parent"
-	    android:layout_width="match_parent"
 	    android:orientation="vertical"
-	    android:layout_margin="60dp">
-		<com.nappking.movietimesup.widget.AutoResizeTextView 
-		    android:id="@+id/endtext"
-		    android:layout_width="match_parent"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:gravity="center">
+		<ImageView 
+		    android:id="@+id/points"
 		    android:layout_height="match_parent"
-		    android:textSize="80sp"
-		    android:singleLine="true"
-		    android:textStyle="bold"
-		    android:typeface="monospace"
-		    android:textColor="@color/greydark"
-		    android:gravity="bottom|center_horizontal"  
-	        android:layout_weight="1"		    
-		    />
-		<com.nappking.movietimesup.widget.AutoResizeTextView 
-		    android:id="@+id/endsubtext"
 		    android:layout_width="match_parent"
-		    android:layout_height="match_parent" 
-		    android:textSize="25sp"
-		    android:singleLine="true"
-		    android:textColor="@color/greydark"
-		    android:typeface="monospace"
-		    android:layout_gravity="center"
-		    android:gravity="top|center_horizontal"
-	        android:layout_weight="1"	
-		    />
+		    android:layout_weight="1"
+		    android:layout_gravity="center" 
+		    android:src="@drawable/point1"/>
+		<ImageView 
+		    android:layout_height="match_parent"
+		    android:layout_width="match_parent"
+		    android:layout_weight="5"/>
 	</LinearLayout>
 	<LinearLayout 
 		android:id="@+id/previouslinear"

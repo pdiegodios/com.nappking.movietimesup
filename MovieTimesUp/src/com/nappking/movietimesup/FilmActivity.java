@@ -68,6 +68,7 @@ public class FilmActivity extends DBActivity{
 	Animation animFadeIn;
 	Animation animFadeOut;
 	Animation animZoomIn; 
+	Animation animZoomOut; 
 	Animation animSlideInTop; 
 	Animation animSlideInBottom; 
 	Animation animSlideOutBottom;
@@ -81,8 +82,8 @@ public class FilmActivity extends DBActivity{
 	AnimationListener listenerButtons;
 	AnimationListener listenerHideLinear;
 	MediaPlayer shotSound;
+	MediaPlayer coinSound;
 	LinearLayout linearClues;
-	LinearLayout linearEnding;
 	LinearLayout linearButtons;
 	LinearLayout linearPrevious;
 	ImageButton bgenre;
@@ -99,11 +100,10 @@ public class FilmActivity extends DBActivity{
 	ImageView iLife2;
 	ImageView iLife3;
 	ImageView iEnding;
+	ImageView iPoints;
 	ImageView iCamera;
 	TextView titleclue;
 	TextView textclue;
-	TextView endtext;
-	TextView endsubtext;
 	EditText title;
 	
 	//COUNTERS
@@ -119,6 +119,8 @@ public class FilmActivity extends DBActivity{
 	private ArrayList<Clue> mClues;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
+	
+	private User mUser;
 		
 	//We start with some seconds to unveil some clues before bet
 	private int mCurrentSeconds = 30;
@@ -205,6 +207,10 @@ public class FilmActivity extends DBActivity{
         //instantiate elements in the dialog
         final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
         secondsPicked.setValue(DEFAULT_VALUE);
+        if(mUser!=null){
+        	secondsPicked.setMaxValue(mUser.getSeconds());
+        }
+        secondsPicked.setMinValue(10);
         final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
         final Button playButton = (Button) dialog.findViewById(R.id.actionButton);
 		playButton.setOnClickListener(new OnClickListener() {	//Unlock					
@@ -218,11 +224,11 @@ public class FilmActivity extends DBActivity{
         dialog.show();
         
         CountDownTimer timer;
-        progress.setProgress(TIME_TO_BET);
+        progress.setProgress(100);
         timer=new CountDownTimer(TIME_TO_BET,INTERVAL) {
 	        @Override
 	        public void onTick(long millisUntilFinished) {
-	            progress.setProgress((int)millisUntilFinished);
+	            progress.setProgress((int)(millisUntilFinished/TIME_TO_BET*100));
 	        }
 	
 	        @Override
@@ -257,28 +263,31 @@ public class FilmActivity extends DBActivity{
 	private void endGame(){
 		if(mInTime){
 			//Unlock movie and add points to User score
-			this.iEnding.setImageResource(R.drawable.happymask);
-			this.endtext.setText(R.string.game_won);
-			this.endsubtext.setText(getResources().getString(R.string.game_won_sub)+" "+
-					movie.getPoints()+" "+getResources().getString(R.string.points));
+			this.iEnding.setImageResource(R.drawable.coin);
+			int points = android.R.color.transparent;
+			switch(movie.getPoints()){
+				case 1: points = R.drawable.point1;break;
+				case 2: points = R.drawable.point2;break;
+				case 3: points = R.drawable.point3;break;
+				case 4: points = R.drawable.point4;break;
+				case 5: points = R.drawable.point5;break;
+				default:break;
+			}
+			this.iPoints.setImageResource(points);
 			this.iAnswer.setImageResource(R.drawable.resolvetrue);
 			uploadUsers(false);
 		}
 		else{
 			//Lock movie
 			this.iEnding.setImageResource(R.drawable.timesup);
-			this.endtext.setText(null);
-			this.endsubtext.setText(null);
 			uploadUsers(true);
 		}
 		//undeploy title space and button to answer
 		displaySelectedClue(null, null);
 		this.iAnswer.startAnimation(animSlideOutTop);
 		this.title.startAnimation(animSlideOutTop);
-		this.linearEnding.startAnimation(animZoomIn);
 		this.iEnding.startAnimation(animZoomIn);	
-		this.linearEnding.setVisibility(View.VISIBLE);
-		this.iEnding.setVisibility(View.VISIBLE);	
+		this.iEnding.setVisibility(View.VISIBLE);
 		
 		mIsFinished=true;
 	}
@@ -325,9 +334,16 @@ public class FilmActivity extends DBActivity{
 	
 	
 	private void initiate(){
+		try {
+			Dao<User, Integer> daoUser = getHelper().getUserDAO();
+			mUser = daoUser.queryForId(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
      	movie = 				(Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
 		imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
+		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
 		animFadeIn = 			AnimationUtils.loadAnimation(this, R.anim.fadein);
 		animFadeOut = 			AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 		animSlideInBottom = 	AnimationUtils.loadAnimation(this, R.anim.slideinbottom);
@@ -337,13 +353,13 @@ public class FilmActivity extends DBActivity{
 		animSlideOutTopLifes = 	AnimationUtils.loadAnimation(this, R.anim.slideouttop);
      	frame = 				(FrameLayout) findViewById(R.id.frame);
      	linearClues = 			(LinearLayout) findViewById(R.id.clues);
-     	linearEnding = 			(LinearLayout) findViewById(R.id.endline);
      	linearButtons = 		(LinearLayout) findViewById(R.id.buttons);
      	linearPrevious =		(LinearLayout) findViewById(R.id.previouslinear);
      	iLife1 = 				(ImageView) findViewById(R.id.life1);
      	iLife2 = 				(ImageView) findViewById(R.id.life2);
      	iLife3 = 				(ImageView) findViewById(R.id.life3);
      	iEnding = 				(ImageView) findViewById(R.id.endpicture);
+     	iPoints = 				(ImageView) findViewById(R.id.points);
      	iAnswer = 				(ImageView) findViewById(R.id.answer);
      	iCamera = 				(ImageView) findViewById(R.id.camera);
      	bgenre = 				(ImageButton) findViewById(R.id.genre);
@@ -357,20 +373,21 @@ public class FilmActivity extends DBActivity{
      	bsynopsis = 			(ImageButton) findViewById(R.id.synopsis);
      	titleclue = 			(TextView) findViewById(R.id.titleclue);
      	textclue = 				(TextView) findViewById(R.id.textclue);
-     	endtext = 				(TextView) findViewById(R.id.endtext);
-     	endsubtext = 			(TextView) findViewById(R.id.endsubtext);
      	title = 				(EditText) findViewById(R.id.title);
      	title.setTextSize(14 * getResources().getDisplayMetrics().density);
      	transition = 			(AnimationDrawable) frame.getBackground();
      	camerablink = 			(AnimationDrawable) iCamera.getDrawable();
      	shotSound = 			MediaPlayer.create(this, R.raw.shot);
-     	shotSound.setOnCompletionListener(new OnCompletionListener(){
+     	coinSound = 			MediaPlayer.create(this, R.raw.coindrop);
+     	OnCompletionListener finish = new OnCompletionListener(){
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				mp.release();
 				finish();
-			}
-     	});
+			}     		
+     	};
+     	shotSound.setOnCompletionListener(finish);
+     	coinSound.setOnCompletionListener(finish);
 		listenerTitle = new AnimationListener() {			
 			@Override
 			public void onAnimationStart(Animation animation) {}
@@ -404,8 +421,9 @@ public class FilmActivity extends DBActivity{
 					iEnding.setImageResource(R.drawable.timesup_shot);
 				}
 				else{
-					SystemClock.sleep(1200);
-					finish();
+					coinSound.start();
+					iPoints.startAnimation(animZoomOut);
+					iPoints.setVisibility(View.VISIBLE);
 				}
 			}
 		};
@@ -469,7 +487,7 @@ public class FilmActivity extends DBActivity{
 		iLife2.setVisibility(View.INVISIBLE);		
 		iLife3.setVisibility(View.INVISIBLE);
      	iEnding.setVisibility(View.INVISIBLE);
-     	linearEnding.setVisibility(View.INVISIBLE);
+     	iPoints.setVisibility(View.INVISIBLE);
      	animFadeOut.setAnimationListener(listenerHideLinear);
 		animSlideOutTop.setAnimationListener(listenerTitle);
 		animSlideOutTopLifes.setAnimationListener(listenerLifes);
@@ -724,17 +742,19 @@ public class FilmActivity extends DBActivity{
 		try {
 			List<User> users = new ArrayList<User>();
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
-			User user = daoUser.queryForId(1);
+			if(mUser==null){
+				mUser = daoUser.queryForId(1);
+			}
 			if(locked){
-				user.addLockedMovie(movie.getId());
+				mUser.addLockedMovie(movie.getId());
 			}
 			else{
-				user.addUnlockedMovie(movie.getId());
-				user.setScore(user.getScore()+movie.getPoints());
+				mUser.addUnlockedMovie(movie.getId());
+				mUser.setScore(mUser.getScore()+movie.getPoints());
 			}
-			user.setLastUpdate(System.currentTimeMillis());
-			daoUser.update(user);
-			users.add(user);			
+			mUser.setLastUpdate(System.currentTimeMillis());
+			daoUser.update(mUser);
+			users.add(mUser);			
 			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);			
 			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
 			wsUser.addNameValuePair("users", jsonArray.toString());

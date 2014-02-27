@@ -1,7 +1,14 @@
 package com.nappking.movietimesup.adapter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +52,10 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
     }
     
     /**
-     * cargamos los iconos en la vista según las características de la tarea para su 
-     * correcta visualización. Además, se establecen las diferentes acciones sobre 
-     * elementos del movieitem.xml
-     * @param v : Vista sobre la que se cargan las propiedades de la tarea
-     * @param movie : Película visualizada
+     * Load icons depending of the characteristics, stablish actions over elements
+     * in movieitem.xml
+     * @param v : view where to load the properties of the task
+     * @param movie : movie item in the gridview
      */
     private void display(ViewHolder v, final Movie movie){
     	 
@@ -66,8 +72,14 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
             	//Movie was unlocked so you can see the poster and see the specific data
         		int id = movie.getId();
         		if(this.mIdMovie==-1 || this.mIdMovie == id){
-	        		v.poster.setImageResource(R.drawable.filmstrip);
-	        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
+        			Bitmap bmap = loadImageFromStorage(id);
+        			if(bmap!=null){
+        				v.poster.setImageBitmap(bmap);
+        			}
+        			else{
+		        		v.poster.setImageResource(R.drawable.filmstrip);
+		        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
+        			}
 	        		v.coin.setImageResource(R.drawable.movie_points);
         		}
         		v.title.setVisibility(View.VISIBLE);
@@ -106,5 +118,55 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
         }
         return convertView;
     }    
+		
+	private Bitmap loadImageFromStorage(int id){
+		Bitmap bmap = null;
+		File path = getExternalFile(id);
+		if(path==null){
+			path = getInternalFile(id);
+		}
+		if(path!=null && path.exists()){
+		    try {
+		        bmap = BitmapFactory.decodeStream(new FileInputStream(path));
+		    } 
+		    catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    }
+		}
+	    return bmap;
+	}
+	
+	private  File getExternalFile(int id){
+	    // To be safe, check if the SDCard is mounted
+	    File mediaFile = null;
+		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+			File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+		            + "/Android/data/"
+		            + mContext.getApplicationContext().getPackageName()
+		            + "/Posters"); 
+		    // This location works best if you want the created images to be shared
+		    // between applications and persist after your app has been uninstalled
+			
+		    // Create the storage directory if it does not exist
+		    if (! mediaStorageDir.exists()){
+		        if (! mediaStorageDir.mkdirs()){
+		            return null;
+		        }
+		    } 
+		    String mImageName=id+".jpg";
+		    mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);  
+		}
+		return mediaFile;
+	} 
+	
+	private  File getInternalFile(int id){
+		File mediaFile = null;
+        ContextWrapper cw = new ContextWrapper(mContext.getApplicationContext());
+        // path to /data/data/com.nappking.movietimesup/app_data/posters
+        File parent_path = cw.getDir("posters", Context.MODE_PRIVATE);
+        mediaFile = new File(parent_path, id+".jpg");
+        
+		return mediaFile;
+	} 
 
 }

@@ -37,8 +37,9 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 
 	protected Bitmap doInBackground(String... urls) {
 		String urldisplay = urls[0];
-		Bitmap bmap = loadImageFromStorage();
-		if(bmap==null){
+		Bitmap bmap = null;
+		//Bitmap bmap = loadImageFromStorage();
+		//if(bmap==null){
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				bmap = BitmapFactory.decodeStream(in);
@@ -48,7 +49,7 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
-		}
+		//}
 		return bmap;
 	}
 

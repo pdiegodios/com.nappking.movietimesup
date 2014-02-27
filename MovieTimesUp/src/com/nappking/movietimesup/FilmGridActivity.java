@@ -95,9 +95,8 @@ public class FilmGridActivity extends DBActivity{
 		if (grid.getAdapter() == null) {
 			MovieListAdapter movieAdapter = new MovieListAdapter(this, android.R.layout.simple_list_item_1, movies);		
 			grid.setAdapter(movieAdapter);
-			} else {
-			((MovieListAdapter)grid.getAdapter())
-			.reload(movies, idMovie);
+		} else {
+			((MovieListAdapter)grid.getAdapter()).reload(movies, idMovie);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 

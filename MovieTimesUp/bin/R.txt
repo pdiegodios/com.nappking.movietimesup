@@ -7,6 +7,7 @@ int anim slideintop 0x7f040005
 int anim slideoutbottom 0x7f040006
 int anim slideouttop 0x7f040007
 int anim zoomin 0x7f040008
+int anim zoomout 0x7f040009
 int attr confirm_logout 0x7f01000c
 int attr done_button_background 0x7f010006
 int attr done_button_text 0x7f010004
@@ -258,7 +259,7 @@ int id answer 0x7f06005b
 int id background 0x7f06002a
 int id bragButton 0x7f060033
 int id buttons 0x7f060062
-int id camera 0x7f060071
+int id camera 0x7f06006e
 int id cancelButton 0x7f060007
 int id challengeButton 0x7f060032
 int id character 0x7f060068
@@ -294,10 +295,7 @@ int id director 0x7f060066
 int id director_header 0x7f060048
 int id director_icon 0x7f060047
 int id director_text 0x7f060049
-int id endline 0x7f06006d
 int id endpicture 0x7f06006c
-int id endsubtext 0x7f06006f
-int id endtext 0x7f06006e
 int id fbLoggedOutHomeFragment 0x7f060038
 int id filmaffinity 0x7f060040
 int id firstFragment 0x7f06003a
@@ -319,7 +317,7 @@ int id life1 0x7f06005c
 int id life2 0x7f06005d
 int id life3 0x7f06005e
 int id livesContainer 0x7f060027
-int id loading 0x7f060073
+int id loading 0x7f060070
 int id location 0x7f060065
 int id login 0x7f060036
 int id loginButton 0x7f060034
@@ -333,14 +331,14 @@ int id picker_subtitle 0x7f060019
 int id playButton 0x7f06002e
 int id points 0x7f060023
 int id poster 0x7f06003f
-int id previouslinear 0x7f060070
+int id previouslinear 0x7f06006d
 int id progress 0x7f060008
 int id progressContainer 0x7f060029
 int id quotes 0x7f06006a
 int id quotes_header 0x7f060054
 int id quotes_icon 0x7f060053
 int id quotes_text 0x7f060055
-int id relative_container 0x7f060072
+int id relative_container 0x7f06006f
 int id rightcurtain 0x7f060021
 int id scoreTextView 0x7f060028
 int id scoreboardContainer 0x7f060037
@@ -395,8 +393,9 @@ int layout movieitem 0x7f03001a
 int layout moviescheme 0x7f03001b
 int layout movietemplate 0x7f03001c
 int layout splash 0x7f03001d
-int raw shot 0x7f050000
-int raw slide_metal_gate 0x7f050001
+int raw coindrop 0x7f050000
+int raw shot 0x7f050001
+int raw slide_metal_gate 0x7f050002
 int string actor 0x7f090037
 int string actors 0x7f090038
 int string app_id 0x7f09001a
