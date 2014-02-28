@@ -26,7 +26,6 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,7 +46,7 @@ import android.widget.TextView;
 
 public class FilmActivity extends DBActivity{
 	private static int DEFAULT_TIME = 5000;
-    static final int TIME_TO_BET = 8000;
+    static final int TIME_TO_BET = 10000;
     static final int INTERVAL = 100;
     static final int DEFAULT_VALUE = 100;
 	
@@ -206,35 +205,44 @@ public class FilmActivity extends DBActivity{
         dialog.setCancelable(false);
         //instantiate elements in the dialog
         final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
-        secondsPicked.setValue(DEFAULT_VALUE);
-        if(mUser!=null){
-        	secondsPicked.setMaxValue(mUser.getSeconds());
-        }
-        secondsPicked.setMinValue(10);
+        
+    	double limit = mUser.getSeconds();
+    	int iter = (int) Math.ceil(limit/10d);
+    	String[] values = new String[iter];
+    	for(int i=1; i<iter; i++){
+    		values[i-1] = Integer.toString(10*i);
+    	}
+    	values[iter-1] = Integer.toString(mUser.getSeconds());
+    	secondsPicked.setDisplayedValues(values);
+    	secondsPicked.setMaxValue(iter-1);
+    	secondsPicked.setMinValue(0);
+    	if(iter>9){
+    		secondsPicked.setValue(9);
+    	}    
         final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
-        final Button playButton = (Button) dialog.findViewById(R.id.actionButton);
-		playButton.setOnClickListener(new OnClickListener() {	//Unlock					
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-				mCurrentSeconds = secondsPicked.getValue();
-				startGame();
-			}
-		});
-        dialog.show();
+    	final int max = TIME_TO_BET/INTERVAL;
+    	progress.setMax(max);
+    	progress.setProgress(max);
+    	if(!this.isFinishing()){
+    		dialog.show();
+    	}
         
         CountDownTimer timer;
-        progress.setProgress(100);
         timer=new CountDownTimer(TIME_TO_BET,INTERVAL) {
+        	int currentProgress = max;
 	        @Override
 	        public void onTick(long millisUntilFinished) {
-	            progress.setProgress((int)(millisUntilFinished/TIME_TO_BET*100));
-	        }
-	
+	        	currentProgress = currentProgress-1;
+	            progress.setProgress(currentProgress);
+	        }	
 	        @Override
 	        public void onFinish() {
 		        progress.setProgress(0);
-				playButton.performClick();
+				dialog.dismiss();
+				String[] values = secondsPicked.getDisplayedValues();
+				mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
+				mUser.setSeconds(mUser.getSeconds()-mCurrentSeconds);
+				startGame();
 		    }
 		};
 		timer.start();
@@ -693,7 +701,7 @@ public class FilmActivity extends DBActivity{
 				finish();
 			}
 		});
-		playButton.setOnClickListener(new OnClickListener() {	//Unlock					
+		playButton.setOnClickListener(new OnClickListener() {	//play				
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();

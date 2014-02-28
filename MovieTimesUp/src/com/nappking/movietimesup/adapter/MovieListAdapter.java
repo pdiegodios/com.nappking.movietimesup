@@ -1,49 +1,66 @@
 package com.nappking.movietimesup.adapter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.android.friendsmash.R;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.task.DownloadPosterTask;
 
-public class MovieListAdapter extends ArrayAdapter<Movie>{
+public class MovieListAdapter extends BaseAdapter{
 	
 	private List<Movie> mMoviesList;
-	private int mIdMovie=-1;
+	private List<String> mLocked;
+	private List<String> mUnlocked;
 	private Context mContext;
     
-    public MovieListAdapter(Context context, int textViewResourceId, List<Movie> movies) {
-        super(context, textViewResourceId, movies);
+    public MovieListAdapter(Context context, List<Movie> movies, 
+    		List<String> locked, List<String> unlocked) {
+        super();
         this.mMoviesList = movies;
+        this.mLocked = locked;
+        this.mUnlocked = unlocked;
         this.mContext = context;
     }
     
     public List<Movie> getList(){
     	return mMoviesList;
     }
+
+	@Override
+	public int getCount() {
+		return mMoviesList.size();
+	}
+
+	@Override
+	public Movie getItem(int position) {
+		return mMoviesList.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return ((Movie) mMoviesList.get(position)).getId();
+	}    
     
-    public void reload(List<Movie> movies, int idMovie) {
+    public void reload(List<Movie> movies, List<String> locked, List<String> unlocked) {
     	this.mMoviesList.clear();
     	this.mMoviesList.addAll(movies);
-    	this.mIdMovie = idMovie;
+    	this.mLocked = locked;
+    	this.mUnlocked = unlocked;
     	notifyDataSetChanged();
     }
     
     static class ViewHolder{
+    	ProgressBar progress;
     	ImageView poster;
     	ImageView coin;
     	TextView title;
@@ -57,40 +74,33 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
      * @param v : view where to load the properties of the task
      * @param movie : movie item in the gridview
      */
-    private void display(ViewHolder v, final Movie movie){
-    	 
-    	if (v.poster != null) {
+    private void display(final ViewHolder v, final Movie movie){    	 
+    	if (v != null) {
     		int points = movie.getPoints();
     		v.points.setText(points+"");
-        	if(movie.isLocked(this.mContext)) {
-        		//Movie was locked and you can see anything about that   
-        		v.poster.setImageResource(R.drawable.filmstrip_locked);   
+    		v.title.setVisibility(View.INVISIBLE);
+    		v.progress.setVisibility(View.INVISIBLE);
+    		int id = movie.getId();
+        	if(mLocked.contains(id+"")){
+        		//Movie was locked and you can see anything about that  
+        		v.poster.setImageResource(R.drawable.filmstrip_locked);  
         		v.coin.setImageResource(R.drawable.movie_points_grey);
-        		v.title.setVisibility(View.INVISIBLE);
         	}	
-            else if (movie.isUnlocked(this.mContext)){
-            	//Movie was unlocked so you can see the poster and see the specific data
-        		int id = movie.getId();
-        		if(this.mIdMovie==-1 || this.mIdMovie == id){
-        			Bitmap bmap = loadImageFromStorage(id);
-        			if(bmap!=null){
-        				v.poster.setImageBitmap(bmap);
-        			}
-        			else{
-		        		v.poster.setImageResource(R.drawable.filmstrip);
-		        		new DownloadPosterTask(id,v.poster, this.mContext).execute(movie.getPoster()); 
-        			}
-	        		v.coin.setImageResource(R.drawable.movie_points);
-        		}
-        		v.title.setVisibility(View.VISIBLE);
-        		v.title.setText(movie.getTitle());
-            }
-            else{
+            else if(!mUnlocked.contains(id+"")){
             	//Movie is ready to play
         		v.poster.setImageResource(R.drawable.filmstrip);
         		v.coin.setImageResource(R.drawable.movie_points_green);
-            	v.title.setVisibility(View.INVISIBLE);
-            }        	
+            }    
+            else {
+            	//Movie was unlocked so you can see the poster and see the specific data
+        		//int id = movie.getId();    	
+    			v.progress.setVisibility(View.VISIBLE);            		
+        		v.poster.setImageResource(R.drawable.filmstrip);
+        		new DownloadPosterTask(id,v.poster,v.progress, this.mContext).execute(movie.getPoster()); 
+    			v.coin.setImageResource(R.drawable.movie_points);
+        		v.title.setVisibility(View.VISIBLE);
+        		v.title.setText(movie.getTitle());
+            }    	
     	}        
     }
 
@@ -101,11 +111,11 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
             LayoutInflater layout = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layout.inflate(R.layout.movieitem, null);
             holder = new ViewHolder();
+            holder.progress = (ProgressBar) convertView.findViewById(R.id.progress);
             holder.poster = (ImageView) convertView.findViewById(R.id.movieButton);
             holder.coin = (ImageView) convertView.findViewById(R.id.starpoints);
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.points = (TextView) convertView.findViewById(R.id.moviepoints);
-            holder.position = position;
             convertView.setTag(holder);
         }
         else{
@@ -113,60 +123,11 @@ public class MovieListAdapter extends ArrayAdapter<Movie>{
         }
         
         Movie movie = (Movie) mMoviesList.get(position);
+        holder.position = position;
         if (movie != null) {
         	display(holder,movie);	            
         }
         return convertView;
-    }    
-		
-	private Bitmap loadImageFromStorage(int id){
-		Bitmap bmap = null;
-		File path = getExternalFile(id);
-		if(path==null){
-			path = getInternalFile(id);
-		}
-		if(path!=null && path.exists()){
-		    try {
-		        bmap = BitmapFactory.decodeStream(new FileInputStream(path));
-		    } 
-		    catch (FileNotFoundException e) {
-		        e.printStackTrace();
-		    }
-		}
-	    return bmap;
-	}
-	
-	private  File getExternalFile(int id){
-	    // To be safe, check if the SDCard is mounted
-	    File mediaFile = null;
-		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-			File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
-		            + "/Android/data/"
-		            + mContext.getApplicationContext().getPackageName()
-		            + "/Posters"); 
-		    // This location works best if you want the created images to be shared
-		    // between applications and persist after your app has been uninstalled
-			
-		    // Create the storage directory if it does not exist
-		    if (! mediaStorageDir.exists()){
-		        if (! mediaStorageDir.mkdirs()){
-		            return null;
-		        }
-		    } 
-		    String mImageName=id+".jpg";
-		    mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);  
-		}
-		return mediaFile;
-	} 
-	
-	private  File getInternalFile(int id){
-		File mediaFile = null;
-        ContextWrapper cw = new ContextWrapper(mContext.getApplicationContext());
-        // path to /data/data/com.nappking.movietimesup/app_data/posters
-        File parent_path = cw.getDir("posters", Context.MODE_PRIVATE);
-        mediaFile = new File(parent_path, id+".jpg");
-        
-		return mediaFile;
-	} 
+    }
 
 }

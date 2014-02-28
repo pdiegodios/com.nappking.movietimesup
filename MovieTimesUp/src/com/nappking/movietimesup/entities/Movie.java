@@ -117,44 +117,6 @@ public class Movie implements Serializable{
 		return IMDB_WEB+imdbId;
 	}
 	
-	public boolean isUnlocked(Context context){
-		boolean result = false;
-		try {
-			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
-			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForId(1);
-			helper = null;
-			OpenHelperManager.releaseHelper();
-			if(user!=null){
-				ArrayList<String> unlockedMovies = user.getUnlockedMovies();
-				if (unlockedMovies.contains(this.id+""))
-					result = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public boolean isLocked(Context context){
-		boolean result = false;
-		try {
-			DBHelper helper = OpenHelperManager.getHelper(context, DBHelper.class);
-			Dao<User,Integer> daoUser = helper.getUserDAO();
-			User user = daoUser.queryForId(1);
-			helper = null;
-			OpenHelperManager.releaseHelper();
-			if(user!=null){
-				ArrayList<String> lockedMovies = user.getLockedMovies();
-				if (lockedMovies.contains(this.id+""))
-					result = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
 	//SETTERS
 	public void setRowid(int _id)					{this._id = _id;}
 	public void setId(int id) 						{this.id = id;}

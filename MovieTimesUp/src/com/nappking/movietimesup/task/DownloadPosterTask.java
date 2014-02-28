@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import android.content.Context;
@@ -13,33 +14,34 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 /**
  * Task to download a poster to SDCard or Internal Storage from a specified url
  * @author Nappking - pdiego
  */
 public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
+	final int IMAGE_MAX_SIZE = 500;
 	private int mId;
+	private ProgressBar mProgress;
 	private ImageView mView;
 	private Context mContext;
 	private File mPath;
 
-	public DownloadPosterTask(int id, ImageView view, Context context) {
+	public DownloadPosterTask(int id, ImageView view, ProgressBar progress, Context context) {
 		mId = id;
 		mView = view;
+		mProgress = progress;
 		mContext = context;
         mPath = getExternalFile();
-        if(mPath==null){
-        	mPath = getInternalFile();
-        }
 	}
 
 	protected Bitmap doInBackground(String... urls) {
 		String urldisplay = urls[0];
-		Bitmap bmap = null;
-		//Bitmap bmap = loadImageFromStorage();
-		//if(bmap==null){
+		Bitmap bmap = loadImageFromStorage();
+		if(bmap==null){
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				bmap = BitmapFactory.decodeStream(in);
@@ -49,15 +51,16 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
-		//}
+		}
 		return bmap;
 	}
 
 	protected void onPostExecute(Bitmap result) {
 		if(result!=null){
-			Log.i(this.toString(), "new poster: "+mPath.getAbsolutePath());
 			if(mView!=null)
 				mView.setImageBitmap(result);
+			if(mProgress!=null)
+				mProgress.setVisibility(View.INVISIBLE);
 		}
 	}    	
 	
@@ -68,20 +71,41 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
             //compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 10, fos);
             fos.close();
+			Log.i(this.toString(), "new poster: "+mPath.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 	
 	private Bitmap loadImageFromStorage(){
+		BitmapFactory.Options opts;
+		FileInputStream fis;
+		int resizeScale;
 		Bitmap bmap = null;
 		if(mPath!=null && mPath.exists()){
 		    try {
-		        bmap = BitmapFactory.decodeStream(new FileInputStream(mPath));
+		    	opts = new BitmapFactory.Options();
+		    	opts.inJustDecodeBounds = true;
+		    	fis = new FileInputStream(mPath);
+		    	BitmapFactory.decodeStream(fis, null, opts);
+				fis.close();
+				resizeScale = 1;
+				if (opts.outHeight > IMAGE_MAX_SIZE || opts.outWidth > IMAGE_MAX_SIZE) {
+					resizeScale = (int)Math.pow(2, (int) Math.round(Math.log(IMAGE_MAX_SIZE / (double) Math.max(opts.outHeight, opts.outWidth)) / Math.log(0.5)));
+				}
+				// Load pre-scaled bitmap
+				opts = new BitmapFactory.Options();
+				opts.inSampleSize = resizeScale;
+				fis = new FileInputStream(mPath);
+				bmap = BitmapFactory.decodeStream(fis, null, opts);
+				fis.close();
 		    } 
 		    catch (FileNotFoundException e) {
 		        e.printStackTrace();
 		    }
+		    catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	    return bmap;
 	}

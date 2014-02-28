@@ -38,6 +38,8 @@ public class FilmGridActivity extends DBActivity{
 	ImageView rightCurtain;
 	ImageView spectators;
 	User user;
+	List<String> lockedMovies;
+	List<String> unlockedMovies;
 	static final int result_sent = 0;
 	
 	@Override
@@ -64,14 +66,14 @@ public class FilmGridActivity extends DBActivity{
      	rightCurtain.getLayoutParams().width = resize;
      	resize = Math.round(heightSize*density);
      	spectators.getLayoutParams().height = resize;
-		update(-1);
+		update();
 		setListeners();
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
-		update(-1);
+		update();
 	}
 	
 	@Override
@@ -79,24 +81,26 @@ public class FilmGridActivity extends DBActivity{
 		super.onPause();
 	}
 	
-	private void update(int idMovie){     	
+	private void update(){     	
 		//We obtain all the movies & the user
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		try {
 			Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			movies = (ArrayList<Movie>) daoMovie.queryForAll();
-			user = (User) daoUser.queryForAll().get(0);
+			user = (User) daoUser.queryForId(1);
+			lockedMovies = user.getLockedMovies();
+			unlockedMovies = user.getUnlockedMovies();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
 
 		//MovieListAdapter to show correctly the movies
 		if (grid.getAdapter() == null) {
-			MovieListAdapter movieAdapter = new MovieListAdapter(this, android.R.layout.simple_list_item_1, movies);		
+			MovieListAdapter movieAdapter = new MovieListAdapter(this, movies, lockedMovies, unlockedMovies);		
 			grid.setAdapter(movieAdapter);
 		} else {
-			((MovieListAdapter)grid.getAdapter()).reload(movies, idMovie);
+			((MovieListAdapter)grid.getAdapter()).reload(movies, lockedMovies, unlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
@@ -109,7 +113,7 @@ public class FilmGridActivity extends DBActivity{
 				//Click over each film. The behaviour depends on the state.
 				Movie movie = (Movie) grid.getAdapter().getItem(position);
 				
-				if(movie.isLocked(FilmGridActivity.this)){ //Locked movie
+				if(lockedMovies.contains(movie.getId()+"")){ //Locked movie
 		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
 		            dialog.setContentView(R.layout.clapperdialog);
 		            dialog.setCancelable(true);
@@ -140,14 +144,14 @@ public class FilmGridActivity extends DBActivity{
 									Dao<User,Integer> daoUser = getHelper().getUserDAO();
 									user.setLastUpdate(System.currentTimeMillis());
 									daoUser.update(user);
-									List<User> users = new ArrayList<User>();
-									users.add(user);
-									uploadUsers(users);
 								} catch (SQLException e) {
 									e.printStackTrace();
 								}
 								dialog.dismiss();
-								update(idMovie);
+								update();
+								List<User> users = new ArrayList<User>();
+								users.add(user);
+								uploadUsers(users);
 							}
 							else{
 								//Dialog inviting to buy seconds
@@ -181,7 +185,7 @@ public class FilmGridActivity extends DBActivity{
 		            dialog.show();
 				}
 				
-				else if(movie.isUnlocked(FilmGridActivity.this)){ //Solved movie: We show the film information
+				else if(unlockedMovies.contains(movie.getId()+"")){ //Solved movie: We show the film information
 					Intent myIntent = new Intent(getBaseContext(),FilmInfoActivity.class);
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
@@ -198,17 +202,6 @@ public class FilmGridActivity extends DBActivity{
 				}
 			}
 		});		
-	}
-	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {   
-    	super.onActivityResult(requestCode, resultCode, data); 
-    	switch(requestCode) { 
-        	case (result_sent) :  
-        		if (resultCode == RESULT_OK){ 
-        			
-        		}	
-        		break; 
-    	} 		
 	}
 	
 	private void uploadUsers(List<User> users){

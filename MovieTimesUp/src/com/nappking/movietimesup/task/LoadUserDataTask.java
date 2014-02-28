@@ -108,7 +108,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 					updateBuilder.updateColumnValue(User.LASTUPDATE, user.getLastUpdate());
 					updateBuilder.update();
 				}
-				else{
+				else if (mUser!=null && user!=null && user.getLastUpdate()<mUser.getLastUpdate()){
 					//If user from Local DB was updated after user from WS
 					List<User> users = new ArrayList<User>();
 					users.add(user);

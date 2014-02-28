@@ -2,26 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/clapperboard"
-    android:paddingTop="70dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:paddingTop="55dp"
 	android:paddingBottom="24dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
+    <ProgressBar 
+        android:id="@+id/progress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>   
     <LinearLayout 
         android:orientation="vertical"
+	    android:paddingLeft="8dp"
+	    android:paddingRight="8dp"
         android:layout_gravity="center_vertical"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <ProgressBar 
-            android:id="@+id/progress"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:max="100"
-            android:progress="100"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>            
+        android:layout_weight="1">         
 	    <TextView
 	        android:textSize="16sp"
 	        android:textStyle="bold"     
@@ -35,26 +35,15 @@
 		<LinearLayout 
 		    android:layout_height="match_parent"
 		    android:layout_width="match_parent"
+		    android:orientation="horizontal"
 		    android:layout_gravity="center"
 		    android:gravity="center">
 		    <NumberPicker 
 		        android:id="@+id/picker"	
 		        android:gravity="center"
 		        android:background="@android:color/transparent"
-		        android:layout_gravity="center"
-		        android:orientation="horizontal"	      
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"/>
 	    </LinearLayout>
     </LinearLayout>    
-    <Button 
-        android:id="@+id/actionButton"
-        android:text="@string/play"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:height="40dp"
-        android:background="@drawable/circle_darkergrey"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"/> 
 </LinearLayout>

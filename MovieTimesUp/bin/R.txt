@@ -393,9 +393,13 @@ int layout movieitem 0x7f03001a
 int layout moviescheme 0x7f03001b
 int layout movietemplate 0x7f03001c
 int layout splash 0x7f03001d
-int raw coindrop 0x7f050000
-int raw shot 0x7f050001
-int raw slide_metal_gate 0x7f050002
+int raw beep 0x7f050000
+int raw coindrop 0x7f050001
+int raw final_beeps 0x7f050002
+int raw movie_clapper 0x7f050003
+int raw projector 0x7f050004
+int raw shot 0x7f050005
+int raw slide_metal_gate 0x7f050006
 int string actor 0x7f090037
 int string actors 0x7f090038
 int string app_id 0x7f09001a
