@@ -22,8 +22,8 @@ import com.facebook.widget.LoginButton.OnErrorListener;
 import com.nappking.movietimesup.widget.AutoResizeTextView;
 
 public class FirstFragment extends Fragment {
-	
 	View progressContainer;
+	MediaPlayer gateSound;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {		
@@ -31,6 +31,17 @@ public class FirstFragment extends Fragment {
 		setRetainInstance(true);		
 		// Hide the notification bar
 		getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	}
+
+	@Override
+	public void onDestroy() {
+		if(gateSound!=null){
+			if(gateSound.isPlaying()){
+				gateSound.stop();
+			}
+			gateSound.release();
+		}
+		super.onDestroy();
 	}
 	
 	@Override
@@ -46,11 +57,10 @@ public class FirstFragment extends Fragment {
 		animSlideOut.setDuration(3400);
 		final LoginButton login = (LoginButton) v.findViewById(R.id.login);
 		Animation bounce = AnimationUtils.loadAnimation(this.getActivity(), R.anim.bouncing);
-     	final MediaPlayer slideSound = MediaPlayer.create(this.getActivity(), R.raw.slide_metal_gate);
-     	slideSound.setOnCompletionListener(new OnCompletionListener(){
+     	gateSound = MediaPlayer.create(this.getActivity(), R.raw.slide_metal_gate);
+     	gateSound.setOnCompletionListener(new OnCompletionListener(){
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				mp.release();
 				login.performClick();
 			}
      	});
@@ -58,7 +68,7 @@ public class FirstFragment extends Fragment {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				loginButton.setBackgroundResource(android.R.color.transparent);
-				slideSound.start();
+				gateSound.start();
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}			

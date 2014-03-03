@@ -19,7 +19,6 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -250,49 +249,52 @@ public class HomeFragment extends Fragment {
 		return v;
 	}
 	
-	// Personalize this HomeFragment (social-version only)
-	void personalizeHomeFragment() {
-		if (application.getCurrentFBUser() != null) {
-			//If there is not user associated, one is created in the local database
-			DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
-			try {
-				Dao <User,Integer> daoUser = helper.getUserDAO();
-				Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
-				User user = daoUser.queryForId(1);
-				int moviesCount = daoMovie.queryForAll().size();
+	private void updateUser(){
+		//If there is not user associated, one is created in the local database
+		DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
+		try {
+			Dao <User,Integer> daoUser = helper.getUserDAO();
+			Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
+			User user = daoUser.queryForId(1);
+			int moviesCount = daoMovie.queryForAll().size();
 
-				if(user==null){
-					user = new User();
-					user.setName(application.getCurrentFBUser().getName());
-					user.setLockedMovies(new ArrayList<String>());
-					user.setUnlockedMovies(new ArrayList<String>());
-					user.setLastUpdate(Long.valueOf("0"));
-					user.setScore(0);
-					user.setSeconds(moviesCount*100);
-					user.setUser(application.getCurrentFBUser().getId());
-					daoUser.create(user);
-					helper = null;
-		            OpenHelperManager.releaseHelper();
-				}
-				/**
-				 * Now we have to consult if the FBUser played before to our game.
-				 * If there is not data associated to the user or it was updated before
-				 * local DB User, the user is created or updated, otherwise the data 
-				 * is dowloaded to sqlite. 
-				 */
-				new LoadUserDataTask(this.getActivity(),user).execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(user==null){
+				user = new User();
+				user.setName(application.getCurrentFBUser().getName());
+				user.setLockedMovies(new ArrayList<String>());
+				user.setUnlockedMovies(new ArrayList<String>());
+				user.setLastUpdate(Long.valueOf("0"));
+				user.setScore(0);
+				user.setSeconds(moviesCount*100);
+				user.setUser(application.getCurrentFBUser().getId());
+				daoUser.create(user);
 				helper = null;
 	            OpenHelperManager.releaseHelper();
 			}
+			/**
+			 * Now we have to consult if the FBUser played before to our game.
+			 * If there is not data associated to the user or it was updated before
+			 * local DB User, the user is created or updated, otherwise the data 
+			 * is dowloaded to sqlite. 
+			 */
+			new LoadUserDataTask(this.getActivity(),user).execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			helper = null;
+            OpenHelperManager.releaseHelper();
+		}
+	}
+	
+	// Personalize this HomeFragment (social-version only)
+	void personalizeHomeFragment() {
+		if (application.getCurrentFBUser() != null) {	
+			updateUser();
 			// Personalize this HomeFragment if the currentFBUser has been fetched			
 			// Set the id for the userImage ProfilePictureView
             // that in turn displays the profile picture
             userImage.setProfileId(application.getCurrentFBUser().getId());
             // and show the cropped (square) version ...
-            userImage.setCropped(true);
-            
+            userImage.setCropped(true);            
             // Set the welcomeTextView Textview's text to the user's name
             welcomeTextView.setText("Welcome, " + application.getCurrentFBUser().getFirstName());
 		}

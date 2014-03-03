@@ -19,7 +19,6 @@ import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 import com.nappking.movietimesup.widget.Clue;
 
-import android.R.interpolator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -137,6 +136,7 @@ public class FilmActivity extends DBActivity{
 	private ArrayList<Clue> mClues;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
+	private int mIndex=-1;
 	
 	private User mUser;
 		
@@ -163,10 +163,11 @@ public class FilmActivity extends DBActivity{
 	@Override
 	protected void onPause() {
 		super.onPause();
-		releaseAll();
 		if(!mIsFinished){
+			mIsFinished=true;
 			uploadUsers(true);	
 		}
+		releaseAll();
 	}
 
 	@Override
@@ -193,229 +194,231 @@ public class FilmActivity extends DBActivity{
 	}
 	
 	private void displayInitialClues(){
-		camerablink.start();
-		projector.setLooping(true);
-		projector.start();
-		transition.start();	
-		ArrayList<Clue> trash = cleanClues();
-		trash.clear();
-		if(!mClues.isEmpty()){
-			Random r = new Random();
-			int selection = r.nextInt(mClues.size());
-			Clue selectedClue = mClues.remove(selection);
-			ImageButton button = selectedClue.getButton();
-			button.performClick();
-		    new Handler().postDelayed(new Runnable(){
-		        @Override
-		        public void run() {
-		        	displayInitialClues();
-		        }
-		    }, DEFAULT_TIME);
-		}else{
-			mCurrentSeconds = 0;
-			displaySelectedClue(null, null, null, 0);
-			camerablink.stop();
-			makeBet();
+		if(!mIsFinished){
+			cleanClues();
+			if(!mClues.isEmpty()){
+				Random r = new Random();
+				int selection = r.nextInt(mClues.size());
+				Clue selectedClue = mClues.remove(selection);
+				ImageButton button = selectedClue.getButton();
+				button.performClick();
+			    new Handler().postDelayed(new Runnable(){
+			        @Override
+			        public void run() {
+			        	displayInitialClues();
+			        }
+			    }, DEFAULT_TIME);
+			}else{
+				mCurrentSeconds = 0;
+				displaySelectedClue(null, null, null, 0);
+				camerablink.stop();
+				makeBet();
+			}
 		}
 	}
 	
 	private void makeBet(){
-		//Allow to bet your seconds to play during some seconds
-        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-        dialog.setContentView(R.layout.clapperdialogbet);
-        dialog.setCancelable(false);
-        //instantiate elements in the dialog
-        final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
-        secondsPicked.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-		final Animation fadeInText = AnimationUtils.loadAnimation(this, R.anim.fadein);
-        final TextView textLights = (TextView) dialog.findViewById(R.id.lightstext);
-        final TextView textCamera = (TextView) dialog.findViewById(R.id.cameratext);
-        final TextView textAction = (TextView) dialog.findViewById(R.id.actiontext);
-        textLights.setVisibility(View.INVISIBLE);
-        textCamera.setVisibility(View.INVISIBLE);
-        textAction.setVisibility(View.INVISIBLE);
-		fadeInText.setDuration(INTERVAL*4);		
-    	double limit = mUser.getSeconds();
-    	int iter = (int) Math.ceil(limit/10d);
-    	String[] values = new String[iter];
-    	for(int i=1; i<iter; i++){
-    		values[i-1] = Integer.toString(10*i);
-    	}
-    	values[iter-1] = Integer.toString(mUser.getSeconds());
-    	secondsPicked.setDisplayedValues(values);
-    	secondsPicked.setMaxValue(iter-1);
-    	secondsPicked.setMinValue(0);
-    	if(iter>9){
-    		secondsPicked.setValue(9);
-    	}    
-    	else{
-    		secondsPicked.setValue(iter);
-    	}
-        final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
-    	final int max = TIME_TO_BET/INTERVAL;
-    	final int half = max/2;
-    	progress.setMax(max);
-    	progress.setProgress(max);
-    	if(!this.isFinishing()){
-    		dialog.show();
-    	}
-        
-        CountDownTimer timer;
-        timer=new CountDownTimer(TIME_TO_BET+600,INTERVAL) {
-        	int currentProgress = max;
-	        @Override
-	        public void onTick(long millisUntilFinished) {
-	        	if(currentProgress==max-10){
-	        		textLights.setVisibility(View.VISIBLE);
-	        		textLights.startAnimation(fadeInText);
-	        	}
-	        	else if(currentProgress==half){
-	        		textCamera.setVisibility(View.VISIBLE);
-	        		textCamera.startAnimation(fadeInText);
-	        	}
-	        	else if(currentProgress==10){
-	        		textAction.setVisibility(View.VISIBLE);
-	        		textAction.startAnimation(fadeInText);
-	        	}
-	        	if(currentProgress>0)
-	        		currentProgress = currentProgress-1;
-	            progress.setProgress(currentProgress);
-	        }	
-	        @Override
-	        public void onFinish() {
-		        progress.setProgress(0);
-		        beeps.stop();
-				dialog.dismiss();
-				String[] values = secondsPicked.getDisplayedValues();
-				mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
-				mUser.setSeconds(mUser.getSeconds()-mCurrentSeconds);
-				startGame();
-		    }
-		};
-		timer.start();
-		beeps.start();
+		if(!mIsFinished){
+			//Allow to bet your seconds to play during some seconds
+	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
+	        dialog.setContentView(R.layout.clapperdialogbet);
+	        dialog.setCancelable(false);
+	        //instantiate elements in the dialog
+	        final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
+	        secondsPicked.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+			final Animation fadeInText = AnimationUtils.loadAnimation(this, R.anim.fadein);
+	        final TextView textLights = (TextView) dialog.findViewById(R.id.lightstext);
+	        final TextView textCamera = (TextView) dialog.findViewById(R.id.cameratext);
+	        final TextView textAction = (TextView) dialog.findViewById(R.id.actiontext);
+	        textLights.setVisibility(View.INVISIBLE);
+	        textCamera.setVisibility(View.INVISIBLE);
+	        textAction.setVisibility(View.INVISIBLE);
+			fadeInText.setDuration(INTERVAL*4);		
+	    	double limit = mUser.getSeconds();
+	    	int iter = (int) Math.ceil(limit/10d);
+	    	String[] values = new String[iter];
+	    	for(int i=1; i<iter; i++){
+	    		values[i-1] = Integer.toString(10*i);
+	    	}
+	    	values[iter-1] = Integer.toString(mUser.getSeconds());
+	    	secondsPicked.setDisplayedValues(values);
+	    	secondsPicked.setMaxValue(iter-1);
+	    	secondsPicked.setMinValue(0);
+	    	if(iter>9){
+	    		secondsPicked.setValue(9);
+	    	}    
+	    	else{
+	    		secondsPicked.setValue(iter);
+	    	}
+	        final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
+	    	final int max = TIME_TO_BET/INTERVAL;
+	    	final int half = max/2;
+	    	progress.setMax(max);
+	    	progress.setProgress(max);
+	    	if(!this.isFinishing()){
+	    		dialog.show();
+	    	}
+	        
+	        mCountDown=new CountDownTimer(TIME_TO_BET+600,INTERVAL) {
+	        	int currentProgress = max;
+		        @Override
+		        public void onTick(long millisUntilFinished) {
+		        	if(currentProgress==max-10){
+		        		textLights.setVisibility(View.VISIBLE);
+		        		textLights.startAnimation(fadeInText);
+		        	}
+		        	else if(currentProgress==half){
+		        		textCamera.setVisibility(View.VISIBLE);
+		        		textCamera.startAnimation(fadeInText);
+		        	}
+		        	else if(currentProgress==10){
+		        		textAction.setVisibility(View.VISIBLE);
+		        		textAction.startAnimation(fadeInText);
+		        	}
+		        	if(currentProgress>0)
+		        		currentProgress = currentProgress-1;
+		            progress.setProgress(currentProgress);
+		        }	
+		        @Override
+		        public void onFinish() {
+			        progress.setProgress(0);
+			        beeps.stop();
+					dialog.dismiss();
+					String[] values = secondsPicked.getDisplayedValues();
+					mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
+					mUser.setSeconds(mUser.getSeconds()-mCurrentSeconds);
+					startGame();
+			    }
+			};
+			mCountDown.start();
+			beeps.start();
+		}
 	}
 	
 	private void startGame(){
-		this.linearPrevious.startAnimation(animFadeOut);		
-		//deploy title space and button to answer & buttons to get clues for seconds
-		this.linearButtons.startAnimation(animSlideInBottom);
-		this.title.startAnimation(animSlideInTop);
-		this.iAnswer.startAnimation(animSlideInTop);
-		this.iLife1.startAnimation(animSlideInTop);
-		this.iLife2.startAnimation(animSlideInTop);
-		this.iLife3.startAnimation(animSlideInTop);
-		
-		this.linearButtons.setVisibility(View.VISIBLE);
-		this.title.setVisibility(View.VISIBLE);
-		this.iAnswer.setVisibility(View.VISIBLE);		
-		this.iLife1.setVisibility(View.VISIBLE);
-		this.iLife2.setVisibility(View.VISIBLE);		
-		this.iLife3.setVisibility(View.VISIBLE);
-				
-		initClues();
-		
-        mCountDown=new CountDownTimer((mCurrentSeconds+1)*1000,1000) {
-        	boolean lastSecondsSounding = false;
-        	boolean toFinish = true;
-	        @Override
-	        public void onTick(long millisUntilFinished) {
-	        	Log.i("COUNTDOWN", "toFinish: "+millisUntilFinished+";  secs: "+mCurrentSeconds);
-	        	if(mCurrentSeconds<11 && !lastSecondsSounding){
-	        		lastSecondsSounding = true;
-	        		beeps.reset();
-	        		beeps = MediaPlayer.create(getBaseContext(), R.raw.final_beeps);
-	        		beeps.start();
-	        	}
-	        	if(mCurrentSeconds<=0 && toFinish){
-	        		textseconds.setText("");
-	        		onFinish();
-	        	}
-	        	else if(toFinish){
-	        		ArrayList<Clue> cluesToHide = cleanClues();
-	        		for(Clue clue: cluesToHide){
-	        			clue.getButton().setImageResource(R.drawable.ticket_empty);
-	        			clue.getButton().setClickable(false);
-	        		}
-		            textseconds.setText(mCurrentSeconds+"");
-		        	mCurrentSeconds = mCurrentSeconds-1;
-	        	}
-	        }	
-	        @Override
-	        public void onFinish() {
-	        	if(toFinish){
-	        		if(beeps!=null && beeps.isPlaying()){
-		        		beeps.stop();
-	        		}
-	        		toFinish=false;
-	        		this.cancel();
-	        		endGame();
-	        	}
-		    }
-		};
-		mCountDown.start();
+		if(!mIsFinished){
+			this.linearPrevious.startAnimation(animFadeOut);		
+			//deploy title space and button to answer & buttons to get clues for seconds
+			this.linearButtons.startAnimation(animSlideInBottom);
+			this.title.startAnimation(animSlideInTop);
+			this.iAnswer.startAnimation(animSlideInTop);
+			this.iLife1.startAnimation(animSlideInTop);
+			this.iLife2.startAnimation(animSlideInTop);
+			this.iLife3.startAnimation(animSlideInTop);
+			
+			this.linearButtons.setVisibility(View.VISIBLE);
+			this.title.setVisibility(View.VISIBLE);
+			this.iAnswer.setVisibility(View.VISIBLE);		
+			this.iLife1.setVisibility(View.VISIBLE);
+			this.iLife2.setVisibility(View.VISIBLE);		
+			this.iLife3.setVisibility(View.VISIBLE);
+					
+			initClues();
+			
+	        mCountDown=new CountDownTimer((mCurrentSeconds+1)*1000,1000) {
+	        	boolean lastSecondsSounding = false;
+	        	boolean toFinish = true;
+		        @Override
+		        public void onTick(long millisUntilFinished) {
+		        	Log.i("COUNTDOWN", "toFinish: "+millisUntilFinished+";  secs: "+mCurrentSeconds);
+		        	if(mCurrentSeconds<11 && !lastSecondsSounding){
+		        		lastSecondsSounding = true;
+		        		beeps.reset();
+		        		beeps = MediaPlayer.create(getBaseContext(), R.raw.final_beeps);
+		        		beeps.start();
+		        	}
+		        	if(mCurrentSeconds<=0 && toFinish){
+		        		textseconds.setText("");
+		        		onFinish();
+		        	}
+		        	else if(toFinish){
+		        		ArrayList<Clue> cluesToHide = cleanClues();
+		        		for(Clue clue: cluesToHide){
+		        			clue.getButton().setImageResource(R.drawable.ticket_empty);
+		        			clue.getButton().setClickable(false);
+		        		}
+			            textseconds.setText(mCurrentSeconds+"");
+			        	mCurrentSeconds = mCurrentSeconds-1;
+		        	}
+		        }	
+		        @Override
+		        public void onFinish() {
+		        	if(toFinish){
+		        		if(beeps!=null && beeps.isPlaying()){
+			        		beeps.stop();
+		        		}
+		        		toFinish=false;
+		        		this.cancel();
+		        		endGame();
+		        	}
+			    }
+			};
+			mCountDown.start();
+		}
 	}
 	
 	private void endGame(){
 		//mCountDown.cancel();
-		mIsFinished=true;
-		if(mInTime){
-			//Unlock movie and add points to User score
-			this.iEnding.setImageResource(R.drawable.coin);
-			int points = android.R.color.transparent;
-			switch(movie.getPoints()){
-				case 1: points = R.drawable.point1;break;
-				case 2: points = R.drawable.point2;break;
-				case 3: points = R.drawable.point3;break;
-				case 4: points = R.drawable.point4;break;
-				case 5: points = R.drawable.point5;break;
-				default:break;
+		if(!mIsFinished){
+			if(mInTime){ //USER WIN POINTS & UNLOCK THE MOVIE
+				mIsFinished=true;
+				//Unlock movie and add points to User score
+				this.iEnding.setImageResource(R.drawable.coin);
+				int points = android.R.color.transparent;
+				switch(movie.getPoints()){
+					case 1: points = R.drawable.point1;break;
+					case 2: points = R.drawable.point2;break;
+					case 3: points = R.drawable.point3;break;
+					case 4: points = R.drawable.point4;break;
+					case 5: points = R.drawable.point5;break;
+					default:break;
+				}
+				this.iPoints.setImageResource(points);
+				this.iAnswer.setImageResource(R.drawable.resolvetrue);
+				this.iAnswer.setClickable(false);
+				uploadUsers(false);
+				applause = MediaPlayer.create(getBaseContext(), R.raw.applause);
+				projector.stop();
+				applause.start();
 			}
-			this.iPoints.setImageResource(points);
-			this.iAnswer.setImageResource(R.drawable.resolvetrue);
-			this.iAnswer.setClickable(false);
-			uploadUsers(false);
-			applause = MediaPlayer.create(getBaseContext(), R.raw.applause);
-			projector.stop();
-			applause.start();
+			else{//USER LOSE & LOCK THE MOVIE
+				mIsFinished=true;
+				//Lock movie
+				this.iEnding.setImageResource(R.drawable.timesup);
+				uploadUsers(true);
+			}
+			//undeploy title space and button to answer
+			displaySelectedClue(null, null, null, 0);
+			this.iAnswer.startAnimation(animSlideOutTop);
+			this.title.startAnimation(animSlideOutTop);
+			this.iEnding.startAnimation(animZoomIn);	
+			this.iEnding.setVisibility(View.VISIBLE);
+			Intent i = new Intent();
+			i.putExtra(FilmGridActivity.POSITION, mIndex);
+			setResult(RESULT_OK, i);
 		}
-		else{
-			//Lock movie
-			this.iEnding.setImageResource(R.drawable.timesup);
-			uploadUsers(true);
-		}
-		//undeploy title space and button to answer
-		displaySelectedClue(null, null, null, 0);
-		this.iAnswer.startAnimation(animSlideOutTop);
-		this.title.startAnimation(animSlideOutTop);
-		this.iEnding.startAnimation(animZoomIn);	
-		this.iEnding.setVisibility(View.VISIBLE);
-		Intent i = new Intent();
-		i.putExtra("ID", movie.getId());
-		setResult(RESULT_OK, i);
 	}
 	
 	private void displaySelectedClue(String title, String text, TextView textview, int seconds){
-		this.linearClues.setVisibility(View.INVISIBLE);
-		this.texttitleclue.setText(title);
-		this.textclue.setText(text);
-		if(textview!=null){
-			textview.startAnimation(animFadeOutInfo);
+		if(!mIsFinished){
+			this.linearClues.setVisibility(View.INVISIBLE);
+			this.texttitleclue.setText(title);
+			this.textclue.setText(text);
+			if(textview!=null){
+				textview.startAnimation(animFadeOutInfo);
+			}
+			this.linearClues.startAnimation(animFadeIn);
+			this.linearClues.setVisibility(View.VISIBLE);
+			this.mCurrentSeconds = mCurrentSeconds-seconds;
 		}
-		this.linearClues.startAnimation(animFadeIn);
-		this.linearClues.setVisibility(View.VISIBLE);
-		this.mCurrentSeconds = mCurrentSeconds-seconds;
 	}
 	
-	
-	
-	
+		
 
 	/**
 	 * AUXILIAR METHODS
 	 */
-	
-	
+		
 	private ArrayList<Clue> cleanClues(){
 		ArrayList<Clue> cluesAvailable = new ArrayList<Clue>();
 		ArrayList<Clue> cluesRemoved = new ArrayList<Clue>();
@@ -443,8 +446,7 @@ public class FilmActivity extends DBActivity{
 	
 	/**
 	 * COMPONENT BEHAVIOUR METHODS
-	 */
-	
+	 */	
 	
 	private void initiate(){
 		try {
@@ -454,7 +456,8 @@ public class FilmActivity extends DBActivity{
 			e.printStackTrace();
 		}
      	movie = 				(Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
-		imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+		mIndex = 				this.getIntent().getIntExtra(FilmGridActivity.POSITION, -1);
+     	imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
 		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
 		animFadeIn = 			AnimationUtils.loadAnimation(this, R.anim.fadein);
@@ -507,11 +510,8 @@ public class FilmActivity extends DBActivity{
      	beeps = 				MediaPlayer.create(this, R.raw.final_beeps);
      	final OnCompletionListener finishSound = new OnCompletionListener(){
 			@Override
-			public void onCompletion(MediaPlayer mp) {
+			public void onCompletion(MediaPlayer mp) { //LOCK
 				mp.stop();
-				Intent i = new Intent();
-				i.putExtra("ID", movie.getId());
-				setResult(RESULT_OK, i);
 				finish();
 			}     		
      	};
@@ -853,69 +853,77 @@ public class FilmActivity extends DBActivity{
 	}	
 	
 	private void showInitialWarning(){
-        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-        dialog.setContentView(R.layout.clapperdialog);
-        dialog.setCancelable(false);
-        //instantiate elements in the dialog
-        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-        Button playButton = (Button) dialog.findViewById(R.id.actionButton);
-        playButton.setText(R.string.play);
-		TextView text = (TextView) dialog.findViewById(R.id.text);			
-		TextView subText = (TextView) dialog.findViewById(R.id.subText);				
-		//set values & actions
-		text.setText(getResources().getString(R.string.are_you_ready));
-		subText.setText(getResources().getString(R.string.initial_warning));
-		cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-				mIsFinished=true;
-				Intent i = new Intent();
-				i.putExtra("ID", movie.getId());
-				setResult(RESULT_OK, i);
-				finish();
-			}
-		});
-		playButton.setOnClickListener(new OnClickListener() {	//play				
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-				displayInitialClues();
-			}
-		});
-        dialog.show();
+		if(!mIsFinished){
+	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
+	        dialog.setContentView(R.layout.clapperdialog);
+	        dialog.setCancelable(false);
+	        //instantiate elements in the dialog
+	        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+	        Button playButton = (Button) dialog.findViewById(R.id.actionButton);
+	        playButton.setText(R.string.play);
+			TextView text = (TextView) dialog.findViewById(R.id.text);			
+			TextView subText = (TextView) dialog.findViewById(R.id.subText);				
+			//set values & actions
+			text.setText(getResources().getString(R.string.are_you_ready));
+			subText.setText(getResources().getString(R.string.initial_warning));
+			cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					mIsFinished=true;
+					Intent i = new Intent();
+					i.putExtra(FilmGridActivity.POSITION, mIndex);
+					setResult(RESULT_CANCELED, i);
+					finish();
+				}
+			});
+			playButton.setOnClickListener(new OnClickListener() {	//play				
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					camerablink.start();
+					projector.setLooping(true);
+					projector.start();
+					transition.start();	
+					displayInitialClues();
+				}
+			});
+	        dialog.show();
+		}
 	}
 	
 	private void showLockWarning(){
-        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-        dialog.setContentView(R.layout.clapperdialog);
-        dialog.setCancelable(true);
-        //instantiate elements in the dialog
-        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-        Button lockButton = (Button) dialog.findViewById(R.id.actionButton);
-        lockButton.setText(R.string.give_up);
-		TextView text = (TextView) dialog.findViewById(R.id.text);			
-		TextView subText = (TextView) dialog.findViewById(R.id.subText);				
-		//set values & actions
-		text.setText(getResources().getString(R.string.give_up_question));
-		subText.setText(getResources().getString(R.string.movie_will_be_locked));
-		cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-		lockButton.setOnClickListener(new OnClickListener() {	//Unlock					
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-				Intent i = new Intent();
-				i.putExtra("ID", movie.getId());
-				setResult(RESULT_OK, i);
-				finish();
-			}
-		});
-        dialog.show();
+		if(!mIsFinished){
+	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
+	        dialog.setContentView(R.layout.clapperdialog);
+	        dialog.setCancelable(true);
+	        //instantiate elements in the dialog
+	        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+	        Button lockButton = (Button) dialog.findViewById(R.id.actionButton);
+	        lockButton.setText(R.string.give_up);
+			TextView text = (TextView) dialog.findViewById(R.id.text);			
+			TextView subText = (TextView) dialog.findViewById(R.id.subText);				
+			//set values & actions
+			text.setText(getResources().getString(R.string.give_up_question));
+			subText.setText(getResources().getString(R.string.movie_will_be_locked));
+			cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+			lockButton.setOnClickListener(new OnClickListener() {	//Lock					
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					Intent i = new Intent();
+					i.putExtra(FilmGridActivity.POSITION, mIndex);
+					setResult(RESULT_OK, i);
+					finish();
+				}
+			});
+	        dialog.show();
+		}
 	}
 
 		
@@ -983,36 +991,16 @@ public class FilmActivity extends DBActivity{
 			mCountDown.cancel();
 			mCountDown=null;
 		}
-		animFadeIn=null;
-		animFadeOut=null;
-		animZoomOut=null;
-		animSlideInTop=null;
-		animSlideInBottom=null;
-		animSlideOutBottom=null;
-		animSlideOutTop=null;
-		animSlideOutTopLifes=null;
-		transition=null;
-		camerablink=null;
-		frame=null;
-		imm=null;
-		linearClues=null;
-		linearButtons=null;
-		linearPrevious=null;
-		bgenre=null;
-		bdate=null;
-		blocation=null;
-		bdirector=null;
-		bactor=null;
-		bcharacter=null;
-		btrivia=null;
-		bquote=null;
-		bsynopsis=null;
-		iAnswer=null;
-		iLife1=null;
-		iLife2=null;
-		iLife3=null;
-		iEnding=null;
-		iPoints=null;
-		iCamera=null;
+		if(camerablink!=null){
+			if(camerablink.isRunning()){
+				camerablink.stop();
+			}
+		}
+		if(transition!=null){
+			if(transition.isRunning()){
+				transition.stop();
+			}
+		}
+		mClues.clear();
 	}
 }

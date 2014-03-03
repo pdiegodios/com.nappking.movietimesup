@@ -2,6 +2,7 @@ package com.nappking.movietimesup.adapter;
 
 import java.util.List;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import com.facebook.android.friendsmash.R;
 import com.nappking.movietimesup.entities.Movie;
-import com.nappking.movietimesup.task.DownloadPosterTask;
+import com.nappking.movietimesup.loader.ImageLoader;
 
 public class MovieListAdapter extends BaseAdapter{
 	
@@ -20,6 +21,7 @@ public class MovieListAdapter extends BaseAdapter{
 	private List<String> mLocked;
 	private List<String> mUnlocked;
 	private Context mContext;
+    public ImageLoader imageLoader; 
     
     public MovieListAdapter(Context context, List<Movie> movies,
     		List<String> locked, List<String> unlocked) {
@@ -28,6 +30,7 @@ public class MovieListAdapter extends BaseAdapter{
         this.mLocked = locked;
         this.mUnlocked = unlocked;
         this.mContext = context;
+        imageLoader=new ImageLoader(mContext.getApplicationContext());
     }
     
     public List<Movie> getList(){
@@ -49,10 +52,10 @@ public class MovieListAdapter extends BaseAdapter{
 		return ((Movie) mMoviesList.get(position)).getId();
 	}    
     
-    public void reload(List<String> locked, List<String> unlocked) {
+    public void setValues(List<String> locked, List<String> unlocked) {
     	this.mLocked = locked;
     	this.mUnlocked = unlocked;
-    	notifyDataSetChanged();
+    	//notifyDataSetChanged();
     }
     
     static class ViewHolder{
@@ -70,34 +73,30 @@ public class MovieListAdapter extends BaseAdapter{
      * @param v : view where to load the properties of the task
      * @param movie : movie item in the gridview
      */
-    private void display(final ViewHolder v, final Movie movie){    	 
-    	if (v != null) {
-    		int points = movie.getPoints();
-    		v.points.setText(points+"");
-    		v.title.setVisibility(View.INVISIBLE);
-    		v.progress.setVisibility(View.INVISIBLE);
-    		int id = movie.getId();
-        	if(mLocked.contains(id+"")){
-        		//Movie was locked and you can see anything about that  
-        		v.poster.setImageResource(R.drawable.filmstrip_locked);  
-        		v.coin.setImageResource(R.drawable.movie_points_grey);
-        	}	
-            else if(!mUnlocked.contains(id+"")){
-            	//Movie is ready to play
-        		v.poster.setImageResource(R.drawable.filmstrip);
-        		v.coin.setImageResource(R.drawable.movie_points_green);
-            }    
-            else {
-            	//Movie was unlocked so you can see the poster and see the specific data
-        		//int id = movie.getId();  
-    			v.progress.setVisibility(View.VISIBLE);            		
-        		v.poster.setImageResource(R.drawable.filmstrip);
-        		new DownloadPosterTask(id,v.poster,v.progress, this.mContext).execute(movie.getPoster()); 
-            	v.coin.setImageResource(R.drawable.movie_points);
-        		v.title.setVisibility(View.VISIBLE);
-        		v.title.setText(movie.getTitle());
-            }    	
-    	}        
+    private void display(final ViewHolder v, final Movie movie){
+		int points = movie.getPoints();
+		v.points.setText(points+"");
+		v.title.setVisibility(View.INVISIBLE);
+		v.progress.setVisibility(View.INVISIBLE);
+		int id = movie.getId();
+    	if(mLocked.contains(id+"")){
+    		//Movie was locked and you can see anything about that  
+    		v.poster.setImageResource(R.drawable.filmstrip_locked);  
+    		v.coin.setImageResource(R.drawable.movie_points_grey);
+    	}	
+        else if(!mUnlocked.contains(id+"")){
+        	//Movie is ready to play
+    		v.poster.setImageResource(R.drawable.filmstrip);
+    		v.coin.setImageResource(R.drawable.movie_points_green);
+        }    
+        else {
+        	//Movie was unlocked so you can see the poster and see the specific data  
+			v.progress.setVisibility(View.VISIBLE);            		
+            imageLoader.DisplayImage(id, movie.getPoster(), v.poster, v.progress);
+    		v.coin.setImageResource(R.drawable.movie_points);
+    		v.title.setVisibility(View.VISIBLE);
+    		v.title.setText(movie.getTitle());
+        }    
     }
 
 	@Override

@@ -17,6 +17,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 
 import com.facebook.android.friendsmash.R;
@@ -163,8 +166,17 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	
 	private String readMovieFeed(String url){
 	    StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		// The default value is zero, that means the timeout is not used. 
+		int timeoutConnection = 30000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		// Set the default socket timeout (SO_TIMEOUT) 
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 30000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();

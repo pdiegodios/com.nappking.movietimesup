@@ -30,7 +30,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FilmGridActivity extends DBActivity{
-	private static final int REQUEST_CODE=1;
+	private static final int GAME_CODE=1;
+	public static final String POSITION="POSITION";
 	
 	GridView grid;
 	TextView txPoints;
@@ -103,7 +104,7 @@ public class FilmGridActivity extends DBActivity{
 			MovieListAdapter movieAdapter = new MovieListAdapter(this, mMovies,lockedMovies, unlockedMovies);		
 			grid.setAdapter(movieAdapter);
 		} else {
-			((MovieListAdapter)grid.getAdapter()).reload(lockedMovies, unlockedMovies);
+			((MovieListAdapter)grid.getAdapter()).setValues(lockedMovies, unlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
@@ -111,7 +112,12 @@ public class FilmGridActivity extends DBActivity{
 	
 	//To update item returned from FilmActivity or unlocked from this class
 	private void updateItemAt(int index){
-		
+		update();
+		Log.i("UPDATE ITEM", "Index:"+index);
+		if(index!=-1){
+		    View v = grid.getChildAt(index - grid.getFirstVisiblePosition());
+		    grid.getAdapter().getView(index, v, grid);
+		}
 	}
 	
 	public void setListeners(){
@@ -120,6 +126,7 @@ public class FilmGridActivity extends DBActivity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				//Click over each film. The behaviour depends on the state.
 				Movie movie = (Movie) grid.getAdapter().getItem(position);
+				final int index = position;
 				
 				if(lockedMovies.contains(movie.getId()+"")){ //Locked movie
 		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
@@ -157,7 +164,7 @@ public class FilmGridActivity extends DBActivity{
 								}
 								dialog.dismiss();
 								//Make another update()!!! for unlock movie
-								update();
+								updateItemAt(index);
 								List<User> users = new ArrayList<User>();
 								users.add(user);
 								uploadUsers(users);
@@ -206,11 +213,27 @@ public class FilmGridActivity extends DBActivity{
 					Intent myIntent = new Intent(getBaseContext(),FilmActivity.class);
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
+					myBundle.putInt(POSITION, index);
 					myIntent.putExtras(myBundle);
-					startActivityForResult(myIntent, REQUEST_CODE);
+					startActivityForResult(myIntent, GAME_CODE);
 				}
 			}
 		});		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i("RESULT", "requestCode:"+requestCode+"; resultCode:"+resultCode);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case GAME_CODE:
+                	int index = data.getIntExtra(POSITION, -1);
+                	updateItemAt(index);
+                    break;
+                default: 
+                	break;
+            }
+        }
 	}
 	
 	private void uploadUsers(List<User> users){

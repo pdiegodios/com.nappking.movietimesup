@@ -15,21 +15,25 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.android.friendsmash.R;
 import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
+import com.nappking.movietimesup.loader.ImageLoader;
 
 public class FilmInfoActivity extends DBActivity{
 	
 	private ImageView mPosterImage, mGenreImage, mDirectorImage, 
 			mActorImage, mCharacterImage, mStorylineImage, mQuotesImage, mTriviaImage;
+	private ProgressBar mProgress;
 	private TextView mTitle, mOriginalTitle, mGenreHeader, mGenre, mCountryYear, mDirectorHeader, 
 			mDirector, mActorHeader, mActor, mCharacter, mCharacterHeader, mStorylineHeader, 
 			mStoryline, mQuotes, mQuotesHeader, mTrivia, mTriviaHeader, mPoints;
 	private ImageButton mFilmaffinityButton, mImdbButton; 
 	private Movie mMovie;
+	private ImageLoader mImageLoader;
 	
 
 	@Override
@@ -44,7 +48,7 @@ public class FilmInfoActivity extends DBActivity{
 	private void initiate() {
 
      	mMovie = (Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
-		
+		mImageLoader = new ImageLoader(this.getApplicationContext());
 		//Density to resize
 		float density = getResources().getDisplayMetrics().density;
 		
@@ -72,6 +76,7 @@ public class FilmInfoActivity extends DBActivity{
      	mStorylineHeader = (TextView) findViewById(R.id.storyline_header);
      	mStoryline = (TextView) findViewById(R.id.storyline_text);
      	mPoints = (TextView) findViewById(R.id.points);
+     	mProgress = (ProgressBar) findViewById(R.id.progress);
      	mPosterImage = (ImageView) findViewById(R.id.poster);
 		mGenreImage = (ImageView) findViewById(R.id.genre_icon);
 		mQuotesImage = (ImageView) findViewById(R.id.quotes_icon);
@@ -151,6 +156,7 @@ public class FilmInfoActivity extends DBActivity{
 				quotes=quotes+" \n\""+quote+"\"";
 			}
 		}
+        mImageLoader.DisplayImage(mMovie.getId(), mMovie.getPoster(), mPosterImage, mProgress);
 		Bitmap poster = getBitmapPoster(mMovie.getId()); 
 		mPosterImage.setImageBitmap(poster);
 		mTitle.setText(mMovie.getTitle());		
@@ -203,8 +209,7 @@ public class FilmInfoActivity extends DBActivity{
 		            return null;
 		        }
 		    } 
-		    String mImageName=id+".jpg";
-		    path = new File(storageDir.getPath() + File.separator + mImageName);  
+		    path = new File(storageDir.getPath() + File.separator + id);  
 		    
 			if(path.exists()){
 			    try {
