@@ -12,14 +12,14 @@
 		    android:id="@+id/grid"
 		    android:paddingTop="15dp"
 		    android:paddingBottom="15dp"
-		    android:paddingLeft="22dp"
-		    android:paddingRight="22dp"
+		    android:paddingLeft="30dp"
+		    android:paddingRight="30dp"
 		    android:columnWidth="120dp"		
 		    android:focusable="false"    
 		    android:focusableInTouchMode="false"	
 		    android:listSelector="@android:color/transparent"   
-		    android:layout_marginLeft="20dp"
-		    android:layout_marginRight="20dp"
+		    android:layout_marginLeft="22dp"
+		    android:layout_marginRight="22dp"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent" 
 		    android:layout_weight="1.5"
@@ -45,7 +45,7 @@
 	    android:src="@drawable/leftcurtain"
 	    android:layout_gravity="left"
 	    android:layout_height="fill_parent"
-	    android:layout_width="70dp"
+	    android:layout_width="60dp"
 	    android:scaleType="fitXY"/>
 	
 	<ImageView 
@@ -53,7 +53,7 @@
 	    android:src="@drawable/rightcurtain"
 	    android:layout_gravity="right"
 	    android:layout_height="fill_parent"
-	    android:layout_width="70dp"
+	    android:layout_width="60dp"
 	    android:scaleType="fitXY"/>
 	<ImageView 
 	    android:id="@+id/spectators"
@@ -64,25 +64,29 @@
 	    android:scaleType="fitXY"/>
 	<TextView 
 	    android:id="@+id/points"
-	    android:background="@drawable/movie_points"	    
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+	    android:background="@drawable/coin"	    
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
         android:layout_gravity="top|right"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:text="50"
+        android:textSize="20sp"
 	    />
 	
 	<TextView 
 	    android:id="@+id/seconds"
-	    android:background="@drawable/movie_points"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+	    android:background="@drawable/clock"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_margin="6dp"
         android:layout_gravity="top|left"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="18sp"
+        android:text="1000"
 	    />
 </FrameLayout>

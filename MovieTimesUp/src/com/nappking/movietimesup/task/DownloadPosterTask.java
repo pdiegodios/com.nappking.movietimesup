@@ -42,6 +42,7 @@ public class DownloadPosterTask extends AsyncTask<String, Void, Bitmap> {
 		String urldisplay = urls[0];
 		Bitmap bmap = loadImageFromStorage();
 		if(bmap==null){
+			//TODO: Do this with a Service!!!
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				bmap = BitmapFactory.decodeStream(in);

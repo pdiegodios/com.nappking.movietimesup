@@ -19,7 +19,9 @@ import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 import com.nappking.movietimesup.widget.Clue;
 
+import android.R.interpolator;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -27,12 +29,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,13 +47,13 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class FilmActivity extends DBActivity{
 	private static int DEFAULT_TIME = 5000;
-    static final int TIME_TO_BET = 10000;
-    static final int INTERVAL = 100;
-    static final int DEFAULT_VALUE = 100;
-	
+    private static final int TIME_TO_BET = 10000;
+    private static final int INTERVAL = 100;
+    
 	//POINTS
 	private static int GENRE = 15;
 	private static int DATE = 12;
@@ -65,6 +69,7 @@ public class FilmActivity extends DBActivity{
 	FrameLayout frame;
 	InputMethodManager imm;
 	Animation animFadeIn;
+	Animation animFadeOutInfo;
 	Animation animFadeOut;
 	Animation animZoomIn; 
 	Animation animZoomOut; 
@@ -78,10 +83,14 @@ public class FilmActivity extends DBActivity{
 	AnimationListener listenerTitle;
 	AnimationListener listenerLifes;
 	AnimationListener listenerClose;
+	AnimationListener listenerCloseVictory;
 	AnimationListener listenerButtons;
 	AnimationListener listenerHideLinear;
-	MediaPlayer shotSound;
-	MediaPlayer coinSound;
+	CountDownTimer mCountDown;
+	MediaPlayer applause;
+	MediaPlayer closeSound;
+	MediaPlayer projector;
+	MediaPlayer beeps;
 	LinearLayout linearClues;
 	LinearLayout linearButtons;
 	LinearLayout linearPrevious;
@@ -101,8 +110,18 @@ public class FilmActivity extends DBActivity{
 	ImageView iEnding;
 	ImageView iPoints;
 	ImageView iCamera;
-	TextView titleclue;
+	TextView textseconds;
+	TextView texttitleclue;
 	TextView textclue;
+	TextView infogenre;
+	TextView infodate;
+	TextView infolocation;
+	TextView infodirector;
+	TextView infoactor;
+	TextView infocharacter;
+	TextView infotrivia;
+	TextView infoquote;
+	TextView infosynopsis;
 	EditText title;
 	
 	//COUNTERS
@@ -144,11 +163,12 @@ public class FilmActivity extends DBActivity{
 	@Override
 	protected void onPause() {
 		super.onPause();
+		releaseAll();
 		if(!mIsFinished){
 			uploadUsers(true);	
 		}
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -174,15 +194,16 @@ public class FilmActivity extends DBActivity{
 	
 	private void displayInitialClues(){
 		camerablink.start();
-		transition.start();		
-		cleanClues();
+		projector.setLooping(true);
+		projector.start();
+		transition.start();	
+		ArrayList<Clue> trash = cleanClues();
+		trash.clear();
 		if(!mClues.isEmpty()){
 			Random r = new Random();
 			int selection = r.nextInt(mClues.size());
 			Clue selectedClue = mClues.remove(selection);
 			ImageButton button = selectedClue.getButton();
-			mCurrentSeconds = mCurrentSeconds-selectedClue.getSeconds();
-			cleanClues();
 			button.performClick();
 		    new Handler().postDelayed(new Runnable(){
 		        @Override
@@ -192,7 +213,7 @@ public class FilmActivity extends DBActivity{
 		    }, DEFAULT_TIME);
 		}else{
 			mCurrentSeconds = 0;
-			displaySelectedClue(null, null);
+			displaySelectedClue(null, null, null, 0);
 			camerablink.stop();
 			makeBet();
 		}
@@ -205,7 +226,15 @@ public class FilmActivity extends DBActivity{
         dialog.setCancelable(false);
         //instantiate elements in the dialog
         final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
-        
+        secondsPicked.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+		final Animation fadeInText = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        final TextView textLights = (TextView) dialog.findViewById(R.id.lightstext);
+        final TextView textCamera = (TextView) dialog.findViewById(R.id.cameratext);
+        final TextView textAction = (TextView) dialog.findViewById(R.id.actiontext);
+        textLights.setVisibility(View.INVISIBLE);
+        textCamera.setVisibility(View.INVISIBLE);
+        textAction.setVisibility(View.INVISIBLE);
+		fadeInText.setDuration(INTERVAL*4);		
     	double limit = mUser.getSeconds();
     	int iter = (int) Math.ceil(limit/10d);
     	String[] values = new String[iter];
@@ -219,8 +248,12 @@ public class FilmActivity extends DBActivity{
     	if(iter>9){
     		secondsPicked.setValue(9);
     	}    
+    	else{
+    		secondsPicked.setValue(iter);
+    	}
         final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
     	final int max = TIME_TO_BET/INTERVAL;
+    	final int half = max/2;
     	progress.setMax(max);
     	progress.setProgress(max);
     	if(!this.isFinishing()){
@@ -228,16 +261,30 @@ public class FilmActivity extends DBActivity{
     	}
         
         CountDownTimer timer;
-        timer=new CountDownTimer(TIME_TO_BET,INTERVAL) {
+        timer=new CountDownTimer(TIME_TO_BET+600,INTERVAL) {
         	int currentProgress = max;
 	        @Override
 	        public void onTick(long millisUntilFinished) {
-	        	currentProgress = currentProgress-1;
+	        	if(currentProgress==max-10){
+	        		textLights.setVisibility(View.VISIBLE);
+	        		textLights.startAnimation(fadeInText);
+	        	}
+	        	else if(currentProgress==half){
+	        		textCamera.setVisibility(View.VISIBLE);
+	        		textCamera.startAnimation(fadeInText);
+	        	}
+	        	else if(currentProgress==10){
+	        		textAction.setVisibility(View.VISIBLE);
+	        		textAction.startAnimation(fadeInText);
+	        	}
+	        	if(currentProgress>0)
+	        		currentProgress = currentProgress-1;
 	            progress.setProgress(currentProgress);
 	        }	
 	        @Override
 	        public void onFinish() {
 		        progress.setProgress(0);
+		        beeps.stop();
 				dialog.dismiss();
 				String[] values = secondsPicked.getDisplayedValues();
 				mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
@@ -246,12 +293,11 @@ public class FilmActivity extends DBActivity{
 		    }
 		};
 		timer.start();
+		beeps.start();
 	}
 	
 	private void startGame(){
-		Log.i("SECONDS!!!", mCurrentSeconds+"");
-		this.linearPrevious.startAnimation(animFadeOut);
-		
+		this.linearPrevious.startAnimation(animFadeOut);		
 		//deploy title space and button to answer & buttons to get clues for seconds
 		this.linearButtons.startAnimation(animSlideInBottom);
 		this.title.startAnimation(animSlideInTop);
@@ -266,9 +312,53 @@ public class FilmActivity extends DBActivity{
 		this.iLife1.setVisibility(View.VISIBLE);
 		this.iLife2.setVisibility(View.VISIBLE);		
 		this.iLife3.setVisibility(View.VISIBLE);
+				
+		initClues();
+		
+        mCountDown=new CountDownTimer((mCurrentSeconds+1)*1000,1000) {
+        	boolean lastSecondsSounding = false;
+        	boolean toFinish = true;
+	        @Override
+	        public void onTick(long millisUntilFinished) {
+	        	Log.i("COUNTDOWN", "toFinish: "+millisUntilFinished+";  secs: "+mCurrentSeconds);
+	        	if(mCurrentSeconds<11 && !lastSecondsSounding){
+	        		lastSecondsSounding = true;
+	        		beeps.reset();
+	        		beeps = MediaPlayer.create(getBaseContext(), R.raw.final_beeps);
+	        		beeps.start();
+	        	}
+	        	if(mCurrentSeconds<=0 && toFinish){
+	        		textseconds.setText("");
+	        		onFinish();
+	        	}
+	        	else if(toFinish){
+	        		ArrayList<Clue> cluesToHide = cleanClues();
+	        		for(Clue clue: cluesToHide){
+	        			clue.getButton().setImageResource(R.drawable.ticket_empty);
+	        			clue.getButton().setClickable(false);
+	        		}
+		            textseconds.setText(mCurrentSeconds+"");
+		        	mCurrentSeconds = mCurrentSeconds-1;
+	        	}
+	        }	
+	        @Override
+	        public void onFinish() {
+	        	if(toFinish){
+	        		if(beeps!=null && beeps.isPlaying()){
+		        		beeps.stop();
+	        		}
+	        		toFinish=false;
+	        		this.cancel();
+	        		endGame();
+	        	}
+		    }
+		};
+		mCountDown.start();
 	}
 	
 	private void endGame(){
+		//mCountDown.cancel();
+		mIsFinished=true;
 		if(mInTime){
 			//Unlock movie and add points to User score
 			this.iEnding.setImageResource(R.drawable.coin);
@@ -283,7 +373,11 @@ public class FilmActivity extends DBActivity{
 			}
 			this.iPoints.setImageResource(points);
 			this.iAnswer.setImageResource(R.drawable.resolvetrue);
+			this.iAnswer.setClickable(false);
 			uploadUsers(false);
+			applause = MediaPlayer.create(getBaseContext(), R.raw.applause);
+			projector.stop();
+			applause.start();
 		}
 		else{
 			//Lock movie
@@ -291,21 +385,26 @@ public class FilmActivity extends DBActivity{
 			uploadUsers(true);
 		}
 		//undeploy title space and button to answer
-		displaySelectedClue(null, null);
+		displaySelectedClue(null, null, null, 0);
 		this.iAnswer.startAnimation(animSlideOutTop);
 		this.title.startAnimation(animSlideOutTop);
 		this.iEnding.startAnimation(animZoomIn);	
 		this.iEnding.setVisibility(View.VISIBLE);
-		
-		mIsFinished=true;
+		Intent i = new Intent();
+		i.putExtra("ID", movie.getId());
+		setResult(RESULT_OK, i);
 	}
 	
-	private void displaySelectedClue(String title, String text){
+	private void displaySelectedClue(String title, String text, TextView textview, int seconds){
 		this.linearClues.setVisibility(View.INVISIBLE);
-		this.titleclue.setText(title);
+		this.texttitleclue.setText(title);
 		this.textclue.setText(text);
+		if(textview!=null){
+			textview.startAnimation(animFadeOutInfo);
+		}
 		this.linearClues.startAnimation(animFadeIn);
 		this.linearClues.setVisibility(View.VISIBLE);
+		this.mCurrentSeconds = mCurrentSeconds-seconds;
 	}
 	
 	
@@ -317,14 +416,20 @@ public class FilmActivity extends DBActivity{
 	 */
 	
 	
-	private void cleanClues(){
+	private ArrayList<Clue> cleanClues(){
 		ArrayList<Clue> cluesAvailable = new ArrayList<Clue>();
+		ArrayList<Clue> cluesRemoved = new ArrayList<Clue>();
+		Log.i("Seconds to spend: ", mCurrentSeconds+"");
 		for(Clue clue: mClues){
 			if(clue.getSeconds()<=mCurrentSeconds){
 				cluesAvailable.add(clue);
 			}
+			else{
+				cluesRemoved.add(clue);
+			}
 		}
 		mClues = cluesAvailable;
+		return cluesRemoved;
 	}
 	
 	private String deAccent(String str) {
@@ -353,6 +458,9 @@ public class FilmActivity extends DBActivity{
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
 		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
 		animFadeIn = 			AnimationUtils.loadAnimation(this, R.anim.fadein);
+		animFadeOutInfo = 		AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+		animFadeOutInfo.setDuration(1500);
+		animFadeOutInfo.setInterpolator(getBaseContext(),android.R.interpolator.anticipate);
 		animFadeOut = 			AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 		animSlideInBottom = 	AnimationUtils.loadAnimation(this, R.anim.slideinbottom);
 		animSlideOutBottom =	AnimationUtils.loadAnimation(this, R.anim.slideoutbottom);
@@ -379,23 +487,34 @@ public class FilmActivity extends DBActivity{
      	btrivia = 				(ImageButton) findViewById(R.id.others);
      	bquote = 				(ImageButton) findViewById(R.id.quotes);
      	bsynopsis = 			(ImageButton) findViewById(R.id.synopsis);
-     	titleclue = 			(TextView) findViewById(R.id.titleclue);
+     	infogenre = 			(TextView) findViewById(R.id.genreinfo);
+     	infodate = 				(TextView) findViewById(R.id.dateinfo);
+     	infolocation = 			(TextView) findViewById(R.id.locationinfo);
+     	infodirector = 			(TextView) findViewById(R.id.directorinfo);
+     	infoactor = 			(TextView) findViewById(R.id.actorinfo);
+     	infocharacter = 		(TextView) findViewById(R.id.characterinfo);
+     	infotrivia = 			(TextView) findViewById(R.id.triviainfo);
+     	infoquote = 			(TextView) findViewById(R.id.quoteinfo);
+     	infosynopsis = 			(TextView) findViewById(R.id.synopsisinfo);
+     	textseconds = 			(TextView) findViewById(R.id.seconds);
+     	texttitleclue = 		(TextView) findViewById(R.id.titleclue);
      	textclue = 				(TextView) findViewById(R.id.textclue);
      	title = 				(EditText) findViewById(R.id.title);
      	title.setTextSize(14 * getResources().getDisplayMetrics().density);
      	transition = 			(AnimationDrawable) frame.getBackground();
-     	camerablink = 			(AnimationDrawable) iCamera.getDrawable();
-     	shotSound = 			MediaPlayer.create(this, R.raw.shot);
-     	coinSound = 			MediaPlayer.create(this, R.raw.coindrop);
-     	OnCompletionListener finish = new OnCompletionListener(){
+     	camerablink = 			(AnimationDrawable) iCamera.getDrawable();   	
+     	projector =				MediaPlayer.create(this, R.raw.projector);
+     	beeps = 				MediaPlayer.create(this, R.raw.final_beeps);
+     	final OnCompletionListener finishSound = new OnCompletionListener(){
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				mp.release();
+				mp.stop();
+				Intent i = new Intent();
+				i.putExtra("ID", movie.getId());
+				setResult(RESULT_OK, i);
 				finish();
 			}     		
      	};
-     	shotSound.setOnCompletionListener(finish);
-     	coinSound.setOnCompletionListener(finish);
 		listenerTitle = new AnimationListener() {			
 			@Override
 			public void onAnimationStart(Animation animation) {}
@@ -425,13 +544,30 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				if(!mInTime){
-					shotSound.start();
+					projector.stop();
+					closeSound = MediaPlayer.create(getBaseContext(), R.raw.shot);
+					closeSound.setOnCompletionListener(finishSound);
+					closeSound.start();
 					iEnding.setImageResource(R.drawable.timesup_shot);
 				}
 				else{
-					coinSound.start();
 					iPoints.startAnimation(animZoomOut);
 					iPoints.setVisibility(View.VISIBLE);
+				}
+			}
+		};
+		listenerCloseVictory = new AnimationListener() {			
+			@Override
+			public void onAnimationStart(Animation animation) {}
+			@Override
+			public void onAnimationRepeat(Animation animation) {}			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				if(mInTime){
+					closeSound = MediaPlayer.create(getBaseContext(), R.raw.coindrop);
+					closeSound.setOnCompletionListener(finishSound);
+					closeSound.start();
+					applause.stop();
 				}
 			}
 		};
@@ -449,6 +585,7 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onAnimationStart(Animation animation) {
 				iAnswer.setImageResource(R.drawable.resolvefalse);
+				iAnswer.setClickable(false);
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}			
@@ -463,6 +600,7 @@ public class FilmActivity extends DBActivity{
 				}
 				else {
 					iAnswer.setImageResource(R.drawable.resolve);
+					iAnswer.setClickable(true);
 					if(mAttemps==2){
 						iLife2.setVisibility(View.INVISIBLE);
 						iLife1.setVisibility(View.INVISIBLE);
@@ -474,17 +612,7 @@ public class FilmActivity extends DBActivity{
 			}
 		};     	
 		
-		//Clues
-		mClues = new ArrayList<Clue>();
-		mClues.add(new Clue(bgenre, GENRE));
-		mClues.add(new Clue(bdate, DATE));
-		mClues.add(new Clue(blocation, LOCATION));
-		mClues.add(new Clue(bdirector, DIRECTOR));
-		mClues.add(new Clue(bactor, ACTOR));
-		mClues.add(new Clue(bcharacter, CHARACTER));
-		mClues.add(new Clue(bquote, QUOTE));
-		mClues.add(new Clue(btrivia, TRIVIA));
-		mClues.add(new Clue(bsynopsis, SYNOPSIS));
+		initClues();
 		
 		//Initial visibility
      	linearClues.setVisibility(View.INVISIBLE);
@@ -496,11 +624,35 @@ public class FilmActivity extends DBActivity{
 		iLife3.setVisibility(View.INVISIBLE);
      	iEnding.setVisibility(View.INVISIBLE);
      	iPoints.setVisibility(View.INVISIBLE);
+     	infogenre.setVisibility(View.INVISIBLE);
+     	infodate.setVisibility(View.INVISIBLE);
+     	infolocation.setVisibility(View.INVISIBLE);
+     	infodirector.setVisibility(View.INVISIBLE);
+     	infoactor.setVisibility(View.INVISIBLE);
+     	infocharacter.setVisibility(View.INVISIBLE);
+     	infotrivia.setVisibility(View.INVISIBLE);
+     	infoquote.setVisibility(View.INVISIBLE);
+     	infosynopsis.setVisibility(View.INVISIBLE);
      	animFadeOut.setAnimationListener(listenerHideLinear);
 		animSlideOutTop.setAnimationListener(listenerTitle);
 		animSlideOutTopLifes.setAnimationListener(listenerLifes);
 		animSlideOutBottom.setAnimationListener(listenerButtons);
 		animZoomIn.setAnimationListener(listenerClose);		
+		animZoomOut.setAnimationListener(listenerCloseVictory);
+	}
+	
+	private void initClues(){
+		//Clues
+		mClues = new ArrayList<Clue>();
+		mClues.add(new Clue(bgenre, GENRE));
+		mClues.add(new Clue(bdate, DATE));
+		mClues.add(new Clue(blocation, LOCATION));
+		mClues.add(new Clue(bdirector, DIRECTOR));
+		mClues.add(new Clue(bactor, ACTOR));
+		mClues.add(new Clue(bcharacter, CHARACTER));
+		mClues.add(new Clue(bquote, QUOTE));
+		mClues.add(new Clue(btrivia, TRIVIA));
+		mClues.add(new Clue(bsynopsis, SYNOPSIS));
 	}
 	
 	private void setListeners(){
@@ -509,17 +661,28 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				if(movie.getGenre()!=null){
 					bgenre.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.genre).toUpperCase(),movie.getGenre());
+					displaySelectedClue(getResources().getString(R.string.genre).toUpperCase(),
+							movie.getGenre(), infogenre, GENRE);
 					movie.setGenre(null);
 				}
 			}
 		});
+     	title.setOnEditorActionListener(new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE){
+					iAnswer.performClick();
+				}
+				return false;
+			}
+     	});
 		bdirector.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				if(movie.getDirector()!=null){
 					bdirector.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.director).toUpperCase(),movie.getDirector());
+					displaySelectedClue(getResources().getString(R.string.director).toUpperCase(),
+							movie.getDirector(),infodirector, DIRECTOR);
 					movie.setDirector(null);
 				}
 			}
@@ -530,12 +693,14 @@ public class FilmActivity extends DBActivity{
 				if(mCounterLocation==0){
 					mCounterLocation = 1;
 					blocation.setImageResource(R.drawable.location1);
-					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(),movie.getContinent());
+					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(),
+							movie.getContinent(),infolocation, LOCATION);
 				}
 				else if (mCounterLocation ==1){
 					mCounterLocation = 2;
 					blocation.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.country).toUpperCase(), movie.getCountry());
+					displaySelectedClue(getResources().getString(R.string.country).toUpperCase(),
+							movie.getCountry(),infolocation, LOCATION);
 				}
 			}
 		});
@@ -547,12 +712,14 @@ public class FilmActivity extends DBActivity{
 					bdate.setImageResource(R.drawable.date1);
 					int year = movie.getYear();
 					year = year - (year % 10);
-					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(),year+"");
+					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(),
+							year+"", infodate, DATE);
 				}
 				else if (mCounterDate ==1){
 					mCounterDate = 2;
 					bdate.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(), movie.getYear()+"");
+					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(), 
+							movie.getYear()+"", infodate, DATE);
 				}
 			}
 		});
@@ -567,7 +734,8 @@ public class FilmActivity extends DBActivity{
 					if(mCounterActor == 2)
 						bactor.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(), movie.getCast()[mCounterActor]);
+					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(),
+							movie.getCast()[mCounterActor], infoactor, ACTOR);
 					mCounterActor=mCounterActor+1;
 				}
 			}
@@ -583,7 +751,8 @@ public class FilmActivity extends DBActivity{
 					if(mCounterCharacter == 2)
 						bcharacter.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(), movie.getCharacters()[mCounterCharacter]);
+					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(), 
+							movie.getCharacters()[mCounterCharacter], infocharacter, CHARACTER);
 					mCounterCharacter=mCounterCharacter+1;
 				}
 			}
@@ -599,7 +768,8 @@ public class FilmActivity extends DBActivity{
 					if(mCounterQuote == 2)
 						bquote.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(), movie.getQuotes()[mCounterQuote]);
+					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(), 
+							movie.getQuotes()[mCounterQuote], infoquote, QUOTE);
 					mCounterQuote=mCounterQuote+1;
 				}
 			}
@@ -615,7 +785,8 @@ public class FilmActivity extends DBActivity{
 					if(mCounterOther == 2)
 						btrivia.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(), movie.getOthers()[mCounterOther]);
+					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(), 
+							movie.getOthers()[mCounterOther], infotrivia, TRIVIA);
 					mCounterOther=mCounterOther+1;
 				}
 			}
@@ -638,7 +809,8 @@ public class FilmActivity extends DBActivity{
 					String initialPoints="...";
 					if (start==0)
 						initialPoints="";
-					displaySelectedClue(getResources().getString(R.string.synopsis).toUpperCase(), initialPoints+movie.getPlot().substring(start, end)+"...");
+					displaySelectedClue(getResources().getString(R.string.synopsis).toUpperCase(), 
+							initialPoints+movie.getPlot().substring(start, end)+"...", infosynopsis, SYNOPSIS);
 					mCounterSynopsis=mCounterSynopsis+1;
 				}
 			}
@@ -698,6 +870,9 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				dialog.dismiss();
 				mIsFinished=true;
+				Intent i = new Intent();
+				i.putExtra("ID", movie.getId());
+				setResult(RESULT_OK, i);
 				finish();
 			}
 		});
@@ -734,6 +909,9 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
+				Intent i = new Intent();
+				i.putExtra("ID", movie.getId());
+				setResult(RESULT_OK, i);
 				finish();
 			}
 		});
@@ -775,4 +953,66 @@ public class FilmActivity extends DBActivity{
 			e.printStackTrace();
 		}
 	}	
+	
+	private void releaseAll() {
+		if(projector!=null){
+			if(projector.isPlaying()){
+				projector.stop();
+			}
+			projector.release();
+		}
+		if(applause!=null){
+			if(applause.isPlaying()){
+				applause.stop();
+			}
+			applause.release();
+		}
+		if(beeps!=null){
+			if(beeps.isPlaying()){
+				beeps.stop();
+			}
+			beeps.release();
+		}
+		if(closeSound!=null){
+			if(closeSound.isPlaying()){
+				closeSound.stop();
+			}
+			closeSound.release();
+		}
+		if(mCountDown!=null){
+			mCountDown.cancel();
+			mCountDown=null;
+		}
+		animFadeIn=null;
+		animFadeOut=null;
+		animZoomOut=null;
+		animSlideInTop=null;
+		animSlideInBottom=null;
+		animSlideOutBottom=null;
+		animSlideOutTop=null;
+		animSlideOutTopLifes=null;
+		transition=null;
+		camerablink=null;
+		frame=null;
+		imm=null;
+		linearClues=null;
+		linearButtons=null;
+		linearPrevious=null;
+		bgenre=null;
+		bdate=null;
+		blocation=null;
+		bdirector=null;
+		bactor=null;
+		bcharacter=null;
+		btrivia=null;
+		bquote=null;
+		bsynopsis=null;
+		iAnswer=null;
+		iLife1=null;
+		iLife2=null;
+		iLife3=null;
+		iEnding=null;
+		iPoints=null;
+		iCamera=null;
+	}
 }

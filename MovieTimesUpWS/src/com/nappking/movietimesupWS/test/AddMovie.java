@@ -22,33 +22,38 @@ public class AddMovie {
 	public static void main(String[] args) {
 		
 		//VALUES
-		int 	id = 18;
-		int 	year = 2013;
+		int 	id = 19;
 		int 	points = 1;
-		String  action = UPDATE;
-		String 	title = "";
-		String 	alternative_title = "";
-		String 	original_title = "";
-		String 	country = "";
-		String 	continent = "";
-		String 	director = "";
-		String 	genre = "";
+		int 	year = 1976;
+		String  action = SAVE;
+		String 	title = "Novecento";
+		String 	alternative_title = "1900";
+		String 	original_title = "Novecento (1900)";
+		String 	country = "Europa";
+		String 	continent = "Italia";
+		String 	director = "Bernardo Bertolucci";
+		String 	genre = "Drama";
 		String 	poster = "";
-		String  filmaffinity_id = "";
-		String	imdb_id = "";
-		String 	actor1="";
-		String 	actor2="";
-		String 	actor3="";
-		String 	character1="";
-		String 	character2="";
-		String 	character3="";
-		String 	quote1 ="";
-		String 	quote2 ="";
-		String 	quote3 ="";
-		String 	other1="";
-		String 	other2="";
-		String 	other3="";
-		String 	plot = "";
+		String  filmaffinity_id = "903598";
+		String	imdb_id = "tt0074084";
+		String 	actor1="Gérard Depardieu";
+		String 	actor2="Robert De Niro";
+		String 	actor3="Dominique Sanda";
+		String 	character1="Alfredo Berlinghieri";
+		String 	character2="Olmo Dalcò";
+		String 	character3="Ada Fiastri";
+		String 	other1 ="El actor principal siempre se ha arrepentido de rodar la escena en la " +
+				"que aparece desnudo (junto al actor secundario) y es masturbado por una prostituta";
+		String 	other2 ="Una obra maestra imborrable, la descripción sociopolítica de la primera mitad del s.XX europeo";
+		String 	other3 ="Su duración es superior a 5 horas";
+		String 	quote1="-…Dime, pequeño guerrero, ¿qué opinas de tu patrón? -Ya no hay patrón";
+		String 	quote2="Han nacido en el campo, ¡oh, burla del destino! El hijo del amo y el bastardo campesino.";
+		String 	quote3="Los fascistas no son como los hongos, que nacen así en una noche, no. Han sido los patrones " +
+				"los que han plantado los fascistas, los han querido, les han pagado.";
+		String 	plot = "En el año 1901, en una finca del norte de Italia, nacen el mismo día el hijo " +
+				"de un terrateniente y el hijo de un bracero que serán amigos inseparables, aunque su " +
+				"relación se verá nublada por sus diferentes actitudes frente al fascismo. Drama que hace " +
+				"un complejo recorrido político y social por la Italia del siglo XX.";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();
@@ -90,7 +95,8 @@ public class AddMovie {
 	}
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://localhost:8081/MovieTimesUpWS").build();
+		//return UriBuilder.fromUri("http://localhost:8081/MovieTimesUpWS").build();
+		return UriBuilder.fromUri("http://movietimesup.gestores.cloudbees.net").build();
 	}
 
 

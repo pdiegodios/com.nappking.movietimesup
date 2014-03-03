@@ -1,12 +1,10 @@
 package com.nappking.movietimesup.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,7 +21,7 @@ public class MovieListAdapter extends BaseAdapter{
 	private List<String> mUnlocked;
 	private Context mContext;
     
-    public MovieListAdapter(Context context, List<Movie> movies, 
+    public MovieListAdapter(Context context, List<Movie> movies,
     		List<String> locked, List<String> unlocked) {
         super();
         this.mMoviesList = movies;
@@ -51,9 +49,7 @@ public class MovieListAdapter extends BaseAdapter{
 		return ((Movie) mMoviesList.get(position)).getId();
 	}    
     
-    public void reload(List<Movie> movies, List<String> locked, List<String> unlocked) {
-    	this.mMoviesList.clear();
-    	this.mMoviesList.addAll(movies);
+    public void reload(List<String> locked, List<String> unlocked) {
     	this.mLocked = locked;
     	this.mUnlocked = unlocked;
     	notifyDataSetChanged();
@@ -93,11 +89,11 @@ public class MovieListAdapter extends BaseAdapter{
             }    
             else {
             	//Movie was unlocked so you can see the poster and see the specific data
-        		//int id = movie.getId();    	
+        		//int id = movie.getId();  
     			v.progress.setVisibility(View.VISIBLE);            		
         		v.poster.setImageResource(R.drawable.filmstrip);
         		new DownloadPosterTask(id,v.poster,v.progress, this.mContext).execute(movie.getPoster()); 
-    			v.coin.setImageResource(R.drawable.movie_points);
+            	v.coin.setImageResource(R.drawable.movie_points);
         		v.title.setVisibility(View.VISIBLE);
         		v.title.setText(movie.getTitle());
             }    	

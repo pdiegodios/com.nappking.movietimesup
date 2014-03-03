@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FilmGridActivity extends DBActivity{
+	private static final int REQUEST_CODE=1;
 	
 	GridView grid;
 	TextView txPoints;
@@ -38,9 +39,9 @@ public class FilmGridActivity extends DBActivity{
 	ImageView rightCurtain;
 	ImageView spectators;
 	User user;
-	List<String> lockedMovies;
-	List<String> unlockedMovies;
-	static final int result_sent = 0;
+	private List<String> lockedMovies;
+	private List<String> unlockedMovies;
+	private List<Movie> mMovies;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -85,9 +86,11 @@ public class FilmGridActivity extends DBActivity{
 		//We obtain all the movies & the user
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		try {
-			Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
+			if(mMovies==null){
+				Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
+				mMovies = (ArrayList<Movie>) daoMovie.queryForAll();
+			}
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
-			movies = (ArrayList<Movie>) daoMovie.queryForAll();
 			user = (User) daoUser.queryForId(1);
 			lockedMovies = user.getLockedMovies();
 			unlockedMovies = user.getUnlockedMovies();
@@ -97,13 +100,18 @@ public class FilmGridActivity extends DBActivity{
 
 		//MovieListAdapter to show correctly the movies
 		if (grid.getAdapter() == null) {
-			MovieListAdapter movieAdapter = new MovieListAdapter(this, movies, lockedMovies, unlockedMovies);		
+			MovieListAdapter movieAdapter = new MovieListAdapter(this, mMovies,lockedMovies, unlockedMovies);		
 			grid.setAdapter(movieAdapter);
 		} else {
-			((MovieListAdapter)grid.getAdapter()).reload(movies, lockedMovies, unlockedMovies);
+			((MovieListAdapter)grid.getAdapter()).reload(lockedMovies, unlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		 
+	}
+	
+	//To update item returned from FilmActivity or unlocked from this class
+	private void updateItemAt(int index){
+		
 	}
 	
 	public void setListeners(){
@@ -148,6 +156,7 @@ public class FilmGridActivity extends DBActivity{
 									e.printStackTrace();
 								}
 								dialog.dismiss();
+								//Make another update()!!! for unlock movie
 								update();
 								List<User> users = new ArrayList<User>();
 								users.add(user);
@@ -198,7 +207,7 @@ public class FilmGridActivity extends DBActivity{
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
 					myIntent.putExtras(myBundle);
-					startActivity(myIntent);
+					startActivityForResult(myIntent, REQUEST_CODE);
 				}
 			}
 		});		
