@@ -33,6 +33,9 @@
     <dimen name="scheme_icon_size">20dp</dimen>
     
     <dimen name="grid_curtain_width">50dp</dimen>
+    <dimen name="grid_button_size">55dp</dimen>
+    <dimen name="grid_text_size_default">7sp</dimen>
+    <dimen name="grid_text_size_bigger">9sp</dimen>
     <dimen name="grid_spectators_height">33dp</dimen>
     
     

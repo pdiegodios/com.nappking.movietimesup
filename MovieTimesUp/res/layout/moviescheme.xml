@@ -13,13 +13,24 @@
         android:padding="5dp"
         android:background="@color/bluelightest">
         
-	    <ImageView 
-	        android:id="@+id/poster"
+        <FrameLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:padding="5dp"
-	        android:scaleType="fitCenter"/>
+	        android:layout_weight="1">
+		    <ImageView 
+		        android:id="@+id/poster"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:padding="5dp"
+		        android:scaleType="fitCenter"/>
+		    <ProgressBar 
+		        android:id="@+id/progress"
+				android:background="@android:color/transparent"
+		        style="@android:style/Widget.ProgressBar.Large"
+		        android:layout_gravity="center"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"/>
+	    </FrameLayout>
 	    
     	<LinearLayout 
     	    android:orientation="horizontal"

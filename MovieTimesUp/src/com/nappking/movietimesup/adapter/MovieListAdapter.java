@@ -55,7 +55,6 @@ public class MovieListAdapter extends BaseAdapter{
     public void setValues(List<String> locked, List<String> unlocked) {
     	this.mLocked = locked;
     	this.mUnlocked = unlocked;
-    	//notifyDataSetChanged();
     }
     
     static class ViewHolder{

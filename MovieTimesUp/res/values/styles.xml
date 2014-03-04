@@ -30,7 +30,7 @@
 	</style>	
     <style name="Theme.movie" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>
-	    <item name="android:windowBackground">@drawable/filmtrainsition</item>
+	    <item name="android:windowBackground">@drawable/filmtransition</item>
 	</style>	
     <style name="Theme.street" parent="@android:style/Theme.Holo.Light">
     	<item name="android:windowNoTitle">true</item>

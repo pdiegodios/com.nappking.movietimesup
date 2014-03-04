@@ -49,7 +49,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 public class FilmActivity extends DBActivity{
-	private static int DEFAULT_TIME = 5000;
+	private static int DEFAULT_TIME = 7000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
     
