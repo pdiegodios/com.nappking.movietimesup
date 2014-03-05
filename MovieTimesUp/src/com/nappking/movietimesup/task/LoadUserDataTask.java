@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.android.friendsmash.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
@@ -47,7 +48,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 	}
 	
 	protected void onPreExecute(){
-		this.mDialog.setMessage("Downloading user data from WS");
+		this.mDialog.setMessage(mContext.getResources().getString(R.string.check_user));
 		if (!mDialog.isShowing())
 			mDialog.show();
 	}
@@ -59,10 +60,10 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 		}
 		String text="";
 		if(success){
-			text= "Updated user data";
+			text= mContext.getResources().getString(R.string.updated_user);
 		}
 		else {
-			text= "Impossible to update user data. Check your network connection.";
+			text= mContext.getResources().getString(R.string.error_updating_user);
 		}
         if (mDBHelper != null) {
             OpenHelperManager.releaseHelper();
@@ -143,9 +144,9 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 					builder.append(line);
 				}
 			} else if(statusCode == 500){
-				Log.e(LoadUserDataTask.class.toString(), "IdUser not found");
+				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_user_not_found));
 			} else {
-				Log.e(LoadUserDataTask.class.toString(), "Failed to download file");
+				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_download_file));
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

@@ -40,6 +40,16 @@
     <string name="error_fetching_friend_bitmap">Error fetching your friend\'s profile picture - Please try again</string>
     <string name="error_switching_screens">Error switching screens - Please try again</string>
     <string name="error_no_scores">"No scores to display"</string>
+    <string name="error_updating_user">"Impossible to update user data. Check your network connection."</string>
+    <string name="error_user_not_found">"User not found"</string>
+    <string name="error_download_file">"Failed to download file"</string>
+    <string name="check_movies">"Checking if there are new movies"</string>
+    <string name="check_user">"Checking user data"</string>
+    <string name="upload_user">"Uploading user data"</string>
+    <string name="updated_user">"Updated user data"</string>
+    <string name="download_user">"Downloading user data from Webservice"</string>
+    <string name="movies_downloaded">"Downloaded new movies!"</string>
+    <string name="movies_downloaded_false">"You already have all the movies"</string>
 
     <!-- OPTIONS -->
     <string name="unlock">Unlock</string>
@@ -72,7 +82,10 @@
     <string name="times_up">Time\'s Up!</string>
     <string name="game_over_sub">the movie has been locked</string>
     <string name="game_won">Congrats!</string>
-    <string name="game_won_sub">you got</string>
+    <string name="you_got">you got</string>
+    <string name="new_movies_to_guess">"new movies to guess"</string>
+    <string name="and">"and"</string>
+    <string name="movies">"Movies"</string>
     <string name="points">points</string>
     <string name="not_enough_seconds">You don\'t have enough seconds</string>
     <string name="buy_seconds">Buy seconds to beat your friends</string>

@@ -49,19 +49,21 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 public class FilmActivity extends DBActivity{
-	private static int DEFAULT_TIME = 7000;
+	private static int DEFAULT_TIME = 6000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
+	//We start with some seconds to unveil some clues before bet
+	private int mCurrentSeconds = 30;
     
 	//POINTS
-	private static int GENRE = 15;
-	private static int DATE = 12;
-	private static int LOCATION = 6;
+	private static int GENRE = 10;
+	private static int DATE = 10;
+	private static int LOCATION = 5;
 	private static int DIRECTOR = 20;
 	private static int ACTOR = 15;
 	private static int CHARACTER = 7;
-	private static int TRIVIA = 5;
-	private static int QUOTE = 7;
+	private static int TRIVIA = 10;
+	private static int QUOTE = 8;
 	private static int SYNOPSIS = 25;
 	
 	Movie movie;
@@ -140,8 +142,6 @@ public class FilmActivity extends DBActivity{
 	
 	private User mUser;
 		
-	//We start with some seconds to unveil some clues before bet
-	private int mCurrentSeconds = 30;
 	
 	
 	/**
@@ -405,6 +405,7 @@ public class FilmActivity extends DBActivity{
 			this.texttitleclue.setText(title);
 			this.textclue.setText(text);
 			if(textview!=null){
+				textview.setText("-"+seconds+"s");
 				textview.startAnimation(animFadeOutInfo);
 			}
 			this.linearClues.startAnimation(animFadeIn);
@@ -712,14 +713,17 @@ public class FilmActivity extends DBActivity{
 					bdate.setImageResource(R.drawable.date1);
 					int year = movie.getYear();
 					year = year - (year % 10);
+					if(year<2000){
+						year=year-1900;
+					}
 					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(),
-							year+"", infodate, DATE);
+							year+"'s", infodate, DATE);
 				}
 				else if (mCounterDate ==1){
 					mCounterDate = 2;
 					bdate.setImageResource(R.drawable.ticket_empty);
 					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(), 
-							movie.getYear()+"", infodate, DATE);
+							movie.getYear()+"", infodate, DATE/2);
 				}
 			}
 		});

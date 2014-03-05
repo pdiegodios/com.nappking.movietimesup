@@ -14,7 +14,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -61,7 +60,7 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	}
 	
 	public DownloadMoviesTask(Context c, boolean isService){
-		Log.i(NotificationService.class.toString(), "Check if there are new movies");
+		Log.i(NotificationService.class.toString(), mContext.getResources().getString(R.string.check_movies));
 		this.mContext=c;
 		this.mService = isService;
 	}
@@ -72,9 +71,9 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		if(!mService){
 			//If it was not called from NotificationService
 			switch(result){
-				case 0: text= "Downloaded new movies!";break;
-				case 1: text= "You already have all the movies!";break;
-				case 2: text= "Impossible to connect. Check your network!";break;
+				case 0: text= mContext.getResources().getString(R.string.movies_downloaded);break;
+				case 1: text= mContext.getResources().getString(R.string.movies_downloaded_false);break;
+				case 2: text= mContext.getResources().getString(R.string.network_error);break;
 				default: break;
 			}
 			//When it finishes, we have to start main menu and finish the splash screen
@@ -87,13 +86,16 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 			//It was called from NotificationService
 			if(result==0){ 
 				//There are new movies downloaded
-				text= "You got "+mFilmCounter*100+" points and "+mFilmCounter+" new movies to guess";
+				text= mContext.getResources().getString(R.string.you_got)+" "+mFilmCounter*100+" "+
+						mContext.getResources().getString(R.string.points)+" "+
+						mContext.getResources().getString(R.string.and)+" "+mFilmCounter+" "+
+						mContext.getResources().getString(R.string.new_movies_to_guess);
 				Intent intent = new Intent(this.mContext, HomeActivity.class);
         		PendingIntent pIntent = PendingIntent.getActivity(this.mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         		// Construimos la notificación. Podemos también añadir acciones
         		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this.mContext)
-        		        .setContentTitle("Películas!!")
+        		        .setContentTitle(mContext.getResources().getString(R.string.movies)+"!!")
         		        .setContentText(text)
         		        .setLights(0xff0000ff, 100, 100)
         		        .setSmallIcon(R.drawable.movie_notification)
@@ -190,7 +192,7 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 					builder.append(line);
 				}
 			} else {
-				Log.e(DownloadMoviesTask.class.toString(), "Failed to download file");
+				Log.e(DownloadMoviesTask.class.toString(), mContext.getResources().getString(R.string.error_download_file));
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
