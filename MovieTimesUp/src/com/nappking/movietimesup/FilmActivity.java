@@ -49,7 +49,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 public class FilmActivity extends DBActivity{
-	private static int DEFAULT_TIME = 6000;
+	private static int SHORT_TIME = 2500;
+	private static int LONG_TIME = 6000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
 	//We start with some seconds to unveil some clues before bet
@@ -146,8 +147,7 @@ public class FilmActivity extends DBActivity{
 	
 	/**
 	 *	LIFECYCLE METHODS 
-	 */
-	
+	 */	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
@@ -168,6 +168,9 @@ public class FilmActivity extends DBActivity{
 			uploadUsers(true);	
 		}
 		releaseAll();
+		if(!this.isFinishing()){
+			finish();
+		}
 	}
 
 	@Override
@@ -201,13 +204,14 @@ public class FilmActivity extends DBActivity{
 				int selection = r.nextInt(mClues.size());
 				Clue selectedClue = mClues.remove(selection);
 				ImageButton button = selectedClue.getButton();
+				int time = selectedClue.getSecondsShown();
 				button.performClick();
 			    new Handler().postDelayed(new Runnable(){
 			        @Override
 			        public void run() {
 			        	displayInitialClues();
 			        }
-			    }, DEFAULT_TIME);
+			    }, time);
 			}else{
 				mCurrentSeconds = 0;
 				displaySelectedClue(null, null, null, 0);
@@ -360,8 +364,8 @@ public class FilmActivity extends DBActivity{
 	private void endGame(){
 		//mCountDown.cancel();
 		if(!mIsFinished){
+			mIsFinished=true;
 			if(mInTime){ //USER WIN POINTS & UNLOCK THE MOVIE
-				mIsFinished=true;
 				//Unlock movie and add points to User score
 				this.iEnding.setImageResource(R.drawable.coin);
 				int points = android.R.color.transparent;
@@ -382,7 +386,6 @@ public class FilmActivity extends DBActivity{
 				applause.start();
 			}
 			else{//USER LOSE & LOCK THE MOVIE
-				mIsFinished=true;
 				//Lock movie
 				this.iEnding.setImageResource(R.drawable.timesup);
 				uploadUsers(true);
@@ -447,8 +450,7 @@ public class FilmActivity extends DBActivity{
 	
 	/**
 	 * COMPONENT BEHAVIOUR METHODS
-	 */	
-	
+	 */		
 	private void initiate(){
 		try {
 			Dao<User, Integer> daoUser = getHelper().getUserDAO();
@@ -600,6 +602,7 @@ public class FilmActivity extends DBActivity{
 					endGame();
 				}
 				else {
+					title.setText("");
 					iAnswer.setImageResource(R.drawable.resolve);
 					iAnswer.setClickable(true);
 					if(mAttemps==2){
@@ -645,15 +648,15 @@ public class FilmActivity extends DBActivity{
 	private void initClues(){
 		//Clues
 		mClues = new ArrayList<Clue>();
-		mClues.add(new Clue(bgenre, GENRE));
-		mClues.add(new Clue(bdate, DATE));
-		mClues.add(new Clue(blocation, LOCATION));
-		mClues.add(new Clue(bdirector, DIRECTOR));
-		mClues.add(new Clue(bactor, ACTOR));
-		mClues.add(new Clue(bcharacter, CHARACTER));
-		mClues.add(new Clue(bquote, QUOTE));
-		mClues.add(new Clue(btrivia, TRIVIA));
-		mClues.add(new Clue(bsynopsis, SYNOPSIS));
+		mClues.add(new Clue(bgenre, GENRE, SHORT_TIME));
+		mClues.add(new Clue(bdate, DATE, SHORT_TIME));
+		mClues.add(new Clue(blocation, LOCATION, SHORT_TIME));
+		mClues.add(new Clue(bdirector, DIRECTOR, SHORT_TIME));
+		mClues.add(new Clue(bactor, ACTOR, SHORT_TIME));
+		mClues.add(new Clue(bcharacter, CHARACTER, SHORT_TIME));
+		mClues.add(new Clue(bquote, QUOTE, LONG_TIME));
+		mClues.add(new Clue(btrivia, TRIVIA, LONG_TIME));
+		mClues.add(new Clue(bsynopsis, SYNOPSIS, LONG_TIME));
 	}
 	
 	private void setListeners(){

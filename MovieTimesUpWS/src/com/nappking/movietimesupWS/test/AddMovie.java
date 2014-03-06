@@ -23,37 +23,35 @@ public class AddMovie {
 		
 		//VALUES
 		int 	id = 19;
-		int 	points = 1;
-		int 	year = 1976;
+		int 	points = 2;
+		int 	year = 1977;
 		String  action = SAVE;
-		String 	title = "Novecento";
-		String 	alternative_title = "1900";
-		String 	original_title = "Novecento (1900)";
-		String 	country = "Europa";
-		String 	continent = "Italia";
-		String 	director = "Bernardo Bertolucci";
-		String 	genre = "Drama";
+		String 	title = "Annie Hall";
+		String 	alternative_title = "Dos Extraños Amantes";
+		String 	original_title = "Annie Hall";
+		String 	continent = "América";
+		String 	country = "USA";
+		String 	director = "Woody Allen";
+		String 	genre = "Comedia-Romance";
 		String 	poster = "";
-		String  filmaffinity_id = "903598";
-		String	imdb_id = "tt0074084";
-		String 	actor1="Gérard Depardieu";
-		String 	actor2="Robert De Niro";
-		String 	actor3="Dominique Sanda";
-		String 	character1="Alfredo Berlinghieri";
-		String 	character2="Olmo Dalcò";
-		String 	character3="Ada Fiastri";
-		String 	other1 ="El actor principal siempre se ha arrepentido de rodar la escena en la " +
-				"que aparece desnudo (junto al actor secundario) y es masturbado por una prostituta";
-		String 	other2 ="Una obra maestra imborrable, la descripción sociopolítica de la primera mitad del s.XX europeo";
-		String 	other3 ="Su duración es superior a 5 horas";
-		String 	quote1="-…Dime, pequeño guerrero, ¿qué opinas de tu patrón? -Ya no hay patrón";
-		String 	quote2="Han nacido en el campo, ¡oh, burla del destino! El hijo del amo y el bastardo campesino.";
-		String 	quote3="Los fascistas no son como los hongos, que nacen así en una noche, no. Han sido los patrones " +
-				"los que han plantado los fascistas, los han querido, les han pagado.";
-		String 	plot = "En el año 1901, en una finca del norte de Italia, nacen el mismo día el hijo " +
-				"de un terrateniente y el hijo de un bracero que serán amigos inseparables, aunque su " +
-				"relación se verá nublada por sus diferentes actitudes frente al fascismo. Drama que hace " +
-				"un complejo recorrido político y social por la Italia del siglo XX.";
+		String  filmaffinity_id = "487991";
+		String	imdb_id = "tt0075686";
+		String 	actor1="Tony Roberts";
+		String 	actor2="Woody Allen";
+		String 	actor3="Diane Keaton";
+		String 	character1="Alvy Singer";
+		String 	character2="Rob";
+		String 	character3="Annie";
+		String 	other1 ="4 Oscars: Película, director, guión original, actriz.";
+		String 	other2 ="Una de las mejores películas de su director, la de mayor éxito en USA y, sin duda, un claro reflejo de su propia vida sentimental";
+		String 	other3 ="El apellido real de la actriz principal es el de su personaje... Y su apodo es 'Annie'";
+		String 	quote1="No te metas con la masturbación, es sexo con alguien a quien amo";
+		String 	quote2="Uno siempre está intentando que las cosas salgan perfectas en el arte, porque conseguirlo en la vida es realmente difícil.";
+		String 	quote3="...eso es más o menos lo que pienso sobre las relaciones humanas, ¿sabe? son totalmente irracionales, locas y absurdas; pero supongo que continuamos a mantenerlas porque la mayoría necesitamos los huevos";
+		String 	plot = "X, un tipo algo neurótico, trabaja como humorista en clubs nocturnos. A sus 40 años, " +
+				"tras romper con Y, su última novia, reflexiona sobre su vida, rememorando sus amores, sus matrimonios, " +
+				"pero muy en especial su relación con Y, a la que conoció en una cancha de tenis. Al final, llega a la " +
+				"conclusión de que son sus manías y obsesiones las que siempre acaban arruinando su relación con las mujeres.";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();

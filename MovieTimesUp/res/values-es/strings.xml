@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2012 Facebook
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+
+    <string name="app_name">Movie Time\'s Up</string>
+    <string name="app_id">1408220052751357</string>
+    <string name="title_activity_home">Movie Time\'s Up</string>
+    <string name="registration">Para finalizar tu registro debes iniciar sesión con Facebook. Nunca publicaremos sin tu permiso.</string>
+    <string name="welcome_message">Hola, Jugador</string>
+    <string name="you_scored_message"></string>
+    <string name="smash_player_name">Smash Player !</string>
+    <string name="score">Puntos: 0</string>
+    <string name="no_score">Let\'s smash some friends!</string>
+    <string name="network_error">Por favor, comprueba tu conexión</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="error_dialog_button_text">OK</string>
+    <string name="error_dialog_default_text">Sin respuesta del servidor</string>
+    <string name="error_authentication_retry">Un error ha ocurrido que requiere tu atención. %1$s</string>
+    <string name="error_authentication_reopen">Ocurrió un error, por favor, reinicia sesión</string>
+    <string name="error_permission">Por favor, permítenos publicar en tu nombre</string>
+    <string name="error_server">El servidor está ocupado, inténtalo más tarde.</string>
+    <string name="error_bad_request">Ocurrió un error, por favor contacta con el desarrollador con el siguiente mensaje: %1$s</string>
+    <string name="error_unknown">Ocurrió un erro desconocido, por favor contacta con el desarrollador con el siguiente mensaje: %1$s</string>
+    <string name="error_fetching_profile">Error obteniendo tu perfil de usuario - Inténtalo de nuevo</string>
+    <string name="error_fetching_friend_bitmap">Error obteniendo la foto de perfil de tu amigo - Inténtalo de nuevo</string>
+    <string name="error_switching_screens">Error cambiando pantallas - Inténtalo de nuevo</string>
+    <string name="error_download_file">"Error al descargar el archivo"</string>
+    <string name="error_user_not_found">"Usuario no encontrado"</string>
+    <string name="error_updating_user">"Imposible actualizar usuario. Compruebe su conexión a internet"</string>
+    <string name="error_no_scores">"Sin puntuación para mostrar"</string>
+	<string name="check_movies">"Comprobando si hay nuevas películas"</string>
+    <string name="check_user">"Comprobando la información de usuario"</string>
+    <string name="upload_user">"Subiendo información de usuario"</string>
+    <string name="updated_user">"Usuario actualizado"</string>
+    <string name="download_user">"Descargando información de usuario desde el servicio web"</string>
+    <string name="movies_downloaded">"¡Nuevas películas descargadas!"</string>
+    <string name="movies_downloaded_false">"Ya tienes todas las películas"</string>
+    
+    <!-- OPTIONS -->
+    <string name="unlock">Desbloquear</string>
+    <string name="buy">Comprar</string>
+    <string name="give_up">Rendirse</string>
+    <string name="play">¡Acción!</string>
+    <string name="camera">..cámara..</string>
+    <string name="lights">luces..</string>
+    <string name="bet">Apostar</string>
+    
+    <!-- TITLE CLUES -->
+    <string name="year">año</string>
+    <string name="decade">década</string>
+    <string name="actor">actor</string>
+    <string name="actors">actores</string>
+    <string name="character">personaje</string>
+    <string name="characters">personajes</string>
+    <string name="quote">frase</string>
+    <string name="quotes">frases</string>
+    <string name="synopsis">sinopsis</string>
+    <string name="continent">continente</string>
+    <string name="country">país</string>
+    <string name="director">director</string>
+    <string name="directedby">dirigida por</string>
+    <string name="starredby">protagonizada por</string>
+    <string name="trivia">curiosidad</string>
+    <string name="genre">género</string>
+    
+    <!-- PHRASES -->
+    <string name="times_up">Time\'s Up!</string>
+    <string name="game_over_sub">la película ha sido bloquedada</string>
+    <string name="you_got">Consigues</string>
+    <string name="new_movies_to_guess">"nuevas películas para adivinar"</string>
+    <string name="and">"y"</string>
+    <string name="points">puntos</string>
+    <string name="movies">"Películas"</string>
+    <string name="not_enough_seconds">No tienes suficientes segundos</string>
+    <string name="buy_seconds">Compra segundos para superar a tus amigos</string>
+    <string name="unlock_cost">Desbloquear cuesta</string>
+    <string name="seconds">segundos</string>
+    <string name="give_up_question">Insensato, ¿Quieres rendirte?</string>
+    <string name="are_you_ready">¿Estás listo?</string>
+    <string name="initial_warning">No podrás pausar el juego desde este punto</string>
+    <string name="movie_will_be_locked">Esta película será bloqueada</string>
+    <string name="bettext">¿Cuántos segundos necesitas?</string>
+    <string name="loading">Cargando</string>
+    
+</resources>

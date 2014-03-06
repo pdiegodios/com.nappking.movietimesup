@@ -31,7 +31,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -68,14 +67,12 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.ProfilePictureView;
 import com.facebook.widget.WebDialog;
-import com.google.gson.Gson;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.LoadUserDataTask;
-import com.nappking.movietimesup.task.WebServiceTask;
 
 /**
  *  Fragment to be shown once the user is logged in on the social version of the game or
@@ -254,30 +251,24 @@ public class HomeFragment extends Fragment {
 		DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
 		try {
 			Dao <User,Integer> daoUser = helper.getUserDAO();
-			Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
 			User user = daoUser.queryForId(1);
-			int moviesCount = daoMovie.queryForAll().size();
-
 			if(user==null){
+				Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
+				int moviesCount = daoMovie.queryForAll().size();
 				user = new User();
 				user.setName(application.getCurrentFBUser().getName());
 				user.setLockedMovies(new ArrayList<String>());
 				user.setUnlockedMovies(new ArrayList<String>());
 				user.setLastUpdate(Long.valueOf("0"));
+				user.setDays(0);
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
 				user.setUser(application.getCurrentFBUser().getId());
 				daoUser.create(user);
 				helper = null;
 	            OpenHelperManager.releaseHelper();
+				new LoadUserDataTask(this.getActivity(),user).execute();
 			}
-			/**
-			 * Now we have to consult if the FBUser played before to our game.
-			 * If there is not data associated to the user or it was updated before
-			 * local DB User, the user is created or updated, otherwise the data 
-			 * is dowloaded to sqlite. 
-			 */
-			new LoadUserDataTask(this.getActivity(),user).execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			helper = null;

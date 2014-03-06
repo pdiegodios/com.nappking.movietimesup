@@ -1,7 +1,6 @@
 package com.nappking.movietimesup.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.ArrayList;
 
 import com.j256.ormlite.field.DataType;
@@ -26,6 +25,7 @@ public class User implements Serializable{
     public static final String LOCKED = 	"locked";
     public static final String UNLOCKED = 	"unlocked";
     public static final String LASTUPDATE = "lastUpdate";
+    public static final String DAYS = 		"days";
     
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
@@ -44,6 +44,8 @@ public class User implements Serializable{
     private ArrayList<String> unlockedMovies;
     @DatabaseField(columnName = LASTUPDATE)
     private long lastUpdate;
+    @DatabaseField(columnName = DAYS)
+    private int days;
     
     //creators
 	public User() {super();}
@@ -57,6 +59,7 @@ public class User implements Serializable{
     public ArrayList<String> getLockedMovies()	{return this.lockedMovies;}
     public ArrayList<String> getUnlockedMovies(){return this.unlockedMovies;}
     public long getLastUpdate()					{return this.lastUpdate;}
+    public int getDays()						{return this.days;}
 
     //setters
     public void setId(int id)										{this._id=id;}  
@@ -67,6 +70,7 @@ public class User implements Serializable{
     public void setLockedMovies(ArrayList<String> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<String> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
     public void setLastUpdate(long date)							{this.lastUpdate = date;}
+    public void setDays(int days)									{this.days = days;}
     
     public void removeLockedMovie(int idMovie){
     	String id = String.valueOf(idMovie);

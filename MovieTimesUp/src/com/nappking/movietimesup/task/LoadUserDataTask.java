@@ -11,9 +11,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +35,8 @@ import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.User;
 
 public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
+	private final static int TIMEOUT_CONNECTION = 15000;
+	private final static int TIMEOUT_SOCKET = 15000;
 	private ProgressDialog mDialog;
 	private Context mContext;
 	private DBHelper mDBHelper;
@@ -107,6 +111,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 					updateBuilder.updateColumnValue(User.SCORE, user.getScore());
 					updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
 					updateBuilder.updateColumnValue(User.LASTUPDATE, user.getLastUpdate());
+					updateBuilder.updateColumnValue(User.DAYS, user.getDays());
 					updateBuilder.update();
 				}
 				else if (mUser!=null && user!=null && user.getLastUpdate()<mUser.getLastUpdate()){
@@ -129,8 +134,15 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 	
 	private String readUserFeed(String url){
 	    StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url+"/"+this.mUser.getUser());
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		// The default value is zero, that means the timeout is not used. 
+		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_CONNECTION);
+		// Set the default socket timeout (SO_TIMEOUT) 
+		// in milliseconds which is the timeout for waiting for data.
+		HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
+		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();

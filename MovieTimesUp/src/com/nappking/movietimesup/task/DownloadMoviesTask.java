@@ -48,6 +48,8 @@ import android.widget.Toast;
  * @author Nappking - pdiego
  */
 public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
+	private final static int TIMEOUT_CONNECTION = 25000;
+	private final static int TIMEOUT_SOCKET = 25000;
 	private Context mContext;
 	private DBHelper mDBHelper;
 	private String mCountPath = "movies/count";
@@ -156,6 +158,8 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 				result=0;		
 				if(user!=null){
 					user.setSeconds(user.getSeconds()+mFilmCounter*100);
+					if(!mService)
+						user.setLastUpdate(System.currentTimeMillis());
 					daoUser.update(user);
 				}
 			}
@@ -172,12 +176,10 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		// The default value is zero, that means the timeout is not used. 
-		int timeoutConnection = 30000;
-		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_CONNECTION);
 		// Set the default socket timeout (SO_TIMEOUT) 
 		// in milliseconds which is the timeout for waiting for data.
-		int timeoutSocket = 30000;
-		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
 		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 		try {
 			HttpResponse response = client.execute(httpGet);
