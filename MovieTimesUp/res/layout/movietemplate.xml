@@ -120,7 +120,7 @@
 	    	    android:gravity="center"
 	    	    android:layout_width="match_parent"
 	    	    android:layout_height="match_parent">
-		        <com.nappking.movietimesup.widget.AutoResizeTextView 
+		        <TextView 
 		            android:id="@+id/titleclue"
 		            android:layout_marginLeft="40dp"
 		            android:layout_marginRight="40dp"
@@ -131,7 +131,7 @@
 		            android:typeface="serif"
 		            android:gravity="center"
 		            android:textSize="38sp"/>
-		        <com.nappking.movietimesup.widget.AutoResizeTextView 
+		        <TextView 
 		            android:id="@+id/textclue"
 		            android:layout_marginLeft="40dp"
 		            android:layout_marginRight="40dp"

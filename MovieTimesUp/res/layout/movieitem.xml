@@ -29,14 +29,14 @@
 		    <ImageView 
 		        android:id="@+id/starpoints"
 		        android:background="@android:color/transparent"
-		        android:src="@drawable/movie_points"
+		        android:src="@drawable/bookmark"
 		        android:layout_width="wrap_content"
 		        android:layout_height="match_parent"/>
 		    <TextView 
 		        android:id="@+id/moviepoints"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:textColor="@color/black"
+		        android:textColor="@color/white"
 		        android:textStyle="bold"
 		        android:gravity="center"
 		        android:textSize="18sp"/>

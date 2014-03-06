@@ -81,18 +81,18 @@ public class MovieListAdapter extends BaseAdapter{
     	if(mLocked.contains(id+"")){
     		//Movie was locked and you can see anything about that  
     		v.poster.setImageResource(R.drawable.filmstrip_locked);  
-    		v.coin.setImageResource(R.drawable.movie_points_grey);
+    		v.coin.setImageResource(R.drawable.bookmark_disable);
     	}	
         else if(!mUnlocked.contains(id+"")){
         	//Movie is ready to play
     		v.poster.setImageResource(R.drawable.filmstrip);
-    		v.coin.setImageResource(R.drawable.movie_points_green);
+    		v.coin.setImageResource(R.drawable.bookmark_enable);
         }    
         else {
         	//Movie was unlocked so you can see the poster and see the specific data  
 			v.progress.setVisibility(View.VISIBLE);            		
             imageLoader.DisplayImage(id, movie.getPoster(), v.poster, v.progress);
-    		v.coin.setImageResource(R.drawable.movie_points);
+    		v.coin.setImageResource(R.drawable.bookmark);
     		v.title.setVisibility(View.VISIBLE);
     		v.title.setText(movie.getTitle());
         }    

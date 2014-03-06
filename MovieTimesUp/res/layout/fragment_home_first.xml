@@ -25,18 +25,16 @@
 	    	android:layout_marginRight="20dp"
 	    	android:orientation="vertical">
 	    	
-       	    <com.nappking.movietimesup.widget.AutoResizeTextView
+       	    <TextView
 		    	android:id="@+id/welcomeTextView"
-		    	android:padding="10dp"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:gravity="center_vertical|center_horizontal"
 		        android:textStyle="bold"
 		        android:textColor="@color/white"
-		        android:textSize="25sp"
+		        android:textSize="20sp"
 	    		android:background="@color/com_facebook_blue"
-		        android:text="@string/registration"/>
-	        
+		        android:text="@string/registration"/>	        
 	    </LinearLayout>
 	    
 	    

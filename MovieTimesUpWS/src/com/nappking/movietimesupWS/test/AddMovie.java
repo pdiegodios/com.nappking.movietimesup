@@ -23,35 +23,35 @@ public class AddMovie {
 		
 		//VALUES
 		int 	id = 19;
-		int 	points = 2;
-		int 	year = 1977;
+		int 	points = 3;
+		int 	year = 2004;
 		String  action = SAVE;
-		String 	title = "Annie Hall";
-		String 	alternative_title = "Dos Extraños Amantes";
-		String 	original_title = "Annie Hall";
-		String 	continent = "América";
-		String 	country = "USA";
-		String 	director = "Woody Allen";
-		String 	genre = "Comedia-Romance";
+		String 	title = "La ola";
+		String 	alternative_title = "ola";
+		String 	original_title = "Die welle";
+		String 	continent = "Europa";
+		String 	country = "Alemania";
+		String 	director = "Dennis Gansel";
+		String 	genre = "Drama";
 		String 	poster = "";
-		String  filmaffinity_id = "487991";
-		String	imdb_id = "tt0075686";
-		String 	actor1="Tony Roberts";
-		String 	actor2="Woody Allen";
-		String 	actor3="Diane Keaton";
-		String 	character1="Alvy Singer";
-		String 	character2="Rob";
-		String 	character3="Annie";
-		String 	other1 ="4 Oscars: Película, director, guión original, actriz.";
-		String 	other2 ="Una de las mejores películas de su director, la de mayor éxito en USA y, sin duda, un claro reflejo de su propia vida sentimental";
-		String 	other3 ="El apellido real de la actriz principal es el de su personaje... Y su apodo es 'Annie'";
-		String 	quote1="No te metas con la masturbación, es sexo con alguien a quien amo";
-		String 	quote2="Uno siempre está intentando que las cosas salgan perfectas en el arte, porque conseguirlo en la vida es realmente difícil.";
-		String 	quote3="...eso es más o menos lo que pienso sobre las relaciones humanas, ¿sabe? son totalmente irracionales, locas y absurdas; pero supongo que continuamos a mantenerlas porque la mayoría necesitamos los huevos";
-		String 	plot = "X, un tipo algo neurótico, trabaja como humorista en clubs nocturnos. A sus 40 años, " +
-				"tras romper con Y, su última novia, reflexiona sobre su vida, rememorando sus amores, sus matrimonios, " +
-				"pero muy en especial su relación con Y, a la que conoció en una cancha de tenis. Al final, llega a la " +
-				"conclusión de que son sus manías y obsesiones las que siempre acaban arruinando su relación con las mujeres.";
+		String  filmaffinity_id = "695239";
+		String	imdb_id = "tt1063669";
+		String 	actor1="Jürgen Vogel";
+		String 	actor2="Frederick Lau";
+		String 	actor3="Jennifer Ulrich";
+		String 	character1="Rainer Wenger";
+		String 	character2="Tim Stoltefuss";
+		String 	character3="Karo";
+		String 	other1 ="Inspirado en un experimento llevado a cabo por Ron Jones en el instituto Cubberley de Palo Alto, California";
+		String 	other2 ="Crítica ABC:\"Pedagógica, visceral, catártica, agitadora, clarividente...\"";
+		String 	other3 ="Fue controvertida en su país de origen por el tema tratado";
+		String 	quote1="Me gustaría ser su guardaespaldas";
+		String 	quote2="Lo siento, pero creo que se te está yendo de las manos. Completamente";
+		String 	quote3="¿Creéis que en Alemania no sería posible que volviera una dictadura, verdad?";
+		String 	plot = "En Alemania, durante la semana de proyectos, al profesor de instituto X se le ocurre hacer un experimento " +
+				"para explicar a sus alumnos el funcionamiento de un régimen totalitario. En apenas unos días, lo que parecía una " +
+				"prueba inócua basada en la disciplina y el sentimiento de comunidad va derivando hacia una situación sobre la que " +
+				"el profesor pierde todo control. ";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();

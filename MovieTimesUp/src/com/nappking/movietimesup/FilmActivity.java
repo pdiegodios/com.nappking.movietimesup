@@ -506,6 +506,8 @@ public class FilmActivity extends DBActivity{
      	texttitleclue = 		(TextView) findViewById(R.id.titleclue);
      	textclue = 				(TextView) findViewById(R.id.textclue);
      	title = 				(EditText) findViewById(R.id.title);
+     	texttitleclue.setTextSize(getResources().getDimension(R.dimen.movie_titleclue_size) * getResources().getDisplayMetrics().density);
+     	textclue.setTextSize(getResources().getDimension(R.dimen.movie_clue_size) * getResources().getDisplayMetrics().density);
      	title.setTextSize(14 * getResources().getDisplayMetrics().density);
      	transition = 			(AnimationDrawable) frame.getBackground();
      	camerablink = 			(AnimationDrawable) iCamera.getDrawable();   	
