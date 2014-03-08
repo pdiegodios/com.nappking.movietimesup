@@ -24,34 +24,33 @@ public class AddMovie {
 		//VALUES
 		int 	id = 19;
 		int 	points = 3;
-		int 	year = 2004;
+		int 	year = 1998;
 		String  action = SAVE;
-		String 	title = "La ola";
-		String 	alternative_title = "ola";
-		String 	original_title = "Die welle";
-		String 	continent = "Europa";
-		String 	country = "Alemania";
-		String 	director = "Dennis Gansel";
-		String 	genre = "Drama";
+		String 	title = "The Ring";
+		String 	alternative_title = "El círculo";
+		String 	original_title = "Ringu";
+		String 	continent = "Asia";
+		String 	country = "Japón";
+		String 	director = "Hideo Nakata";
+		String 	genre = "Terror";
 		String 	poster = "";
-		String  filmaffinity_id = "695239";
+		String  filmaffinity_id = "756516";
 		String	imdb_id = "tt1063669";
-		String 	actor1="Jürgen Vogel";
-		String 	actor2="Frederick Lau";
-		String 	actor3="Jennifer Ulrich";
-		String 	character1="Rainer Wenger";
-		String 	character2="Tim Stoltefuss";
-		String 	character3="Karo";
-		String 	other1 ="Inspirado en un experimento llevado a cabo por Ron Jones en el instituto Cubberley de Palo Alto, California";
-		String 	other2 ="Crítica ABC:\"Pedagógica, visceral, catártica, agitadora, clarividente...\"";
-		String 	other3 ="Fue controvertida en su país de origen por el tema tratado";
-		String 	quote1="Me gustaría ser su guardaespaldas";
-		String 	quote2="Lo siento, pero creo que se te está yendo de las manos. Completamente";
-		String 	quote3="¿Creéis que en Alemania no sería posible que volviera una dictadura, verdad?";
-		String 	plot = "En Alemania, durante la semana de proyectos, al profesor de instituto X se le ocurre hacer un experimento " +
-				"para explicar a sus alumnos el funcionamiento de un régimen totalitario. En apenas unos días, lo que parecía una " +
-				"prueba inócua basada en la disciplina y el sentimiento de comunidad va derivando hacia una situación sobre la que " +
-				"el profesor pierde todo control. ";
+		String 	actor1="Nanako Matsushima";
+		String 	actor2="Miki Nakatani";
+		String 	actor3="Hiroyuki Sanada";
+		String 	character1="Mai Takano";
+		String 	character2="Reiko Asakawa";
+		String 	character3="Tomoko Oishi";
+		String 	other1 ="Festival de Cine Fantástico y de Terror de Sitges: Premio Mejor Película";
+		String 	other2 ="Filme de culto en su país -posteriormente se realizó una secuela y una precuela-, en el año 2002 Hollywood realizó un remake que obtuvo también un enorme éxito";
+		String 	other3 ="Tiene una de las escenas más impactantes del cine de terror actual, cuando una niña de pelo largo sale de un televisor";
+		String 	quote1="-¿Sabes qué, mamá? -¿qué? -Tomochan vió el video";
+		String 	quote2="Te quedan 7 días";
+		String 	quote3="Cuatro personas murieron viendo esta cinta";
+		String 	plot = "En una pequeña y apacible localidad japonesa, entre los estudiantes circula una " +
+				"leyenda en torno a unos videos malditos cuya visión provoca la muerte. Tras la muerte " +
+				"de su sobrina, una periodista investigará el origen de dichos videos.";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();

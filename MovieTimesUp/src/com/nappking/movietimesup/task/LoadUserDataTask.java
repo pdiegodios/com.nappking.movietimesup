@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -43,10 +45,12 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 	private String mPath="users";
 	private User mUser=null;
 	boolean mService = false;
+	boolean mIsFirst;
 	
-	public LoadUserDataTask(Context c, User u){
+	public LoadUserDataTask(Context c, User u, boolean isFirst){
 		this.mContext=c;
 		this.mUser=u;
+		this.mIsFirst=isFirst;
 		if(this.mDialog==null)
 			this.mDialog= new ProgressDialog(mContext);
 	}
@@ -81,6 +85,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 		String read_user = readUserFeed(WebServiceTask.URL+mPath);
 		try{
 			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
+			success = false;
 			if(read_user==null || read_user.equals("")){
 				//If there is not user associated in the server we have to create a new user in the WS
 				List<User> users = new ArrayList<User>();
@@ -103,33 +108,70 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Boolean>{
 				Log.i("User updated: ", itemjson.toString());
 				User user = new Gson().fromJson(itemjson.toString(), User.class);
 				if(mUser!=null && user!=null && user.getLastUpdate()>mUser.getLastUpdate()){
+					Log.i("UPDATE", "ACTUALIZADO!!");
 					//If user from WS was updated after user from Database
-					UpdateBuilder<User, Integer> updateBuilder = userDao.updateBuilder();
-					updateBuilder.where().eq(User.USER, this.mUser.getUser());
-					updateBuilder.updateColumnValue(User.UNLOCKED, user.getUnlockedMovies());
-					updateBuilder.updateColumnValue(User.LOCKED, user.getLockedMovies());
-					updateBuilder.updateColumnValue(User.SCORE, user.getScore());
-					updateBuilder.updateColumnValue(User.SECONDS, user.getSeconds());
-					updateBuilder.updateColumnValue(User.LASTUPDATE, user.getLastUpdate());
-					updateBuilder.updateColumnValue(User.DAYS, user.getDays());
-					updateBuilder.update();
+					mUser.setUnlockedMovies(user.getUnlockedMovies());
+					mUser.setLockedMovies(user.getLockedMovies());
+					mUser.setScore(user.getScore());
+					mUser.setSeconds(user.getSeconds());
+					if(!mIsFirst){
+						updateDays(user.getLastUpdate(), user.getDays());
+					}
+					else{
+						mUser.setDays(user.getDays());
+						mUser.setLastUpdate(user.getLastUpdate());
+					}
+					userDao.update(mUser);
+					success = true;
 				}
 				else if (mUser!=null && user!=null && user.getLastUpdate()<mUser.getLastUpdate()){
+					Log.i("UPDATE", "Subimos a WebService");
 					//If user from Local DB was updated after user from WS
 					List<User> users = new ArrayList<User>();
-					users.add(user);
+					if(!mIsFirst){
+						updateDays(mUser.getLastUpdate(), mUser.getDays());
+					}
+					userDao.update(mUser);
+					users.add(mUser);
 					JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
 					wsUser.addNameValuePair("users", jsonArray.toString());
 					Log.i(this.toString(), jsonArray.toString());
 			        wsUser.addNameValuePair("action", "UPDATE");        
 			        wsUser.execute(new String[] {WebServiceTask.URL+"users"});	
+					success = true;
 				}
-				success = true;
+				else if(mUser!=null && user!=null){
+					success = true;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return success;
+	}
+	
+	private void updateDays(long milliseconds, int daysBefore){
+		Calendar today = GregorianCalendar.getInstance();
+		Calendar lastEntry=GregorianCalendar.getInstance();
+		lastEntry.setTimeInMillis(milliseconds);
+		Log.i("DATE", lastEntry.get(Calendar.DATE)+"/"+lastEntry.get(Calendar.MONTH));
+		if(lastEntry.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR) ||
+				lastEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR)){
+			//If it's a different day
+			lastEntry.add(Calendar.DATE, 1);
+			if(today.get(Calendar.DAY_OF_YEAR) == lastEntry.get(Calendar.DAY_OF_YEAR) &&
+					today.get(Calendar.YEAR) == lastEntry.get(Calendar.YEAR)){
+				Log.i("LAST_ENTRY", "YESTERDAY");
+				//The user entered yesterday to the game
+				mUser.setDays(daysBefore+1);
+			}
+			else{
+				Log.i("LAST_ENTRY", "NOT TODAY");
+				//The user didn't enter yesterday or today before now, so the days in row will be reset
+				mUser.setDays(0);
+			}					
+		}
+		mUser.setLastUpdate(System.currentTimeMillis());		
 	}
 	
 	private String readUserFeed(String url){

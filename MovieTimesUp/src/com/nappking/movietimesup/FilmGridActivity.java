@@ -37,6 +37,7 @@ public class FilmGridActivity extends DBActivity{
 	private static final int READY = 2;
 	private static final int UNLOCKED = 3;	
 	private static final int LOCKED = 4;
+	private static final int UNLOCK_COST=25;
 	public static final String POSITION="POSITION";
 	
 	GridView grid;
@@ -56,8 +57,6 @@ public class FilmGridActivity extends DBActivity{
 	ImageButton selectUnlocked;
 	ImageView spectators;
 	User user;
-	private int mTextSize;
-	private int mTextSizeBigger;
 	private List<String> mLockedMovies;
 	private List<String> mUnlockedMovies;
 	private List<Movie> mMovies;
@@ -90,30 +89,7 @@ public class FilmGridActivity extends DBActivity{
     	mSelectedMovies = new ArrayList<Movie>();
     	//Preset All Movies
     	mState = ALL;
-
-		//Density to resize
-		float density = getResources().getDisplayMetrics().density;
 		
-		//sizes
-		int widthSize = (int) getResources().getDimension(R.dimen.grid_curtain_width);
-		int heightSize = (int) getResources().getDimension(R.dimen.grid_spectators_height);
-		int buttonSize = (int) getResources().getDimension(R.dimen.grid_button_size);
-		mTextSize = (int) getResources().getDimension(R.dimen.grid_text_size_default);
-		mTextSizeBigger = (int) getResources().getDimension(R.dimen.grid_text_size_bigger);
-		int resize = Math.round(widthSize*density);
-     	leftCurtain.getLayoutParams().width = resize;
-     	rightCurtain.getLayoutParams().width = resize;
-     	resize = Math.round(heightSize*density);
-     	spectators.getLayoutParams().height = resize;
-     	resize = Math.round(buttonSize*density);
-     	buttonsLeft.getLayoutParams().width = resize;
-     	buttonsLeft.getLayoutParams().height = resize; //2 buttons on left side
-     	buttonsRight.getLayoutParams().width = resize;
-     	buttonsRight.getLayoutParams().height = resize*2; //4 buttons on right side
-     	mTextSize = Math.round(mTextSize*density);
-     	mTextSizeBigger = Math.round(mTextSizeBigger*density);
-     	txPoints.setTextSize(mTextSizeBigger);
-     	txSeconds.setTextSize(mTextSize);
 		update(false);
 		setListeners();
 	}
@@ -192,7 +168,7 @@ public class FilmGridActivity extends DBActivity{
 					TextView text = (TextView) dialog.findViewById(R.id.text);						
 					//set values & actions
 					final int idMovie = movie.getId();
-					final int unlockSeconds = movie.getPoints()*50;
+					final int unlockSeconds = movie.getPoints()*UNLOCK_COST + UNLOCK_COST;
 					text.setText(getResources().getString(R.string.unlock_cost)+" "+unlockSeconds+" "+
 							getResources().getString(R.string.seconds));
 					cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
@@ -320,13 +296,13 @@ public class FilmGridActivity extends DBActivity{
 		switch(mState){
 		case ALL:
 			txNumItems.setTextColor(getResources().getColor(R.color.white));
-			txNumItems.setTextSize(mTextSizeBigger);
+			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize(mTextSize);
+			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize(mTextSize);
+			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize(mTextSize);
+			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			selectAll.setSelected(true);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(false);
@@ -335,13 +311,13 @@ public class FilmGridActivity extends DBActivity{
 			break;
 		case READY:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize(mTextSize);
+			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize(mTextSize);
+			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize(mTextSize);
+			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsReady.setTextSize(mTextSizeBigger);
+			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
 			selectAll.setSelected(false);
 			selectReady.setSelected(true);
 			selectUnlocked.setSelected(false);
@@ -355,13 +331,13 @@ public class FilmGridActivity extends DBActivity{
 			break;
 		case UNLOCKED:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize(mTextSize);
+			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize(mTextSize);
+			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsUnlocked.setTextSize(mTextSizeBigger);
+			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize(mTextSize);
+			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			selectAll.setSelected(false);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(true);
@@ -374,13 +350,13 @@ public class FilmGridActivity extends DBActivity{
 			break;
 		case LOCKED:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize(mTextSize);
+			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsLocked.setTextSize(mTextSizeBigger);
+			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize(mTextSize);
+			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize(mTextSize);
+			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
 			selectAll.setSelected(false);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(false);

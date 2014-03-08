@@ -101,6 +101,7 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:textStyle="bold"
+		            android:textSize="@dimen/scheme_title_text_size"
 		            android:textColor="@color/white"/>       
 		        <TextView 
 		            android:id="@+id/points"
@@ -108,6 +109,7 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="4.5"
 		            android:gravity="right"
+		            android:textSize="@dimen/scheme_title_text_size"
 		            android:textColor="@color/white"
 		            android:textStyle="bold"/>
 		    </LinearLayout>
@@ -120,6 +122,7 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
+		            android:textSize="@dimen/scheme_default_text_size"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>		        
 		        <TextView 
@@ -128,6 +131,7 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:gravity="right"
+		            android:textSize="@dimen/scheme_default_text_size"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>
 	        </LinearLayout>
@@ -172,6 +176,7 @@
 	                    android:layout_height="wrap_content"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
+		            	android:textSize="@dimen/scheme_default_text_size"
 	                    android:gravity="bottom"
 	                    android:text="@string/genre"/>    
 		            <TextView 
@@ -181,6 +186,7 @@
 		                android:layout_gravity="bottom"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:gravity="bottom"/>	
 		        </LinearLayout>	
 		    </LinearLayout>
@@ -212,6 +218,7 @@
 		                android:id="@+id/director_header"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
@@ -221,6 +228,7 @@
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="bottom"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
 		                android:gravity="bottom"/>	
@@ -254,6 +262,7 @@
 	      	        android:id="@+id/actor_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
+	            	android:textSize="@dimen/scheme_default_text_size"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -263,6 +272,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
+	            	android:textSize="@dimen/scheme_default_text_size"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 					android:gravity="bottom"/>	
@@ -296,6 +306,7 @@
 	      	        android:id="@+id/character_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
+	            	android:textSize="@dimen/scheme_default_text_size"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -305,6 +316,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
+	            	android:textSize="@dimen/scheme_default_text_size"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 	              	android:gravity="bottom"/>	
@@ -339,6 +351,7 @@
 		                android:id="@+id/storyline_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -347,6 +360,7 @@
 		      	        android:id="@+id/storyline_text"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:layout_gravity="bottom"
 						android:textColor="@color/black"
 						android:textStyle="bold"
@@ -382,6 +396,7 @@
 		                android:id="@+id/quotes_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -391,6 +406,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	
@@ -425,6 +441,7 @@
 		                android:id="@+id/trivia_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -434,6 +451,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	

@@ -46,7 +46,7 @@
 	
 		<ImageView
 		    android:layout_width="match_parent"
-		    android:layout_height="40dp"
+		    android:layout_height="@dimen/grid_spectators_height"
 		    android:layout_weight="1"
 		    android:layout_gravity="bottom"
 		    android:background="@drawable/stage" />
@@ -57,7 +57,7 @@
 	    android:src="@drawable/leftcurtain"
 	    android:layout_gravity="left"
 	    android:layout_height="fill_parent"
-	    android:layout_width="60dp"
+	    android:layout_width="@dimen/grid_curtain_width"
 	    android:scaleType="fitXY"/>
 	
 	<ImageView 
@@ -65,19 +65,19 @@
 	    android:src="@drawable/rightcurtain"
 	    android:layout_gravity="right"
 	    android:layout_height="fill_parent"
-	    android:layout_width="60dp"
+	    android:layout_width="@dimen/grid_curtain_width"
 	    android:scaleType="fitXY"/>
 	<ImageView 
 	    android:id="@+id/spectators"
 	    android:src="@drawable/people"
 	    android:layout_gravity="bottom"
-	    android:layout_height="40dp"
+	    android:layout_height="@dimen/grid_spectators_height"
 	    android:layout_width="fill_parent"
 	    android:scaleType="fitXY"/>
 	<FrameLayout 	 
 	    android:id="@+id/buttons_left"   
-	    android:layout_width="75dp"
-	    android:layout_height="80dp"
+	    android:layout_width="@dimen/grid_button_size"
+	    android:layout_height="@dimen/grid_button_size"
 	    android:layout_gravity="top|left"
 	    android:gravity="center"
 	    android:layout_margin="6dp">
@@ -106,33 +106,35 @@
 		    android:orientation="vertical">
 			<TextView 
 			    android:id="@+id/points"  
+			    android:text="100"  
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:gravity="center_vertical|right"
-		        android:paddingRight="5dp"
+		        android:paddingRight="@dimen/grid_text_margin"
 		        android:textColor="@color/white"
 		        android:textStyle="bold"
-		        android:textSize="20sp"
+		        android:textSize="@dimen/grid_text_size_bigger"
 			    />		
 			<TextView 
 			    android:id="@+id/seconds" 
+			    android:text="6500"  
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:gravity="center_vertical|right"
-		        android:paddingRight="5dp"
+		        android:paddingRight="@dimen/grid_text_margin"
 		        android:textColor="@color/white"
 		        android:textStyle="bold"
-		        android:textSize="16sp"/>
+		        android:textSize="@dimen/grid_text_size_default"/>
 		</LinearLayout>
 	</FrameLayout>
 	
 	
 	<FrameLayout 	 
 	    android:id="@+id/buttons_right"
-	    android:layout_width="75dp"
-	    android:layout_height="160dp"
+	    android:layout_width="@dimen/grid_button_size"
+	    android:layout_height="@dimen/grid_button_size2"
 	    android:layout_gravity="top|right"
 	    android:gravity="center"
 	    android:layout_margin="6dp">
@@ -191,7 +193,7 @@
 			    android:orientation="horizontal"
 			    android:layout_weight="1">
 				<TextView 
-				    android:id="@+id/numItems"  
+				    android:id="@+id/numItems"
 			        android:layout_width="match_parent"
 			        android:layout_height="match_parent"
 			        android:layout_weight="1"

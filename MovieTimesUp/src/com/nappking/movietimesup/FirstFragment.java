@@ -20,7 +20,6 @@ import com.facebook.FacebookOperationCanceledException;
 import com.facebook.android.friendsmash.R;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.OnErrorListener;
-import com.nappking.movietimesup.widget.AutoResizeTextView;
 
 public class FirstFragment extends Fragment {
 	View progressContainer;
@@ -49,15 +48,11 @@ public class FirstFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_home_first, parent, false);
-		float density = getResources().getDisplayMetrics().density;
 		progressContainer = v.findViewById(R.id.progressContainer);
 		progressContainer.setVisibility(View.INVISIBLE);		
-		int textSize = (int) getResources().getDimension(R.dimen.grid_text_size_bigger);
-		int resize = Math.round(textSize*density);
 		// Set an error listener for the login button
 		final ImageView loginButton = (ImageView) v.findViewById(R.id.loginButton);
 		final TextView welcomeText = (TextView) v.findViewById(R.id.welcomeTextView);
-		welcomeText.setTextSize(resize);
 		final ImageView closedGate = (ImageView) v.findViewById(R.id.closedGate);
 		final Animation animSlideOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slideouttop);
 		animSlideOut.setDuration(3400);

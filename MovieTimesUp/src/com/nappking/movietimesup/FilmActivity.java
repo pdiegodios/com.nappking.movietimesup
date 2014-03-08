@@ -60,7 +60,7 @@ public class FilmActivity extends DBActivity{
 	private static int GENRE = 10;
 	private static int DATE = 10;
 	private static int LOCATION = 5;
-	private static int DIRECTOR = 20;
+	private static int DIRECTOR = 15;
 	private static int ACTOR = 15;
 	private static int CHARACTER = 7;
 	private static int TRIVIA = 10;
@@ -506,9 +506,6 @@ public class FilmActivity extends DBActivity{
      	texttitleclue = 		(TextView) findViewById(R.id.titleclue);
      	textclue = 				(TextView) findViewById(R.id.textclue);
      	title = 				(EditText) findViewById(R.id.title);
-     	texttitleclue.setTextSize(getResources().getDimension(R.dimen.movie_titleclue_size) * getResources().getDisplayMetrics().density);
-     	textclue.setTextSize(getResources().getDimension(R.dimen.movie_clue_size) * getResources().getDisplayMetrics().density);
-     	title.setTextSize(14 * getResources().getDisplayMetrics().density);
      	transition = 			(AnimationDrawable) frame.getBackground();
      	camerablink = 			(AnimationDrawable) iCamera.getDrawable();   	
      	projector =				MediaPlayer.create(this, R.raw.projector);

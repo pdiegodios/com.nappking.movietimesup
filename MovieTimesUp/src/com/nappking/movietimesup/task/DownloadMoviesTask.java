@@ -155,13 +155,16 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
     			    }
     			});
 				mFilmCounter=moviesOnlineCount-moviesDownloadedCount;
-				result=0;		
+				result=0;	
+				//TODO:
+				//if(user!=null && user.getMovies()<moviesOnlineCount){
 				if(user!=null){
 					user.setSeconds(user.getSeconds()+mFilmCounter*100);
 					if(!mService)
 						user.setLastUpdate(System.currentTimeMillis());
 					daoUser.update(user);
 				}
+				//}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

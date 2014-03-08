@@ -49,13 +49,6 @@ public class FilmInfoActivity extends DBActivity{
 
      	mMovie = (Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
 		mImageLoader = new ImageLoader(this.getApplicationContext());
-		//Density to resize
-		float density = getResources().getDisplayMetrics().density;
-		
-		//sizes
-		int textSize = (int) getResources().getDimension(R.dimen.scheme_default_text_size);
-		int iconSize = (int) getResources().getDimension(R.dimen.scheme_icon_size);
-		int titleSize = (int) getResources().getDimension(R.dimen.scheme_title_text_size);
 		
 		//Instantiate
      	mTitle = (TextView) findViewById(R.id.title);
@@ -87,37 +80,6 @@ public class FilmInfoActivity extends DBActivity{
 		mStorylineImage = (ImageView) findViewById(R.id.storyline_icon);
 		mFilmaffinityButton = (ImageButton) findViewById(R.id.filmaffinity);
 		mImdbButton = (ImageButton) findViewById(R.id.imdb);
-		
-		//Resize default values
-		mTitle.setTextSize(titleSize*density);
-		mPoints.setTextSize(titleSize*density);
-		
-		mOriginalTitle.setTextSize(textSize*density);
-		mGenreHeader.setTextSize(textSize*density);
-		mGenre.setTextSize(textSize*density);
-		mCountryYear.setTextSize(textSize*density);
-		mDirectorHeader.setTextSize(textSize*density);
-		mDirector.setTextSize(textSize*density);
-		mActorHeader.setTextSize(textSize*density);
-		mActor.setTextSize(textSize*density);
-		mCharacterHeader.setTextSize(textSize*density);
-		mCharacter.setTextSize(textSize*density);
-		mQuotesHeader.setTextSize(textSize*density);
-		mQuotes.setTextSize(textSize*density);
-		mTriviaHeader.setTextSize(textSize*density);
-		mTrivia.setTextSize(textSize*density);
-		mStorylineHeader.setTextSize(textSize*density);
-		mStoryline.setTextSize(textSize*density);
-		
-		int iconResize = Math.round(iconSize*density);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconResize,iconResize);
-		mGenreImage.setLayoutParams(params);
-		mDirectorImage.setLayoutParams(params);
-		mActorImage.setLayoutParams(params);
-		mCharacterImage.setLayoutParams(params);
-		mStorylineImage.setLayoutParams(params);
-		mQuotesImage.setLayoutParams(params);
-		mTriviaImage.setLayoutParams(params);
 		
 		//set fields from movie
 		String actors = "";

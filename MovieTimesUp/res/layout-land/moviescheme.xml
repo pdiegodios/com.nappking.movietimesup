@@ -96,18 +96,22 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/title"
+		            android:text="Casablanca"
 		            android:singleLine="true"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:textStyle="bold"
+		            android:textSize="@dimen/scheme_title_text_size"
 		            android:textColor="@color/white"/>       
 		        <TextView 
 		            android:id="@+id/points"
+		            android:text="1pts"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="4.5"
 		            android:gravity="right"
+		            android:textSize="@dimen/scheme_title_text_size"
 		            android:textColor="@color/white"
 		            android:textStyle="bold"/>
 		    </LinearLayout>
@@ -117,17 +121,21 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/originalTitle"
+		            android:text="Casablanca"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
+		            android:textSize="@dimen/scheme_default_text_size"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>		        
 		        <TextView 
 		            android:id="@+id/country_year"
+		            android:text="USA, 1942"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:gravity="right"
+		            android:textSize="@dimen/scheme_default_text_size"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>
 	        </LinearLayout>
@@ -153,8 +161,8 @@
 
 	            <ImageView
 	                android:id="@+id/genre_icon"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	                android:layout_gravity="center_vertical"
 	                android:layout_marginRight="5dp"
 	                android:background="@android:color/transparent"
@@ -172,6 +180,7 @@
 	                    android:layout_height="wrap_content"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
+		            	android:textSize="@dimen/scheme_default_text_size"
 	                    android:gravity="bottom"
 	                    android:text="@string/genre"/>    
 		            <TextView 
@@ -181,6 +190,7 @@
 		                android:layout_gravity="bottom"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:gravity="bottom"/>	
 		        </LinearLayout>	
 		    </LinearLayout>
@@ -195,8 +205,8 @@
 
 	            <ImageView
 	                android:id="@+id/director_icon"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	                android:layout_gravity="center_vertical"
 	                android:layout_marginRight="5dp"
 	                android:background="@android:color/transparent"
@@ -212,6 +222,7 @@
 		                android:id="@+id/director_header"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
@@ -221,6 +232,7 @@
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="bottom"
+		            	android:textSize="@dimen/scheme_default_text_size"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
 		                android:gravity="bottom"/>	
@@ -236,8 +248,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/actor_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="center_vertical"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -254,6 +266,7 @@
 	      	        android:id="@+id/actor_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
+	            	android:textSize="@dimen/scheme_default_text_size"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -263,6 +276,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
+	            	android:textSize="@dimen/scheme_default_text_size"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 					android:gravity="bottom"/>	
@@ -278,8 +292,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/character_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="center_vertical"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -296,6 +310,7 @@
 	      	        android:id="@+id/character_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
+	            	android:textSize="@dimen/scheme_default_text_size"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -305,6 +320,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
+	            	android:textSize="@dimen/scheme_default_text_size"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 	              	android:gravity="bottom"/>	
@@ -321,8 +337,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/storyline_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -339,6 +355,7 @@
 		                android:id="@+id/storyline_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -347,6 +364,7 @@
 		      	        android:id="@+id/storyline_text"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:layout_gravity="bottom"
 						android:textColor="@color/black"
 						android:textStyle="bold"
@@ -364,8 +382,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/quotes_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -382,6 +400,7 @@
 		                android:id="@+id/quotes_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -391,6 +410,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	
@@ -407,8 +427,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/trivia_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -425,6 +445,7 @@
 		                android:id="@+id/trivia_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -434,6 +455,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
+	            		android:textSize="@dimen/scheme_default_text_size"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	

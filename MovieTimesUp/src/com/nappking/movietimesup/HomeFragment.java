@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment {
 				daoUser.create(user);
 				helper = null;
 	            OpenHelperManager.releaseHelper();
-				new LoadUserDataTask(this.getActivity(),user).execute();
+				new LoadUserDataTask(this.getActivity(),user, true).execute();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

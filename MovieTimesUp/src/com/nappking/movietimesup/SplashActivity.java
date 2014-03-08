@@ -37,53 +37,34 @@ public class SplashActivity extends DBActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        // Hide the notification barinitiate();
         initiate();     	
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+     	int daysInRowBeforeUpdate=0;
+     	int daysInRowAfterUpdate=0;
+     	User user = null;
      	try {
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
-			User user = daoUser.queryForId(1);
-			if(user!=null){
-				//If user exists we have to check if there are newer data in WS or
-				//update data in WS if necessary
-				new LoadUserDataTask(this,user).execute();
-				
-				/**
-				 * We update number of days in row using the game to get points for fidelity
-				 */
-				user = daoUser.queryForId(1);
-				Calendar today = GregorianCalendar.getInstance();
-				Calendar lastEntry=GregorianCalendar.getInstance();
-				lastEntry.setTimeInMillis(user.getLastUpdate());
-				Log.i("DATE", lastEntry.get(Calendar.DATE)+"/"+lastEntry.get(Calendar.MONTH));
-				if(lastEntry.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR) ||
-						lastEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR)){
-					//If it's a different day
-					lastEntry.add(Calendar.DATE, 1);
-					if(today.get(Calendar.DAY_OF_YEAR) == lastEntry.get(Calendar.DAY_OF_YEAR) &&
-							today.get(Calendar.YEAR) == lastEntry.get(Calendar.YEAR)){
-						Log.i("LAST_ENTRY", "YESTERDAY");
-						//The user entered yesterday to the game
-						user.setDays(user.getDays()+1);
-					}
-					else{
-						Log.i("LAST_ENTRY", "NOT TODAY");
-						//The user didn't enter yesterday or today before now, so the days in row will be reset
-						user.setDays(0);
-					}					
-				}
-				user.setLastUpdate(System.currentTimeMillis());
-				daoUser.update(user);
-			}
+			user = daoUser.queryForId(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		if(user!=null){
+			daysInRowBeforeUpdate = user.getDays();
+			//If user exists we have to check if there are new data in WS or
+			//update data in WS if necessary
+			new LoadUserDataTask(this,user, false).execute();				
+		}
         new DownloadMoviesTask(this).execute();
+        daysInRowAfterUpdate = user!=null?user.getDays():0;
+        if(daysInRowBeforeUpdate!=daysInRowAfterUpdate){
+        	//First Entry of the day
+        	showPointsWon();
+        }
         checkNotifications();
     }
-    
-    @Override
+
+	@Override
     protected void onPause() {
     	super.onPause();
     	if(animEllipsis!=null && animEllipsis.isRunning()){
@@ -105,13 +86,18 @@ public class SplashActivity extends DBActivity{
         animEllipsis.start();
     }
     
+    private void showPointsWon() {
+		//TODO: Make a dialog to show the seconds you won
+		
+	}
+    
     private void checkNotifications(){
     	/**
     	 * Ojo!! hay que recuperar de preferencias si tiene las notificaciones activadas y el período
     	 */
 		//SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);		
 		//Recuperamos intervalo de consulta para las notificaciones
-		int interval = 24; //hours
+		int interval = 4; //hours
 		
 		//Servicio de Alarma
 		AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
