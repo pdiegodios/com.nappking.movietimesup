@@ -85,7 +85,7 @@ public class SplashActivity extends DBActivity{
     	 */
 		//SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);		
 		//Recuperamos intervalo de consulta para las notificaciones
-		int interval = 1; //min
+		int interval = 24; //hours
 		
 		//Servicio de Alarma
 		AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
@@ -102,7 +102,7 @@ public class SplashActivity extends DBActivity{
 	    PendingIntent pi = PendingIntent.getService(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 		am.cancel(pi);
 		am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				SystemClock.elapsedRealtime() + interval*60*1000,
-				interval*60*1000, pi);
+				SystemClock.elapsedRealtime() + interval*60*60*1000,
+				interval*60*60*1000, pi);
 	}
 }
