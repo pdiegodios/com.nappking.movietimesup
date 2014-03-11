@@ -2,6 +2,8 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -14,6 +16,7 @@ import com.nappking.movietimesup.adapter.MovieListAdapter;
 import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
+import com.nappking.movietimesup.task.LoadUserDataTask;
 import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
@@ -98,12 +101,25 @@ public class FilmGridActivity extends DBActivity{
 	protected void onResume(){
 		super.onResume();
 		update(false);
+		updateUser();
 	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		finish();
+
+	private void updateUser(){
+		Dao<User, Integer> daoUser;
+		try {
+			daoUser = getHelper().getUserDAO();
+			User user = daoUser.queryForId(1);
+			if(user!=null){
+				Calendar now = GregorianCalendar.getInstance();
+				if(now.getTimeInMillis()>(user.getLastUpdate()+10*60*1000)){
+					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
+					//It's more than 10 minutes since last time it was updated
+					new LoadUserDataTask(this, user, true).execute();
+				}						
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void update(boolean stateChanged){     	

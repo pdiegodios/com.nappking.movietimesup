@@ -235,13 +235,8 @@ public class HomeActivity extends DBFragmentActivity {
 			daoUser = getHelper().getUserDAO();
 			User user = daoUser.queryForId(1);
 			if(user!=null){
-				Calendar now = GregorianCalendar.getInstance();
 				Log.i("UPDATE USER", "USER EXISTS");
-				if(now.getTimeInMillis()>(user.getLastUpdate()+10*60*1000)){
-					Log.i("UPDATE USER", "USER EXISTS & IT'S TIME TO CHECK WS");
-					//It's more than 10 minutes since last time it was updated
-					new LoadUserDataTask(this, user, true).execute();
-				}						
+				new LoadUserDataTask(this, user, true).execute();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
