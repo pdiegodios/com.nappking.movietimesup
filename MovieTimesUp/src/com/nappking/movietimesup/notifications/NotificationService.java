@@ -65,6 +65,6 @@ public class NotificationService extends Service {
             stopSelf();
             return;
         }        
-        new DownloadMoviesTask(this.getBaseContext(), true).execute();        
+        new DownloadMoviesTask(this, true).execute();        
     }    
 }

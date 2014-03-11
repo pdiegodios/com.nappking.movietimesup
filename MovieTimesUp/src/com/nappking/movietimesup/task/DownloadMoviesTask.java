@@ -62,8 +62,8 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	}
 	
 	public DownloadMoviesTask(Context c, boolean isService){
-		Log.i(NotificationService.class.toString(), mContext.getResources().getString(R.string.check_movies));
 		this.mContext=c;
+		Log.i(NotificationService.class.toString(), mContext.getResources().getString(R.string.check_movies));
 		this.mService = isService;
 	}
 	
@@ -154,17 +154,16 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
     			        return null;
     			    }
     			});
-				mFilmCounter=moviesOnlineCount-moviesDownloadedCount;
 				result=0;	
 				//TODO:
-				//if(user!=null && user.getMovies()<moviesOnlineCount){
-				if(user!=null){
+				if(user!=null && user.getMovies()<moviesOnlineCount){
+					mFilmCounter=moviesOnlineCount-user.getMovies();
 					user.setSeconds(user.getSeconds()+mFilmCounter*100);
+					user.setMovies(moviesOnlineCount);
 					if(!mService)
 						user.setLastUpdate(System.currentTimeMillis());
 					daoUser.update(user);
 				}
-				//}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

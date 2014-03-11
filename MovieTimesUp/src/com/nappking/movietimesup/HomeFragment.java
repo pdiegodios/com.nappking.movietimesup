@@ -263,10 +263,12 @@ public class HomeFragment extends Fragment {
 				user.setDays(0);
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
+				user.setMovies(moviesCount);				
 				user.setUser(application.getCurrentFBUser().getId());
 				daoUser.create(user);
 				helper = null;
 	            OpenHelperManager.releaseHelper();
+				Log.i("HomeFragment", "LoadUserData called");
 				new LoadUserDataTask(this.getActivity(),user, true).execute();
 			}
 		} catch (SQLException e) {

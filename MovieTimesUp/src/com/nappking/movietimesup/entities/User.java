@@ -26,6 +26,7 @@ public class User implements Serializable{
     public static final String UNLOCKED = 	"unlocked";
     public static final String LASTUPDATE = "lastUpdate";
     public static final String DAYS = 		"days";
+    public static final String MOVIES =		"movies";
     
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
@@ -46,6 +47,8 @@ public class User implements Serializable{
     private long lastUpdate;
     @DatabaseField(columnName = DAYS)
     private int days;
+    @DatabaseField(columnName = MOVIES)
+    private int movies;
     
     //creators
 	public User() {super();}
@@ -60,6 +63,7 @@ public class User implements Serializable{
     public ArrayList<String> getUnlockedMovies(){return this.unlockedMovies;}
     public long getLastUpdate()					{return this.lastUpdate;}
     public int getDays()						{return this.days;}
+    public int getMovies()						{return this.movies;}
 
     //setters
     public void setId(int id)										{this._id=id;}  
@@ -71,6 +75,7 @@ public class User implements Serializable{
     public void setUnlockedMovies(ArrayList<String> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
     public void setLastUpdate(long date)							{this.lastUpdate = date;}
     public void setDays(int days)									{this.days = days;}
+    public void setMovies(int movies)								{this.movies = movies;}
     
     public void removeLockedMovie(int idMovie){
     	String id = String.valueOf(idMovie);

@@ -24,33 +24,36 @@ public class AddMovie {
 		//VALUES
 		int 	id = 19;
 		int 	points = 3;
-		int 	year = 1998;
+		int 	year = 2013;
 		String  action = SAVE;
-		String 	title = "The Ring";
-		String 	alternative_title = "El círculo";
-		String 	original_title = "Ringu";
-		String 	continent = "Asia";
-		String 	country = "Japón";
-		String 	director = "Hideo Nakata";
-		String 	genre = "Terror";
+		String 	title = "Oblivion";
+		String 	alternative_title = "El tiempo del olvido";
+		String 	original_title = "Oblivion";
+		String 	continent = "América";
+		String 	country = "USA";
+		String 	director = "Joseph Kosinski";
+		String 	genre = "Sci-Fi";
 		String 	poster = "";
-		String  filmaffinity_id = "756516";
-		String	imdb_id = "tt1063669";
-		String 	actor1="Nanako Matsushima";
-		String 	actor2="Miki Nakatani";
-		String 	actor3="Hiroyuki Sanada";
-		String 	character1="Mai Takano";
-		String 	character2="Reiko Asakawa";
-		String 	character3="Tomoko Oishi";
+		String  filmaffinity_id = "618375";
+		String	imdb_id = "tt1483013";
+		String 	actor1="Olga Kurylenko";
+		String 	actor2="Morgan Freeman";
+		String 	actor3="Tom Cruise";
+		String 	character1="Julia";
+		String 	character2="Malcolm Beech";
+		String 	character3="Jack Harper";
 		String 	other1 ="Festival de Cine Fantástico y de Terror de Sitges: Premio Mejor Película";
 		String 	other2 ="Filme de culto en su país -posteriormente se realizó una secuela y una precuela-, en el año 2002 Hollywood realizó un remake que obtuvo también un enorme éxito";
 		String 	other3 ="Tiene una de las escenas más impactantes del cine de terror actual, cuando una niña de pelo largo sale de un televisor";
-		String 	quote1="-¿Sabes qué, mamá? -¿qué? -Tomochan vió el video";
+		String 	quote1="-Sabes qué, mamá? -qué? -Tomochan vió el video";
 		String 	quote2="Te quedan 7 días";
 		String 	quote3="Cuatro personas murieron viendo esta cinta";
-		String 	plot = "En una pequeña y apacible localidad japonesa, entre los estudiantes circula una " +
-				"leyenda en torno a unos videos malditos cuya visión provoca la muerte. Tras la muerte " +
-				"de su sobrina, una periodista investigará el origen de dichos videos.";
+		String 	plot = "Año 2073. Hace más de 60 años la Tierra fue atacada; se ganó la guerra, pero la mitad del planeta " +
+				"quedó destruido, y todos los seres humanos fueron evacuados. Un antiguo marine, " +
+				"es uno de los últimos hombres que la habitan. Es un ingeniero de Drones que participa en una operación " +
+				"para extraer los recursos vitales del planeta. Su misión consiste en patrullar diariamente los cielos. " +
+				"Un día, rescata a una desconocida de una nave espacial y, entonces, se ve obligado a replantearse sus " +
+				"convicciones más profundas.";
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();

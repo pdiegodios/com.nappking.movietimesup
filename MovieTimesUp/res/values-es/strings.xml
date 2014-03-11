@@ -46,7 +46,9 @@
 	<string name="check_movies">"Comprobando si hay nuevas películas"</string>
     <string name="check_user">"Comprobando la información de usuario"</string>
     <string name="upload_user">"Subiendo información de usuario"</string>
-    <string name="updated_user">"Usuario actualizado"</string>
+    <string name="downloaded_user">"Descargada información de usuario reciente"</string>
+    <string name="already_updated_user">"Usuario ya actualizado"</string>
+    <string name="uploaded_user">"Subida información de usuario reciente"</string>
     <string name="download_user">"Descargando información de usuario desde el servicio web"</string>
     <string name="movies_downloaded">"¡Nuevas películas descargadas!"</string>
     <string name="movies_downloaded_false">"Ya tienes todas las películas"</string>
@@ -80,6 +82,13 @@
     
     <!-- PHRASES -->
     <string name="times_up">Time\'s Up!</string>
+    <string name="day1">Día 1</string>
+    <string name="day2">Día 2</string>
+    <string name="day3">Día 3</string>
+    <string name="day4">Día 4,5..</string>
+    <string name="youvewon">¡Has ganado </string>
+    <string name="secondswon"> segundos!</string>
+    <string name="bonus_message">Entra cada día para conseguir más segundos</string>
     <string name="game_over_sub">la película ha sido bloquedada</string>
     <string name="you_got">Consigues</string>
     <string name="new_movies_to_guess">"nuevas películas para adivinar"</string>

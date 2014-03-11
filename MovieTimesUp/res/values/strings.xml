@@ -46,7 +46,9 @@
     <string name="check_movies">"Checking if there are new movies"</string>
     <string name="check_user">"Checking user data"</string>
     <string name="upload_user">"Uploading user data"</string>
-    <string name="updated_user">"Updated user data"</string>
+    <string name="downloaded_user">"user data downloaded"</string>
+    <string name="uploaded_user">"user data uploaded"</string>
+    <string name="already_updated_user">"User data already updated"</string>
     <string name="download_user">"Downloading user data from Webservice"</string>
     <string name="movies_downloaded">"Downloaded new movies!"</string>
     <string name="movies_downloaded_false">"You already have all the movies"</string>
@@ -80,6 +82,13 @@
     
     <!-- PHRASES -->
     <string name="times_up">Time\'s Up!</string>
+    <string name="day1">Day 1</string>
+    <string name="day2">Day 2</string>
+    <string name="day3">Day 3</string>
+    <string name="day4">Next Days</string>
+    <string name="youvewon">You\'ve won </string>
+    <string name="bonus_message">Enter every day to win more seconds</string>
+    <string name="secondswon"> seconds!</string>
     <string name="game_over_sub">the movie has been locked</string>
     <string name="game_won">Congrats!</string>
     <string name="you_got">you got</string>
