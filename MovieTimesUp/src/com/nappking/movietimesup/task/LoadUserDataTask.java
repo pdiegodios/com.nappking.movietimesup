@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -41,25 +43,40 @@ import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.User;
 
 public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
-	private final static int TIMEOUT_CONNECTION = 15000;
-	private final static int TIMEOUT_SOCKET = 15000;
-	private final static int DAY_PRIZE = 20;
+	private final static String ERROR = "ERROR";
+	private final static int CONN_TIMEOUT = 7000;
+	private final static int SOCKET_TIMEOUT = 10000;
+	
+	private ProgressDialog mDialog;
 	private Context mContext;
 	private DBHelper mDBHelper;
 	private String mPath="users";
 	private User mUser=null;
-	private int mPointsWon = 0;
 	boolean mService = false;
-	boolean mIsFirst;
+	boolean mCheckExtraSeconds;
 	
-	public LoadUserDataTask(Context c, User u, boolean isFirst){
+	public LoadUserDataTask(Context c, User u, boolean showProgress){
 		this.mContext=c;
+		this.mCheckExtraSeconds=showProgress;
+		if(this.mDialog==null)
+			this.mDialog= new ProgressDialog(mContext);
 		this.mUser=u;
-		this.mIsFirst=isFirst;
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		if(mDialog!=null){
+			mDialog.setMessage(mContext.getResources().getString(R.string.check_user));
+			if (!mDialog.isShowing() && mCheckExtraSeconds)
+				mDialog.show();
+		}
 	}
 	
 	@Override
 	protected void onPostExecute(final Integer result){
+		if(mDialog!=null && mDialog.isShowing()){
+			mDialog.dismiss();
+		}
 		String text="";
 		switch(result){
 			case 1: 
@@ -75,7 +92,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 				text= mContext.getResources().getString(R.string.error_updating_user);
 				break;
 			default: 
-				text= mContext.getResources().getString(R.string.error_updating_user);
+				text= mContext.getResources().getString(R.string.network_error);
 				break;
 		}
         if (mDBHelper != null) {
@@ -83,8 +100,9 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
             mDBHelper = null;
         }
 		Toast.makeText(this.mContext, text, Toast.LENGTH_SHORT).show();
-		if(mPointsWon>0){
-			showDialog();
+		
+		if(mCheckExtraSeconds && mUser!=null){
+			checkForSeconds();
 		}
 	}
 
@@ -92,64 +110,42 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		int result = 0;
 		String read_user = readUserFeed(WebServiceTask.URL+mPath);
 		try{
-			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
-			if(read_user==null || read_user.equals("") && mUser!=null){
+			if((read_user==null || read_user.equals("")) && mUser!=null){
 				//If there is not user associated in the server we have to create a new user in the WS
 				List<User> users = new ArrayList<User>();
 				users.add(this.mUser);
-				try {							
-					JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
-					wsUser.addNameValuePair("users", jsonArray.toString());
-					Log.i(this.toString(), jsonArray.toString());
-			        wsUser.addNameValuePair("action", "SAVE");        
-			        wsUser.execute(new String[] {WebServiceTask.URL+mPath});	
-					result=1;				
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				sendUser("SAVE");	
+				result=1;		
 			}
 			else{
 				//Read the user from WS
 				JSONObject itemjson = new JSONObject(read_user);
-				Dao<User,Integer> userDao = getHelper().getUserDAO();
-				Log.i("User updated: ", itemjson.toString());
+				Log.i("User from WS: ", itemjson.toString());
 				User user = new Gson().fromJson(itemjson.toString(), User.class);
-				if(mUser!=null && user!=null && user.getLastUpdate()>mUser.getLastUpdate()){
-					Log.i("UPDATE", "ACTUALIZADO!!");
-					//If user from WS was updated after user from Database
-					mUser.setUnlockedMovies(user.getUnlockedMovies());
-					mUser.setLockedMovies(user.getLockedMovies());
-					mUser.setScore(user.getScore());
-					mUser.setSeconds(user.getSeconds());
-					mUser.setMovies(user.getMovies());
-					if(!mIsFirst){
-						updateDays(user.getLastUpdate(), user.getDays());
+				if(mUser!=null && user!=null){
+					if(user.getLastUpdate()==mUser.getLastUpdate()){
+						result = 3;
 					}
-					else{
+					else if(user.getLastUpdate()>mUser.getLastUpdate()){
+						Log.i("UPDATE", "ACTUALIZADO!!");
+						//If user from WS was updated after user from Database
+						mUser.setUnlockedMovies(user.getUnlockedMovies());
+						mUser.setLockedMovies(user.getLockedMovies());
+						mUser.setScore(user.getScore());
+						mUser.setSeconds(user.getSeconds());
+						mUser.setMovies(user.getMovies());
 						mUser.setDays(user.getDays());
 						mUser.setLastUpdate(user.getLastUpdate());
+						mUser.setLastForeground(user.getLastForeground());
+						getHelper().getUserDAO().update(mUser);
+						result = 2;
 					}
-					userDao.update(mUser);
-					result = 2;
-				}
-				else if (mUser!=null && user!=null && user.getLastUpdate()<mUser.getLastUpdate()){
-					Log.i("UPDATE", "Subimos a WebService");
-					//If user from Local DB was updated after user from WS
-					List<User> users = new ArrayList<User>();
-					if(!mIsFirst){
-						updateDays(mUser.getLastUpdate(), mUser.getDays());
+					else{
+						Log.i("UPDATE", "Subimos a WebService");
+						//If user from Local DB was updated after user from WS
+						sendUser("UPDATE");
+						result = 1;
 					}
-					userDao.update(mUser);
-					users.add(mUser);
-					JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
-					wsUser.addNameValuePair("users", jsonArray.toString());
-					Log.i(this.toString(), jsonArray.toString());
-			        wsUser.addNameValuePair("action", "UPDATE");        
-			        wsUser.execute(new String[] {WebServiceTask.URL+"users"});	
-					result = 1;
-				}
-				else if(mUser!=null && user!=null){
-					result = 3;
 				}
 				else{
 					result = 4;
@@ -160,42 +156,119 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		}
 		return result;
 	}
-	
-	private void updateDays(long milliseconds, int daysBefore){
-		Calendar today = GregorianCalendar.getInstance();
-		Calendar lastEntry=GregorianCalendar.getInstance();
-		lastEntry.setTimeInMillis(milliseconds);
-		Log.i("DATE", lastEntry.get(Calendar.DATE)+"/"+lastEntry.get(Calendar.MONTH));
-		if(lastEntry.get(Calendar.DAY_OF_YEAR) != today.get(Calendar.DAY_OF_YEAR) ||
-				lastEntry.get(Calendar.YEAR) != today.get(Calendar.YEAR)){
-			//If it's a different day
-			lastEntry.add(Calendar.DATE, 1);
-			if(today.get(Calendar.DAY_OF_YEAR) == lastEntry.get(Calendar.DAY_OF_YEAR) &&
-					today.get(Calendar.YEAR) == lastEntry.get(Calendar.YEAR)){
-				Log.i("LAST_ENTRY", "YESTERDAY");
-				//The user entered yesterday to the game
-				mUser.setDays(daysBefore+1);
-				if(mUser.getDays()>0){
-					if(mUser.getDays()>=3){
-						mPointsWon = 5*DAY_PRIZE;
-					}
-					else{
-						mPointsWon = (mUser.getDays()+1)*DAY_PRIZE;
-					}
-				}
-			}
-			else{
-				Log.i("LAST_ENTRY", "NOT TODAY & NOT YESTERDAY");
-				//The user didn't enter yesterday or today before now, so the days in row will be reset
-				mUser.setDays(0);
-				mPointsWon = DAY_PRIZE;
-			}					
-			mUser.setSeconds(mUser.getSeconds()+DAY_PRIZE);
+    
+	private void sendUser(String action){
+		try {
+			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);
+			List<User> users = new ArrayList<User>();
+			users.add(mUser);
+			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
+			wsUser.addNameValuePair("users", jsonArray.toString());
+			Log.i(action, jsonArray.toString());
+	        wsUser.addNameValuePair("action", action);        
+	        wsUser.execute(new String[] {WebServiceTask.URL+mPath});	   
+		}catch (JSONException e) {
+			e.printStackTrace();
 		}
-		mUser.setLastUpdate(System.currentTimeMillis());		
 	}
 	
-	private void showDialog() {
+	// Establish connection and socket (data retrieval) timeouts
+	private HttpParams getHttpParams() {         
+		HttpParams htpp = new BasicHttpParams();
+       	HttpConnectionParams.setConnectionTimeout(htpp, CONN_TIMEOUT);
+       	HttpConnectionParams.setSoTimeout(htpp, SOCKET_TIMEOUT);         
+       	return htpp;
+	}
+	
+	private String readUserFeed(String url){
+	    StringBuilder builder = new StringBuilder();
+		HttpGet httpGet = new HttpGet(url+"/"+this.mUser.getUser());
+		DefaultHttpClient client = new DefaultHttpClient(getHttpParams());
+        HttpResponse response = null;
+		try {
+			response = client.execute(httpGet);
+			StatusLine statusLine = response.getStatusLine();
+			int statusCode = statusLine.getStatusCode();
+			if (statusCode == 200) {
+				HttpEntity entity = response.getEntity();
+				InputStream content = entity.getContent();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+				return builder.toString();
+			} else if(statusCode == 500){
+				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_user_not_found));
+			} else {
+				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_download_file));
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ERROR;
+	}
+
+	private void checkForSeconds(){
+		try{
+			Calendar now = GregorianCalendar.getInstance();
+			Calendar lastForeground=GregorianCalendar.getInstance();
+			lastForeground.setTimeInMillis(mUser.getLastForeground());
+			Log.i("DATE", lastForeground.get(Calendar.DATE)+"/"+lastForeground.get(Calendar.MONTH));
+			boolean updated=false;
+			
+			//EXTRA SECONDS FOR FIDELITY
+			if(lastForeground.get(Calendar.DAY_OF_YEAR) != now.get(Calendar.DAY_OF_YEAR) || lastForeground.get(Calendar.YEAR) != now.get(Calendar.YEAR)){
+				Log.i("LAST_ENTRY", "DIFFERENT DAY");
+				//If it's a different day
+				lastForeground.add(Calendar.DATE, 1);
+				if(lastForeground.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR) && lastForeground.get(Calendar.YEAR) == now.get(Calendar.YEAR)){
+					Log.i("LAST_ENTRY", "YESTERDAY");
+					//The user entered yesterday to the game
+					mUser.setDays(mUser.getDays()+1);
+				}
+				else{
+					Log.i("LAST_ENTRY", "NOT TODAY & NOT YESTERDAY");
+					//The user didn't enter yesterday or today before now, so the days in row will be reset
+					mUser.setDays(0);
+				}					
+				int days = mUser.getDays();
+				int secondsExtra=0;
+				switch(days){
+					case 0: secondsExtra = 20; break;
+					case 1: secondsExtra = 40; break;
+					case 2: secondsExtra = 60; break;
+					default: secondsExtra = 100; break;
+				}
+				mUser.setSeconds(mUser.getSeconds()+secondsExtra);
+				mUser.setLastUpdate(System.currentTimeMillis());
+				mUser.setLastForeground(System.currentTimeMillis());
+				showExtra(secondsExtra);
+				updated=true;
+			}
+
+			//SECONDS FOR NEW MOVIES
+			int totalMovies=(int) getHelper().getMovieDAO().countOf();
+			if(totalMovies>mUser.getMovies()){
+				int secondsForMovies = (totalMovies - mUser.getMovies())*100;
+				mUser.setSeconds(mUser.getSeconds()+secondsForMovies);
+				mUser.setMovies(totalMovies);
+				updated=true;
+			}
+			
+			if(updated){
+				getHelper().getUserDAO().update(mUser);
+				sendUser("UPDATE");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void showExtra(int seconds){    	
         final Dialog dialog = new Dialog(mContext, R.style.SlideDialog);
         dialog.setContentView(R.layout.clapperdialogbonus);
         dialog.setCancelable(false);
@@ -215,13 +288,13 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		day3.setTextColor(mContext.getResources().getColor(R.color.greydark));
 		day4.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
 		day4.setTextColor(mContext.getResources().getColor(R.color.greydark));
-		if(mPointsWon>=40){
+		if(seconds>=40){
 			day2.setBackgroundColor(mContext.getResources().getColor(R.color.greenlight));
 			day2.setTextColor(mContext.getResources().getColor(R.color.black));	
-			if(mPointsWon>=60){
+			if(seconds>=60){
 				day3.setBackgroundColor(mContext.getResources().getColor(R.color.greenlight));
 				day3.setTextColor(mContext.getResources().getColor(R.color.black));	
-				if(mPointsWon>=100){
+				if(seconds>=100){
 					day4.setBackgroundColor(mContext.getResources().getColor(R.color.greenlight));
 					day4.setTextColor(mContext.getResources().getColor(R.color.black));	
 					fidelity.setImageDrawable(mContext.getResources().getDrawable(R.drawable.fidelity_4));
@@ -238,52 +311,16 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 			fidelity.setImageDrawable(mContext.getResources().getDrawable(R.drawable.fidelity_1));
 		}
 		//set values & actions
-		points.setText(" "+mPointsWon+" ");
+		points.setText(" "+seconds+" ");
 		okButton.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
 			}
 		});
-        dialog.show();
-	}
+		dialog.show();
+    }
 	
-	private String readUserFeed(String url){
-	    StringBuilder builder = new StringBuilder();
-		HttpGet httpGet = new HttpGet(url+"/"+this.mUser.getUser());
-		HttpParams httpParameters = new BasicHttpParams();
-		// Set the timeout in milliseconds until a connection is established.
-		// The default value is zero, that means the timeout is not used. 
-		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_CONNECTION);
-		// Set the default socket timeout (SO_TIMEOUT) 
-		// in milliseconds which is the timeout for waiting for data.
-		HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
-		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
-		try {
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-			} else if(statusCode == 500){
-				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_user_not_found));
-			} else {
-				Log.e(LoadUserDataTask.class.toString(), mContext.getResources().getString(R.string.error_download_file));
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return builder.toString();
-	}
-
 	private DBHelper getHelper(){
 		if(mDBHelper==null){
 			mDBHelper = OpenHelperManager.getHelper(mContext, DBHelper.class);

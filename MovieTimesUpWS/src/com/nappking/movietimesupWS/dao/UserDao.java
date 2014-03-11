@@ -19,11 +19,11 @@ public class UserDao implements IUserDao{
 	
 	//Statements
 	private String insert = "INSERT into "+User.TABLE+"("+User.USER+", "+User.NAME+", "+
-			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LASTUPDATE+")"+
-			" values(?, ?, ?, ?, ?, ?, ?)";
+			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LASTUPDATE+", "+
+			User.LASTFOREGROUND+", "+User.DAYS+", "+User.MOVIES+") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+User.SCORE+" = ?, "+
-			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LASTUPDATE+
-			" = ? WHERE "+User.USER +" = ?";
+			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LASTUPDATE+" = ?, "+
+			User.LASTFOREGROUND+" = ?, "+User.DAYS+" = ?, "+User.MOVIES+" = ?  WHERE "+User.USER +" = ?";
 	private String selectAll = "SELECT * from "+User.TABLE;
 	private String selectByID = "SELECT * from "+User.TABLE+" WHERE "+User.USER +"= ?";
 	
@@ -39,6 +39,9 @@ public class UserDao implements IUserDao{
 			_statement.setString(5, toString(c.getLockedMovies()));
 			_statement.setString(6, toString(c.getUnlockedMovies()));
 			_statement.setLong(7, c.getLastUpdate());
+			_statement.setLong(8, c.getLastForeground());
+			_statement.setInt(9, c.getDays());
+			_statement.setInt(10, c.getMovies());
 			_statement.executeUpdate();			
 			_result = _statement.getGeneratedKeys();
 			if (_result.next()) {
@@ -64,7 +67,10 @@ public class UserDao implements IUserDao{
 			_statement.setString(4, toString(c.getLockedMovies()));
 			_statement.setString(5, toString(c.getUnlockedMovies()));
 			_statement.setLong(6, c.getLastUpdate());
-			_statement.setString(7, c.getUser());
+			_statement.setLong(7, c.getLastForeground());
+			_statement.setInt(8, c.getDays());
+			_statement.setInt(9, c.getMovies());
+			_statement.setString(10, c.getUser());
 			
 			nupdate = _statement.executeUpdate();
 		} catch (SQLException e) {
@@ -92,6 +98,9 @@ public class UserDao implements IUserDao{
 				user.setLockedMovies(fromString(_result.getString(6)));
 				user.setUnlockedMovies(fromString(_result.getString(7)));
 				user.setLastUpdate(_result.getLong(8));
+				user.setLastForeground(_result.getLong(9));
+				user.setDays(_result.getInt(10));
+				user.setMovies(_result.getInt(11));
 				users.add(user);
 			}			
 		} catch (SQLException e) {
@@ -117,6 +126,9 @@ public class UserDao implements IUserDao{
 				user.setLockedMovies(fromString(_result.getString(6)));
 				user.setUnlockedMovies(fromString(_result.getString(7)));
 				user.setLastUpdate(_result.getLong(8));
+				user.setLastForeground(_result.getLong(9));
+				user.setDays(_result.getInt(10));
+				user.setMovies(_result.getInt(11));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

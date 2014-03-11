@@ -18,13 +18,19 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -35,8 +41,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
@@ -54,13 +64,15 @@ import com.facebook.widget.LoginButton;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBFragmentActivity;
 import com.nappking.movietimesup.entities.User;
+import com.nappking.movietimesup.task.LoadUserDataTask;
 
 /**
  *  Entry point for the app that represents the home screen with the Play button etc. and
  *  also the login screen for the social version of the app - these screens will switch
  *  within this activity using Fragments.
  */
-public class HomeActivity extends DBFragmentActivity {    
+public class HomeActivity extends DBFragmentActivity {   
+	public static final String SECONDS_EXTRA = "SECONDS";
 	
 	// Tag used when logging messages
     private static final String TAG = HomeActivity.class.getSimpleName();
@@ -209,10 +221,34 @@ public class HomeActivity extends DBFragmentActivity {
   		fbUiLifecycleHelper.onResume();        
         // Hide the notification bar
  		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     	getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
   		// Measure mobile app install ads
  		// Ref: https://developers.facebook.com/docs/tutorials/mobile-app-ads/
  		AppEventsLogger.activateApp(this, ((FriendSmashApplication)getApplication()).getString(R.string.app_id));
+ 		
+ 		updateUser();
     }
+	
+	private void updateUser(){
+		Dao<User, Integer> daoUser;
+		try {
+			daoUser = getHelper().getUserDAO();
+			User user = daoUser.queryForId(1);
+			if(user!=null){
+				Calendar now = GregorianCalendar.getInstance();
+				Log.i("UPDATE USER", "USER EXISTS");
+				if(now.getTimeInMillis()>(user.getLastUpdate()+10*60*1000)){
+					Log.i("UPDATE USER", "USER EXISTS & IT'S TIME TO CHECK WS");
+					//It's more than 10 minutes since last time it was updated
+					new LoadUserDataTask(this, user, true).execute();
+				}						
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
     @Override
     public void onPause() {

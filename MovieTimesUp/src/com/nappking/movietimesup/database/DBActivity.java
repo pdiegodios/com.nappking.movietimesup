@@ -19,6 +19,7 @@ public abstract class DBActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		//Hide the notification bar
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 	
 	/**

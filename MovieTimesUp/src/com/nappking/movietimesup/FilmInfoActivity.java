@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,12 +24,10 @@ import com.nappking.movietimesup.loader.ImageLoader;
 
 public class FilmInfoActivity extends DBActivity{
 	
-	private ImageView mPosterImage, mGenreImage, mDirectorImage, 
-			mActorImage, mCharacterImage, mStorylineImage, mQuotesImage, mTriviaImage;
+	private ImageView mPosterImage;
 	private ProgressBar mProgress;
-	private TextView mTitle, mOriginalTitle, mGenreHeader, mGenre, mCountryYear, mDirectorHeader, 
-			mDirector, mActorHeader, mActor, mCharacter, mCharacterHeader, mStorylineHeader, 
-			mStoryline, mQuotes, mQuotesHeader, mTrivia, mTriviaHeader, mPoints;
+	private TextView mTitle, mOriginalTitle, mGenre, mCountryYear, mDirector,  mActor, 
+			mCharacter, mStoryline, mQuotes, mTrivia, mPoints;
 	private ImageButton mFilmaffinityButton, mImdbButton; 
 	private Movie mMovie;
 	private ImageLoader mImageLoader;
@@ -44,6 +41,12 @@ public class FilmInfoActivity extends DBActivity{
      	initiate();
 		setListeners();
 	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
 
 	private void initiate() {
 
@@ -53,31 +56,17 @@ public class FilmInfoActivity extends DBActivity{
 		//Instantiate
      	mTitle = (TextView) findViewById(R.id.title);
      	mOriginalTitle = (TextView) findViewById(R.id.originalTitle);
-     	mGenreHeader = (TextView) findViewById(R.id.genre_header);
      	mGenre = (TextView) findViewById(R.id.genre_text);
      	mCountryYear = (TextView) findViewById(R.id.country_year);
-     	mDirectorHeader = (TextView) findViewById(R.id.director_header);
      	mDirector = (TextView) findViewById(R.id.director_text);
-     	mActorHeader = (TextView) findViewById(R.id.actor_header);
      	mActor = (TextView) findViewById(R.id.actor_text);
-     	mCharacterHeader = (TextView) findViewById(R.id.character_header);
      	mCharacter = (TextView) findViewById(R.id.character_text);
-     	mQuotesHeader = (TextView) findViewById(R.id.quotes_header);
      	mQuotes = (TextView) findViewById(R.id.quotes_text);
-     	mTriviaHeader = (TextView) findViewById(R.id.trivia_header);
      	mTrivia = (TextView) findViewById(R.id.trivia_text);
-     	mStorylineHeader = (TextView) findViewById(R.id.storyline_header);
      	mStoryline = (TextView) findViewById(R.id.storyline_text);
      	mPoints = (TextView) findViewById(R.id.points);
      	mProgress = (ProgressBar) findViewById(R.id.progress);
      	mPosterImage = (ImageView) findViewById(R.id.poster);
-		mGenreImage = (ImageView) findViewById(R.id.genre_icon);
-		mQuotesImage = (ImageView) findViewById(R.id.quotes_icon);
-		mTriviaImage = (ImageView) findViewById(R.id.trivia_icon);
-		mDirectorImage = (ImageView) findViewById(R.id.director_icon);
-		mActorImage = (ImageView) findViewById(R.id.actor_icon);
-		mCharacterImage = (ImageView) findViewById(R.id.character_icon);
-		mStorylineImage = (ImageView) findViewById(R.id.storyline_icon);
 		mFilmaffinityButton = (ImageButton) findViewById(R.id.filmaffinity);
 		mImdbButton = (ImageButton) findViewById(R.id.imdb);
 		

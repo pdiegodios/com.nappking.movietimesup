@@ -96,6 +96,7 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/title"
+		            android:text="Casablanca"
 		            android:singleLine="true"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
@@ -105,6 +106,7 @@
 		            android:textColor="@color/white"/>       
 		        <TextView 
 		            android:id="@+id/points"
+		            android:text="1pts"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="4.5"
@@ -119,6 +121,7 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/originalTitle"
+		            android:text="Casablanca"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
@@ -127,6 +130,7 @@
 		            android:textStyle="italic"/>		        
 		        <TextView 
 		            android:id="@+id/country_year"
+		            android:text="USA, 1942"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
@@ -157,8 +161,8 @@
 
 	            <ImageView
 	                android:id="@+id/genre_icon"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	                android:layout_gravity="center_vertical"
 	                android:layout_marginRight="5dp"
 	                android:background="@android:color/transparent"
@@ -201,8 +205,8 @@
 
 	            <ImageView
 	                android:id="@+id/director_icon"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	                android:layout_gravity="center_vertical"
 	                android:layout_marginRight="5dp"
 	                android:background="@android:color/transparent"
@@ -244,8 +248,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/actor_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="center_vertical"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -288,8 +292,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/character_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="center_vertical"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -333,8 +337,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/storyline_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -378,8 +382,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/quotes_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"
@@ -423,8 +427,8 @@
 
 	       	    <ImageView
 	       	        android:id="@+id/trivia_icon"
-	       	        android:layout_width="wrap_content"
-	       	        android:layout_height="wrap_content"
+	                android:layout_width="@dimen/scheme_icon_size"
+	                android:layout_height="@dimen/scheme_icon_size"
 	       	        android:layout_gravity="top"
 	       	        android:layout_marginRight="5dp"
 	       	        android:background="@android:color/transparent"

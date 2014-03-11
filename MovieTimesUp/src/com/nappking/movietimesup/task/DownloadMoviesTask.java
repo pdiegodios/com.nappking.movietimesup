@@ -30,7 +30,6 @@ import com.nappking.movietimesup.HomeActivity;
 import com.nappking.movietimesup.SplashActivity;
 import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.Movie;
-import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.notifications.NotificationService;
 
 import android.app.Notification;
@@ -48,8 +47,8 @@ import android.widget.Toast;
  * @author Nappking - pdiego
  */
 public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
-	private final static int TIMEOUT_CONNECTION = 25000;
-	private final static int TIMEOUT_SOCKET = 25000;
+	private final static int CONN_TIMEOUT = 20000;
+	private final static int SOCKET_TIMEOUT = 25000;
 	private Context mContext;
 	private DBHelper mDBHelper;
 	private String mCountPath = "movies/count";
@@ -131,7 +130,6 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 				moviesOnlineCount = Integer.parseInt(counter);
 			}
 			final Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
-			final Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			int moviesDownloadedCount = (int) daoMovie.countOf();
 			if(moviesDownloadedCount>=moviesOnlineCount){
 				//We have all the movies downloaded
@@ -142,7 +140,6 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 			else{
 				String read_movies = readMovieFeed(WebServiceTask.URL+mSincePath+"/"+moviesDownloadedCount);
 				JSONArray jsonContent = new JSONArray(read_movies);
-				User user = daoUser.queryForId(1);
     			Type listMovieType = new TypeToken<List<Movie>>(){}.getType();
     			final List<Movie> moviesToInsert = new Gson().fromJson(jsonContent.toString(), listMovieType);
     			Collections.shuffle(moviesToInsert, new Random(System.nanoTime()));
@@ -155,15 +152,6 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
     			    }
     			});
 				result=0;	
-				//TODO:
-				if(user!=null && user.getMovies()<moviesOnlineCount){
-					mFilmCounter=moviesOnlineCount-user.getMovies();
-					user.setSeconds(user.getSeconds()+mFilmCounter*100);
-					user.setMovies(moviesOnlineCount);
-					if(!mService)
-						user.setLastUpdate(System.currentTimeMillis());
-					daoUser.update(user);
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,17 +160,18 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		return result;
 	}
 	
+   // Establish connection and socket (data retrieval) timeouts
+   private HttpParams getHttpParams() {         
+       HttpParams htpp = new BasicHttpParams();
+       HttpConnectionParams.setConnectionTimeout(htpp, CONN_TIMEOUT);
+       HttpConnectionParams.setSoTimeout(htpp, SOCKET_TIMEOUT);         
+       return htpp;
+   }
+	
 	private String readMovieFeed(String url){
 	    StringBuilder builder = new StringBuilder();
 		HttpGet httpGet = new HttpGet(url);
-		HttpParams httpParameters = new BasicHttpParams();
-		// Set the timeout in milliseconds until a connection is established.
-		// The default value is zero, that means the timeout is not used. 
-		HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_CONNECTION);
-		// Set the default socket timeout (SO_TIMEOUT) 
-		// in milliseconds which is the timeout for waiting for data.
-		HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
-		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
+		DefaultHttpClient client = new DefaultHttpClient(getHttpParams());
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();

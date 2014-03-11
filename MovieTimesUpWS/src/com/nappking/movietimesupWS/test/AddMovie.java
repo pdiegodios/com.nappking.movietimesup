@@ -22,38 +22,37 @@ public class AddMovie {
 	public static void main(String[] args) {
 		
 		//VALUES
-		int 	id = 19;
-		int 	points = 3;
-		int 	year = 2013;
+		int id = 18;
+		int points = 1;
+		int year = 1995;
 		String  action = SAVE;
-		String 	title = "Oblivion";
-		String 	alternative_title = "El tiempo del olvido";
-		String 	original_title = "Oblivion";
-		String 	continent = "América";
-		String 	country = "USA";
-		String 	director = "Joseph Kosinski";
-		String 	genre = "Sci-Fi";
-		String 	poster = "";
-		String  filmaffinity_id = "618375";
-		String	imdb_id = "tt1483013";
-		String 	actor1="Olga Kurylenko";
-		String 	actor2="Morgan Freeman";
-		String 	actor3="Tom Cruise";
-		String 	character1="Julia";
-		String 	character2="Malcolm Beech";
-		String 	character3="Jack Harper";
-		String 	other1 ="Festival de Cine Fantástico y de Terror de Sitges: Premio Mejor Película";
-		String 	other2 ="Filme de culto en su país -posteriormente se realizó una secuela y una precuela-, en el año 2002 Hollywood realizó un remake que obtuvo también un enorme éxito";
-		String 	other3 ="Tiene una de las escenas más impactantes del cine de terror actual, cuando una niña de pelo largo sale de un televisor";
-		String 	quote1="-Sabes qué, mamá? -qué? -Tomochan vió el video";
-		String 	quote2="Te quedan 7 días";
-		String 	quote3="Cuatro personas murieron viendo esta cinta";
-		String 	plot = "Año 2073. Hace más de 60 años la Tierra fue atacada; se ganó la guerra, pero la mitad del planeta " +
-				"quedó destruido, y todos los seres humanos fueron evacuados. Un antiguo marine, " +
-				"es uno de los últimos hombres que la habitan. Es un ingeniero de Drones que participa en una operación " +
-				"para extraer los recursos vitales del planeta. Su misión consiste en patrullar diariamente los cielos. " +
-				"Un día, rescata a una desconocida de una nave espacial y, entonces, se ve obligado a replantearse sus " +
-				"convicciones más profundas.";
+		String title = "Pocahontas";
+		String alternative_title = "Pokahontas";
+		String original_title = "Pocahontas";
+		String continent = "Europa";
+		String country = "UK";
+		String director = "Mike Gabriel & Eric Goldberg";
+		String genre = "Animación";
+		String poster = "";
+		String  filmaffinity_id = "902616";
+		String imdb_id = "tt0114148";
+		String actor1="Mel Gibson (voz original)";
+		String actor2="Christian Bale (voz original)";
+		String actor3="Linda Hunt (voz original)";
+		String character1="Gobernador Ratcliffe";
+		String character2="Jefe Powhatan";
+		String character3="Capitán Smith";
+		String other1 ="2 Oscars: Mejor canción original, Mejor banda sonora";
+		String other2 ="Supone el primer romance interracial en una película de Disney y los primeros personajes con existencia verídica e histórica";
+		String other3 ="Los dibujantes se basaron en la modelo Naomi Campbell para dibujar al personaje principal";
+		String quote1="Hemos mejorado las vidas de salvajes de todo el mundo";
+		String quote2="Preferiría morir mañana, que vivir cien años sin haberte conocido";
+		String quote3="-¡Pero esta es su tierra! -¡Esta es mi tierra!¡Yo hago las leyes aquí!";
+		String plot = "X vigila la llegada de un gran grupo de colonos ingleses, guiados por el ambicioso " +
+				"gobernador y el valiente capitán Z. Con su juguetón compañero Meeko, un travieso mapache, y con Flit, un alegre pájaro, " +
+				"X entabla una fuerte amistad con el Capitán Z. Pero cuando empiezan a surgir tensiones entre las dos culturas, X recurre " +
+				"a la sabiduría de la Abuela Sauce para encontrar una manera de lograr la paz entre su pueblo y los conquistadores.";
+
 		
 		//CLIENT
 		ClientConfig config = new DefaultClientConfig();
@@ -95,7 +94,6 @@ public class AddMovie {
 	}
 
 	private static URI getBaseURI() {
-		//return UriBuilder.fromUri("http://localhost:8081/MovieTimesUpWS").build();
 		return UriBuilder.fromUri("http://movietimesup.gestores.cloudbees.net").build();
 	}
 

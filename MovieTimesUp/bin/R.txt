@@ -320,10 +320,10 @@ int id country_year 0x7f060055
 int id curtain 0x7f06006c
 int id date 0x7f060080
 int id dateinfo 0x7f060076
-int id day1 0x7f06000f
-int id day2 0x7f060010
-int id day3 0x7f060011
-int id day4 0x7f060012
+int id day1 0x7f06000e
+int id day2 0x7f06000f
+int id day3 0x7f060010
+int id day4 0x7f060011
 int id director 0x7f060082
 int id director_header 0x7f06005a
 int id director_icon 0x7f060059
@@ -345,7 +345,7 @@ int id genreinfo 0x7f060075
 int id grid 0x7f060028
 int id homeFragment 0x7f06004b
 int id imageView1 0x7f06003d
-int id imagebonus 0x7f06000e
+int id imagebonus 0x7f060012
 int id imdb 0x7f060053
 int id items 0x7f06002f
 int id itemsLocked 0x7f060032

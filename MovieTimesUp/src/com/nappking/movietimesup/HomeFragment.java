@@ -19,6 +19,8 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -34,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -49,6 +52,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -260,17 +265,18 @@ public class HomeFragment extends Fragment {
 				user.setLockedMovies(new ArrayList<String>());
 				user.setUnlockedMovies(new ArrayList<String>());
 				user.setLastUpdate(Long.valueOf("0"));
+				user.setLastForeground(Long.valueOf("0"));
 				user.setDays(0);
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
 				user.setMovies(moviesCount);				
 				user.setUser(application.getCurrentFBUser().getId());
 				daoUser.create(user);
-				helper = null;
-	            OpenHelperManager.releaseHelper();
 				Log.i("HomeFragment", "LoadUserData called");
-				new LoadUserDataTask(this.getActivity(),user, true).execute();
+				new LoadUserDataTask(this.getActivity(), user, false).execute();
 			}
+			helper = null;
+			OpenHelperManager.releaseHelper();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			helper = null;

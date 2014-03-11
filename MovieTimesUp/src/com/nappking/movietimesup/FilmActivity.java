@@ -152,8 +152,6 @@ public class FilmActivity extends DBActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.movietemplate);	
-		//avoid to sleep the mobile device
-     	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
      	//initiate elements
      	initiate();
 		setListeners();

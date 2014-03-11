@@ -25,6 +25,7 @@ public class User implements Serializable{
     public static final String LOCKED = 	"locked";
     public static final String UNLOCKED = 	"unlocked";
     public static final String LASTUPDATE = "lastUpdate";
+    public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES =		"movies";
     
@@ -45,6 +46,8 @@ public class User implements Serializable{
     private ArrayList<String> unlockedMovies;
     @DatabaseField(columnName = LASTUPDATE)
     private long lastUpdate;
+    @DatabaseField(columnName = LASTFOREGROUND)
+    private long lastForeground;
     @DatabaseField(columnName = DAYS)
     private int days;
     @DatabaseField(columnName = MOVIES)
@@ -62,6 +65,7 @@ public class User implements Serializable{
     public ArrayList<String> getLockedMovies()	{return this.lockedMovies;}
     public ArrayList<String> getUnlockedMovies(){return this.unlockedMovies;}
     public long getLastUpdate()					{return this.lastUpdate;}
+    public long getLastForeground()				{return this.lastForeground;}
     public int getDays()						{return this.days;}
     public int getMovies()						{return this.movies;}
 
@@ -73,7 +77,8 @@ public class User implements Serializable{
 	public void setSeconds(int seconds)								{this.seconds=seconds;} 
     public void setLockedMovies(ArrayList<String> lockedMovies)		{this.lockedMovies = lockedMovies;}
     public void setUnlockedMovies(ArrayList<String> unlockedMovies)	{this.unlockedMovies = unlockedMovies;}
-    public void setLastUpdate(long date)							{this.lastUpdate = date;}
+    public void setLastUpdate(long millis)							{this.lastUpdate = millis;}
+    public void setLastForeground(long millis)						{this.lastForeground = millis;}
     public void setDays(int days)									{this.days = days;}
     public void setMovies(int movies)								{this.movies = movies;}
     

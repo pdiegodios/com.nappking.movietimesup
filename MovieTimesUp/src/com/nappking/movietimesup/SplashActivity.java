@@ -1,25 +1,18 @@
 package com.nappking.movietimesup;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import com.facebook.android.friendsmash.R;
-import com.j256.ormlite.dao.Dao;
-import com.nappking.movietimesup.database.DBActivity;
-import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.notifications.NotificationService;
 import com.nappking.movietimesup.task.DownloadMoviesTask;
-import com.nappking.movietimesup.task.LoadUserDataTask;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -29,9 +22,10 @@ import android.widget.ImageView;
  * 
  * @author Nappking - pdiego
  */
-public class SplashActivity extends DBActivity{
+public class SplashActivity extends Activity{
 	ImageView iEllipsis;
 	AnimationDrawable animEllipsis;
+	public static int mSecondsExtra;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +34,12 @@ public class SplashActivity extends DBActivity{
         initiate();     	
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-     	User user = null;
-     	try {
-			Dao<User,Integer> daoUser = getHelper().getUserDAO();
-			user = daoUser.queryForId(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if(user!=null){
-			//If user exists we have to check if there are new data in WS or
-			//update data in WS if necessary
-			Log.i("SPLASH", "LoadUserData called");
-			new LoadUserDataTask(this, user, false).execute();				
-		}
         new DownloadMoviesTask(this).execute();
         checkNotifications();
+    }
+    
+    public static void setSecondsExtra(int seconds){
+    	mSecondsExtra = seconds;
     }
 
 	@Override
@@ -85,7 +70,7 @@ public class SplashActivity extends DBActivity{
     	 */
 		//SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);		
 		//Recuperamos intervalo de consulta para las notificaciones
-		int interval = 24; //hours
+		int interval = 24; //min
 		
 		//Servicio de Alarma
 		AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);

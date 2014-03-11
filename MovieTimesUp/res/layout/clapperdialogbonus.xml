@@ -29,7 +29,7 @@
 				android:gravity="center" />
 		    <TextView
 		        android:id="@+id/points"
-		        android:textSize="18sp"
+		        android:textSize="20sp"
 		        android:textStyle="bold"        
 		        android:textColor="@android:color/black"
 		        android:layout_width="wrap_content"
@@ -62,17 +62,19 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingBottom="5dp">
+        android:layout_marginTop="20dp">
         <TextView 
+            android:id="@+id/day1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.1"
             android:gravity="center"
+            android:background="@color/greenlight"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:text="@string/day1"/>
         <TextView 
+            android:id="@+id/day2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.1"
@@ -81,6 +83,7 @@
             android:textStyle="bold"
             android:text="@string/day2"/>
         <TextView 
+            android:id="@+id/day3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.1"
@@ -89,6 +92,7 @@
             android:textStyle="bold"
             android:text="@string/day3"/>
         <TextView 
+            android:id="@+id/day4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.95"
@@ -99,6 +103,7 @@
     </LinearLayout>
 	<ImageView 
 	    android:id="@+id/imagebonus"
+	    android:layout_margin="5dp"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:src="@drawable/fidelity_1"/>

@@ -103,6 +103,7 @@ public class FilmGridActivity extends DBActivity{
 	@Override
 	protected void onPause() {
 		super.onPause();
+		finish();
 	}
 	
 	private void update(boolean stateChanged){     	
