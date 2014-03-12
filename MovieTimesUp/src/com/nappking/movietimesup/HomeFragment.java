@@ -574,9 +574,6 @@ public class HomeFragment extends Fragment {
 
 		// Post Achievemnt to Facebook
 		postAchievement();
-
-		// Post Custom OG action to Facebook
-		postOG();
 	}
 	
 	void requestPublishPermissions(Session session) {
@@ -678,33 +675,6 @@ public class HomeFragment extends Fragment {
 						}
 					});
 			Request.executeBatchAsync(postScoreRequest);
-		}
-	}
-	
-	// Post custom OG action to Facebook
-	private void postOG() {
-		if (application.getLastFriendSmashedID() != null) {
-			Bundle params = new Bundle();
-			params.putString("profile", application.getLastFriendSmashedID());
-			Request postOGRequest = new Request(Session.getActiveSession(),
-					"me/friendsmashsample:smash",
-					params,
-                    HttpMethod.POST,
-                    new Request.Callback() {
-
-						@Override
-						public void onCompleted(Response response) {
-							FacebookRequestError error = response.getError();
-							if (error != null) {
-								Log.e(MovieTimesUpApplication.TAG, "Sending OG Story Failed: " + error.getErrorMessage());
-							} else {
-								GraphObject graphObject = response.getGraphObject();
-								String ogActionID = (String)graphObject.getProperty("id");
-								Log.i(MovieTimesUpApplication.TAG, "OG Action ID: " + ogActionID);
-							}
-						}
-					});
-			Request.executeBatchAsync(postOGRequest);
 		}
 	}
 	

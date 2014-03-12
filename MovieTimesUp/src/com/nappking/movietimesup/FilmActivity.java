@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -19,7 +20,6 @@ import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 import com.nappking.movietimesup.widget.Clue;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -323,7 +323,6 @@ public class FilmActivity extends DBActivity{
 	        	boolean toFinish = true;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
-		        	Log.i("COUNTDOWN", "toFinish: "+millisUntilFinished+";  secs: "+mCurrentSeconds);
 		        	if(mCurrentSeconds<11 && !lastSecondsSounding){
 		        		lastSecondsSounding = true;
 		        		beeps.reset();
@@ -674,7 +673,7 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				if(movie.getGenre()!=null){
 					bgenre.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.genre).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.genre).toUpperCase(Locale.getDefault()),
 							movie.getGenre(), infogenre, GENRE);
 					movie.setGenre(null);
 				}
@@ -694,7 +693,7 @@ public class FilmActivity extends DBActivity{
 			public void onClick(View v) {
 				if(movie.getDirector()!=null){
 					bdirector.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.director).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.director).toUpperCase(Locale.getDefault()),
 							movie.getDirector(),infodirector, DIRECTOR);
 					movie.setDirector(null);
 				}
@@ -706,13 +705,13 @@ public class FilmActivity extends DBActivity{
 				if(mCounterLocation==0){
 					mCounterLocation = 1;
 					blocation.setImageResource(R.drawable.location1);
-					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(Locale.getDefault()),
 							movie.getContinent(),infolocation, LOCATION);
 				}
 				else if (mCounterLocation ==1){
 					mCounterLocation = 2;
 					blocation.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.country).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.country).toUpperCase(Locale.getDefault()),
 							movie.getCountry(),infolocation, LOCATION);
 				}
 			}
@@ -728,13 +727,13 @@ public class FilmActivity extends DBActivity{
 					if(year<2000){
 						year=year-1900;
 					}
-					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.decade).toUpperCase(Locale.getDefault()),
 							year+"'s", infodate, DATE);
 				}
 				else if (mCounterDate ==1){
 					mCounterDate = 2;
 					bdate.setImageResource(R.drawable.ticket_empty);
-					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(), 
+					displaySelectedClue(getResources().getString(R.string.year).toUpperCase(Locale.getDefault()), 
 							movie.getYear()+"", infodate, DATE/2);
 				}
 			}
@@ -750,7 +749,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterActor == 2)
 						bactor.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(),
+					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(Locale.getDefault()),
 							movie.getCast()[mCounterActor], infoactor, ACTOR);
 					mCounterActor=mCounterActor+1;
 				}
@@ -767,7 +766,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterCharacter == 2)
 						bcharacter.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(), 
+					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(Locale.getDefault()), 
 							movie.getCharacters()[mCounterCharacter], infocharacter, CHARACTER);
 					mCounterCharacter=mCounterCharacter+1;
 				}
@@ -784,7 +783,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterQuote == 2)
 						bquote.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(), 
+					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(Locale.getDefault()), 
 							movie.getQuotes()[mCounterQuote], infoquote, QUOTE);
 					mCounterQuote=mCounterQuote+1;
 				}
@@ -801,7 +800,7 @@ public class FilmActivity extends DBActivity{
 					if(mCounterOther == 2)
 						btrivia.setImageResource(R.drawable.ticket_empty);
 					
-					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(), 
+					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(Locale.getDefault()), 
 							movie.getOthers()[mCounterOther], infotrivia, TRIVIA);
 					mCounterOther=mCounterOther+1;
 				}
@@ -825,7 +824,7 @@ public class FilmActivity extends DBActivity{
 					String initialPoints="...";
 					if (start==0)
 						initialPoints="";
-					displaySelectedClue(getResources().getString(R.string.synopsis).toUpperCase(), 
+					displaySelectedClue(getResources().getString(R.string.synopsis).toUpperCase(Locale.getDefault()), 
 							initialPoints+movie.getPlot().substring(start, end)+"...", infosynopsis, SYNOPSIS);
 					mCounterSynopsis=mCounterSynopsis+1;
 				}

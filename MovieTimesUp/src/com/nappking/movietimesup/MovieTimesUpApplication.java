@@ -28,49 +28,36 @@ import com.facebook.model.GraphUser;
 /**
  *  Use a custom Application class to pass state data between Activities.
  */
-public class MovieTimesUpApplication extends Application {
-
-	/* Static Attributes */
-	
+public class MovieTimesUpApplication extends Application {	
 	// Tag used when logging all messages with the same tag (e.g. for demoing purposes)
-	static final String TAG = "FriendSmash";
-	
+	static final String TAG = "MovieTimesUp";	
 	// Switch between the non-social and social Facebook versions of the game
 	static final boolean IS_SOCIAL = true;
-
-	
-	/* Friend Smash application attributes */
-	
 	// Player's current score
 	private int score = -1;
+	// Last time LoadUserDataTask was called
+	private int lastUpdateCall = -1;
 	
 	
 	/* Facebook application attributes */
 
 	// Logged in status of the user
 	private boolean loggedIn = false;
-	private static final String LOGGED_IN_KEY = "logged_in";
-	
+	private static final String LOGGED_IN_KEY = "logged_in";	
 	// Current logged in FB user and key for saving/restoring during the Activity lifecycle
 	private GraphUser currentFBUser;
-	private static final String CURRENT_FB_USER_KEY = "current_fb_user";
-	
+	private static final String CURRENT_FB_USER_KEY = "current_fb_user";	
 	// List of the logged in user's friends and key for saving/restoring during the Activity lifecycle
 	private List<GraphUser> friends;
-	private static final String FRIENDS_KEY = "friends";
-		
-	// ID of the last friend smashed (linked to the current score)
-	private String lastFriendSmashedID = null;
-	
+	private static final String FRIENDS_KEY = "friends";	
 	// List of ordered ScoreboardEntry objects in order from highest to lowest score to
 	// be shown in the ScoreboardFragment
-	private ArrayList<ScoreboardEntry> scoreboardEntriesList = null;
-	
+	private ArrayList<ScoreboardEntry> scoreboardEntriesList = null;	
 	// FacebookRequestError to show when the GameFragment closes
 	private FacebookRequestError gameFragmentFBRequestError = null;
 		
 
-	/* Friend Smash application attribute getters & setters */
+	/*getters & setters */
 	
 	public int getScore() {
 		return score;
@@ -78,6 +65,14 @@ public class MovieTimesUpApplication extends Application {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	public int getLastUpdateCall() {
+		return lastUpdateCall;
+	}
+
+	public void setLastUpdateCall(int last) {
+		this.lastUpdateCall = last;
 	}
 
 	
@@ -90,11 +85,9 @@ public class MovieTimesUpApplication extends Application {
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 		if (!loggedIn) {
-			// If the user is logged out, reset the score and nullify all the logged-in user's values
-			setScore(-1);
+			setLastUpdateCall(-1);
 			setCurrentFBUser(null);
         	setFriends(null);
-        	setLastFriendSmashedID(null);
         	setScoreboardEntriesList(null);
 		}
 	}
@@ -135,14 +128,6 @@ public class MovieTimesUpApplication extends Application {
 	
 	public void setFriends(List<GraphUser> friends) {
 		this.friends = friends;
-	}
-
-	public String getLastFriendSmashedID() {
-		return lastFriendSmashedID;
-	}
-
-	public void setLastFriendSmashedID(String lastFriendSmashedID) {
-		this.lastFriendSmashedID = lastFriendSmashedID;
 	}
 
 	public ArrayList<ScoreboardEntry> getScoreboardEntriesList() {

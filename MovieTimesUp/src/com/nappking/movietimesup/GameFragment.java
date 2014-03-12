@@ -640,9 +640,6 @@ public class GameFragment extends Fragment {
 						
 						if (friendToSmashBitmap != null) {
 							setFriendImageAndFire(userImageView, friendToSmashBitmap, extraImage);
-		                	
-		                	// Also set the lastFriendSmashedID in the application
-		                	((MovieTimesUpApplication) getActivity().getApplication()).setLastFriendSmashedID(friendToSmashID);
 		                } else {
 		                	closeAndShowError(getResources().getString(R.string.error_fetching_friend_bitmap));
 		                }

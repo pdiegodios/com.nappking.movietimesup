@@ -42,15 +42,13 @@ public class FBLoggedOutHomeFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-		
+		setRetainInstance(true);		
 		// Hide the notification bar
 		getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent,Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_home_fb_logged_out, parent, false);
 		progressContainer = v.findViewById(R.id.progressContainer);
