@@ -10,6 +10,7 @@
 	    android:layout_height="fill_parent">
 	    <LinearLayout 
 	        android:orientation="horizontal"
+	        android:baselineAligned="false"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1.5">
@@ -90,23 +91,20 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
-		        android:scaleType="fitCenter"
-			    />		
+		        android:scaleType="fitCenter"/>		
 			<ImageView 
 			    android:src="@drawable/seconds_info"    
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
-		        android:scaleType="fitCenter"
-			    />
+		        android:scaleType="fitCenter"/>
 		</LinearLayout>
 		<LinearLayout 
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
 		    android:orientation="vertical">
 			<TextView 
-			    android:id="@+id/points"  
-			    android:text="100"  
+			    android:id="@+id/points"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
@@ -114,11 +112,9 @@
 		        android:paddingRight="@dimen/grid_text_margin"
 		        android:textColor="@color/white"
 		        android:textStyle="bold"
-		        android:textSize="@dimen/grid_text_size_bigger"
-			    />		
+		        android:textSize="@dimen/grid_text_size_bigger"/>		
 			<TextView 
 			    android:id="@+id/seconds" 
-			    android:text="6500"  
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
@@ -150,8 +146,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:padding="0dp"
-		        android:scaleType="fitCenter"
-			    />		
+		        android:scaleType="fitCenter"/>		
 			<ImageButton
 			    android:id="@+id/itemsUnlocked"
 			    android:src="@drawable/items_ready_button"    
@@ -160,8 +155,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:padding="0dp"
-		        android:scaleType="fitCenter"
-			    />
+		        android:scaleType="fitCenter"/>
 			<ImageButton
 			    android:id="@+id/itemsReady"
 			    android:src="@drawable/items_unlocked_button"    
@@ -170,8 +164,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:padding="0dp"
-		        android:scaleType="fitCenter"
-			    />
+		        android:scaleType="fitCenter"/>
 			<ImageButton 
 			    android:id="@+id/itemsLocked"
 			    android:src="@drawable/items_locked_button"    
@@ -180,8 +173,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_weight="1"
 		        android:padding="0dp"
-		        android:scaleType="fitCenter"
-			    />
+		        android:scaleType="fitCenter"/>
 		</LinearLayout>
 		<LinearLayout 
 		    android:layout_width="match_parent"
@@ -199,8 +191,7 @@
 			        android:layout_weight="1"
 			        android:gravity="center_vertical|right"
 			        android:textStyle="bold"
-			        android:textSize="16sp"
-				    />		
+			        android:textSize="16sp"/>		
 				<TextView 
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"

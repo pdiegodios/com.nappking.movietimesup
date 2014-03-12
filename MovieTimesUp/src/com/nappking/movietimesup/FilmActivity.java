@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBActivity;
@@ -19,6 +19,7 @@ import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 import com.nappking.movietimesup.widget.Clue;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -31,7 +32,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -53,7 +53,8 @@ public class FilmActivity extends DBActivity{
 	private static int LONG_TIME = 6000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
-	//We start with some seconds to unveil some clues before bet
+    
+	//Seconds to unveil some clues before bet
 	private int mCurrentSeconds = 30;
     
 	//POINTS
@@ -66,6 +67,16 @@ public class FilmActivity extends DBActivity{
 	private static int TRIVIA = 10;
 	private static int QUOTE = 8;
 	private static int SYNOPSIS = 25;
+	
+	//COUNTERS
+	private int mCounterDate = 0;
+	private int mCounterLocation = 0;
+	private int mCounterSynopsis = 0;
+	private int mCounterActor = 0;
+	private int mCounterCharacter = 0;
+	private int mCounterQuote = 0;
+	private int mCounterOther = 0;
+	private int mAttemps = 0;
 	
 	Movie movie;
 	FrameLayout frame;
@@ -126,36 +137,22 @@ public class FilmActivity extends DBActivity{
 	TextView infosynopsis;
 	EditText title;
 	
-	//COUNTERS
-	private int mCounterDate = 0;
-	private int mCounterLocation = 0;
-	private int mCounterSynopsis = 0;
-	private int mCounterActor = 0;
-	private int mCounterCharacter = 0;
-	private int mCounterQuote = 0;
-	private int mCounterOther = 0;
-	private int mAttemps = 0;
-	
 	private ArrayList<Clue> mClues;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
-	private int mIndex=-1;
-	
+	private int mIndex=-1;	
 	private User mUser;
-		
+			
 	
+	//LIFECYCLE METHODS 
 	
-	/**
-	 *	LIFECYCLE METHODS 
-	 */	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.movietemplate);	
-     	//initiate elements
      	initiate();
 		setListeners();
-		displayInstructions();
+		showInitialWarning();
 	}
 	
 	@Override
@@ -178,22 +175,17 @@ public class FilmActivity extends DBActivity{
 	
 	@Override
 	public void onBackPressed() {
-		//Show warning: This movie will be locked
 		showLockWarning();
 	}
 	
 	
 	
+	//GAME ACTIONS METHODS
+	
 	/**
-	 * GAME ACTIONS METHODS
-	 */	
-	
-	private void displayInstructions(){
-		//Show how to play and warnings about block screen 
-		//TODO: Implement dialog
-		showInitialWarning();
-	}
-	
+	 * Display random clues while there are seconds available.
+	 * After each clue the method clean all the clues more expensive than seconds still available.
+	 */
 	private void displayInitialClues(){
 		if(!mIsFinished){
 			cleanClues();
@@ -219,6 +211,10 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 	
+	/**
+	 * Dialog to choose your seconds to play. It will be showed during 10 seconds,
+	 * after that you will start to play.
+	 */
 	private void makeBet(){
 		if(!mIsFinished){
 			//Allow to bet your seconds to play during some seconds
@@ -297,6 +293,11 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 	
+	/**
+	 * Deploy buttons to get new clues for seconds, lifes & space to write your
+	 * answer. It starts the countdown to end your game with the seconds selected in the
+	 * previous dialog (makeBet() method)
+	 */
 	private void startGame(){
 		if(!mIsFinished){
 			this.linearPrevious.startAnimation(animFadeOut);		
@@ -359,6 +360,13 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 	
+	/**
+	 * Method call to finish game.
+	 * If you call this method while game is not finished yet and you also got the correct
+	 * answer in time -> you'll earn points for your movie.
+	 * If you call this method after lose your lifes/opportunities or it is called out of time ->
+	 * the movie will be blocked.
+	 */
 	private void endGame(){
 		//mCountDown.cancel();
 		if(!mIsFinished){
@@ -400,6 +408,14 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 	
+	/**
+	 * Display on screen the selected movie & update the countdown. Every clue costs
+	 * an amount of seconds.
+	 * @param title: title of clue. Ex.:GENRE/TRIVIA/DIRECTOR...
+	 * @param text: Specific clue related with the movie. Ex.: Sci-Fi/2 Oscar Winner/Stanley Kubrick...
+	 * @param textview: TextView to show seconds spent over clue button selected
+	 * @param seconds: Seconds spent. The countdown will lose that amount of seconds
+	 */
 	private void displaySelectedClue(String title, String text, TextView textview, int seconds){
 		if(!mIsFinished){
 			this.linearClues.setVisibility(View.INVISIBLE);
@@ -417,14 +433,11 @@ public class FilmActivity extends DBActivity{
 	
 		
 
-	/**
-	 * AUXILIAR METHODS
-	 */
+	//AUXILIAR METHODS
 		
 	private ArrayList<Clue> cleanClues(){
 		ArrayList<Clue> cluesAvailable = new ArrayList<Clue>();
 		ArrayList<Clue> cluesRemoved = new ArrayList<Clue>();
-		Log.i("Seconds to spend: ", mCurrentSeconds+"");
 		for(Clue clue: mClues){
 			if(clue.getSeconds()<=mCurrentSeconds){
 				cluesAvailable.add(clue);
@@ -446,9 +459,8 @@ public class FilmActivity extends DBActivity{
 	
 	
 	
-	/**
-	 * COMPONENT BEHAVIOUR METHODS
-	 */		
+	//COMPONENT BEHAVIOUR METHODS
+	
 	private void initiate(){
 		try {
 			Dao<User, Integer> daoUser = getHelper().getUserDAO();
@@ -634,12 +646,6 @@ public class FilmActivity extends DBActivity{
      	infotrivia.setVisibility(View.INVISIBLE);
      	infoquote.setVisibility(View.INVISIBLE);
      	infosynopsis.setVisibility(View.INVISIBLE);
-     	animFadeOut.setAnimationListener(listenerHideLinear);
-		animSlideOutTop.setAnimationListener(listenerTitle);
-		animSlideOutTopLifes.setAnimationListener(listenerLifes);
-		animSlideOutBottom.setAnimationListener(listenerButtons);
-		animZoomIn.setAnimationListener(listenerClose);		
-		animZoomOut.setAnimationListener(listenerCloseVictory);
 	}
 	
 	private void initClues(){
@@ -657,6 +663,12 @@ public class FilmActivity extends DBActivity{
 	}
 	
 	private void setListeners(){
+     	animFadeOut.setAnimationListener(listenerHideLinear);
+		animSlideOutTop.setAnimationListener(listenerTitle);
+		animSlideOutTopLifes.setAnimationListener(listenerLifes);
+		animSlideOutBottom.setAnimationListener(listenerButtons);
+		animZoomIn.setAnimationListener(listenerClose);		
+		animZoomOut.setAnimationListener(listenerCloseVictory);
 		bgenre.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
@@ -856,6 +868,10 @@ public class FilmActivity extends DBActivity{
 		});
 	}	
 	
+	/**
+	 * Once you start to play if you stop/pause the game, you'll lose &
+	 * the movie will be locked. 
+	 */
 	private void showInitialWarning(){
 		if(!mIsFinished){
 	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
@@ -896,6 +912,10 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 	
+	/**
+	 * Showed if you are trying to leave this game while it is still running.
+	 * Warning about this movie which will be locked.
+	 */
 	private void showLockWarning(){
 		if(!mIsFinished){
 	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
@@ -932,10 +952,11 @@ public class FilmActivity extends DBActivity{
 
 		
 	
+	//BACKGROUND METHODS
 	/**
-	 * BACKGROUND METHODS
+	 * Method to send updated user to WS
+	 * @param locked: the movie is now locked or if it is false you've won the points
 	 */
-	
 	private void uploadUsers(boolean locked){
 		try {
 			List<User> users = new ArrayList<User>();

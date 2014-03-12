@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
@@ -270,7 +270,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 	
 	private void showExtra(int seconds){    	
         final Dialog dialog = new Dialog(mContext, R.style.SlideDialog);
-        dialog.setContentView(R.layout.clapperdialogbonus);
+        dialog.setContentView(R.layout.dialogbonus);
         dialog.setCancelable(false);
         //instantiate elements in the dialog
         Button okButton = (Button) dialog.findViewById(R.id.actionButton);

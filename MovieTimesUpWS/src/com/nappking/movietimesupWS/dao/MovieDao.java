@@ -54,6 +54,9 @@ public class MovieDao implements IMovieDao{
 			_statement.setInt(15, c.getPoints());
 			_statement.setString(16, c.getFilmaffinityId());
 			_statement.setString(17, c.getImdbId());
+			_statement.setInt(18, c.getRoom());
+			_statement.setBoolean(19, c.isMasterpiece());
+			_statement.setBoolean(20, c.isCult());
 			_statement.executeUpdate();
 			
 			_result = _statement.getGeneratedKeys();
@@ -91,7 +94,10 @@ public class MovieDao implements IMovieDao{
 			_statement.setInt(15, c.getPoints());
 			_statement.setString(16, c.getFilmaffinityId());
 			_statement.setString(17, c.getImdbId());
-			_statement.setLong(18, c.getId());
+			_statement.setInt(18, c.getRoom());
+			_statement.setBoolean(19, c.isMasterpiece());
+			_statement.setBoolean(20, c.isCult());
+			_statement.setLong(21, c.getId());
 			
 			nupdate = _statement.executeUpdate();
 		} catch (SQLException e) {
@@ -145,6 +151,9 @@ public class MovieDao implements IMovieDao{
 				movie.setPoints(_result.getInt(16));
 				movie.setFilmaffinityId(_result.getString(17));
 				movie.setImdbId(_result.getString(18));
+				movie.setRoom(_result.getInt(19));
+				movie.setMasterpiece(_result.getBoolean(20));
+				movie.setCult(_result.getBoolean(21));
 				movies.add(movie);
 			}			
 		} catch (SQLException e) {
@@ -180,6 +189,9 @@ public class MovieDao implements IMovieDao{
 				movie.setPoints(_result.getInt(16));
 				movie.setFilmaffinityId(_result.getString(17));
 				movie.setImdbId(_result.getString(18));
+				movie.setRoom(_result.getInt(19));
+				movie.setMasterpiece(_result.getBoolean(20));
+				movie.setCult(_result.getBoolean(21));
 				movies.add(movie);
 			}			
 		} catch (SQLException e) {
@@ -215,6 +227,9 @@ public class MovieDao implements IMovieDao{
 				movie.setPoints(_result.getInt(16));
 				movie.setFilmaffinityId(_result.getString(17));
 				movie.setImdbId(_result.getString(18));
+				movie.setRoom(_result.getInt(19));
+				movie.setMasterpiece(_result.getBoolean(20));
+				movie.setCult(_result.getBoolean(21));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -243,14 +258,16 @@ public class MovieDao implements IMovieDao{
 				Movie.ALTERNATIVE_TITLE+", "+Movie.YEAR+", "+Movie.COUNTRY+", "+
 				Movie.CONTINENT+", "+Movie.DIRECTOR+", "+Movie.GENRE+", "+Movie.PLOT+", "+
 				Movie.CAST+", "+Movie.QUOTES+", "+Movie.OTHERS+", "+Movie.CHARACTERS+", "+
-				Movie.POSTER+", "+Movie.POINTS+", "+Movie.FILMAFFINITY+", "+Movie.IMDB+")"+
-				" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				Movie.POSTER+", "+Movie.POINTS+", "+Movie.FILMAFFINITY+", "+Movie.IMDB+", "+
+				Movie.ROOM+", "+Movie.MASTERPIECE+", "+Movie.CULT+")"+
+				" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		update = "UPDATE "+table +" set "+Movie.TITLE+" = ?, "+Movie.ORIGINAL_TITLE+" = ?, "+
 				Movie.ALTERNATIVE_TITLE+" = ?, "+Movie.YEAR+" = ?, "+Movie.COUNTRY+" = ?, "+
 				Movie.CONTINENT+" = ?, "+Movie.DIRECTOR+" = ?, "+Movie.GENRE+" = ?, "+
 				Movie.PLOT+" = ?, "+Movie.CAST+" = ?, "+ Movie.QUOTES+" = ?, "+Movie.OTHERS+" = ?, "+
 				Movie.CHARACTERS+" = ?, "+Movie.POSTER+" = ?, "+Movie.POINTS+" = ?, "+
-				Movie.FILMAFFINITY+" = ?, "+Movie.IMDB+" = ? WHERE "+Movie.ROWID +" = ?";
+				Movie.FILMAFFINITY+" = ?, "+Movie.IMDB+" = ?, "+Movie.ROOM+" = ?, "+
+				Movie.MASTERPIECE+" = ?, "+Movie.CULT+" = ? WHERE "+Movie.ROWID +" = ?";
 		delete = "DELETE from "+table+" where "+Movie.ROWID+" = ?";
 		selectAll = "SELECT * from "+table;
 		selectSince = "SELECT * from "+table+" WHERE "+Movie.ROWID + " > ?";

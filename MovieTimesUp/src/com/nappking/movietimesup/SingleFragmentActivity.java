@@ -23,7 +23,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.WindowManager;
 
 import com.facebook.AppEventsLogger;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 
 /**
  *  Only used by Activities where a single Fragment is used and not changed (i.e. used by
@@ -59,7 +59,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
 		
 		// Measure mobile app install ads
  		// Ref: https://developers.facebook.com/docs/tutorials/mobile-app-ads/
-		AppEventsLogger.activateApp(this, ((FriendSmashApplication)getApplication()).getString(R.string.app_id));
+		AppEventsLogger.activateApp(this, ((MovieTimesUpApplication)getApplication()).getString(R.string.app_id));
 	}
 
 }

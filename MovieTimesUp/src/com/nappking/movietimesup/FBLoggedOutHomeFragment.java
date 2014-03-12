@@ -27,7 +27,7 @@ import android.view.animation.AnimationUtils;
 
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.OnErrorListener;
 

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.loader.ImageLoader;
 

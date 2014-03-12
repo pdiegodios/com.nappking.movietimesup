@@ -51,7 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.Session;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.facebook.widget.ProfilePictureView;
 
 /**
@@ -63,7 +63,7 @@ public class ScoreboardFragment extends Fragment {
 	private static final String TAG = ScoreboardFragment.class.getSimpleName();
 	
     // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
-	private FriendSmashApplication application;
+	private MovieTimesUpApplication application;
     
 	// LinearLayout as the container for the scoreboard entries
 	private LinearLayout scoreboardContainer;
@@ -79,7 +79,7 @@ public class ScoreboardFragment extends Fragment {
 		
 		super.onCreate(savedInstanceState);
 		
-		application = (FriendSmashApplication) getActivity().getApplication();
+		application = (MovieTimesUpApplication) getActivity().getApplication();
 		
 		// Instantiate the handler
 		uiHandler = new Handler();
@@ -204,7 +204,7 @@ public class ScoreboardFragment extends Fragment {
 						}
 					});
 				} catch (Exception e) {
-					Log.e(FriendSmashApplication.TAG, e.toString());
+					Log.e(MovieTimesUpApplication.TAG, e.toString());
 					closeAndShowError(getResources().getString(R.string.network_error));
 				}
 			}

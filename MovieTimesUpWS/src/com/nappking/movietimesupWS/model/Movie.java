@@ -28,6 +28,9 @@ public class Movie {
     public static final String POINTS = "points";
     public static final String FILMAFFINITY = "filmaffinity_id";
     public static final String IMDB = "imdb_id";
+    public static final String ROOM = "room";
+    public static final String MASTERPIECE = "masterpiece";
+    public static final String CULT = "cult";
 	
 	//Fields
     private long 		_id;
@@ -48,6 +51,9 @@ public class Movie {
     private int 		points;
     private String 		filmaffinity_id;
     private String		imdb_id;
+    private int			room;
+    private boolean 	masterpiece;
+    private boolean		cult;
     
     //creators
 	public Movie() {super();}
@@ -71,6 +77,9 @@ public class Movie {
 	public int getPoints()	 			{return points;}
 	public String getFilmaffinityId()	{return filmaffinity_id;}
 	public String getImdbId()	 		{return imdb_id;}
+	public int getRoom()	 			{return room;}
+	public boolean isMasterpiece()		{return masterpiece;}
+	public boolean isCult()				{return cult;}
 	
 	//SETTERS
 	public void setId(long id) 						{this._id = id;}
@@ -91,5 +100,8 @@ public class Movie {
 	public void setPoints(int points) 				{this.points = points;}
 	public void setFilmaffinityId(String fa_id)		{this.filmaffinity_id = fa_id;}
 	public void setImdbId(String imdb_id)			{this.imdb_id = imdb_id;}
+	public void setRoom(int room)					{this.room = room;}
+	public void setMasterpiece(boolean masterpiece)	{this.masterpiece = masterpiece;}
+	public void setCult(boolean cult)				{this.cult = cult;}
 
 }

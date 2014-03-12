@@ -28,7 +28,7 @@ import com.facebook.model.GraphUser;
 /**
  *  Use a custom Application class to pass state data between Activities.
  */
-public class FriendSmashApplication extends Application {
+public class MovieTimesUpApplication extends Application {
 
 	/* Static Attributes */
 	

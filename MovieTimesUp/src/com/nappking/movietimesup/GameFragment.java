@@ -57,7 +57,7 @@ import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 
@@ -166,7 +166,7 @@ public class GameFragment extends Fragment {
 		uiHandler = new Handler();
 		
 		// Get the friend to smash bitmap and name
-		if (FriendSmashApplication.IS_SOCIAL) {
+		if (MovieTimesUpApplication.IS_SOCIAL) {
 			// User is logged into FB, so choose a random FB friend to smash
 			friendToSmashIndex = getRandomFriendIndex();
 		} else {
@@ -238,12 +238,12 @@ public class GameFragment extends Fragment {
 	@SuppressWarnings("unused")
 	private void setSmashPlayerNameTextView() {
 		// Set the Smash Player Name title
-        if (FriendSmashApplication.IS_SOCIAL) {
+        if (MovieTimesUpApplication.IS_SOCIAL) {
 			// User is logged into FB ...
         	if (friendToSmashFirstName == null) {
         		// A name hasn't been set yet (i.e. it hasn't been fetched through a passed in id, so
         		// a random friend needs to be used instead, so fetch this name
-        		friendToSmashFirstName = ((FriendSmashApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getFirstName();
+        		friendToSmashFirstName = ((MovieTimesUpApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getFirstName();
         	}
         	smashPlayerNameTextView.setText("Smash " + friendToSmashFirstName + " !");
 		} else {
@@ -255,7 +255,7 @@ public class GameFragment extends Fragment {
 	// Select a random friend to smash
 	private int getRandomFriendIndex() {
 		Random randomGenerator = new Random(System.currentTimeMillis());
-		int friendIndex = randomGenerator.nextInt(((FriendSmashApplication) getActivity().getApplication()).getFriends().size());
+		int friendIndex = randomGenerator.nextInt(((MovieTimesUpApplication) getActivity().getApplication()).getFriends().size());
 		return friendIndex;
 	}
 	
@@ -358,7 +358,7 @@ public class GameFragment extends Fragment {
 	// Facebook), then fetch the specific user that should be smashed
 	@SuppressWarnings("unused")
 	private void fireFirstImage() {
-		if (FriendSmashApplication.IS_SOCIAL) {
+		if (MovieTimesUpApplication.IS_SOCIAL) {
 			// Get any bundle parameters there are
 			Bundle bundle = getActivity().getIntent().getExtras();
 			
@@ -417,7 +417,7 @@ public class GameFragment extends Fragment {
 			public void onCompleted(Response response) {
 				FacebookRequestError error = response.getError();
 				if (error != null) {
-					Log.e(FriendSmashApplication.TAG, error.toString());
+					Log.e(MovieTimesUpApplication.TAG, error.toString());
 					closeAndHandleError(error);
 				} else if (session == Session.getActiveSession()) {
 					if (response != null) {
@@ -427,7 +427,7 @@ public class GameFragment extends Fragment {
 						try {
 							friendToSmashIDProvided = fromObject.getString("id");
 						} catch (JSONException e) {
-							Log.e(FriendSmashApplication.TAG, e.toString());
+							Log.e(MovieTimesUpApplication.TAG, e.toString());
 							closeAndShowError(getResources().getString(R.string.network_error));
 						}
 						
@@ -438,7 +438,7 @@ public class GameFragment extends Fragment {
 							public void onCompleted(Response response) {
 								FacebookRequestError error = response.getError();
 								if (error != null) {
-									Log.e(FriendSmashApplication.TAG, error.toString());
+									Log.e(MovieTimesUpApplication.TAG, error.toString());
 									closeAndHandleError(error);
 								} else if (session == Session.getActiveSession()) {
 									if (response != null) {
@@ -478,7 +478,7 @@ public class GameFragment extends Fragment {
 			public void onCompleted(Response response) {
 				FacebookRequestError error = response.getError();
 				if (error != null) {
-					Log.e(FriendSmashApplication.TAG, error.toString());
+					Log.e(MovieTimesUpApplication.TAG, error.toString());
 					closeAndHandleError(error);
 				} else if (session == Session.getActiveSession()) {
 					if (response != null) {
@@ -549,7 +549,7 @@ public class GameFragment extends Fragment {
         // Set the bitmap of the userImageView ...
         if (userImageView.shouldSmash()) {
         	// The user should smash this image, so set the correct image
-	        if (FriendSmashApplication.IS_SOCIAL) {
+	        if (MovieTimesUpApplication.IS_SOCIAL) {
 				// User is logged into FB ...
 				if (friendToSmashBitmap != null) {
 					// Bitmap for the friend to smash has already been retrieved, so use this
@@ -562,7 +562,7 @@ public class GameFragment extends Fragment {
 					
 					// If a friend has been passed in, use that attribute, otherwise use the random friend that has been selected
 					final String friendToSmashID = friendToSmashIDProvided != null ? friendToSmashIDProvided :
-						((FriendSmashApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getId();
+						((MovieTimesUpApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getId();
 					
 					// Fetch the bitmap and fire the image
 					fetchFriendBitmapAndFireImages(userImageView, friendToSmashID, extraImage);
@@ -629,7 +629,7 @@ public class GameFragment extends Fragment {
 					friendToSmashBitmap = BitmapFactory.decodeStream(bitmapURL.openConnection().getInputStream());
 				} catch (Exception e) {
 					// Unknown error
-					Log.e(FriendSmashApplication.TAG, e.toString());
+					Log.e(MovieTimesUpApplication.TAG, e.toString());
 				}
 				
 				uiHandler.post(new Runnable() {
@@ -642,7 +642,7 @@ public class GameFragment extends Fragment {
 							setFriendImageAndFire(userImageView, friendToSmashBitmap, extraImage);
 		                	
 		                	// Also set the lastFriendSmashedID in the application
-		                	((FriendSmashApplication) getActivity().getApplication()).setLastFriendSmashedID(friendToSmashID);
+		                	((MovieTimesUpApplication) getActivity().getApplication()).setLastFriendSmashedID(friendToSmashID);
 		                } else {
 		                	closeAndShowError(getResources().getString(R.string.error_fetching_friend_bitmap));
 		                }
@@ -668,7 +668,7 @@ public class GameFragment extends Fragment {
 	private void closeAndHandleError(FacebookRequestError error) {
 		// Store the FacebookRequestError in the FacebookApplication before closing out this GameFragment so that
 		// it is shown to the user once exited
-		((FriendSmashApplication) getActivity().getApplication()).setGameFragmentFBRequestError(error);
+		((MovieTimesUpApplication) getActivity().getApplication()).setGameFragmentFBRequestError(error);
 		
 		getActivity().setResult(Activity.RESULT_CANCELED);
 		getActivity().finish();
@@ -718,7 +718,7 @@ public class GameFragment extends Fragment {
 		
 		if (!imagesStartedFiring) {
 			// Fire first image
-			if (FriendSmashApplication.IS_SOCIAL) {
+			if (MovieTimesUpApplication.IS_SOCIAL) {
 				// Only fire for the social game if there isn't a first image pending firing
 				if (!firstImagePendingFiring) {
 					// ... and also set the firstImagePendingFiring to true - will be set back

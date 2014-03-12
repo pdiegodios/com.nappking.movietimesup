@@ -21,7 +21,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OpenHelperManager;

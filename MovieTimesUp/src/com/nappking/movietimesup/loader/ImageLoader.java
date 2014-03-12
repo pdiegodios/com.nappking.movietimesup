@@ -15,7 +15,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 
 
 import android.os.Handler;

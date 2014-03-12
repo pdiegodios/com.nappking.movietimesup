@@ -42,6 +42,9 @@ public class Movie implements Serializable{
     public static final String POINTS = "points";
     public static final String FILMAFFINITY_ID = "filmaffinityId";
     public static final String IMDB_ID = "imdbId";
+    public static final String ROOM = "room";
+    public static final String MASTERPIECE = "masterpiece";
+    public static final String CULT = "cult";
     
     //Example-->http://www.filmaffinity.com/en/film745662.html
     public static final String FILMAFFINITY_WEB = "http://www.filmaffinity.com/";
@@ -87,6 +90,13 @@ public class Movie implements Serializable{
     private String		filmaffinityId;
     @DatabaseField(columnName = IMDB_ID)
     private String 		imdbId;
+    @DatabaseField(columnName = ROOM)
+    private int 		room;
+    @DatabaseField(columnName = MASTERPIECE)
+    private boolean		masterpiece;
+    @DatabaseField(columnName = CULT)
+    private boolean 		cult;
+    
     
     //GETTERS
     public int getRowid()				{return _id;}
@@ -108,6 +118,9 @@ public class Movie implements Serializable{
 	public int getPoints()	 			{return points;}
 	public String getFilmaffinityId()	{return filmaffinityId;}
 	public String getImdbId()	 		{return imdbId;}
+	public int getRoom()	 			{return room;}
+	public boolean getMasterpiece()		{return masterpiece;}
+	public boolean getCult()	 		{return cult;}
 	
 	public String getFilmaffinityURL(String language){
 		return FILMAFFINITY_WEB+language+File.separator+"film"+filmaffinityId+".html";

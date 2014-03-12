@@ -22,15 +22,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,12 +37,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
@@ -57,7 +49,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
@@ -88,6 +80,7 @@ public class HomeActivity extends DBFragmentActivity {
     private static final int HOME = 1;
     private static final int FIRST = 2;
     private static final int FRAGMENT_COUNT = FIRST +1;
+    private static final int TIME_FOR_SERVICE = 30*60*1000; //30min
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
  	
  	// Boolean recording whether the activity has been resumed so that
@@ -143,35 +136,35 @@ public class HomeActivity extends DBFragmentActivity {
 		// Restore the logged-in user's information if it has been saved and the existing data in the application
 		// has been destroyed (i.e. the app hasn't been used for a while and memory on the device is low)
 		// - only do this if the session is open for the social version only
- 		if (FriendSmashApplication.IS_SOCIAL) {
+ 		if (MovieTimesUpApplication.IS_SOCIAL) {
 			// loggedIn
  			if (savedInstanceState != null) {
-				boolean loggedInState = savedInstanceState.getBoolean(FriendSmashApplication.getLoggedInKey(), false);
-	 			((FriendSmashApplication)getApplication()).setLoggedIn(loggedInState);
+				boolean loggedInState = savedInstanceState.getBoolean(MovieTimesUpApplication.getLoggedInKey(), false);
+	 			((MovieTimesUpApplication)getApplication()).setLoggedIn(loggedInState);
 	 			
-		 		if ( ((FriendSmashApplication)getApplication()).isLoggedIn() &&
-		 			 ( ((FriendSmashApplication)getApplication()).getFriends() == null ||
-		 			   ((FriendSmashApplication)getApplication()).getCurrentFBUser() == null) ) {
+		 		if ( ((MovieTimesUpApplication)getApplication()).isLoggedIn() &&
+		 			 ( ((MovieTimesUpApplication)getApplication()).getFriends() == null ||
+		 			   ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() == null) ) {
 	 				try {
 	 					// currentFBUser
-	 					String currentFBUserJSONString = savedInstanceState.getString(FriendSmashApplication.getCurrentFbUserKey());
+	 					String currentFBUserJSONString = savedInstanceState.getString(MovieTimesUpApplication.getCurrentFbUserKey());
 	 					if (currentFBUserJSONString != null) {
 		 					GraphUser currentFBUser = GraphObject.Factory.create(new JSONObject(currentFBUserJSONString), GraphUser.class);
-		 					((FriendSmashApplication)getApplication()).setCurrentFBUser(currentFBUser);
+		 					((MovieTimesUpApplication)getApplication()).setCurrentFBUser(currentFBUser);
 	 					}
 	 			        
 	 			        // friends
-	 					ArrayList<String> friendsJSONStringArrayList = savedInstanceState.getStringArrayList(FriendSmashApplication.getFriendsKey());
+	 					ArrayList<String> friendsJSONStringArrayList = savedInstanceState.getStringArrayList(MovieTimesUpApplication.getFriendsKey());
 	 					if (friendsJSONStringArrayList != null) {
 		 					ArrayList<GraphUser> friends = new ArrayList<GraphUser>();
 		 					Iterator<String> friendsJSONStringArrayListIterator = friendsJSONStringArrayList.iterator();
 		 					while (friendsJSONStringArrayListIterator.hasNext()) {
 		 							friends.add(GraphObject.Factory.create(new JSONObject(friendsJSONStringArrayListIterator.next()), GraphUser.class));
 		 					}
-		 					((FriendSmashApplication)getApplication()).setFriends(friends);
+		 					((MovieTimesUpApplication)getApplication()).setFriends(friends);
 	 					}
 	 				} catch (JSONException e) {
-	 					Log.e(FriendSmashApplication.TAG, e.toString());
+	 					Log.e(MovieTimesUpApplication.TAG, e.toString());
 	 				}
  				}
 	 		}
@@ -188,11 +181,11 @@ public class HomeActivity extends DBFragmentActivity {
  	@Override
     protected void onResumeFragments() {
 		super.onResumeFragments();
-		if (!FriendSmashApplication.IS_SOCIAL) {
+		if (!MovieTimesUpApplication.IS_SOCIAL) {
 			showFragment(HOME, false);
 		} else {
 			Session session = Session.getActiveSession();
-			if (session != null && session.isOpened() && ((FriendSmashApplication)getApplication()).getCurrentFBUser() != null) {
+			if (session != null && session.isOpened() && ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null) {
 				showFragment(HOME, false);
 			} else {
 				Boolean isFirst = false;
@@ -224,7 +217,7 @@ public class HomeActivity extends DBFragmentActivity {
      	getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
   		// Measure mobile app install ads
  		// Ref: https://developers.facebook.com/docs/tutorials/mobile-app-ads/
- 		AppEventsLogger.activateApp(this, ((FriendSmashApplication)getApplication()).getString(R.string.app_id));
+ 		AppEventsLogger.activateApp(this, ((MovieTimesUpApplication)getApplication()).getString(R.string.app_id));
  		
  		updateUser();
     }
@@ -233,10 +226,15 @@ public class HomeActivity extends DBFragmentActivity {
 		Dao<User, Integer> daoUser;
 		try {
 			daoUser = getHelper().getUserDAO();
+			int totalMovies = (int)getHelper().getMovieDAO().countOf();
 			User user = daoUser.queryForId(1);
 			if(user!=null){
-				Log.i("UPDATE USER", "USER EXISTS");
-				new LoadUserDataTask(this, user, true).execute();
+				Calendar now = GregorianCalendar.getInstance();
+				if((now.getTimeInMillis()>(user.getLastUpdate()+TIME_FOR_SERVICE))||(totalMovies>user.getMovies())){
+					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
+					//It's more than 15min since last time it was updated or there are new movies
+					new LoadUserDataTask(this, user, true).execute();
+				}						
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -259,16 +257,16 @@ public class HomeActivity extends DBFragmentActivity {
 		// Call onSaveInstanceState on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onSaveInstanceState(outState);        
   		// Save the logged-in state
-  		outState.putBoolean(FriendSmashApplication.getLoggedInKey(), ((FriendSmashApplication)getApplication()).isLoggedIn());
+  		outState.putBoolean(MovieTimesUpApplication.getLoggedInKey(), ((MovieTimesUpApplication)getApplication()).isLoggedIn());
   		// Save the currentFBUser
-        if (((FriendSmashApplication)getApplication()).getCurrentFBUser() != null) {
-	        outState.putString(FriendSmashApplication.getCurrentFbUserKey(),
-	        		((FriendSmashApplication)getApplication()).getCurrentFBUser().getInnerJSONObject().toString());
+        if (((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null) {
+	        outState.putString(MovieTimesUpApplication.getCurrentFbUserKey(),
+	        		((MovieTimesUpApplication)getApplication()).getCurrentFBUser().getInnerJSONObject().toString());
         }        
         // Save the logged-in user's list of friends
-        if (((FriendSmashApplication)getApplication()).getFriends() != null) {
-	        outState.putStringArrayList(FriendSmashApplication.getFriendsKey(),
-	        		((FriendSmashApplication)getApplication()).getFriendsAsArrayListOfStrings());
+        if (((MovieTimesUpApplication)getApplication()).getFriends() != null) {
+	        outState.putStringArrayList(MovieTimesUpApplication.getFriendsKey(),
+	        		((MovieTimesUpApplication)getApplication()).getFriendsAsArrayListOfStrings());
         }
 	}
 	
@@ -295,7 +293,7 @@ public class HomeActivity extends DBFragmentActivity {
         transaction.commit();
         
         // Do other changes depending on the fragment that is now showing
-        if (FriendSmashApplication.IS_SOCIAL) {
+        if (MovieTimesUpApplication.IS_SOCIAL) {
         	switch (fragmentIndex) {
         		case FB_LOGGED_OUT_HOME:
         			// Hide the progressContainer in FBLoggedOutHomeFragment 
@@ -303,7 +301,7 @@ public class HomeActivity extends DBFragmentActivity {
         				((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
         			}
         			// Set the loggedIn attribute
-        			((FriendSmashApplication)getApplication()).setLoggedIn(false);
+        			((MovieTimesUpApplication)getApplication()).setLoggedIn(false);
         			break;
         		case HOME:
         			// Update the youScoredTextView in HomeFragment
@@ -312,7 +310,7 @@ public class HomeActivity extends DBFragmentActivity {
         				((HomeFragment)fragments[HOME]).updateButtonVisibility();
         			}
         			// Set the loggedIn attribute
-        			((FriendSmashApplication)getApplication()).setLoggedIn(true);
+        			((MovieTimesUpApplication)getApplication()).setLoggedIn(true);
         			break;
         	}
         }
@@ -324,10 +322,10 @@ public class HomeActivity extends DBFragmentActivity {
 	private void updateView() {
 		if (isResumed) {
 			Session session = Session.getActiveSession();
-			if (session.isOpened() && !((FriendSmashApplication)getApplication()).isLoggedIn() && fragments[HOME] != null) {
+			if (session.isOpened() && !((MovieTimesUpApplication)getApplication()).isLoggedIn() && fragments[HOME] != null) {
 				// Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
 				fetchUserInformationAndLogin();
-	        } else if (session.isClosed() && ((FriendSmashApplication)getApplication()).isLoggedIn() && fragments[FB_LOGGED_OUT_HOME] != null) {
+	        } else if (session.isClosed() && ((MovieTimesUpApplication)getApplication()).isLoggedIn() && fragments[FB_LOGGED_OUT_HOME] != null) {
 				// Logged in, but shouldn't be, so load the FBLoggedOutHomeFragment
 	        	showFragment(FB_LOGGED_OUT_HOME, false);
 	        }
@@ -355,11 +353,11 @@ public class HomeActivity extends DBFragmentActivity {
 				public void onCompleted(List<GraphUser> users, Response response) {
 					FacebookRequestError error = response.getError();
 					if (error != null) {
-						Log.e(FriendSmashApplication.TAG, error.toString());
+						Log.e(MovieTimesUpApplication.TAG, error.toString());
 						handleError(error, true);
 					} else if (session == Session.getActiveSession()) {
 						// Set the friends attribute
-						((FriendSmashApplication)getApplication()).setFriends(users);
+						((MovieTimesUpApplication)getApplication()).setFriends(users);
 					}
 				}
 			});
@@ -374,11 +372,11 @@ public class HomeActivity extends DBFragmentActivity {
 				public void onCompleted(GraphUser user, Response response) {
 					FacebookRequestError error = response.getError();
 					if (error != null) {
-						Log.e(FriendSmashApplication.TAG, error.toString());
+						Log.e(MovieTimesUpApplication.TAG, error.toString());
 						handleError(error, true);
 					} else if (session == Session.getActiveSession()) {
 						// Set the currentFBUser attribute
-						((FriendSmashApplication)getApplication()).setCurrentFBUser(user);
+						((MovieTimesUpApplication)getApplication()).setCurrentFBUser(user);
 					}
 				}
 			});
@@ -389,8 +387,8 @@ public class HomeActivity extends DBFragmentActivity {
 
 				@Override
 				public void onBatchCompleted(RequestBatch batch) {
-					if ( ((FriendSmashApplication)getApplication()).getCurrentFBUser() != null &&
-						 ((FriendSmashApplication)getApplication()).getFriends() != null ) {
+					if ( ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null &&
+						 ((MovieTimesUpApplication)getApplication()).getFriends() != null ) {
 						// Login by switching to the personalized HomeFragment
 						loadPersonalizedFragment();
 					} else {

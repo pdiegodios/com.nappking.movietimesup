@@ -2,7 +2,7 @@ package com.nappking.movietimesup;
 
 import java.util.ArrayList;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.nappking.movietimesup.notifications.NotificationService;
 import com.nappking.movietimesup.task.DownloadMoviesTask;
 

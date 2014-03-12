@@ -24,35 +24,35 @@ public class AddMovie {
 		//VALUES
 		int id = 18;
 		int points = 3;
-		int year = 1994;
+		int year = 2012;
 		String  action = SAVE;
-		String title = "Ed Wood";
-		String alternative_title = "Pokahontas";
-		String original_title = "Ed Wood";
+		String title = "El vuelo";
+		String alternative_title = "the flight";
+		String original_title = "Flight";
 		String continent = "América";
 		String country = "USA";
-		String director = "Tim Burton";
-		String genre = "Comedia";
+		String director = "Robert Zemeckis";
+		String genre = "Drama";
 		String poster = "";
-		String  filmaffinity_id = "655275";
-		String imdb_id = "tt0109707";
-		String actor1="Patricia Arquette";
-		String actor2="Johnny Depp";
-		String actor3="Martin Landau";
-		String character1="Kathy O'Hara";
-		String character2="Bela Lugosi";
-		String character3="Ed Wood";
+		String  filmaffinity_id = "526099";
+		String imdb_id = "tt1907668";
+		String actor1="Don Cheadle";
+		String actor2="Kelly Reilly";
+		String actor3="Denzel Washington";
+		String character1="Hugh Lang";
+		String character2="Whip Whitaker";
+		String character3="Katerina Marquez";
 		String other1 ="La soberbia actuación del veterano actor le supuso un Oscar a mejor actor secundario";
 		String other2 ="El protagonista escribió antes de morir que había vivido intensamente y que había realizado grandes obras. En realidad había sido abandonado y era un alcohólico.";
 		String other3 ="Edward D.W. Jr. es considerado el peor director de la historia";
 		String quote1="Vale la pena luchar por los propios sueños, ¿Por qué pasarse la vida realizando los sueños de otros?";
 		String quote2="¿La peor película que ha visto? Bueno, la próxima será mejor.";
 		String quote3="Viste como aquel niño le agarró las tetas a Vampira?";
-		String plot = "X es un joven director de cine, un visionario sin ninguna formación académica, aficionado " +
-				"a vestirse de mujer y con muy pocas oportunidades de hacer películas en un gran estudio. " +
-				"Sin embargo no ceja en su empeño de convertirse en un director famoso. Tras reunir a un " +
-				"curioso grupo de personajes, realiza películas de bajo presupuesto, excéntricas y no muy " +
-				"cuidadas técnicamente. ";
+		String plot = "Tras un aterrizaje de emergencia en medio del campo gracias al cual salvan la vida un centenar " +
+				"de pasajeros, el comandante X, que pilotaba el avión, es considerado un héroe nacional. Sin embargo, " +
+				"cuando se pone en marcha la investigación para determinar las causas de la avería, se averigua que el " +
+				"capitán tenía exceso de alcohol en la sangre y que puede ir a la cárcel si se demuestra que pilotó el " +
+				"avión en estado de embriaguez.";
 
 		
 		//CLIENT

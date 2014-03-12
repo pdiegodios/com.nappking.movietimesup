@@ -9,7 +9,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.adapter.MovieListAdapter;
@@ -41,6 +41,7 @@ public class FilmGridActivity extends DBActivity{
 	private static final int UNLOCKED = 3;	
 	private static final int LOCKED = 4;
 	private static final int UNLOCK_COST=25;
+	private static final int TIME_FOR_SERVICE=10*60*1000; //5min
 	public static final String POSITION="POSITION";
 	
 	GridView grid;
@@ -112,9 +113,9 @@ public class FilmGridActivity extends DBActivity{
 			User user = daoUser.queryForId(1);
 			if(user!=null){
 				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(user.getLastUpdate()+30*60*1000))||(totalMovies>user.getMovies())){
+				if((now.getTimeInMillis()>(user.getLastUpdate()+TIME_FOR_SERVICE))||(totalMovies>user.getMovies())){
 					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 30min since last time it was updated or there are new movies
+					//It's more than 15min since last time it was updated or there are new movies
 					new LoadUserDataTask(this, user, true).execute();
 				}						
 			}

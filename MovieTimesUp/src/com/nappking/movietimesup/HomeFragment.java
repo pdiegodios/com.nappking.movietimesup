@@ -19,8 +19,6 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -35,11 +33,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,8 +46,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,7 +58,7 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionDefaultAudience;
-import com.facebook.android.friendsmash.R;
+import com.nappking.movietimesup.R;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
@@ -83,18 +75,11 @@ import com.nappking.movietimesup.task.LoadUserDataTask;
  *  Fragment to be shown once the user is logged in on the social version of the game or
  *  the start screen for the non-social version of the game
  */
-public class HomeFragment extends Fragment {
-	
-	// Tag used when logging errors
-    private static final String TAG = HomeFragment.class.getSimpleName();
-	
+public class HomeFragment extends Fragment {	
 	// Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
-    private FriendSmashApplication application;
-	
-	// FrameLayout of the gameOverContainer
-    private FrameLayout gameOverContainer;
+    private MovieTimesUpApplication application;
     
- // FrameLayout of the progressContainer
+    // FrameLayout of the progressContainer
     private FrameLayout progressContainer;
 	
 	// TextView for the You Scored message
@@ -105,11 +90,7 @@ public class HomeFragment extends Fragment {
 	
 	// TextView for the user's name
     private TextView welcomeTextView;
-	
-    //Background
-    private ImageView iBackground;
-    private AnimationDrawable animBackground;
-    
+	    
 	// Buttons ...
     private ImageView playButton;
     private ImageView scoresButton;
@@ -121,21 +102,6 @@ public class HomeFragment extends Fragment {
     private String dialogAction = null;
     private Bundle dialogParams = null;
 	
-	// Runnable task used to show the Game Over message briefly at the end of a game
-	// so that the user doesn't accidentally press any buttons once the game
-	// is over
-    private Runnable gameOverTask = null;
-	
-	// Boolean indicating whether or not the game over message is displaying
-    private boolean gameOverMessageDisplaying = false;
-	
-	// Handler for putting messages on Main UI thread from background threads periodically
-    private Handler timerHandler;
-	
-	// Boolean indicating if the game has been launched directly from deep linking already
-	// so that it isn't launched again when the view is created (e.g. on rotation)
-	private boolean gameLaunchedFromDeepLinking = false;
-	
 	// Attributes for posting back to Facebook
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private static final int REAUTH_ACTIVITY_CODE = 100;
@@ -144,34 +110,26 @@ public class HomeFragment extends Fragment {
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		
+	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		
-		// Instantiate the timerHandler
-		timerHandler = new Handler();
-		
-		application = (FriendSmashApplication) getActivity().getApplication();
+		application = (MovieTimesUpApplication) getActivity().getApplication();
 	}
 	
-	@SuppressWarnings("unused")
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 		View v;		
-		if (!FriendSmashApplication.IS_SOCIAL) {
+		if (!MovieTimesUpApplication.IS_SOCIAL) {
 			v = inflater.inflate(R.layout.fragment_home, parent, false);
 		} else {
-			v = inflater.inflate(R.layout.fragment_home_fb_logged_in, parent, false);	
-			
-			
+			v = inflater.inflate(R.layout.fragment_home_fb_logged_in, parent, false);				
 			// Set the userImage ProfilePictureView
 			userImage = (ProfilePictureView) v.findViewById(R.id.userImage);			
 			// Set the welcomeTextView TextView
 			welcomeTextView = (TextView)v.findViewById(R.id.welcomeTextView);			
 			// Personalize this HomeFragment
-			personalizeHomeFragment();
-			
+			personalizeHomeFragment();			
 			scoresButton = (ImageView)v.findViewById(R.id.scoresButton);
 			scoresButton.setOnTouchListener(new View.OnTouchListener() {
 	            @Override
@@ -179,8 +137,7 @@ public class HomeFragment extends Fragment {
 	            	onScoresButtonTouched();
 					return false;
 				}
-	        });
-			
+	        });			
 			challengeButton = (ImageView)v.findViewById(R.id.challengeButton);
 			challengeButton.setOnTouchListener(new View.OnTouchListener() {
 	            @Override
@@ -188,8 +145,7 @@ public class HomeFragment extends Fragment {
 	            	onChallengeButtonTouched();
 					return false;
 				}
-	        });
-			
+	        });			
 			bragButton = (ImageView)v.findViewById(R.id.bragButton);
 			bragButton.setOnTouchListener(new View.OnTouchListener() {
 	            @Override
@@ -197,15 +153,11 @@ public class HomeFragment extends Fragment {
 	            	onBragButtonTouched();
 					return false;
 				}
-	        });
-			
+	        });			
 			updateButtonVisibility();
 		}
 		
-		gameOverContainer = (FrameLayout)v.findViewById(R.id.gameOverContainer);
-		
-		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
-		
+		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);		
 		youScoredTextView = (TextView)v.findViewById(R.id.youScoredTextView);
 		updateYouScoredTextView();
 		
@@ -217,30 +169,6 @@ public class HomeFragment extends Fragment {
 				return false;
 			}
         });
-		
-		// Instantiate the gameOverTask
-		gameOverTask = new Runnable() {
-			public void run() {
-				// Hide the gameOverContainer
-				gameOverContainer.setVisibility(View.INVISIBLE);
-				
-				// Set the gameOverMessageDisplaying boolean to false
-				gameOverMessageDisplaying = false;
-				
-				if (FriendSmashApplication.IS_SOCIAL) {
-					// Post all information to facebook as appropriate
-					facebookPostAll();
-					
-					// Set the scoreboardEntriesList to null so that the scoreboard is refreshed
-					// now that the player has played another game in case they have a higher score or
-					// any of their friends have a higher score
-					application.setScoreboardEntriesList(null);
-				}
-			}
-		};
-		
-		// Hide the gameOverContainer
-		gameOverContainer.setVisibility(View.INVISIBLE);
 		
 		// Hide the progressContainer
 		progressContainer.setVisibility(View.INVISIBLE);
@@ -309,86 +237,16 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		// Cancel any running gameOverTasks
-		timerHandler.removeCallbacks(gameOverTask);
-		
-		// Hide the gameOverContainer
-		gameOverContainer.setVisibility(View.INVISIBLE);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		if (application.getCurrentFBUser() != null && !gameLaunchedFromDeepLinking) {
-			// As long as the user is logged in and the game hasn't been launched yet
-			// from deep linking, see if it has been deep linked and launch the game appropriately
-			Uri target = getActivity().getIntent().getData();
-			if (target != null) {
-				Intent i = new Intent(getActivity(), GameActivity.class);
-				
-			    // Target is the deep-link Uri, so skip loading this home screen and load the game
-				// directly with the sending user's picture to smash
-				String graphRequestIDsForSendingUser = target.getQueryParameter("request_ids");
-				String feedPostIDForSendingUser = target.getQueryParameter("challenge_brag");
-				
-				if (graphRequestIDsForSendingUser != null) {
-					// Deep linked through a Request and use the latest request (request_id) if multiple requests have been sent
-					String [] graphRequestIDsForSendingUsers = graphRequestIDsForSendingUser.split(",");
-					String graphRequestIDForSendingUser = graphRequestIDsForSendingUsers[graphRequestIDsForSendingUsers.length-1];
-					Bundle bundle = new Bundle();
-					bundle.putString("request_id", graphRequestIDForSendingUser);
-					i.putExtras(bundle);
-					gameLaunchedFromDeepLinking = true;
-					startActivityForResult(i, 0);
-					
-					// Delete the Request now it has been consumed and processed
-					Request deleteFBRequestRequest = new Request(Session.getActiveSession(),
-							graphRequestIDForSendingUser + "_" + application.getCurrentFBUser().getId(),
-							new Bundle(),
-		                    HttpMethod.DELETE,
-		                    new Request.Callback() {
-
-								@Override
-								public void onCompleted(Response response) {
-									FacebookRequestError error = response.getError();
-									if (error != null) {
-										Log.e(FriendSmashApplication.TAG, "Deleting consumed Request failed: " + error.getErrorMessage());
-									} else {
-										Log.i(FriendSmashApplication.TAG, "Consumed Request deleted");
-									}
-								}
-							});
-					Request.executeBatchAsync(deleteFBRequestRequest);
-				} else if (feedPostIDForSendingUser != null) {
-					// Deep linked through a feed post, so start the game smashing the user specified by the id attached to the
-					// challenge_brag parameter
-					Bundle bundle = new Bundle();
-					bundle.putString("user_id", feedPostIDForSendingUser);
-					i.putExtras(bundle);
-					gameLaunchedFromDeepLinking = true;
-					startActivityForResult(i, 0);
-				}
-			} else {
-			    // Launched with no deep-link Uri, so just continue as normal and load the home screen
-			}
-		}
-		
-		if (!gameLaunchedFromDeepLinking && gameOverMessageDisplaying) {
-			// The game hasn't just been launched from deep linking and the game over message should still be displaying, so ...
-			
-			// Complete the game over logic
-			completeGameOver(750);
-		}
 	}
 	
 	@Override
 	public void onStart() {
-		super.onStart();
-		
-		// If a dialog exists, create a new dialog (as the screen may have rotated so needs
-		// new dimensions) and show it
+		super.onStart();		
 		if (dialog != null) {
 			showDialogWithoutNotificationBar(dialogAction, dialogParams);
 		}
@@ -396,8 +254,7 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onStop() {
-		super.onStop();
-		
+		super.onStop();		
 		// If a dialog exists and is showing, dismiss it
 		if (dialog != null) {
 			dialog.dismiss();
@@ -412,21 +269,12 @@ public class HomeFragment extends Fragment {
 
 	// Called when the Play button is touched
 	private void onPlayButtonTouched() {
-		if (application.IS_SOCIAL == true) {
-			if (application.getFriends() != null && application.getFriends().size() <= 0) {
-				((HomeActivity)getActivity()).showError("You don't have any friends to smash!", false);
-			} else {
-				startFilmMenu();
-			}
-		} else {
-			startFilmMenu();
-		}
+		startFilmMenu();
     }
 	
 	private void startFilmMenu() {
         Intent i = new Intent(getActivity(), FilmGridActivity.class);
         startActivity(i);
-        //startActivityForResult(i, 0);
 	}
 	
 	// Called when the Challenge button is touched
@@ -451,46 +299,13 @@ public class HomeFragment extends Fragment {
 	//    state change callback to then attempt to post their information to Facebook (again)
 	// 2. Returns from a finished game - test status with resultCode and if successfully ended, update
 	//    their score and complete the game over process, otherwise show an error if there is one
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		if (requestCode == REAUTH_ACTIVITY_CODE) {
             // This ensures a session state change is recorded so that the tokenUpdated() callback is triggered
 			// to attempt a post if the write permissions have been granted
-			Log.i(FriendSmashApplication.TAG, "Reauthorized with publish permissions.");
+			Log.i(MovieTimesUpApplication.TAG, "Reauthorized with publish permissions.");
 			Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
-        } else if (resultCode == Activity.RESULT_OK && data != null) {
-        	// Finished a game
-			Bundle bundle = data.getExtras();
-			application.setScore(bundle.getInt("score"));
-			updateYouScoredTextView();
-			updateButtonVisibility();
-			completeGameOver(1500);
-		} else if (resultCode == Activity.RESULT_FIRST_USER && data != null) {
-			// Came from the ScoreboardFragment, so start a game with the specific user who has been clicked
-			Intent i = new Intent(getActivity(), GameActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("user_id", data.getStringExtra("user_id"));
-			i.putExtras(bundle);
-			startActivityForResult(i, 0);
-		} else if (resultCode == Activity.RESULT_CANCELED && data != null) {
-			Bundle bundle = data.getExtras();
-			((HomeActivity)getActivity()).showError(bundle.getString("error"), false);
-		} else if (resultCode == Activity.RESULT_CANCELED &&
-				((FriendSmashApplication) getActivity().getApplication()).getGameFragmentFBRequestError() != null) {
-			((HomeActivity)getActivity()).handleError(
-					((FriendSmashApplication) getActivity().getApplication()).getGameFragmentFBRequestError(),
-					false);
-			((FriendSmashApplication) getActivity().getApplication()).setGameFragmentFBRequestError(null);
-		}
-	}
-	
-	// Start a Game with a specified user id (called from the ScoreboardFragment)
-	void startGame(String userId) {
-		Intent i = new Intent(getActivity(), GameActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putString("user_id", userId);
-		i.putExtras(bundle);
-		startActivityForResult(i, 0);
+        }
 	}
 	
 	// Update with the user's score
@@ -498,9 +313,6 @@ public class HomeFragment extends Fragment {
 		if (youScoredTextView != null) {
 			if (application.getScore() >= 0) {
 				youScoredTextView.setText("You Scored " + application.getScore() + "!");
-			}
-			else {
-				youScoredTextView.setText(getResources().getString(R.string.no_score));
 			}
 		}
 	}
@@ -522,24 +334,6 @@ public class HomeFragment extends Fragment {
 				bragButton.setVisibility(View.INVISIBLE);
 			}
 		}
-	}
-	
-	// Complete the game over process
-	private void completeGameOver(int millisecondsToShow) {
-		// Show the gameOverContainer
-		gameOverContainer.setVisibility(View.VISIBLE);
-		
-		// Set the gameOverMessageDisplaying boolean to true
-		gameOverMessageDisplaying = true;
-		
-		// Cancel any running gameOverTasks
-		timerHandler.removeCallbacks(gameOverTask);
-		
-		// Hide the gameOverContainer after a short period of time
-		if (gameOverTask != null)
- 		{
- 			timerHandler.postDelayed(gameOverTask, millisecondsToShow);
- 		}
 	}
 	
 	
@@ -592,7 +386,7 @@ public class HomeFragment extends Fragment {
 				
 				FacebookRequestError error = response.getError();
 				if (error != null) {
-					Log.e(FriendSmashApplication.TAG, error.toString());
+					Log.e(MovieTimesUpApplication.TAG, error.toString());
 					((HomeActivity)getActivity()).handleError(error, false);
 				} else if (session == Session.getActiveSession()) {
 					if (response != null) {
@@ -815,10 +609,10 @@ public class HomeFragment extends Fragment {
 						public void onCompleted(Response response) {
 							FacebookRequestError error = response.getError();
 							if (error != null) {
-								Log.e(FriendSmashApplication.TAG, "Posting Score to Facebook failed: " + error.getErrorMessage());
+								Log.e(MovieTimesUpApplication.TAG, "Posting Score to Facebook failed: " + error.getErrorMessage());
 								((HomeActivity)getActivity()).handleError(error, false);
 							} else {
-								Log.i(FriendSmashApplication.TAG, "Score posted successfully to Facebook");
+								Log.i(MovieTimesUpApplication.TAG, "Score posted successfully to Facebook");
 							}
 						}
 					});
@@ -840,10 +634,10 @@ public class HomeFragment extends Fragment {
 						HttpResponse responsePost = httpClient.execute(httpPost);
 						HttpEntity responseEntity = responsePost.getEntity();
 						String response = EntityUtils.toString(responseEntity);
-						Log.i(FriendSmashApplication.TAG, "Score post to server: " + response);
+						Log.i(MovieTimesUpApplication.TAG, "Score post to server: " + response);
 					} catch (Exception e) {
-						Log.e(FriendSmashApplication.TAG, e.toString());
-						Log.e(FriendSmashApplication.TAG, "Posting Score to Server failed: " + e.getMessage());
+						Log.e(MovieTimesUpApplication.TAG, e.toString());
+						Log.e(MovieTimesUpApplication.TAG, "Posting Score to Server failed: " + e.getMessage());
 					}
 				}
 			});
@@ -877,9 +671,9 @@ public class HomeFragment extends Fragment {
 						public void onCompleted(Response response) {
 							FacebookRequestError error = response.getError();
 							if (error != null) {
-								Log.e(FriendSmashApplication.TAG, "Posting Achievement failed: " + error.getErrorMessage());
+								Log.e(MovieTimesUpApplication.TAG, "Posting Achievement failed: " + error.getErrorMessage());
 							} else {
-								Log.i(FriendSmashApplication.TAG, "Achievement posted successfully");
+								Log.i(MovieTimesUpApplication.TAG, "Achievement posted successfully");
 							}
 						}
 					});
@@ -902,11 +696,11 @@ public class HomeFragment extends Fragment {
 						public void onCompleted(Response response) {
 							FacebookRequestError error = response.getError();
 							if (error != null) {
-								Log.e(FriendSmashApplication.TAG, "Sending OG Story Failed: " + error.getErrorMessage());
+								Log.e(MovieTimesUpApplication.TAG, "Sending OG Story Failed: " + error.getErrorMessage());
 							} else {
 								GraphObject graphObject = response.getGraphObject();
 								String ogActionID = (String)graphObject.getProperty("id");
-								Log.i(FriendSmashApplication.TAG, "OG Action ID: " + ogActionID);
+								Log.i(MovieTimesUpApplication.TAG, "OG Action ID: " + ogActionID);
 							}
 						}
 					});
