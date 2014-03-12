@@ -23,35 +23,36 @@ public class AddMovie {
 		
 		//VALUES
 		int id = 18;
-		int points = 1;
-		int year = 1995;
+		int points = 3;
+		int year = 1994;
 		String  action = SAVE;
-		String title = "Pocahontas";
+		String title = "Ed Wood";
 		String alternative_title = "Pokahontas";
-		String original_title = "Pocahontas";
-		String continent = "Europa";
-		String country = "UK";
-		String director = "Mike Gabriel & Eric Goldberg";
-		String genre = "Animación";
+		String original_title = "Ed Wood";
+		String continent = "América";
+		String country = "USA";
+		String director = "Tim Burton";
+		String genre = "Comedia";
 		String poster = "";
-		String  filmaffinity_id = "902616";
-		String imdb_id = "tt0114148";
-		String actor1="Mel Gibson (voz original)";
-		String actor2="Christian Bale (voz original)";
-		String actor3="Linda Hunt (voz original)";
-		String character1="Gobernador Ratcliffe";
-		String character2="Jefe Powhatan";
-		String character3="Capitán Smith";
-		String other1 ="2 Oscars: Mejor canción original, Mejor banda sonora";
-		String other2 ="Supone el primer romance interracial en una película de Disney y los primeros personajes con existencia verídica e histórica";
-		String other3 ="Los dibujantes se basaron en la modelo Naomi Campbell para dibujar al personaje principal";
-		String quote1="Hemos mejorado las vidas de salvajes de todo el mundo";
-		String quote2="Preferiría morir mañana, que vivir cien años sin haberte conocido";
-		String quote3="-¡Pero esta es su tierra! -¡Esta es mi tierra!¡Yo hago las leyes aquí!";
-		String plot = "X vigila la llegada de un gran grupo de colonos ingleses, guiados por el ambicioso " +
-				"gobernador y el valiente capitán Z. Con su juguetón compañero Meeko, un travieso mapache, y con Flit, un alegre pájaro, " +
-				"X entabla una fuerte amistad con el Capitán Z. Pero cuando empiezan a surgir tensiones entre las dos culturas, X recurre " +
-				"a la sabiduría de la Abuela Sauce para encontrar una manera de lograr la paz entre su pueblo y los conquistadores.";
+		String  filmaffinity_id = "655275";
+		String imdb_id = "tt0109707";
+		String actor1="Patricia Arquette";
+		String actor2="Johnny Depp";
+		String actor3="Martin Landau";
+		String character1="Kathy O'Hara";
+		String character2="Bela Lugosi";
+		String character3="Ed Wood";
+		String other1 ="La soberbia actuación del veterano actor le supuso un Oscar a mejor actor secundario";
+		String other2 ="El protagonista escribió antes de morir que había vivido intensamente y que había realizado grandes obras. En realidad había sido abandonado y era un alcohólico.";
+		String other3 ="Edward D.W. Jr. es considerado el peor director de la historia";
+		String quote1="Vale la pena luchar por los propios sueños, ¿Por qué pasarse la vida realizando los sueños de otros?";
+		String quote2="¿La peor película que ha visto? Bueno, la próxima será mejor.";
+		String quote3="Viste como aquel niño le agarró las tetas a Vampira?";
+		String plot = "X es un joven director de cine, un visionario sin ninguna formación académica, aficionado " +
+				"a vestirse de mujer y con muy pocas oportunidades de hacer películas en un gran estudio. " +
+				"Sin embargo no ceja en su empeño de convertirse en un director famoso. Tras reunir a un " +
+				"curioso grupo de personajes, realiza películas de bajo presupuesto, excéntricas y no muy " +
+				"cuidadas técnicamente. ";
 
 		
 		//CLIENT

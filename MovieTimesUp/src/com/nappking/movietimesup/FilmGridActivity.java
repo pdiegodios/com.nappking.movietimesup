@@ -108,12 +108,13 @@ public class FilmGridActivity extends DBActivity{
 		Dao<User, Integer> daoUser;
 		try {
 			daoUser = getHelper().getUserDAO();
+			int totalMovies = (int)getHelper().getMovieDAO().countOf();
 			User user = daoUser.queryForId(1);
 			if(user!=null){
 				Calendar now = GregorianCalendar.getInstance();
-				if(now.getTimeInMillis()>(user.getLastUpdate()+10*60*1000)){
+				if((now.getTimeInMillis()>(user.getLastUpdate()+30*60*1000))||(totalMovies>user.getMovies())){
 					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 10 minutes since last time it was updated
+					//It's more than 30min since last time it was updated or there are new movies
 					new LoadUserDataTask(this, user, true).execute();
 				}						
 			}
