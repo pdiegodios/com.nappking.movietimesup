@@ -2,17 +2,9 @@ package com.nappking.movietimesup.entities;
 
 import java.io.File;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import android.content.Context;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.nappking.movietimesup.database.DBHelper;
 
 @DatabaseTable
 public class Movie implements Serializable{

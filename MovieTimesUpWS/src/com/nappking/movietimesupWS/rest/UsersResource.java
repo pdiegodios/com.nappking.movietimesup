@@ -68,8 +68,8 @@ public class UsersResource {
 	public UserResource getUser(@PathParam("idUser") String idUser){
 		return new UserResource(uriInfo, request, idUser);
 	}
-		
-	// Save and Update Movies
+	
+	// Save and Update Users
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -99,5 +99,22 @@ public class UsersResource {
 		    }
 	    }	      
 		return myGson.toJson(listSaved);
+	}
+	
+	@POST
+	@Path("/scores")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public String getUsersScore(@FormParam("id") List<String> list) throws SQLException {
+		List<User> users = new ArrayList<User>();	  
+		int i=0;
+		for(String id : list){
+	    	i=i+1;
+	    	User user = iUserDao.get(id);
+	    	if(user!=null)
+	    		users.add(user);
+	    }	      
+		Gson myGson = new Gson();
+		return myGson.toJson(users);  
 	}
 }

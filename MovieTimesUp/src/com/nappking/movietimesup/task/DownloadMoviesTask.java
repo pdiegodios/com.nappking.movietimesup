@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.HomeActivity;
+import com.nappking.movietimesup.MovieTimesUpApplication;
 import com.nappking.movietimesup.SplashActivity;
 import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.Movie;
@@ -124,7 +125,7 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	protected Integer doInBackground(String... arg0) {
 		int result=2;
 		try{
-			String counter = readMovieFeed(WebServiceTask.URL+mCountPath);
+			String counter = readMovieFeed(MovieTimesUpApplication.URL+mCountPath);
 			int moviesOnlineCount = 0;
 			if(counter!=null && !counter.isEmpty()){
 				moviesOnlineCount = Integer.parseInt(counter);
@@ -138,7 +139,7 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 				}
 			}	
 			else{
-				String read_movies = readMovieFeed(WebServiceTask.URL+mSincePath+"/"+moviesDownloadedCount);
+				String read_movies = readMovieFeed(MovieTimesUpApplication.URL+mSincePath+"/"+moviesDownloadedCount);
 				JSONArray jsonContent = new JSONArray(read_movies);
     			Type listMovieType = new TypeToken<List<Movie>>(){}.getType();
     			final List<Movie> moviesToInsert = new Gson().fromJson(jsonContent.toString(), listMovieType);

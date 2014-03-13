@@ -2,7 +2,6 @@ package com.nappking.movietimesup.adapter;
 
 import java.util.List;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,7 @@ public class MovieListAdapter extends BaseAdapter{
 	private Context mContext;
     public ImageLoader imageLoader; 
     
-    public MovieListAdapter(Context context, List<Movie> movies,
-    		List<String> locked, List<String> unlocked) {
+    public MovieListAdapter(Context context, List<Movie> movies, List<String> locked, List<String> unlocked) {
         super();
         this.mMoviesList = movies;
         this.mLocked = locked;

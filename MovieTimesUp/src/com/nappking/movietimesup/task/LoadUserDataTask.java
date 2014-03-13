@@ -1,6 +1,7 @@
 package com.nappking.movietimesup.task;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,10 +36,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nappking.movietimesup.MovieTimesUpApplication;
 import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBHelper;
 import com.nappking.movietimesup.entities.User;
 
@@ -47,7 +48,6 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 	private final static int CONN_TIMEOUT = 7000;
 	private final static int SOCKET_TIMEOUT = 10000;
 	
-	private ProgressDialog mDialog;
 	private Context mContext;
 	private DBHelper mDBHelper;
 	private String mPath="users";
@@ -58,25 +58,11 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 	public LoadUserDataTask(Context c, User u, boolean showProgress){
 		this.mContext=c;
 		this.mCheckExtraSeconds=showProgress;
-		if(this.mDialog==null)
-			this.mDialog= new ProgressDialog(mContext);
 		this.mUser=u;
 	}
 	
 	@Override
-	protected void onPreExecute() {
-		if(mDialog!=null){
-			mDialog.setMessage(mContext.getResources().getString(R.string.check_user));
-			if (!mDialog.isShowing() && mCheckExtraSeconds)
-				mDialog.show();
-		}
-	}
-	
-	@Override
 	protected void onPostExecute(final Integer result){
-		if(mDialog!=null && mDialog.isShowing()){
-			mDialog.dismiss();
-		}
 		String text="";
 		switch(result){
 			case 1: 
@@ -86,7 +72,6 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 				text= mContext.getResources().getString(R.string.downloaded_user);
 				break;
 			case 3: 
-				text= mContext.getResources().getString(R.string.already_updated_user);
 				break;
 			case 4: 
 				text= mContext.getResources().getString(R.string.error_updating_user);
@@ -99,6 +84,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
             OpenHelperManager.releaseHelper();
             mDBHelper = null;
         }
+        if(!text.isEmpty())
 		Toast.makeText(this.mContext, text, Toast.LENGTH_SHORT).show();
 		
 		if(mCheckExtraSeconds && mUser!=null){
@@ -108,7 +94,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 
 	protected Integer doInBackground(String... arg0) {
 		int result = 0;
-		String read_user = readUserFeed(WebServiceTask.URL+mPath);
+		String read_user = readUserFeed(MovieTimesUpApplication.URL+mPath);
 		try{
 			if((read_user==null || read_user.equals("")) && mUser!=null){
 				//If there is not user associated in the server we have to create a new user in the WS
@@ -166,7 +152,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 			wsUser.addNameValuePair("users", jsonArray.toString());
 			Log.i(action, jsonArray.toString());
 	        wsUser.addNameValuePair("action", action);        
-	        wsUser.execute(new String[] {WebServiceTask.URL+mPath});	   
+	        wsUser.execute(new String[] {MovieTimesUpApplication.URL+mPath});	
 		}catch (JSONException e) {
 			e.printStackTrace();
 		}

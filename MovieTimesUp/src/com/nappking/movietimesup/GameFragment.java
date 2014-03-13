@@ -1,51 +1,23 @@
-/**
- * Copyright 2012 Facebook
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.nappking.movietimesup;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -64,33 +36,13 @@ import com.facebook.model.GraphUser;
 /**
  *  Fragment shown once a user starts playing a game
  */
-public class GameFragment extends Fragment {
-	
-	private static final Pair [] CELEBS = {
-		Pair.create("Einstein", "drawable/nonfriend_1"),
-		Pair.create("Xzibit", "drawable/nonfriend_2"),
-		Pair.create("Goldsmith", "drawable/nonfriend_3"),
-		Pair.create("Sinatra", "drawable/nonfriend_4"),
-		Pair.create("George", "drawable/nonfriend_5"),
-		Pair.create("Jacko", "drawable/nonfriend_6"),
-		Pair.create("Rick", "drawable/nonfriend_7"),
-		Pair.create("Keanu", "drawable/nonfriend_8"),
-		Pair.create("Arnie", "drawable/nonfriend_9"),
-		Pair.create("Jean-Luc", "drawable/nonfriend_10"),
-	};
-	
-	// Tag used when logging messages
-    private static final String TAG = GameFragment.class.getSimpleName();
-	
+public class GameFragment extends Fragment {	
     
 	// FrameLayout as the container for the game
 	private FrameLayout gameFrame;
 
 	// FrameLayout of the progress container to show the spinner
 	private FrameLayout progressContainer;
-	
-	// TextView for the Smash Player title
-	private TextView smashPlayerNameTextView;
 	
 	// TextView for the score
 	private TextView scoreTextView;
@@ -109,31 +61,17 @@ public class GameFragment extends Fragment {
 	// Handler for putting messages on Main UI thread from background threads periodically
 	private Handler timerHandler;
 	
-	// Handler for putting messages on Main UI thread from background thread after fetching images
-	private Handler uiHandler;
-	
 	// Runnable task used to produce images to fly across the screen
 	private Runnable fireImageTask = null;
 	
 	// Boolean indicating whether images have started firing
 	private boolean imagesStartedFiring = false;
 	
-	
-	// Index of the friend to smash (in the social game)
-	private int friendToSmashIndex = -1;
-	
-	// Index of the celeb to smash (in the non-social game)
-	private int celebToSmashIndex = -1;
-	
 	// ID of the friend to smash (if passed in as an attribute)
 	private String friendToSmashIDProvided = null;
 	
 	// Name of the friend to smash
-	private String friendToSmashFirstName = null;
-	
-	// Bitmap of the friend to smash
-	private Bitmap friendToSmashBitmap;
-	
+	private String friendToSmashFirstName = null;		
 	
 	// Score for the user
 	private int score = 0;
@@ -147,13 +85,7 @@ public class GameFragment extends Fragment {
 	// Boolean indicating that the first image to be fired is pending (i.e. a Request is
 	// in the process of executing in a background thread to fetch the images / information)
 	private boolean firstImagePendingFiring = false;
-	
-	
-	// List of UserImageView objects created and visible
-	private ArrayList<UserImageView> userImageViews = new ArrayList<UserImageView>();
-	
-
-	@SuppressWarnings("unused")
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -163,16 +95,6 @@ public class GameFragment extends Fragment {
 		
 		// Instantiate the handlers
 		timerHandler = new Handler();
-		uiHandler = new Handler();
-		
-		// Get the friend to smash bitmap and name
-		if (MovieTimesUpApplication.IS_SOCIAL) {
-			// User is logged into FB, so choose a random FB friend to smash
-			friendToSmashIndex = getRandomFriendIndex();
-		} else {
-			// User is not logged into FB, so choose a random celebrity to smash
-			celebToSmashIndex = getRandomCelebIndex();
-		}
 	}
 	
 	@SuppressWarnings({ "deprecation" })
@@ -185,7 +107,6 @@ public class GameFragment extends Fragment {
 		
 		gameFrame = (FrameLayout)v.findViewById(R.id.gameFrame);
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
-		smashPlayerNameTextView = (TextView)v.findViewById(R.id.smashPlayerNameTextView);
 		scoreTextView = (TextView)v.findViewById(R.id.scoreTextView);
 		livesContainer = (LinearLayout)v.findViewById(R.id.livesContainer);
 		
@@ -233,130 +154,10 @@ public class GameFragment extends Fragment {
 		
 		return v;
 	}
-	
-	// Sets the name of the player to smash in the top left TextView
-	@SuppressWarnings("unused")
-	private void setSmashPlayerNameTextView() {
-		// Set the Smash Player Name title
-        if (MovieTimesUpApplication.IS_SOCIAL) {
-			// User is logged into FB ...
-        	if (friendToSmashFirstName == null) {
-        		// A name hasn't been set yet (i.e. it hasn't been fetched through a passed in id, so
-        		// a random friend needs to be used instead, so fetch this name
-        		friendToSmashFirstName = ((MovieTimesUpApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getFirstName();
-        	}
-        	smashPlayerNameTextView.setText("Smash " + friendToSmashFirstName + " !");
-		} else {
-			// User is not logged into FB ...
-			smashPlayerNameTextView.setText("Smash " + CELEBS[celebToSmashIndex].first + " !");
-		}
-	}
-	
-	// Select a random friend to smash
-	private int getRandomFriendIndex() {
-		Random randomGenerator = new Random(System.currentTimeMillis());
-		int friendIndex = randomGenerator.nextInt(((MovieTimesUpApplication) getActivity().getApplication()).getFriends().size());
-		return friendIndex;
-	}
-	
-	// Select a random celebrity to smash (in the non-social game) or avoid smashing (in the social game)
-	private int getRandomCelebIndex() {
-		Random randomGenerator = new Random(System.currentTimeMillis());
-		int celebIndex = randomGenerator.nextInt(CELEBS.length);
-		return celebIndex;
-	}
-	
-	// Set the image on the UserImageView to the specified bitmap of the user's friend and fire it
-	private void setFriendImageAndFire(UserImageView imageView, Bitmap friendBitmap, boolean extraImage) {
-		imageView.setImageBitmap(friendBitmap);
-		
-		if (extraImage) {
-			// If this is an extra image, give it an extra point when smashed
-			imageView.setExtraPoints(1);
-		}
-		
-		fireImage(imageView, extraImage);
-	}
-	
-	// Set the image on the UserImageView to the celebrity and fire it
-	private void setCelebImageAndFire(UserImageView imageView, int celebIndex, boolean extraImage) {
-	    int imageResource = getResources().getIdentifier((String) CELEBS[celebIndex].second, null, getActivity().getPackageName());
-
-	    Drawable image = getResources().getDrawable(imageResource);
-	    imageView.setImageDrawable(image);
-	    
-	    fireImage(imageView, extraImage);
-	}
-	
-	// Fire the UserImageView and setup the timer to start another image shortly (as long as the image that
-	// is fired isn't an extra image)
-	private void fireImage(final UserImageView imageView, boolean extraImage) {
-		// Fire image
-	    imageView.setupAndStartAnimations(iconWidth, iconWidth, screenWidth, screenHeight, new AnimatorListener() {
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				if (!imageView.isWrongImageSmashed()) {
-					if (imageView.getVisibility() == View.VISIBLE && imageView.shouldSmash() && !imageView.isVoid()) {
-						// Image is still visible, so user didn't smash it and they should have done (and it isn't void), so decrement the lives by one
-						setLives(getLives() - 1);
-					}
-					
-					// Only hide this if the wrong image has not been smashed (otherwise, other logic will be run and image still needs to be shown)
-					hideAndRemove(imageView);
-				}
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationStart(Animator animation) {
-			}
-    	});
-	    
-	    if (!extraImage) {
-	    	// If this isn't an extra image spawned, fire another image shortly
-	    	fireAnotherImage();
-	    }
-	    
-		// By this point, all network calls would have executed and the first image has fired with the next lined up
-		// , so set firstImagePendingFiring to false
-		firstImagePendingFiring = false;
-	}
-	
-	// If this UserImageView is currently visible, hide it and remove it from the GameFragment view
-	// and the list storing all UserImageViews
-	private void hideAndRemove(UserImageView userImageView) {
-		if (userImageView.getVisibility() == View.VISIBLE) {
-			// Ensure it is hidden
-			userImageView.setVisibility(View.GONE);
-		}
-		
-		// Remove the userImageView from the gameFrame
-		getGameFrame().removeView(userImageView);
-		
-		// Remove it from the userImageViews List in the gameFragment
-		getUserImageViews().remove(userImageView);
-	}
-	
-	// Fire another image shortly
-	private void fireAnotherImage() {
-		// Fire another image shortly ...
- 		if (fireImageTask != null)
- 		{
- 			timerHandler.postDelayed(fireImageTask, 700);
- 		}
-	}
 
 	// Called when the first image should be fired (only called during onResume)
 	// If the game has been deep linked into (i.e. a user has clicked on a feed post or request in
 	// Facebook), then fetch the specific user that should be smashed
-	@SuppressWarnings("unused")
 	private void fireFirstImage() {
 		if (MovieTimesUpApplication.IS_SOCIAL) {
 			// Get any bundle parameters there are
@@ -391,16 +192,14 @@ public class GameFragment extends Fragment {
 				// requestID is null, userID is null or friendToSmashIDProvided is already set,
 				// so use the randomly generated friend of the user or the already set friendToSmashIDProvided
 				// So set the smashPlayerNameTextView text and hide the progress spinner as there is nothing to fetch
-				progressContainer.setVisibility(View.INVISIBLE);			
-				setSmashPlayerNameTextView();
+				progressContainer.setVisibility(View.INVISIBLE);	
 				
 				// Now you're ready to fire the first image
 				spawnImage(false);
 			}
 		} else {
 			// Non-social, so set the smashPlayerNameTextView text and hide the progress spinner as there is nothing to fetch
-			progressContainer.setVisibility(View.INVISIBLE);			
-			setSmashPlayerNameTextView();
+			progressContainer.setVisibility(View.INVISIBLE);	
 			
 			// Now you're ready to fire the first image
 			spawnImage(false);
@@ -449,7 +248,6 @@ public class GameFragment extends Fragment {
 										// If the first name of the friend to smash has been set, set the text in the smashPlayerNameTextView
 										// and hide the progress spinner now that the user's details have been fetched
 										progressContainer.setVisibility(View.INVISIBLE);
-										setSmashPlayerNameTextView();
 										
 										// Now you're ready to fire the first image
 										spawnImage(false);
@@ -489,7 +287,6 @@ public class GameFragment extends Fragment {
 						// If the first name of the friend to smash has been set, set the text in the smashPlayerNameTextView
 						// and hide the progress spinner now that the user's details have been fetched
 						progressContainer.setVisibility(View.INVISIBLE);
-						setSmashPlayerNameTextView();
 						
 						// Now you're ready to fire the first image
 						spawnImage(false);
@@ -517,138 +314,10 @@ public class GameFragment extends Fragment {
         } else if (!firstImageFired) {
         	shouldSmash = true;
         	firstImageFired = true;
-        }
-		
-		// Create a new ImageView with a user to smash
-        final UserImageView userImageView = (new UserImageView(getActivity(), shouldSmash));
-        userImageView.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (userImageView.shouldSmash()) {
-					// Smashed the right image ...
-					
-					// Increment the score
-					setScore(getScore() + 1 + userImageView.getExtraPoints());
-					
-					// Hide the userImageView
-					v.setVisibility(View.GONE);
-					
-					// Remove it from the userImageViews List in this GameFragment
-					getUserImageViews().remove(v);
-				} else {
-					// Smashed the wrong image ...
-					wrongImageSmashed(userImageView);
-				}
-				return false;
-			}
-		});
-        userImageView.setLayoutParams(new LinearLayout.LayoutParams(iconWidth, iconWidth));
-        gameFrame.addView(userImageView);
-        userImageViews.add(userImageView);
+        }			        
         
-        // Set the bitmap of the userImageView ...
-        if (userImageView.shouldSmash()) {
-        	// The user should smash this image, so set the correct image
-	        if (MovieTimesUpApplication.IS_SOCIAL) {
-				// User is logged into FB ...
-				if (friendToSmashBitmap != null) {
-					// Bitmap for the friend to smash has already been retrieved, so use this
-					setFriendImageAndFire(userImageView, friendToSmashBitmap, extraImage);
-				} else {
-					// Otherwise, the Bitmap for the friend to smash hasn't been retrieved, so retrieve it and set it
-					
-					// Show the spinner while retrieving
-					progressContainer.setVisibility(View.VISIBLE);
-					
-					// If a friend has been passed in, use that attribute, otherwise use the random friend that has been selected
-					final String friendToSmashID = friendToSmashIDProvided != null ? friendToSmashIDProvided :
-						((MovieTimesUpApplication) getActivity().getApplication()).getFriend(friendToSmashIndex).getId();
-					
-					// Fetch the bitmap and fire the image
-					fetchFriendBitmapAndFireImages(userImageView, friendToSmashID, extraImage);
-				}
-			} else {
-				// User is not logged into FB ...
-				setCelebImageAndFire(userImageView, celebToSmashIndex, extraImage);
-			}
-        } else {
-        	// The user should not smash this image, so set it to a random celebrity (but not the one being shown if it's the non-social game)
-        	int randomCelebToSmashIndex;
-        	do {
-        		randomCelebToSmashIndex = randomGenerator.nextInt(CELEBS.length);
-        	} while (randomCelebToSmashIndex == celebToSmashIndex);
-        	setCelebImageAndFire(userImageView, randomCelebToSmashIndex, extraImage);
-        }
 	}
-	
-	// Logic when the user smashes this image, but it turns out to be the wrong image - i.e.
-	// it's shouldSmash boolean is false
-	private void wrongImageSmashed(final UserImageView userImageView) {
-		// Set this flag for checking in the animation ended logic
-		userImageView.setWrongImageSmashed(true);
 		
-		// Stop all movement (not rotation) animations for this UserImageView
-		userImageView.stopMovementAnimations();
-		
-		// Stop all animations for all other visible UserImageViews (and therefore hide them)
-		hideAllUserImageViewsExcept(userImageView);
-		
-		// Scale the image up
-		userImageView.scaleUp(new AnimatorListener() {
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				// Cancel rotation and exit to home screen
-				userImageView.stopRotationAnimation();
-				setLives(0);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationStart(Animator animation) {
-			}
-    	});
-		
-		// Ensure this UserImageView is in front
-		getGameFrame().bringChildToFront(userImageView);
-	}
-	
-	private void fetchFriendBitmapAndFireImages(final UserImageView userImageView, final String friendToSmashID, final boolean extraImage) {
-		AsyncTask.execute(new Runnable() {
-			public void run() {
-				URL bitmapURL;
-				try {
-					bitmapURL = new URL("http://graph.facebook.com/" + friendToSmashID +
-							"/picture?width=" + iconWidth + "&height=" + iconWidth);
-					friendToSmashBitmap = BitmapFactory.decodeStream(bitmapURL.openConnection().getInputStream());
-				} catch (Exception e) {
-					// Unknown error
-					Log.e(MovieTimesUpApplication.TAG, e.toString());
-				}
-				
-				uiHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						// Hide the spinner after retrieving
-		        		progressContainer.setVisibility(View.INVISIBLE);
-						
-						if (friendToSmashBitmap != null) {
-							setFriendImageAndFire(userImageView, friendToSmashBitmap, extraImage);
-		                } else {
-		                	closeAndShowError(getResources().getString(R.string.error_fetching_friend_bitmap));
-		                }
-					}
-				});
-			}
-		});
-	}
-	
 	// Close the game and show the specified error to the user
 	private void closeAndShowError(String error) {
 		Bundle bundle = new Bundle();
@@ -671,31 +340,7 @@ public class GameFragment extends Fragment {
 		getActivity().finish();
 	}
 	
-	// Hide all the UserImageViews currently on display except the one specified
-	// Called when the user has smashed the wrong image so that this is displayed large
-	void hideAllUserImageViewsExcept(UserImageView userImageView) {
-		// Stop new animations
-		timerHandler.removeCallbacks(fireImageTask);
 		
-		// Stop animations on all existing visible UserImageViews (which will hide them automatically)
-		Iterator<UserImageView> userImageViewsIterator = userImageViews.iterator();
-		while (userImageViewsIterator.hasNext()) {
-			UserImageView currentUserImageView = (UserImageView) userImageViewsIterator.next();
-			if (!currentUserImageView.equals(userImageView)) {
-				currentUserImageView.setVisibility(View.GONE);
-			}
-		}
-	}
-	
-	// Mark all the existing visible UserImageViews as void (called when the game is paused)
-	private void markAllUserImageViewsAsVoid() {
-		Iterator<UserImageView> userImageViewsIterator = userImageViews.iterator();
-		while (userImageViewsIterator.hasNext()) {
-			UserImageView currentUserImageView = (UserImageView) userImageViewsIterator.next();
-			currentUserImageView.setVoid(true);
-		}
-	}
-	
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -704,7 +349,6 @@ public class GameFragment extends Fragment {
 		stopTheFiringImages();
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -734,9 +378,6 @@ public class GameFragment extends Fragment {
 	
 	// Stop the firing of all images (and mark the existing ones as void) - called when the game is paused
 	private void stopTheFiringImages() {
-		// Mark all existing in flight UserImageViews as void (so they don't affect the user's lives once landed)
-		markAllUserImageViewsAsVoid();
-		
 		// Stop new animations and indicate that images have not started firing
 		timerHandler.removeCallbacks(fireImageTask);
 		imagesStartedFiring = false;
@@ -826,9 +467,5 @@ public class GameFragment extends Fragment {
 	
 	public FrameLayout getGameFrame() {
 		return gameFrame;
-	}
-	
-	public ArrayList<UserImageView> getUserImageViews() {
-		return userImageViews;
 	}
 }

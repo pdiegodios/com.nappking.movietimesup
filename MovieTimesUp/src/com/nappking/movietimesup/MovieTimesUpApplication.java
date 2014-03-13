@@ -1,19 +1,3 @@
-/**
- * Copyright 2012 Facebook
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.nappking.movietimesup;
 
 import java.util.ArrayList;
@@ -24,6 +8,7 @@ import android.app.Application;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.model.GraphUser;
+import com.nappking.movietimesup.entities.User;
 
 /**
  *  Use a custom Application class to pass state data between Activities.
@@ -31,13 +16,14 @@ import com.facebook.model.GraphUser;
 public class MovieTimesUpApplication extends Application {	
 	// Tag used when logging all messages with the same tag (e.g. for demoing purposes)
 	static final String TAG = "MovieTimesUp";	
+    public static final String URL = "http://movietimesup.gestores.cloudbees.net/rest/";
 	// Switch between the non-social and social Facebook versions of the game
 	static final boolean IS_SOCIAL = true;
+	static final int TIME_FOR_SERVICE=10*60*1000; //10min
 	// Player's current score
 	private int score = -1;
 	// Last time LoadUserDataTask was called
-	private int lastUpdateCall = -1;
-	
+	private long lastUpdateCall = -1;	
 	
 	/* Facebook application attributes */
 
@@ -52,7 +38,7 @@ public class MovieTimesUpApplication extends Application {
 	private static final String FRIENDS_KEY = "friends";	
 	// List of ordered ScoreboardEntry objects in order from highest to lowest score to
 	// be shown in the ScoreboardFragment
-	private ArrayList<ScoreboardEntry> scoreboardEntriesList = null;	
+	private List<User> friendlyUsers = null;	
 	// FacebookRequestError to show when the GameFragment closes
 	private FacebookRequestError gameFragmentFBRequestError = null;
 		
@@ -67,12 +53,12 @@ public class MovieTimesUpApplication extends Application {
 		this.score = score;
 	}
 	
-	public int getLastUpdateCall() {
+	public long getLastUpdateCall() {
 		return lastUpdateCall;
 	}
 
-	public void setLastUpdateCall(int last) {
-		this.lastUpdateCall = last;
+	public void setLastUpdateCall(long millis) {
+		this.lastUpdateCall = millis;
 	}
 
 	
@@ -88,7 +74,7 @@ public class MovieTimesUpApplication extends Application {
 			setLastUpdateCall(-1);
 			setCurrentFBUser(null);
         	setFriends(null);
-        	setScoreboardEntriesList(null);
+        	setFriendlyUserList(null);
 		}
 	}
 
@@ -130,12 +116,12 @@ public class MovieTimesUpApplication extends Application {
 		this.friends = friends;
 	}
 
-	public ArrayList<ScoreboardEntry> getScoreboardEntriesList() {
-		return scoreboardEntriesList;
+	public List<User> getFriendlyUserList() {
+		return friendlyUsers;
 	}
 
-	public void setScoreboardEntriesList(ArrayList<ScoreboardEntry> scoreboardEntriesList) {
-		this.scoreboardEntriesList = scoreboardEntriesList;
+	public void setFriendlyUserList(List<User> users) {
+		this.friendlyUsers = users;
 	}
 
 	public FacebookRequestError getGameFragmentFBRequestError() {

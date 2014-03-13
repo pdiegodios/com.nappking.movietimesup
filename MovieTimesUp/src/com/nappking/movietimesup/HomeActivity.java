@@ -1,19 +1,3 @@
-/**
- * Copyright 2012 Facebook
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.nappking.movietimesup;
 
 import java.sql.SQLException;
@@ -64,10 +48,6 @@ import com.nappking.movietimesup.task.LoadUserDataTask;
  *  within this activity using Fragments.
  */
 public class HomeActivity extends DBFragmentActivity {   
-	public static final String SECONDS_EXTRA = "SECONDS";
-	
-	// Tag used when logging messages
-    private static final String TAG = HomeActivity.class.getSimpleName();
     
     // Uri used in handleError() below
     private static final Uri M_FACEBOOK_URL = Uri.parse("http://m.facebook.com");
@@ -80,7 +60,6 @@ public class HomeActivity extends DBFragmentActivity {
     private static final int HOME = 1;
     private static final int FIRST = 2;
     private static final int FRAGMENT_COUNT = FIRST +1;
-    private static final int TIME_FOR_SERVICE = 30*60*1000; //30min
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
  	
  	// Boolean recording whether the activity has been resumed so that
@@ -230,10 +209,11 @@ public class HomeActivity extends DBFragmentActivity {
 			User user = daoUser.queryForId(1);
 			if(user!=null){
 				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(user.getLastUpdate()+TIME_FOR_SERVICE))||(totalMovies>user.getMovies())){
-					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 15min since last time it was updated or there are new movies
-					new LoadUserDataTask(this, user, true).execute();
+				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()
+						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
+					//It's more than 10min since last time it was updated or there are new movies
+					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
+					new LoadUserDataTask(this.getApplicationContext(), user, true).execute();
 				}						
 			}
 		} catch (SQLException e) {
@@ -241,8 +221,6 @@ public class HomeActivity extends DBFragmentActivity {
 		}
 	}
 	
-	
-
     @Override
     public void onPause() {
         super.onPause();

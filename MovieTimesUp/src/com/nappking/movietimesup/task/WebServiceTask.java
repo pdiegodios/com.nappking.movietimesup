@@ -25,13 +25,11 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 	 
     public static final int POST_TASK = 1;
     public static final int GET_TASK = 2;
-    public static final String URL = "http://movietimesup.gestores.cloudbees.net/rest/";
      
     private static final String TAG = "WebServiceTask";
 
     // connection timeout, in milliseconds (waiting to connect)
-    private static final int CONN_TIMEOUT = 5000;
-     
+    private static final int CONN_TIMEOUT = 5000;     
     // socket timeout, in milliseconds (waiting for data)
     private static final int SOCKET_TIMEOUT = 8000;
      

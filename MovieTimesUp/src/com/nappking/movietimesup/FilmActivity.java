@@ -351,6 +351,7 @@ public class FilmActivity extends DBActivity{
 		        		}
 		        		toFinish=false;
 		        		this.cancel();
+		        		mInTime=false;
 		        		endGame();
 		        	}
 			    }
@@ -370,6 +371,7 @@ public class FilmActivity extends DBActivity{
 		//mCountDown.cancel();
 		if(!mIsFinished){
 			mIsFinished=true;
+			this.iAnswer.setClickable(false);
 			if(mInTime){ //USER WIN POINTS & UNLOCK THE MOVIE
 				//Unlock movie and add points to User score
 				this.iEnding.setImageResource(R.drawable.coin);
@@ -384,7 +386,6 @@ public class FilmActivity extends DBActivity{
 				}
 				this.iPoints.setImageResource(points);
 				this.iAnswer.setImageResource(R.drawable.resolvetrue);
-				this.iAnswer.setClickable(false);
 				uploadUsers(false);
 				applause = MediaPlayer.create(getBaseContext(), R.raw.applause);
 				projector.stop();
@@ -848,8 +849,10 @@ public class FilmActivity extends DBActivity{
 						titleAnswered.equalsIgnoreCase(originalTitle)||
 						titleAnswered.equalsIgnoreCase(title)){
 					//Correct Answer
-					mInTime=true;
-					endGame();
+					if(!mIsFinished){
+						mInTime=true;
+						endGame();
+					}
 				}
 				else{//Incorrect Answer
 					mAttemps=mAttemps+1;
@@ -978,7 +981,7 @@ public class FilmActivity extends DBActivity{
 			wsUser.addNameValuePair("users", jsonArray.toString());
 			Log.i(this.toString(), jsonArray.toString());
 	        wsUser.addNameValuePair("action", "UPDATE");        
-	        wsUser.execute(new String[] {WebServiceTask.URL+"users"});	
+	        wsUser.execute(new String[] {MovieTimesUpApplication.URL+"users"});	
 		} catch (SQLException e) {
 			e.printStackTrace();	
 		} catch (JSONException e) {

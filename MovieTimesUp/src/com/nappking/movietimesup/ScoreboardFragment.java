@@ -1,31 +1,31 @@
-/**
- * Copyright 2012 Facebook
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.nappking.movietimesup;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,15 +52,16 @@ import android.widget.TextView;
 
 import com.facebook.Session;
 import com.nappking.movietimesup.R;
+import com.nappking.movietimesup.entities.User;
+import com.nappking.movietimesup.task.WebServiceTask;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
+import com.google.gson.Gson;
 
 /**
  *  Fragment shown once a user opens the scoreboard
  */
 public class ScoreboardFragment extends Fragment {
-	
-	// Tag used when logging messages
-	private static final String TAG = ScoreboardFragment.class.getSimpleName();
 	
     // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
 	private MovieTimesUpApplication application;
@@ -122,7 +123,7 @@ public class ScoreboardFragment extends Fragment {
 		super.onResume();
 
 		// Populate scoreboard - fetch information if necessary ...
-		if (application.getScoreboardEntriesList() == null) {
+		if (application.getFriendlyUserList() == null) {
 			// scoreboardEntriesList is null, so fetch the information from Facebook (scoreboard will be updated in
 			// the scoreboardEntriesFetched callback) and show the progress spinner while doing so
 			progressContainer.setVisibility(View.VISIBLE);
@@ -133,6 +134,24 @@ public class ScoreboardFragment extends Fragment {
 		}
 	}
 	
+	 
+    private String inputStreamToString(InputStream is) {
+        String line = "";
+        StringBuilder total = new StringBuilder();
+        // Wrap a BufferedReader around the InputStream
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        try {
+            // Read response until the end
+            while ((line = rd.readLine()) != null) {
+                total.append(line);
+            }
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+        // Return full string
+        return total.toString();
+    }
+	
 	// Fetch a List of ScoreboardEntry objects with the scores and details
 	// of the user and their friends' scores who have played FriendSmash
 	private void fetchScoreboardEntries () {
@@ -140,13 +159,27 @@ public class ScoreboardFragment extends Fragment {
 		AsyncTask.execute(new Runnable() {
 			public void run() {
 				try {
-					// Instantiate the scoreboardEntriesList
-					ArrayList<ScoreboardEntry> scoreboardEntriesList = new ArrayList<ScoreboardEntry>();
+					List<User> users = new ArrayList<User>();
 					
 					// Get the attributes used for the HTTP GET
 					String currentUserFBID = application.getCurrentFBUser().getId();
 					String currentUserAccessToken = Session.getActiveSession().getAccessToken();
+
+					HttpClient httpclient = new DefaultHttpClient();
+					HttpPost post = new HttpPost("http://movietimesup.gestores.cloudbees.net/rest/users/scores");
 					
+					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					for(GraphUser graph:application.getFriends()){
+						nameValuePairs.add(new BasicNameValuePair("id", graph.getId()));
+					}       
+					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			        // Execute HTTP Post Request
+			        HttpResponse response = httpclient.execute(post);
+			        
+				    //RESPONSE
+				    Log.i("Response --> ", inputStreamToString(response.getEntity().getContent()));
+				    
+					/*
 					// Execute the HTTP Get to our server for the scores of the user's friends
 					HttpClient client = new DefaultHttpClient();
 					String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
@@ -188,13 +221,13 @@ public class ScoreboardFragment extends Fragment {
 								}
 							}
 						}
-					}
+					}*/
 				
 					// Now that all scores should have been fetched and added to the scoreboardEntriesList, sort it,
 					// set it within scoreboardFragment and then callback to scoreboardFragment to populate the scoreboard
 					Comparator<ScoreboardEntry> comparator = Collections.reverseOrder();
-					Collections.sort(scoreboardEntriesList, comparator);
-					application.setScoreboardEntriesList(scoreboardEntriesList);
+					//Collections.sort(scoreboardEntriesList, comparator);
+					//application.setFriendlyUserList(scoreboardEntriesList);
 					
 					// Populate the scoreboard on the UI thread
 					uiHandler.post(new Runnable() {
@@ -219,15 +252,15 @@ public class ScoreboardFragment extends Fragment {
 		progressContainer.setVisibility(View.INVISIBLE);
 		
 		// Ensure scoreboardEntriesList is not null and not empty first
-		if (application.getScoreboardEntriesList() == null || application.getScoreboardEntriesList().size() <= 0) {
+		if (application.getFriendlyUserList() == null || application.getFriendlyUserList().size() <= 0) {
 			closeAndShowError(getResources().getString(R.string.error_no_scores));
 		} else {
 			// Iterate through scoreboardEntriesList, creating new UI elements for each entry
 			int index = 0;
-			Iterator<ScoreboardEntry> scoreboardEntriesIterator = application.getScoreboardEntriesList().iterator();
-			while (scoreboardEntriesIterator.hasNext()) {
+			Iterator<User> userIterator = application.getFriendlyUserList().iterator();
+			while (userIterator.hasNext()) {
 				// Get the current scoreboard entry
-				final ScoreboardEntry currentScoreboardEntry = scoreboardEntriesIterator.next();
+				final User currentUser = userIterator.next();
 				
 				// FrameLayout Container for the currentScoreboardEntry ...
 				
@@ -297,7 +330,7 @@ public class ScoreboardFragment extends Fragment {
 					profilePictureView.setLayoutParams(profilePictureViewLayoutParams);
 				    
 				    // Finally set the id of the user to show their profile pic
-				    profilePictureView.setProfileId(currentScoreboardEntry.getId());
+				    profilePictureView.setProfileId(currentUser.getId()+"");
 				}
 				
 				// LinearLayout to hold the text in this entry
@@ -333,7 +366,7 @@ public class ScoreboardFragment extends Fragment {
 				{
 					// Set the text that should go in this TextView first
 					int position = index+1;
-					String currentScoreboardEntryTitle = position + ". " + currentScoreboardEntry.getName();
+					String currentScoreboardEntryTitle = position + ". " + currentUser.getName();
 					
 					// Create and add a TextView for the current user position and first name
 				    TextView titleTextView = new TextView(getActivity());
@@ -351,7 +384,7 @@ public class ScoreboardFragment extends Fragment {
 				    textViewsLinearLayout.addView(scoreTextView);
 				    
 				    // Set the text and other attributes for this TextView
-				    scoreTextView.setText("Score: " + currentScoreboardEntry.getScore());
+				    scoreTextView.setText("Score: " + currentUser.getScore());
 				    scoreTextView.setTextAppearance(getActivity(), R.style.ScoreboardPlayerScoreFont);
 				}
 				
@@ -363,7 +396,7 @@ public class ScoreboardFragment extends Fragment {
 					public boolean onTouch(View v, MotionEvent event) {
 						if (event.getAction() == MotionEvent.ACTION_UP) {
 							Bundle bundle = new Bundle();
-							bundle.putString("user_id", currentScoreboardEntry.getId());
+							bundle.putString("user_id", currentUser.getId()+"");
 
 							Intent i = new Intent();
 							i.putExtras(bundle);
