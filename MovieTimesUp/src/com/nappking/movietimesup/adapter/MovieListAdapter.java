@@ -58,7 +58,7 @@ public class MovieListAdapter extends BaseAdapter{
     static class ViewHolder{
     	ProgressBar progress;
     	ImageView poster;
-    	ImageView coin;
+    	ImageView mark;
     	TextView title;
     	TextView points;
     	int position;
@@ -79,18 +79,18 @@ public class MovieListAdapter extends BaseAdapter{
     	if(mLocked.contains(id+"")){
     		//Movie was locked and you can see anything about that  
     		v.poster.setImageResource(R.drawable.filmstrip_locked);  
-    		v.coin.setImageResource(R.drawable.bookmark_disable);
+    		v.mark.setImageResource(R.drawable.bookmark_disable);
     	}	
         else if(!mUnlocked.contains(id+"")){
         	//Movie is ready to play
     		v.poster.setImageResource(R.drawable.filmstrip);
-    		v.coin.setImageResource(R.drawable.bookmark_enable);
+    		v.mark.setImageResource(R.drawable.bookmark_enable);
         }    
         else {
         	//Movie was unlocked so you can see the poster and see the specific data  
 			v.progress.setVisibility(View.VISIBLE);            		
             imageLoader.DisplayImage(id, movie.getPoster(), v.poster, v.progress);
-    		v.coin.setImageResource(R.drawable.bookmark);
+    		v.mark.setImageResource(R.drawable.bookmark);
     		v.title.setVisibility(View.VISIBLE);
     		v.title.setText(movie.getTitle());
         }    
@@ -105,7 +105,7 @@ public class MovieListAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.progress = (ProgressBar) convertView.findViewById(R.id.progress);
             holder.poster = (ImageView) convertView.findViewById(R.id.movieButton);
-            holder.coin = (ImageView) convertView.findViewById(R.id.starpoints);
+            holder.mark = (ImageView) convertView.findViewById(R.id.starpoints);
             holder.title = (TextView) convertView.findViewById(R.id.title);
             holder.points = (TextView) convertView.findViewById(R.id.moviepoints);
             convertView.setTag(holder);

@@ -173,6 +173,8 @@ public class HomeActivity extends DBFragmentActivity {
 					User user = daoUser.queryForId(1);
 					if(user!=null && user.getUser()!=null && !user.getUser().equals("")){
 						showFragment(FB_LOGGED_OUT_HOME,false);
+						((MovieTimesUpApplication)this.getApplication()).setScore(user.getScore());
+						((MovieTimesUpApplication)this.getApplication()).setSeconds(user.getSeconds());
 					}
 					else isFirst=true;
 				} catch (SQLException e) {
@@ -213,7 +215,7 @@ public class HomeActivity extends DBFragmentActivity {
 						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
 					//It's more than 10min since last time it was updated or there are new movies
 					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
-					new LoadUserDataTask(this.getApplicationContext(), user, true).execute();
+					new LoadUserDataTask(this, user).execute();
 				}						
 			}
 		} catch (SQLException e) {

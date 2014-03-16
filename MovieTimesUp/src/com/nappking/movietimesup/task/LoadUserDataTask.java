@@ -53,11 +53,9 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 	private String mPath="users";
 	private User mUser=null;
 	boolean mService = false;
-	boolean mCheckExtraSeconds;
 	
-	public LoadUserDataTask(Context c, User u, boolean showProgress){
+	public LoadUserDataTask(Context c, User u){
 		this.mContext=c;
-		this.mCheckExtraSeconds=showProgress;
 		this.mUser=u;
 	}
 	
@@ -87,7 +85,11 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
         if(!text.isEmpty())
 		Toast.makeText(this.mContext, text, Toast.LENGTH_SHORT).show();
 		
-		if(mCheckExtraSeconds && mUser!=null){
+		if(mUser!=null){
+			if(mContext!=null){
+				((MovieTimesUpApplication)mContext.getApplicationContext()).setScore(mUser.getScore());
+				((MovieTimesUpApplication)mContext.getApplicationContext()).setSeconds(mUser.getSeconds());
+			}
 			checkForSeconds();
 		}
 	}
@@ -96,7 +98,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		int result = 0;
 		String read_user = readUserFeed(MovieTimesUpApplication.URL+mPath);
 		try{
-			if((read_user==null || read_user.equals("")) && mUser!=null){
+			if((read_user==ERROR) && mUser!=null){
 				//If there is not user associated in the server we have to create a new user in the WS
 				List<User> users = new ArrayList<User>();
 				users.add(this.mUser);
@@ -123,7 +125,13 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 						mUser.setDays(user.getDays());
 						mUser.setLastUpdate(user.getLastUpdate());
 						mUser.setLastForeground(user.getLastForeground());
-						getHelper().getUserDAO().update(mUser);
+						mUser.setMasterpiece(user.getMasterpiece());
+						mUser.setCult(user.getCult());
+						mUser.setAmerica(user.getAmerica());
+						mUser.setEurope(user.getEurope());
+						mUser.setAsia(user.getAsia());
+						mUser.setExotic(user.getExotic());
+						getHelper().getUserDAO().update(mUser);						
 						result = 2;
 					}
 					else{

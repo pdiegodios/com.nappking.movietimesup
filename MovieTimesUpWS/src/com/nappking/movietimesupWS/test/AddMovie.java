@@ -23,36 +23,36 @@ public class AddMovie {
 		
 		//VALUES
 		int id = 18;
-		int points = 3;
-		int year = 2012;
+		int points = 1;
+		int year = 1976;
 		String  action = SAVE;
-		String title = "El vuelo";
-		String alternative_title = "the flight";
-		String original_title = "Flight";
+		String title = "Taxi Driver";
+		String alternative_title = "Taxista";
+		String original_title = "Taxi Driver";
 		String continent = "América";
 		String country = "USA";
-		String director = "Robert Zemeckis";
+		String director = "Martin Scorsese";
 		String genre = "Drama";
 		String poster = "";
-		String  filmaffinity_id = "526099";
-		String imdb_id = "tt1907668";
-		String actor1="Don Cheadle";
-		String actor2="Kelly Reilly";
-		String actor3="Denzel Washington";
-		String character1="Hugh Lang";
-		String character2="Whip Whitaker";
-		String character3="Katerina Marquez";
-		String other1 ="La soberbia actuación del veterano actor le supuso un Oscar a mejor actor secundario";
-		String other2 ="El protagonista escribió antes de morir que había vivido intensamente y que había realizado grandes obras. En realidad había sido abandonado y era un alcohólico.";
-		String other3 ="Edward D.W. Jr. es considerado el peor director de la historia";
-		String quote1="Vale la pena luchar por los propios sueños, ¿Por qué pasarse la vida realizando los sueños de otros?";
-		String quote2="¿La peor película que ha visto? Bueno, la próxima será mejor.";
-		String quote3="Viste como aquel niño le agarró las tetas a Vampira?";
-		String plot = "Tras un aterrizaje de emergencia en medio del campo gracias al cual salvan la vida un centenar " +
-				"de pasajeros, el comandante X, que pilotaba el avión, es considerado un héroe nacional. Sin embargo, " +
-				"cuando se pone en marcha la investigación para determinar las causas de la avería, se averigua que el " +
-				"capitán tenía exceso de alcohol en la sangre y que puede ir a la cárcel si se demuestra que pilotó el " +
-				"avión en estado de embriaguez.";
+		String  filmaffinity_id = "396074";
+		String imdb_id = "tt0075314";
+		String actor1="Cybill Shepherd";
+		String actor2="Robert de Niro";
+		String actor3="Jodie Foster";
+		String character1="Travis Bickle";
+		String character2="Batsy";
+		String character3="Iris";
+		String other1 ="4 nominaciones al Oscar incluyendo Mejro Película y Actor";
+		String other2 ="Crítica El País: el protagonista se mira al espejo y de un golpe de rabia... queda inaugurado el thriller llamado moderno";
+		String other3 ="La hermana mayor de la actriz de 14 años fue su doble para escenas en las que había contenido sexual";
+		String quote1="Por la noche, salen todos los animales: putas, sodomitas, travestidos, maricones, toxicómanos... Todo es asqueroso y venal. " +
+				"Algún día, una lluvia de verdad se llevará toda esta basura de las calles";
+		String quote2="¿Hablas conmigo?";
+		String quote3="-No puedo dormir por las noches. -Para eso están los cines porno. -Sí, lo sé. Eso ya lo intenté.";
+		String plot = "Para sobrellevar el insomnio crónico que sufre desde su regreso de Vietnam, X trabaja como taxista nocturno en Nueva York. " +
+				"Es un hombre insociable que apenas tiene contacto con los demás, se pasa los días en el cine y vive prendado de Y, una atractiva " +
+				"rubia que trabaja como voluntaria en una campaña política. Pero lo que realmente obsesiona a X es comprobar cómo la violencia, " +
+				"la sordidez y la desolación dominan la ciudad. Y un día decide pasar a la acción.";
 
 		
 		//CLIENT

@@ -19,9 +19,10 @@ public class MovieTimesUpApplication extends Application {
     public static final String URL = "http://movietimesup.gestores.cloudbees.net/rest/";
 	// Switch between the non-social and social Facebook versions of the game
 	static final boolean IS_SOCIAL = true;
-	static final int TIME_FOR_SERVICE=10*60*1000; //10min
+	static final int TIME_FOR_SERVICE=15*60*1000; //15min
 	// Player's current score
-	private int score = -1;
+	private int score = 0;
+	private int seconds = 0;
 	// Last time LoadUserDataTask was called
 	private long lastUpdateCall = -1;	
 	
@@ -51,6 +52,14 @@ public class MovieTimesUpApplication extends Application {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
 	}
 	
 	public long getLastUpdateCall() {

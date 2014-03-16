@@ -20,6 +20,12 @@ public class User {
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES = 	"movies";
+    public static final String MASTERPIECE ="masterpiece";
+    public static final String CULT =		"cult";
+    public static final String AMERICA =	"america";
+    public static final String EUROPE =		"europe";
+    public static final String ASIA =		"asia";
+    public static final String EXOTIC =		"exotic";
     
 	//Fields
     private long _id;
@@ -32,6 +38,12 @@ public class User {
     private long lastForeground;
     private int days;
     private int movies;
+    private int masterpiece;
+    private int cult;
+    private int america;
+    private int europe;
+    private int asia;
+    private int exotic;
     
     //creators
 	public User() {super();}
@@ -48,6 +60,12 @@ public class User {
     public long getLastForeground()					{return this.lastForeground;}
     public int getDays()							{return this.days;}
     public int getMovies()							{return this.movies;}
+    public int getMasterpiece()						{return this.masterpiece;}
+    public int getCult()							{return this.cult;}
+    public int getAmerica()							{return this.america;}
+    public int getEurope()							{return this.europe;}
+    public int getAsia()							{return this.asia;}
+    public int getExotic()							{return this.exotic;}
 
     //setters
     public void setId(long id)											{this._id=id;}  
@@ -61,5 +79,11 @@ public class User {
     public void setLastForeground(long lastForeground)					{this.lastForeground=lastForeground;}	
 	public void setDays(int days)										{this.days=days;} 	
 	public void setMovies(int movies)									{this.movies=movies;}
+    public void setMasterpiece(int masterpiece)							{this.masterpiece = masterpiece;}
+    public void setCult(int cult)										{this.cult = cult;}
+    public void setAmerica(int america)									{this.america = america;}
+    public void setEurope(int europe)									{this.europe = europe;}
+    public void setAsia(int asia)										{this.asia = asia;}
+    public void setExotic(int exotic)									{this.exotic = exotic;}
     
 }

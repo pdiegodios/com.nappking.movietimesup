@@ -180,11 +180,17 @@ public class HomeFragment extends Fragment {
 				user.setDays(0);
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
-				user.setMovies(moviesCount);				
+				user.setMovies(moviesCount);
+				user.setMasterpiece(0);
+				user.setCult(0);
+				user.setAmerica(0);
+				user.setEurope(0);
+				user.setAsia(0);
+				user.setExotic(0);
 				user.setUser(application.getCurrentFBUser().getId());
 				daoUser.create(user);
 				Log.i("HomeFragment", "LoadUserData called");
-				new LoadUserDataTask(this.getActivity().getApplicationContext(), user, false).execute();
+				new LoadUserDataTask(this.getActivity(), user).execute();
 			}
 			helper = null;
 			OpenHelperManager.releaseHelper();
@@ -306,9 +312,12 @@ public class HomeFragment extends Fragment {
 			if (application.getScore() >= 0) {
 				// The player has played at least one game, so show the buttons
 				scoresButton.setVisibility(View.VISIBLE);
-				challengeButton.setVisibility(View.VISIBLE);
-				bragButton.setVisibility(View.VISIBLE);
+				if(application.getScore()>0)
+					bragButton.setVisibility(View.VISIBLE);
 			}
+			if (application.getSeconds()>50){
+				challengeButton.setVisibility(View.VISIBLE);
+			}	
 			else {
 				// The player hasn't played a game yet, so hide the buttons (except scoresButton
 				// that should always be shown)

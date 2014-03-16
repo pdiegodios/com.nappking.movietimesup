@@ -117,7 +117,7 @@ public class FilmGridActivity extends DBActivity{
 					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
 					//It's more than 10min since last time it was updated or there are new movies
 					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
-					new LoadUserDataTask(this.getApplicationContext(), user, true).execute();
+					new LoadUserDataTask(this, user).execute();
 				}						
 			}
 		} catch (SQLException e) {
@@ -401,11 +401,19 @@ public class FilmGridActivity extends DBActivity{
                 case GAME_CODE:
                 	int index = data.getIntExtra(POSITION, -1);
                 	updateItemAt(index);
+                	checkForAchievements();
                     break;
                 default: 
                 	break;
             }
         }
+	}
+	
+	/**
+	 * TODO: Deploy dialog if you get an achievement as 50 american movies, 10 asian, 5 masterpieces... etc
+	 */
+	private void checkForAchievements(){
+		
 	}
 	
 	private void uploadUsers(List<User> users){

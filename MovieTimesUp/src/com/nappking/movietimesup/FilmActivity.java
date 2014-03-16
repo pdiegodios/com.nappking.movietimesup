@@ -3,6 +3,7 @@ package com.nappking.movietimesup;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -138,6 +139,10 @@ public class FilmActivity extends DBActivity{
 	EditText title;
 	
 	private ArrayList<Clue> mClues;
+	private List<String> quotes;
+	private List<String> actors;
+	private List<String> characters;
+	private List<String> trivia;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
 	private int mIndex=-1;	
@@ -624,6 +629,20 @@ public class FilmActivity extends DBActivity{
 				}
 			}
 		};     	
+		quotes = new ArrayList<String>();
+		trivia = new ArrayList<String>();
+		actors = new ArrayList<String>();
+		characters = new ArrayList<String>();
+		for(int i=0;i<3;i++){
+			quotes.add(movie.getQuotes()[i]);
+			trivia.add(movie.getOthers()[i]);
+			actors.add(movie.getCast()[i]);
+			characters.add(movie.getCharacters()[i]);
+		}
+		Collections.shuffle(quotes);
+		Collections.shuffle(trivia);
+		Collections.shuffle(actors);
+		Collections.shuffle(characters);
 		
 		initClues();
 		
@@ -645,7 +664,7 @@ public class FilmActivity extends DBActivity{
      	infocharacter.setVisibility(View.INVISIBLE);
      	infotrivia.setVisibility(View.INVISIBLE);
      	infoquote.setVisibility(View.INVISIBLE);
-     	infosynopsis.setVisibility(View.INVISIBLE);
+     	infosynopsis.setVisibility(View.INVISIBLE);     	
 	}
 	
 	private void initClues(){
@@ -751,7 +770,7 @@ public class FilmActivity extends DBActivity{
 						bactor.setImageResource(R.drawable.ticket_empty);
 					
 					displaySelectedClue(getResources().getString(R.string.actor).toUpperCase(Locale.getDefault()),
-							movie.getCast()[mCounterActor], infoactor, ACTOR);
+							actors.get(mCounterActor), infoactor, ACTOR);
 					mCounterActor=mCounterActor+1;
 				}
 			}
@@ -768,7 +787,7 @@ public class FilmActivity extends DBActivity{
 						bcharacter.setImageResource(R.drawable.ticket_empty);
 					
 					displaySelectedClue(getResources().getString(R.string.character).toUpperCase(Locale.getDefault()), 
-							movie.getCharacters()[mCounterCharacter], infocharacter, CHARACTER);
+							characters.get(mCounterCharacter), infocharacter, CHARACTER);
 					mCounterCharacter=mCounterCharacter+1;
 				}
 			}
@@ -785,7 +804,7 @@ public class FilmActivity extends DBActivity{
 						bquote.setImageResource(R.drawable.ticket_empty);
 					
 					displaySelectedClue(getResources().getString(R.string.quote).toUpperCase(Locale.getDefault()), 
-							movie.getQuotes()[mCounterQuote], infoquote, QUOTE);
+							quotes.get(mCounterQuote), infoquote, QUOTE);
 					mCounterQuote=mCounterQuote+1;
 				}
 			}
@@ -802,7 +821,7 @@ public class FilmActivity extends DBActivity{
 						btrivia.setImageResource(R.drawable.ticket_empty);
 					
 					displaySelectedClue(getResources().getString(R.string.trivia).toUpperCase(Locale.getDefault()), 
-							movie.getOthers()[mCounterOther], infotrivia, TRIVIA);
+							trivia.get(mCounterOther), infotrivia, TRIVIA);
 					mCounterOther=mCounterOther+1;
 				}
 			}
@@ -972,9 +991,28 @@ public class FilmActivity extends DBActivity{
 			else{
 				mUser.addUnlockedMovie(movie.getId());
 				mUser.setScore(mUser.getScore()+movie.getPoints());
+				if(movie.getMasterpiece())
+					mUser.setMasterpiece(mUser.getMasterpiece()+1);
+				if(movie.getCult())
+					mUser.setCult(mUser.getCult()+1);
+				String continent = movie.getContinent().substring(0, 2).toUpperCase();
+				if(continent.equals("AM")){
+					mUser.setAmerica(mUser.getAmerica()+1);
+				}
+				else if(continent.equals("EU")){
+					mUser.setEurope(mUser.getEurope()+1);
+				}
+				else if(continent.equals("AS")){
+					mUser.setAsia(mUser.getAsia()+1);
+				}
+				else{
+					mUser.setExotic(mUser.getExotic()+1);
+				}
 			}
 			mUser.setLastUpdate(System.currentTimeMillis());
 			daoUser.update(mUser);
+			((MovieTimesUpApplication)this.getApplication()).setScore(mUser.getScore());
+			((MovieTimesUpApplication)this.getApplication()).setSeconds(mUser.getSeconds());
 			users.add(mUser);			
 			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);			
 			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));

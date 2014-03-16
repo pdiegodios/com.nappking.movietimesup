@@ -28,6 +28,12 @@ public class User implements Serializable{
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES =		"movies";
+    public static final String MASTERPIECE ="masterpiece";
+    public static final String CULT =		"cult";
+    public static final String AMERICA =	"america";
+    public static final String EUROPE =		"europe";
+    public static final String ASIA =		"asia";
+    public static final String EXOTIC =		"exotic";
     
 	//Fields
     @DatabaseField(generatedId = true, columnName = ROWID)
@@ -52,6 +58,18 @@ public class User implements Serializable{
     private int days;
     @DatabaseField(columnName = MOVIES)
     private int movies;
+    @DatabaseField(columnName = MASTERPIECE)
+    private int masterpiece;
+    @DatabaseField(columnName = CULT)
+    private int cult;
+    @DatabaseField(columnName = AMERICA)
+    private int america;
+    @DatabaseField(columnName = EUROPE)
+    private int europe;
+    @DatabaseField(columnName = ASIA)
+    private int asia;
+    @DatabaseField(columnName = EXOTIC)
+    private int exotic;
     
     //creators
 	public User() {super();}
@@ -68,6 +86,12 @@ public class User implements Serializable{
     public long getLastForeground()				{return this.lastForeground;}
     public int getDays()						{return this.days;}
     public int getMovies()						{return this.movies;}
+    public int getMasterpiece()					{return this.masterpiece;}
+    public int getCult()						{return this.cult;}
+    public int getAmerica()						{return this.america;}
+    public int getEurope()						{return this.europe;}
+    public int getAsia()						{return this.asia;}
+    public int getExotic()						{return this.exotic;}
 
     //setters
     public void setId(int id)										{this._id=id;}  
@@ -81,6 +105,12 @@ public class User implements Serializable{
     public void setLastForeground(long millis)						{this.lastForeground = millis;}
     public void setDays(int days)									{this.days = days;}
     public void setMovies(int movies)								{this.movies = movies;}
+    public void setMasterpiece(int masterpiece)						{this.masterpiece = masterpiece;}
+    public void setCult(int cult)									{this.cult = cult;}
+    public void setAmerica(int america)								{this.america = america;}
+    public void setEurope(int europe)								{this.europe = europe;}
+    public void setAsia(int asia)									{this.asia = asia;}
+    public void setExotic(int exotic)								{this.exotic = exotic;}
     
     public void removeLockedMovie(int idMovie){
     	String id = String.valueOf(idMovie);
