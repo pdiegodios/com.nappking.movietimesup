@@ -24,7 +24,7 @@ import com.nappking.movietimesup.loader.ImageLoader;
 
 public class FilmInfoActivity extends DBActivity{
 	
-	private ImageView mPosterImage;
+	private ImageView mPosterImage, mBonus;
 	private ProgressBar mProgress;
 	private TextView mTitle, mOriginalTitle, mGenre, mCountryYear, mDirector,  mActor, 
 			mCharacter, mStoryline, mQuotes, mTrivia, mPoints;
@@ -36,7 +36,7 @@ public class FilmInfoActivity extends DBActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.moviescheme);		
+		setContentView(R.layout.activity_info_film);		
      	//initiate elements
      	initiate();
 		setListeners();
@@ -67,6 +67,7 @@ public class FilmInfoActivity extends DBActivity{
      	mPoints = (TextView) findViewById(R.id.points);
      	mProgress = (ProgressBar) findViewById(R.id.progress);
      	mPosterImage = (ImageView) findViewById(R.id.poster);
+     	mBonus = (ImageView) findViewById(R.id.bonus);
 		mFilmaffinityButton = (ImageButton) findViewById(R.id.filmaffinity);
 		mImdbButton = (ImageButton) findViewById(R.id.imdb);
 		
@@ -111,7 +112,11 @@ public class FilmInfoActivity extends DBActivity{
 		Bitmap poster = getBitmapPoster(mMovie.getId()); 
 		mPosterImage.setImageBitmap(poster);
 		mTitle.setText(mMovie.getTitle());		
-		mPoints.setText(mMovie.getPoints()+"pts");		
+		if(mMovie.getCult())
+			mBonus.setImageResource(R.drawable.cult_movie);
+		else if(mMovie.getMasterpiece())
+			mBonus.setImageResource(R.drawable.oscar);
+		mPoints.setText(mMovie.getPoints()+"");		
 		mOriginalTitle.setText(mMovie.getOriginalTitle());
 		mGenre.setText(mMovie.getGenre());	
 		mCountryYear.setText(mMovie.getCountry()+", "+mMovie.getYear());	

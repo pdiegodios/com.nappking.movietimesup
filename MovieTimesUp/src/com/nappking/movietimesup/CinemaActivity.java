@@ -12,12 +12,16 @@ import org.json.JSONException;
 import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.nappking.movietimesup.adapter.MovieListAdapter;
 import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.LoadUserDataTask;
 import com.nappking.movietimesup.task.WebServiceTask;
+import com.nappking.movietimesup.widget.Cinema;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -28,13 +32,11 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class FilmGridActivity extends DBActivity{
+public class CinemaActivity extends DBActivity{
 	private static final int GAME_CODE=1;
 	private static final int ALL = 1;
 	private static final int READY = 2;
@@ -43,47 +45,41 @@ public class FilmGridActivity extends DBActivity{
 	private static final int UNLOCK_COST=25;
 	public static final String POSITION="POSITION";
     
-	GridView grid;
-	FrameLayout buttonsLeft;
-	FrameLayout buttonsRight;
-	TextView txPoints;
-	TextView txSeconds;
-	TextView txNumItems;
-	TextView txNumItemsReady;
-	TextView txNumItemsLocked;
-	TextView txNumItemsUnlocked;
-	ImageView leftCurtain;
-	ImageView rightCurtain;
-	ImageButton selectAll;
-	ImageButton selectReady;
-	ImageButton selectLocked;
-	ImageButton selectUnlocked;
-	ImageView spectators;
-	User user;
+	private GridView grid;
+	private TextView txPoints;
+	private TextView txSeconds;
+	private TextView txNumItems;
+	private TextView txNumItemsReady;
+	private TextView txNumItemsLocked;
+	private TextView txNumItemsUnlocked;
+	private ImageButton selectAll;
+	private ImageButton selectReady;
+	private ImageButton selectLocked;
+	private ImageButton selectUnlocked;
+	//private ImageView spectators;
+	private User user;
 	private List<String> mLockedMovies;
 	private List<String> mUnlockedMovies;
 	private List<Movie> mMovies;
 	private List<Movie> mSelectedMovies;
 	private int mState;
+	private int mCinemaId;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.filmgrid);		
+		setContentView(R.layout.activity_grid_film);		
 		
      	//initiate elements
+     	mCinemaId = 		(int) this.getIntent().getExtras().getInt(Cinema.class.toString());
      	grid = 				(GridView) findViewById(R.id.grid);
-     	buttonsLeft =		(FrameLayout) findViewById(R.id.buttons_left);
-     	buttonsRight =		(FrameLayout) findViewById(R.id.buttons_right);
      	txPoints = 			(TextView) findViewById(R.id.points);
      	txSeconds = 		(TextView) findViewById(R.id.seconds);
     	txNumItems = 		(TextView) findViewById(R.id.numItems);
     	txNumItemsReady = 	(TextView) findViewById(R.id.numItemsReady);
     	txNumItemsLocked = 	(TextView) findViewById(R.id.numItemsLocked);
     	txNumItemsUnlocked =(TextView) findViewById(R.id.numItemsUnlocked);
-     	leftCurtain = 		(ImageView) findViewById(R.id.leftcurtain);
-     	rightCurtain = 		(ImageView) findViewById(R.id.rightcurtain);
-     	spectators = 		(ImageView) findViewById(R.id.spectators);
+     	//spectators = 		(ImageView) findViewById(R.id.spectators);
     	selectAll =			(ImageButton) findViewById(R.id.items);
     	selectReady =		(ImageButton) findViewById(R.id.itemsReady);
     	selectLocked =		(ImageButton) findViewById(R.id.itemsLocked);
@@ -129,8 +125,8 @@ public class FilmGridActivity extends DBActivity{
 		//We obtain all the movies & the user
 		try {
 			if(mMovies==null){
-				Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();
-				mMovies = (ArrayList<Movie>) daoMovie.queryForAll();
+				Dao<Movie,Integer> daoMovie = getHelper().getMovieDAO();				
+				mMovies = (ArrayList<Movie>) daoMovie.queryForEq(Movie.CINEMA, mCinemaId);
 			}
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			user = (User) daoUser.queryForId(1);
@@ -151,14 +147,21 @@ public class FilmGridActivity extends DBActivity{
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		
-		int numItemsLocked = mLockedMovies.size();	
-		int numItemsUnlocked = mUnlockedMovies.size();
+		int numItemsLocked = 0;		
+		int numItemsUnlocked = 0;
+		for(Movie movie:mMovies){
+			if(mLockedMovies.contains(movie.getId()+""))
+				numItemsLocked=numItemsLocked+1;
+			else if(mUnlockedMovies.contains(movie.getId()+""))
+				numItemsUnlocked=numItemsUnlocked+1;			
+		}
 		int numItems = mMovies.size();
 		txNumItems.setText(numItems+"");
 		txNumItemsLocked.setText(numItemsLocked+"");
 		txNumItemsUnlocked.setText(numItemsUnlocked+"");
 		txNumItemsReady.setText(numItems-numItemsLocked-numItemsUnlocked+"");
 	}
+	
 	
 	//To update item returned from FilmActivity or unlocked from this class
 	private void updateItemAt(int index){
@@ -179,8 +182,8 @@ public class FilmGridActivity extends DBActivity{
 				final int index = position;
 				
 				if(mLockedMovies.contains(movie.getId()+"")){ //Locked movie
-		            final Dialog dialog = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
-		            dialog.setContentView(R.layout.clapperdialog);
+		            final Dialog dialog = new Dialog(CinemaActivity.this, R.style.SlideDialog);
+		            dialog.setContentView(R.layout.dialog_clapper_option);
 		            dialog.setCancelable(true);
 		            //instantiate elements in the dialog
 		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
@@ -222,8 +225,8 @@ public class FilmGridActivity extends DBActivity{
 							else{
 								//Dialog inviting to buy seconds
 								dialog.dismiss();
-								final Dialog dialogBuy = new Dialog(FilmGridActivity.this, R.style.SlideDialog);
-								dialogBuy.setContentView(R.layout.clapperdialog);
+								final Dialog dialogBuy = new Dialog(CinemaActivity.this, R.style.SlideDialog);
+								dialogBuy.setContentView(R.layout.dialog_clapper_option);
 								dialogBuy.setCancelable(true);
 					            Button cancelButton = (Button) dialogBuy.findViewById(R.id.cancelButton);
 					            Button buyButton = (Button) dialogBuy.findViewById(R.id.actionButton);

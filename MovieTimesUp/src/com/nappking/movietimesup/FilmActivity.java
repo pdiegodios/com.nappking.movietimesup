@@ -22,6 +22,8 @@ import com.nappking.movietimesup.task.WebServiceTask;
 import com.nappking.movietimesup.widget.Clue;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
@@ -154,7 +156,7 @@ public class FilmActivity extends DBActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.movietemplate);	
+		setContentView(R.layout.activity_game_film);	
      	initiate();
 		setListeners();
 		showInitialWarning();
@@ -224,7 +226,7 @@ public class FilmActivity extends DBActivity{
 		if(!mIsFinished){
 			//Allow to bet your seconds to play during some seconds
 	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-	        dialog.setContentView(R.layout.clapperdialogbet);
+	        dialog.setContentView(R.layout.dialog_clapper_bet);
 	        dialog.setCancelable(false);
 	        //instantiate elements in the dialog
 	        final NumberPicker secondsPicked = (NumberPicker) dialog.findViewById(R.id.picker);
@@ -233,22 +235,43 @@ public class FilmActivity extends DBActivity{
 	        final TextView textLights = (TextView) dialog.findViewById(R.id.lightstext);
 	        final TextView textCamera = (TextView) dialog.findViewById(R.id.cameratext);
 	        final TextView textAction = (TextView) dialog.findViewById(R.id.actiontext);
+	        final ImageView play = (ImageView) dialog.findViewById(R.id.play);
+			final Animation bounce = AnimationUtils.loadAnimation(dialog.getContext(), R.anim.bouncing_bigger);
+			play.setAnimation(bounce);
+			dialog.setOnShowListener(new OnShowListener() {				
+				@Override
+				public void onShow(DialogInterface dialog) {	
+					bounce.startNow();
+				}
+			});
 	        textLights.setVisibility(View.INVISIBLE);
 	        textCamera.setVisibility(View.INVISIBLE);
 	        textAction.setVisibility(View.INVISIBLE);
 			fadeInText.setDuration(INTERVAL*4);		
 	    	double limit = mUser.getSeconds();
-	    	int iter = (int) Math.ceil(limit/10d);
+	    	if(limit>500){
+	    		limit = 500;
+	    	}
+	    	int iter = (int) Math.ceil(limit/5d);
 	    	String[] values = new String[iter];
 	    	for(int i=1; i<iter; i++){
-	    		values[i-1] = Integer.toString(10*i);
+	    		values[i-1] = Integer.toString(5*i);
 	    	}
-	    	values[iter-1] = Integer.toString(mUser.getSeconds());
+	    	values[iter-1] = Integer.toString((int)limit);
 	    	secondsPicked.setDisplayedValues(values);
 	    	secondsPicked.setMaxValue(iter-1);
 	    	secondsPicked.setMinValue(0);
-	    	if(iter>9){
-	    		secondsPicked.setValue(9);
+	    	int selection = 19;
+	    	switch(movie.getPoints()){
+	    	case 1: break;
+	    	case 2: selection = selection+2;break;
+	    	case 3: selection = selection+4;break;
+	    	case 4: selection = selection+6;break;
+	    	case 5: selection = selection+8;break;
+	    	default: break;
+	    	}
+	    	if(iter>=selection){
+	    		secondsPicked.setValue(selection);
 	    	}    
 	    	else{
 	    		secondsPicked.setValue(iter);
@@ -285,7 +308,9 @@ public class FilmActivity extends DBActivity{
 		        @Override
 		        public void onFinish() {
 			        progress.setProgress(0);
-			        beeps.stop();
+			        if(beeps!=null && beeps.isPlaying()){
+		        		beeps.stop();
+			        }
 					dialog.dismiss();
 					String[] values = secondsPicked.getDisplayedValues();
 					mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
@@ -295,6 +320,16 @@ public class FilmActivity extends DBActivity{
 			};
 			mCountDown.start();
 			beeps.start();
+			
+			play.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					if(mCountDown!=null){
+						mCountDown.cancel();
+						mCountDown.onFinish();
+					}
+				}
+			});
 		}
 	}
 	
@@ -356,8 +391,10 @@ public class FilmActivity extends DBActivity{
 		        		}
 		        		toFinish=false;
 		        		this.cancel();
-		        		mInTime=false;
-		        		endGame();
+		        		if(!mIsFinished){
+			        		mInTime=false;
+			        		endGame();
+		        		}
 		        	}
 			    }
 			};
@@ -408,7 +445,7 @@ public class FilmActivity extends DBActivity{
 			this.iEnding.startAnimation(animZoomIn);	
 			this.iEnding.setVisibility(View.VISIBLE);
 			Intent i = new Intent();
-			i.putExtra(FilmGridActivity.POSITION, mIndex);
+			i.putExtra(CinemaActivity.POSITION, mIndex);
 			setResult(RESULT_OK, i);
 		}
 	}
@@ -474,7 +511,7 @@ public class FilmActivity extends DBActivity{
 			e.printStackTrace();
 		}
      	movie = 				(Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
-		mIndex = 				this.getIntent().getIntExtra(FilmGridActivity.POSITION, -1);
+		mIndex = 				this.getIntent().getIntExtra(CinemaActivity.POSITION, -1);
      	imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
 		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
@@ -612,8 +649,10 @@ public class FilmActivity extends DBActivity{
 					iLife3.setVisibility(View.INVISIBLE);
 					iLife2.setVisibility(View.INVISIBLE);
 					iLife1.setVisibility(View.INVISIBLE);
-					mInTime=false;
-					endGame();
+					if(!mIsFinished){
+						mInTime=false;
+						endGame();
+					}
 				}
 				else {
 					title.setText("");
@@ -896,7 +935,7 @@ public class FilmActivity extends DBActivity{
 	private void showInitialWarning(){
 		if(!mIsFinished){
 	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-	        dialog.setContentView(R.layout.clapperdialog);
+	        dialog.setContentView(R.layout.dialog_clapper_option);
 	        dialog.setCancelable(false);
 	        //instantiate elements in the dialog
 	        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
@@ -913,7 +952,7 @@ public class FilmActivity extends DBActivity{
 					dialog.dismiss();
 					mIsFinished=true;
 					Intent i = new Intent();
-					i.putExtra(FilmGridActivity.POSITION, mIndex);
+					i.putExtra(CinemaActivity.POSITION, mIndex);
 					setResult(RESULT_CANCELED, i);
 					finish();
 				}
@@ -940,7 +979,7 @@ public class FilmActivity extends DBActivity{
 	private void showLockWarning(){
 		if(!mIsFinished){
 	        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
-	        dialog.setContentView(R.layout.clapperdialog);
+	        dialog.setContentView(R.layout.dialog_clapper_option);
 	        dialog.setCancelable(true);
 	        //instantiate elements in the dialog
 	        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
@@ -962,7 +1001,7 @@ public class FilmActivity extends DBActivity{
 				public void onClick(View v) {
 					dialog.dismiss();
 					Intent i = new Intent();
-					i.putExtra(FilmGridActivity.POSITION, mIndex);
+					i.putExtra(CinemaActivity.POSITION, mIndex);
 					setResult(RESULT_OK, i);
 					finish();
 				}

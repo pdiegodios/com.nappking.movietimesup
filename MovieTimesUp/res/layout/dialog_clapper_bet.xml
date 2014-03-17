@@ -51,6 +51,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_width="match_parent"
 		        android:paddingLeft="15dp"
+		        android:paddingTop="8dp"
 		        android:layout_weight="1"
 		        android:gravity="center">
 		        <TextView 
@@ -83,6 +84,14 @@
 		            android:textStyle="bold"
 		            android:textColor="@color/white"
 		            android:text="@string/play"/>
+		        <ImageView 
+		            android:id="@+id/play"
+		            android:src="@drawable/arrow"
+		            android:layout_marginTop="5dp"
+		            android:layout_width="40dp"
+		            android:layout_height="match_parent"
+		            android:layout_gravity="right"
+		            android:layout_weight="1"/>
 		    </LinearLayout>
 	    </LinearLayout>
     </LinearLayout>    

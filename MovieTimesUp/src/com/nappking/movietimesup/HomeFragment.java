@@ -181,6 +181,7 @@ public class HomeFragment extends Fragment {
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
 				user.setMovies(moviesCount);
+				user.setCinemas(1);
 				user.setMasterpiece(0);
 				user.setCult(0);
 				user.setAmerica(0);
@@ -262,7 +263,7 @@ public class HomeFragment extends Fragment {
     }
 	
 	private void startFilmMenu() {
-        Intent i = new Intent(getActivity(), FilmGridActivity.class);
+        Intent i = new Intent(getActivity(), SelectorCinemaActivity.class);
         startActivity(i);
 	}
 	
@@ -364,7 +365,6 @@ public class HomeFragment extends Fragment {
 	// to smash them back in Friend Smash
 	private void sendFilteredChallenge() {
 		// Okay, we're going to filter our friends by their device, we're looking for friends with an Android device
-		
 		// Show the progressContainer during the network call
 		progressContainer.setVisibility(View.VISIBLE);
 		
@@ -435,11 +435,9 @@ public class HomeFragment extends Fragment {
 					    	ArrayList<String> validSuggestedFriends = new ArrayList<String>();
 		             
 		                    // So, we loop through each suggested friend
-		                    for (String suggestedFriend : suggestedFriends)
-		                    {
+		                    for (String suggestedFriend : suggestedFriends){
 		                        // If they are on our device filtered list, we know they have an Android device
-		                        if (filteredFriendIDs.contains(suggestedFriend))
-		                        {
+		                        if (filteredFriendIDs.contains(suggestedFriend)){
 		                            // So we can call them valid
 		                        	validSuggestedFriends.add(suggestedFriend);
 		                        }

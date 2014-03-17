@@ -19,6 +19,7 @@
     <dimen name="grid_text_size_default">18sp</dimen>
     <dimen name="grid_text_size_bigger">22sp</dimen>
     <dimen name="grid_text_margin">3dp</dimen>
-    <dimen name="grid_spectators_height">65dp</dimen>    
+    <dimen name="grid_spectators_height">65dp</dimen>   
+    <dimen name="grid_cinema_icon">120dp</dimen>  
     
 </resources>

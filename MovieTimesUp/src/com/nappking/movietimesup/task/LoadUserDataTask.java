@@ -264,7 +264,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 	
 	private void showExtra(int seconds){    	
         final Dialog dialog = new Dialog(mContext, R.style.SlideDialog);
-        dialog.setContentView(R.layout.dialogbonus);
+        dialog.setContentView(R.layout.dialog_bonus);
         dialog.setCancelable(false);
         //instantiate elements in the dialog
         Button okButton = (Button) dialog.findViewById(R.id.actionButton);

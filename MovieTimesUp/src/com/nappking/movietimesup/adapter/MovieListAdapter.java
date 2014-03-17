@@ -101,7 +101,7 @@ public class MovieListAdapter extends BaseAdapter{
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layout = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layout.inflate(R.layout.movieitem, null);
+            convertView = layout.inflate(R.layout.item_film, null);
             holder = new ViewHolder();
             holder.progress = (ProgressBar) convertView.findViewById(R.id.progress);
             holder.poster = (ImageView) convertView.findViewById(R.id.movieButton);

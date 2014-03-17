@@ -28,6 +28,7 @@ public class User implements Serializable{
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES =		"movies";
+    public static final String CINEMAS =	"cinemas";
     public static final String MASTERPIECE ="masterpiece";
     public static final String CULT =		"cult";
     public static final String AMERICA =	"america";
@@ -58,6 +59,8 @@ public class User implements Serializable{
     private int days;
     @DatabaseField(columnName = MOVIES)
     private int movies;
+    @DatabaseField(columnName = CINEMAS)
+    private int cinemas;
     @DatabaseField(columnName = MASTERPIECE)
     private int masterpiece;
     @DatabaseField(columnName = CULT)
@@ -86,6 +89,7 @@ public class User implements Serializable{
     public long getLastForeground()				{return this.lastForeground;}
     public int getDays()						{return this.days;}
     public int getMovies()						{return this.movies;}
+    public int getCinemas()						{return this.cinemas;}
     public int getMasterpiece()					{return this.masterpiece;}
     public int getCult()						{return this.cult;}
     public int getAmerica()						{return this.america;}
@@ -105,6 +109,7 @@ public class User implements Serializable{
     public void setLastForeground(long millis)						{this.lastForeground = millis;}
     public void setDays(int days)									{this.days = days;}
     public void setMovies(int movies)								{this.movies = movies;}
+    public void setCinemas(int cinemas)								{this.cinemas = cinemas;}
     public void setMasterpiece(int masterpiece)						{this.masterpiece = masterpiece;}
     public void setCult(int cult)									{this.cult = cult;}
     public void setAmerica(int america)								{this.america = america;}

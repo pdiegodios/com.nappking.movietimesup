@@ -20,6 +20,7 @@ public class User {
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES = 	"movies";
+    public static final String CINEMAS = 	"cinemas";
     public static final String MASTERPIECE ="masterpiece";
     public static final String CULT =		"cult";
     public static final String AMERICA =	"america";
@@ -38,6 +39,7 @@ public class User {
     private long lastForeground;
     private int days;
     private int movies;
+    private int cinemas;
     private int masterpiece;
     private int cult;
     private int america;
@@ -60,6 +62,7 @@ public class User {
     public long getLastForeground()					{return this.lastForeground;}
     public int getDays()							{return this.days;}
     public int getMovies()							{return this.movies;}
+    public int getCinemas()							{return this.cinemas;}
     public int getMasterpiece()						{return this.masterpiece;}
     public int getCult()							{return this.cult;}
     public int getAmerica()							{return this.america;}
@@ -79,6 +82,7 @@ public class User {
     public void setLastForeground(long lastForeground)					{this.lastForeground=lastForeground;}	
 	public void setDays(int days)										{this.days=days;} 	
 	public void setMovies(int movies)									{this.movies=movies;}
+    public void setCinemas(int cinemas)									{this.cinemas=cinemas;}
     public void setMasterpiece(int masterpiece)							{this.masterpiece = masterpiece;}
     public void setCult(int cult)										{this.cult = cult;}
     public void setAmerica(int america)									{this.america = america;}

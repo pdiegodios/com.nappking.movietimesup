@@ -4,7 +4,7 @@
     
     <dimen name="scheme_title_text_size">44sp</dimen>
     <dimen name="scheme_default_text_size">24sp</dimen>
-    <dimen name="scheme_icon_size">50dp</dimen>
+    <dimen name="scheme_icon_size">60dp</dimen>
     
     <dimen name="template_seconds">220sp</dimen>
     <dimen name="template_title_clue">46sp</dimen>
@@ -19,6 +19,7 @@
     <dimen name="grid_text_size_default">23sp</dimen>
     <dimen name="grid_text_size_bigger">28sp</dimen>
     <dimen name="grid_text_margin">5dp</dimen>
-    <dimen name="grid_spectators_height">80dp</dimen>    
+    <dimen name="grid_spectators_height">80dp</dimen>     
+    <dimen name="grid_cinema_icon">140dp</dimen>
     
 </resources>

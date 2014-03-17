@@ -39,22 +39,22 @@
            	android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".GameActivity"
-            android:label="@string/title_activity_home" 
-            android:theme="@style/Theme.filmstrip"
-           	android:screenOrientation="landscape" 
-            android:hardwareAccelerated="true" >
-        </activity>
-        <activity
             android:name=".ScoreboardActivity"
             android:label="@string/title_activity_home" 
             android:theme="@style/Theme.street"
            	android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".FilmGridActivity"
+            android:name=".CinemaActivity"
             android:label="@string/title_activity_home" 
             android:theme="@style/Theme.movie"
+           	android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".SelectorCinemaActivity"
+            android:label="@string/title_activity_home" 
+            android:theme="@style/Theme.gradient"
+            android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
