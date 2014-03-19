@@ -19,6 +19,7 @@ import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
+import com.nappking.movietimesup.widget.Achieve;
 import com.nappking.movietimesup.widget.Clue;
 
 import android.app.Dialog;
@@ -56,6 +57,7 @@ public class FilmActivity extends DBActivity{
 	private static int LONG_TIME = 6000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
+    private static final int UNBLOCK_LEVEL = 15;
     
 	//Seconds to unveil some clues before bet
 	private int mCurrentSeconds = 30;
@@ -147,7 +149,10 @@ public class FilmActivity extends DBActivity{
 	private List<String> trivia;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
+	private boolean newLevel = false;
+	private Achieve achieve;
 	private int mIndex=-1;	
+	private int mSolved;	
 	private User mUser;
 			
 	
@@ -446,6 +451,7 @@ public class FilmActivity extends DBActivity{
 			this.iEnding.setVisibility(View.VISIBLE);
 			Intent i = new Intent();
 			i.putExtra(CinemaActivity.POSITION, mIndex);
+			//putSerializable Achieve!!
 			setResult(RESULT_OK, i);
 		}
 	}
@@ -512,6 +518,7 @@ public class FilmActivity extends DBActivity{
 		}
      	movie = 				(Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
 		mIndex = 				this.getIntent().getIntExtra(CinemaActivity.POSITION, -1);
+		mSolved = 				this.getIntent().getIntExtra(CinemaActivity.SOLVED, 0);
      	imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
 		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
@@ -566,7 +573,7 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onCompletion(MediaPlayer mp) { //LOCK
 				mp.stop();
-				finish();
+				showEndingDialogs();
 			}     		
      	};
 		listenerTitle = new AnimationListener() {			
@@ -1010,6 +1017,18 @@ public class FilmActivity extends DBActivity{
 		}
 	}
 
+	
+	private void showEndingDialogs(){
+		if(newLevel){
+			
+		}
+		else if(achieve!=null){
+			
+		}
+		else{
+			finish();
+		}
+	}
 		
 	
 	//BACKGROUND METHODS
@@ -1034,18 +1053,38 @@ public class FilmActivity extends DBActivity{
 					mUser.setMasterpiece(mUser.getMasterpiece()+1);
 				if(movie.getCult())
 					mUser.setCult(mUser.getCult()+1);
+				if((mSolved+1)==UNBLOCK_LEVEL){ //Unblock new level
+					mUser.setCinemas(mUser.getCinemas()+1);
+					newLevel = true;
+				}	
 				String continent = movie.getContinent().substring(0, 2).toUpperCase();
 				if(continent.equals("AM")){
 					mUser.setAmerica(mUser.getAmerica()+1);
+					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
+						if(a.getField().equals(User.AMERICA) && a.getGoal()==mUser.getAmerica())
+							achieve=a;
+					}
 				}
 				else if(continent.equals("EU")){
 					mUser.setEurope(mUser.getEurope()+1);
+					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
+						if(a.getField().equals(User.EUROPE) && a.getGoal()==mUser.getEurope())
+							achieve=a;
+					}
 				}
 				else if(continent.equals("AS")){
 					mUser.setAsia(mUser.getAsia()+1);
+					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
+						if(a.getField().equals(User.ASIA) && a.getGoal()==mUser.getAsia())
+							achieve=a;
+					}
 				}
 				else{
 					mUser.setExotic(mUser.getExotic()+1);
+					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
+						if(a.getField().equals(User.EXOTIC) && a.getGoal()==mUser.getExotic())
+							achieve=a;
+					}
 				}
 			}
 			mUser.setLastUpdate(System.currentTimeMillis());

@@ -9,6 +9,7 @@ import android.app.Application;
 import com.facebook.FacebookRequestError;
 import com.facebook.model.GraphUser;
 import com.nappking.movietimesup.entities.User;
+import com.nappking.movietimesup.widget.Achieve;
 
 /**
  *  Use a custom Application class to pass state data between Activities.
@@ -69,7 +70,27 @@ public class MovieTimesUpApplication extends Application {
 	public void setLastUpdateCall(long millis) {
 		this.lastUpdateCall = millis;
 	}
-
+	
+	public ArrayList<Achieve> getAchieves(){
+		ArrayList<Achieve> achieves = new ArrayList<Achieve>();
+		achieves.add(new Achieve(User.AMERICA, 20, 200, R.drawable.america20));
+		achieves.add(new Achieve(User.AMERICA, 50, 500, R.drawable.america50));
+		achieves.add(new Achieve(User.AMERICA, 100, 1000, R.drawable.america100));
+		achieves.add(new Achieve(User.AMERICA, 200, 2000, R.drawable.america200));
+		achieves.add(new Achieve(User.EUROPE, 20, 200, R.drawable.europe5));
+		achieves.add(new Achieve(User.EUROPE, 50, 500, R.drawable.europe12));
+		achieves.add(new Achieve(User.EUROPE, 100, 1000, R.drawable.europe25));
+		achieves.add(new Achieve(User.EUROPE, 200, 2000, R.drawable.europe50));
+		achieves.add(new Achieve(User.ASIA, 3, 200, R.drawable.asia3));
+		achieves.add(new Achieve(User.ASIA, 7, 500, R.drawable.asia7));
+		achieves.add(new Achieve(User.ASIA, 15, 1000, R.drawable.asia15));
+		achieves.add(new Achieve(User.ASIA, 30, 2000, R.drawable.asia30));
+		achieves.add(new Achieve(User.EXOTIC, 2, 200, R.drawable.exotic2));
+		achieves.add(new Achieve(User.EXOTIC, 5, 500, R.drawable.exotic5));
+		achieves.add(new Achieve(User.EXOTIC, 10, 1000, R.drawable.exotic10));
+		achieves.add(new Achieve(User.EXOTIC, 20, 2000, R.drawable.exotic20));	
+		return achieves;
+	}
 	
 	/* Facebook attribute getters & setters */
 	

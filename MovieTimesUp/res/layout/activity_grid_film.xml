@@ -2,65 +2,40 @@
 <FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<LinearLayout 
-	    android:orientation="vertical"
-	    android:background="@android:color/background_dark"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-	    <LinearLayout 
-	        android:orientation="horizontal"
-	        android:baselineAligned="false"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="1.5">
-	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="6"></LinearLayout>
-			<GridView 
-			    android:id="@+id/grid"
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent" 
-			    android:layout_weight="1" 
-			    android:paddingTop="15dp"
-			    android:paddingBottom="15dp"
-			    android:paddingLeft="30dp"
-			    android:paddingRight="30dp"
-			    android:columnWidth="120dp"		
-			    android:focusable="false"    
-			    android:focusableInTouchMode="false"	
-			    android:listSelector="@android:color/transparent"  
-			    android:layout_gravity="top"
-			    android:numColumns="auto_fit"
-			    android:verticalSpacing="30dp"
-			    android:horizontalSpacing="30dp"
-			    android:background="@drawable/panel4"
-			    android:gravity="center"
-			    android:scrollbars="none">   
-			</GridView>
-	        <LinearLayout 
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="6"></LinearLayout>
-		</LinearLayout>
-	
-		<ImageView
-		    android:layout_width="match_parent"
-		    android:layout_height="@dimen/grid_spectators_height"
-		    android:layout_weight="1"
-		    android:layout_gravity="bottom"
-		    android:background="@drawable/stage" />
-	
-	</LinearLayout>
+	android:layout_height="fill_parent"
+	android:background="@android:color/background_dark">
+	<GridView 
+	    android:id="@+id/grid"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:padding="15dp"
+	    android:layout_marginBottom="@dimen/grid_spectators_height"
+	    android:layout_marginLeft="@dimen/grid_spectators_height"
+	    android:layout_marginRight="@dimen/grid_spectators_height"
+	    android:columnWidth="120dp"		
+	    android:focusable="false"    
+	    android:focusableInTouchMode="false"	
+	    android:listSelector="@android:color/transparent"  
+	    android:layout_gravity="top"
+	    android:numColumns="auto_fit"
+	    android:verticalSpacing="30dp"
+	    android:horizontalSpacing="30dp"
+	    android:background="@drawable/panel4"
+	    android:gravity="center"
+	    android:scrollbars="none">   
+	</GridView>
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/grid_spectators_height"
+	    android:layout_gravity="bottom"
+	    android:background="@drawable/stage" />
 	<ImageView 
 	    android:id="@+id/leftcurtain"
 	    android:src="@drawable/leftcurtain"
 	    android:layout_gravity="left"
 	    android:layout_height="fill_parent"
 	    android:layout_width="@dimen/grid_curtain_width"
-	    android:scaleType="fitXY"/>
-	
+	    android:scaleType="fitXY"/>	
 	<ImageView 
 	    android:id="@+id/rightcurtain"
 	    android:src="@drawable/rightcurtain"
@@ -69,194 +44,67 @@
 	    android:layout_width="@dimen/grid_curtain_width"
 	    android:scaleType="fitXY"/>
 	<ImageView 
-	    android:id="@+id/spectators"
 	    android:src="@drawable/people"
 	    android:layout_gravity="bottom"
 	    android:layout_height="@dimen/grid_spectators_height"
 	    android:layout_width="fill_parent"
 	    android:scaleType="fitXY"/>
-	<FrameLayout 	 
-	    android:id="@+id/buttons_left"   
-	    android:layout_width="@dimen/grid_button_size"
-	    android:layout_height="@dimen/grid_button_size"
-	    android:layout_gravity="top|left"
-	    android:gravity="center"
-	    android:layout_margin="6dp">
-		<LinearLayout 
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical">
-			<ImageView 
-			    android:src="@drawable/points_info"	    
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:scaleType="fitCenter"/>		
-			<ImageView 
-			    android:src="@drawable/seconds_info"    
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:scaleType="fitCenter"/>
-		</LinearLayout>
-		<LinearLayout 
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical">
-			<TextView 
-			    android:id="@+id/points"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:gravity="center_vertical|right"
-		        android:paddingRight="@dimen/grid_text_margin"
-		        android:textColor="@color/white"
-		        android:textStyle="bold"
-		        android:textSize="@dimen/grid_text_size_bigger"/>		
-			<TextView 
-			    android:id="@+id/seconds" 
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:gravity="center_vertical|right"
-		        android:paddingRight="@dimen/grid_text_margin"
-		        android:textColor="@color/white"
-		        android:textStyle="bold"
-		        android:textSize="@dimen/grid_text_size_default"/>
-		</LinearLayout>
-	</FrameLayout>
 	
+	<LinearLayout
+	    android:id="@+id/buttons_left"
+	    style="@style/layoutLeft">
+
+		<ImageView 
+		    android:src="@drawable/points_info"	  
+			style="@style/infoButton"/>		
+		<ImageView 
+		    android:src="@drawable/seconds_info" 	  
+			style="@style/infoButton"/>
+	</LinearLayout>
+	<LinearLayout   
+		style="@style/layoutLeft">
+		<TextView 
+		    android:id="@+id/points"
+		    style="@style/infoTextLeftButton"/>		
+		<TextView 
+		    android:id="@+id/seconds"
+		    style="@style/infoTextLeftButton"/>
+	</LinearLayout>
+		
+	<LinearLayout 
+	    android:id="@+id/buttons_right"  
+		style="@style/layoutRight">
+		<ImageButton 
+		    android:id="@+id/items"
+		    android:src="@drawable/items_button"	  
+			style="@style/infoButton"/>		
+		<ImageButton
+		    android:id="@+id/itemsUnlocked"
+		    android:src="@drawable/items_ready_button" 	  
+			style="@style/infoButton" />
+		<ImageButton
+		    android:id="@+id/itemsReady"
+		    android:src="@drawable/items_unlocked_button"	  
+			style="@style/infoButton" />
+		<ImageButton 
+		    android:id="@+id/itemsLocked"
+		    android:src="@drawable/items_locked_button" 	  
+			style="@style/infoButton"/>
+	</LinearLayout>
+	<LinearLayout 
+		style="@style/layoutRight">
+		<TextView 
+		    android:id="@+id/numItems"
+			style="@style/infoTextRightButton"/>	
+		<TextView 
+		    android:id="@+id/numItemsUnlocked" 
+			style="@style/infoTextRightButton"/>
+		<TextView 
+		    android:id="@+id/numItemsReady" 
+			style="@style/infoTextRightButton"/>
+		<TextView 
+		    android:id="@+id/numItemsLocked" 
+			style="@style/infoTextRightButton"/>
+	</LinearLayout>
 	
-	<FrameLayout 	 
-	    android:id="@+id/buttons_right"
-	    android:layout_width="@dimen/grid_button_size"
-	    android:layout_height="@dimen/grid_button_size2"
-	    android:layout_gravity="top|right"
-	    android:gravity="center"
-	    android:layout_margin="6dp">
-		<LinearLayout 
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical">
-			<ImageButton 
-			    android:id="@+id/items"
-			    android:src="@drawable/items_button"	    
-			    android:background="@android:color/transparent"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:padding="0dp"
-		        android:scaleType="fitCenter"/>		
-			<ImageButton
-			    android:id="@+id/itemsUnlocked"
-			    android:src="@drawable/items_ready_button"    
-			    android:background="@android:color/transparent"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:padding="0dp"
-		        android:scaleType="fitCenter"/>
-			<ImageButton
-			    android:id="@+id/itemsReady"
-			    android:src="@drawable/items_unlocked_button"    
-			    android:background="@android:color/transparent"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:padding="0dp"
-		        android:scaleType="fitCenter"/>
-			<ImageButton 
-			    android:id="@+id/itemsLocked"
-			    android:src="@drawable/items_locked_button"    
-			    android:background="@android:color/transparent"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:padding="0dp"
-		        android:scaleType="fitCenter"/>
-		</LinearLayout>
-		<LinearLayout 
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:orientation="vertical">
-			<LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="horizontal"
-			    android:layout_weight="1">
-				<TextView 
-				    android:id="@+id/numItems"
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:layout_weight="1"
-			        android:gravity="center_vertical|right"
-			        android:textStyle="bold"
-			        android:textSize="16sp"/>		
-				<TextView 
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_weight="1.2"/>
-			</LinearLayout>
-			
-			<LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="horizontal"
-			    android:layout_weight="1">
-				<TextView 
-				    android:id="@+id/numItemsUnlocked" 
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:layout_weight="1"
-			        android:gravity="center_vertical|right"
-			        android:paddingLeft="5dp"
-			        android:textStyle="bold"
-			        android:textSize="16sp"/>
-				<TextView 
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_weight="1.2"/>
-			</LinearLayout>
-			
-			<LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="horizontal"
-			    android:layout_weight="1">
-				<TextView 
-				    android:id="@+id/numItemsReady" 
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:layout_weight="1"
-			        android:gravity="center_vertical|right"
-			        android:paddingLeft="5dp"
-			        android:textStyle="bold"
-			        android:textSize="16sp"/>
-				<TextView 
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_weight="1.2"/>
-			</LinearLayout>
-			
-			<LinearLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="horizontal"
-			    android:layout_weight="1">
-				<TextView 
-				    android:id="@+id/numItemsLocked" 
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:layout_weight="1"
-			        android:gravity="center_vertical|right"
-			        android:paddingLeft="5dp"
-			        android:textStyle="bold"
-			        android:textSize="16sp"/>
-				<TextView 
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_weight="1.2"/>
-			</LinearLayout>
-		</LinearLayout>
-	</FrameLayout>
 </FrameLayout>

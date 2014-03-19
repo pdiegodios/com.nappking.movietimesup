@@ -12,9 +12,6 @@ import org.json.JSONException;
 import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 import com.nappking.movietimesup.adapter.MovieListAdapter;
 import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Movie;
@@ -44,6 +41,7 @@ public class CinemaActivity extends DBActivity{
 	private static final int LOCKED = 4;
 	private static final int UNLOCK_COST=25;
 	public static final String POSITION="POSITION";
+	public static final String SOLVED="SOLVED";
     
 	private GridView grid;
 	private TextView txPoints;
@@ -56,14 +54,15 @@ public class CinemaActivity extends DBActivity{
 	private ImageButton selectReady;
 	private ImageButton selectLocked;
 	private ImageButton selectUnlocked;
-	//private ImageView spectators;
 	private User user;
 	private List<String> mLockedMovies;
 	private List<String> mUnlockedMovies;
 	private List<Movie> mMovies;
 	private List<Movie> mSelectedMovies;
 	private int mState;
-	private int mCinemaId;
+	private int mCinemaId;	
+	private int numItemsLocked;		
+	private int numItemsUnlocked;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -79,17 +78,13 @@ public class CinemaActivity extends DBActivity{
     	txNumItemsReady = 	(TextView) findViewById(R.id.numItemsReady);
     	txNumItemsLocked = 	(TextView) findViewById(R.id.numItemsLocked);
     	txNumItemsUnlocked =(TextView) findViewById(R.id.numItemsUnlocked);
-     	//spectators = 		(ImageView) findViewById(R.id.spectators);
     	selectAll =			(ImageButton) findViewById(R.id.items);
     	selectReady =		(ImageButton) findViewById(R.id.itemsReady);
     	selectLocked =		(ImageButton) findViewById(R.id.itemsLocked);
     	selectUnlocked =	(ImageButton) findViewById(R.id.itemsUnlocked);
     	
     	mSelectedMovies = new ArrayList<Movie>();
-    	//Preset All Movies
-    	mState = ALL;
-		
-		update(false);
+    	mState = ALL;		
 		setListeners();
 	}
 	
@@ -147,8 +142,8 @@ public class CinemaActivity extends DBActivity{
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		
-		int numItemsLocked = 0;		
-		int numItemsUnlocked = 0;
+		numItemsLocked = 0;		
+		numItemsUnlocked = 0;
 		for(Movie movie:mMovies){
 			if(mLockedMovies.contains(movie.getId()+""))
 				numItemsLocked=numItemsLocked+1;
@@ -267,6 +262,7 @@ public class CinemaActivity extends DBActivity{
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
 					myBundle.putInt(POSITION, index);
+					myBundle.putInt(SOLVED, numItemsUnlocked);
 					myIntent.putExtras(myBundle);
 					startActivityForResult(myIntent, GAME_CODE);
 				}
@@ -403,20 +399,13 @@ public class CinemaActivity extends DBActivity{
             switch (requestCode) {
                 case GAME_CODE:
                 	int index = data.getIntExtra(POSITION, -1);
+                	//GET ACHIEVE IF THIS IS DIFFERENT TO NULL
                 	updateItemAt(index);
-                	checkForAchievements();
                     break;
                 default: 
                 	break;
             }
         }
-	}
-	
-	/**
-	 * TODO: Deploy dialog if you get an achievement as 50 american movies, 10 asian, 5 masterpieces... etc
-	 */
-	private void checkForAchievements(){
-		
 	}
 	
 	private void uploadUsers(List<User> users){

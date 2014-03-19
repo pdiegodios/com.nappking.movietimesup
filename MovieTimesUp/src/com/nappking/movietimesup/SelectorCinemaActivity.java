@@ -37,6 +37,7 @@ public class SelectorCinemaActivity extends DBActivity{
 	private List<Cinema> mCinemas;
 	private GridView grid;
 	private ImageView lookfor;
+	private Animation bounce;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -44,8 +45,7 @@ public class SelectorCinemaActivity extends DBActivity{
 		setContentView(R.layout.activity_grid_cinema);		
      	grid = 	(GridView) findViewById(R.id.grid);	
      	lookfor = 	(ImageView) findViewById(R.id.lookfor);
-		Animation bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
-		lookfor.startAnimation(bounce);
+		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
 		update();
 		setListeners();
 	}
@@ -53,8 +53,15 @@ public class SelectorCinemaActivity extends DBActivity{
 	@Override
 	protected void onResume(){
 		super.onResume();
+		lookfor.startAnimation(bounce);
 		update();
 		updateUser();
+	}
+	
+	@Override
+	protected void onPause() {
+		lookfor.clearAnimation();
+		super.onPause();
 	}
 
 	private void updateUser(){
