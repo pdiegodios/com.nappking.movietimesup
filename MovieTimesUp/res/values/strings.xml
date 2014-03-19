@@ -98,6 +98,8 @@
     <string name="american_achievement">New american achievement unlocked</string>
     <string name="exotic_achievement">New exotic achievement unlocked</string>
     <string name="share">Share</string>
+    <string name="txSearchable">Search..</string>
+    <string name="empty_list">No matches.</string>    
     
     
 </resources>

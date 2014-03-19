@@ -115,7 +115,7 @@ public class FilmInfoActivity extends DBActivity{
 		if(mMovie.getCult())
 			mBonus.setImageResource(R.drawable.cult_movie);
 		else if(mMovie.getMasterpiece())
-			mBonus.setImageResource(R.drawable.oscar);
+			mBonus.setImageResource(R.drawable.masterpiece);
 		mPoints.setText(mMovie.getPoints()+"");		
 		mOriginalTitle.setText(mMovie.getOriginalTitle());
 		mGenre.setText(mMovie.getGenre());	

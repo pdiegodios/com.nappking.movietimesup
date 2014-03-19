@@ -22,37 +22,40 @@ public class AddMovie {
 	public static void main(String[] args) {
 		
 		//VALUES
-		int id = 18;
+		String action = SAVE;
+		
+		int id = 51;
 		int points = 1;
-		int year = 1976;
-		String  action = SAVE;
-		String title = "Taxi Driver";
-		String alternative_title = "Taxista";
-		String original_title = "Taxi Driver";
+		int cinema = 1;
+		int year = 1986;
+		boolean masterpiece = false;
+		boolean cult = false;
+		String title = "Parque Jurásico";
+		String alternative_title = "Jurassic Park";
+		String original_title = "Jurassic Park";
 		String continent = "América";
 		String country = "USA";
-		String director = "Martin Scorsese";
-		String genre = "Drama";
+		String director = "Steven Spielberg";
+		String genre = "Ciencia ficción";
 		String poster = "";
-		String  filmaffinity_id = "396074";
-		String imdb_id = "tt0075314";
-		String actor1="Cybill Shepherd";
-		String actor2="Robert de Niro";
-		String actor3="Jodie Foster";
-		String character1="Travis Bickle";
-		String character2="Batsy";
-		String character3="Iris";
-		String other1 ="4 nominaciones al Oscar incluyendo Mejro Película y Actor";
-		String other2 ="Crítica El País: el protagonista se mira al espejo y de un golpe de rabia... queda inaugurado el thriller llamado moderno";
-		String other3 ="La hermana mayor de la actriz de 14 años fue su doble para escenas en las que había contenido sexual";
-		String quote1="Por la noche, salen todos los animales: putas, sodomitas, travestidos, maricones, toxicómanos... Todo es asqueroso y venal. " +
-				"Algún día, una lluvia de verdad se llevará toda esta basura de las calles";
-		String quote2="¿Hablas conmigo?";
-		String quote3="-No puedo dormir por las noches. -Para eso están los cines porno. -Sí, lo sé. Eso ya lo intenté.";
-		String plot = "Para sobrellevar el insomnio crónico que sufre desde su regreso de Vietnam, X trabaja como taxista nocturno en Nueva York. " +
-				"Es un hombre insociable que apenas tiene contacto con los demás, se pasa los días en el cine y vive prendado de Y, una atractiva " +
-				"rubia que trabaja como voluntaria en una campaña política. Pero lo que realmente obsesiona a X es comprobar cómo la violencia, " +
-				"la sordidez y la desolación dominan la ciudad. Y un día decide pasar a la acción.";
+		String  filmaffinity_id = "152490";
+		String imdb_id = "tt0107290";
+		String actor1="Laura Dern";
+		String actor2="Jeff Goldblum";
+		String actor3="Sam Neill";
+		String character1="Dr. Alan Grant";
+		String character2="Dra. Ellie Sattler";
+		String character3="Dr. Ian Malcolm";
+		String other1 ="Inició una fiebre de merchandising a su alrededor. Sigue siendo una de las películas más taquilleras de todos los tiempos";
+		String other2 ="El director afirmó que no permitiría ver a sus hijos la película hasta que estos no cumpliesen al menos quince años por considerarla demasiado \"terrorífica\"";
+		String other3 ="El rugido era una combinación de sonidos de perro, pingüino, tigre, cocodrilo y elefante";
+		String quote1="Yo invito a científicos y usted a una estrella de rock.";
+		String quote2="¡Lo ha logrado! ¡Ese loco hijo de puta lo ha logrado!";
+		String quote3="-Todos los parques sufren retrasos. Cuando inauguraron Disneylandia en 1956, nada funcionó. -Pero, los piratas del caribe se averían, no se comen a los turistas.";
+		String plot = "El multimillonario X consigue hacer realidad su sueño de crear con ellos un parque temático en una isla remota con " +
+				"clonaciones de dinosaurios del Jurásico. Antes de abrirlo al público, invita a una pareja de eminentes científicos y a un " +
+				"matemático para que comprueben la viabilidad del proyecto. Pero las medidas de seguridad del parque no prevén el instinto de " +
+				"supervivencia de la madre naturaleza ni la codicia humana.";
 
 		
 		//CLIENT
@@ -79,6 +82,9 @@ public class AddMovie {
 		pson.put(Movie.POINTS, points);
 		pson.put(Movie.FILMAFFINITY, filmaffinity_id);
 		pson.put(Movie.IMDB, imdb_id);
+		pson.put(Movie.CINEMA, cinema);
+		pson.put(Movie.MASTERPIECE, masterpiece);
+		pson.put(Movie.CULT, cult);
 		if(action.equals(UPDATE))
 			pson.put(Movie.ROWID, id);
 		
@@ -91,6 +97,7 @@ public class AddMovie {
 	    //RESPONSE
 	    ClientResponse  response = service.path("rest").path("movies").type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, form);
 	    System.out.println("Response --> " + response.getEntity(String.class));
+	    System.out.println("Response --> " + response.getStatus());
 	
 	}
 

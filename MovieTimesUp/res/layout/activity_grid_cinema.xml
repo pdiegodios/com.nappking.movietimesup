@@ -28,7 +28,7 @@
 	    android:layout_width="@dimen/grid_cinema_icon"
 	    android:scaleType="fitCenter"/>
 	<ImageView
-	    android:id="@+id/lookfor"
+	    android:id="@+id/search"
 	    android:src="@drawable/magnifying_glass"
 	    android:layout_gravity="bottom|right"
 	    android:padding="15dp"

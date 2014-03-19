@@ -97,5 +97,7 @@
     <string name="american_achievement">Nuevo logro americano desbloqueado</string>
     <string name="exotic_achievement">Nuevo logro exótico desbloqueado</string>
     <string name="share">Compartir</string>
+    <string name="txSearchable">Busca..</string>
+    <string name="empty_list">No hay coincidencias.</string>    
     
 </resources>

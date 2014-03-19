@@ -1,15 +1,17 @@
 package com.nappking.movietimesup;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.app.Application;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.model.GraphUser;
+import com.nappking.movietimesup.entities.Achievement;
 import com.nappking.movietimesup.entities.User;
-import com.nappking.movietimesup.widget.Achieve;
 
 /**
  *  Use a custom Application class to pass state data between Activities.
@@ -71,25 +73,25 @@ public class MovieTimesUpApplication extends Application {
 		this.lastUpdateCall = millis;
 	}
 	
-	public ArrayList<Achieve> getAchieves(){
-		ArrayList<Achieve> achieves = new ArrayList<Achieve>();
-		achieves.add(new Achieve(User.AMERICA, 20, 200, R.drawable.america20));
-		achieves.add(new Achieve(User.AMERICA, 50, 500, R.drawable.america50));
-		achieves.add(new Achieve(User.AMERICA, 100, 1000, R.drawable.america100));
-		achieves.add(new Achieve(User.AMERICA, 200, 2000, R.drawable.america200));
-		achieves.add(new Achieve(User.EUROPE, 20, 200, R.drawable.europe5));
-		achieves.add(new Achieve(User.EUROPE, 50, 500, R.drawable.europe12));
-		achieves.add(new Achieve(User.EUROPE, 100, 1000, R.drawable.europe25));
-		achieves.add(new Achieve(User.EUROPE, 200, 2000, R.drawable.europe50));
-		achieves.add(new Achieve(User.ASIA, 3, 200, R.drawable.asia3));
-		achieves.add(new Achieve(User.ASIA, 7, 500, R.drawable.asia7));
-		achieves.add(new Achieve(User.ASIA, 15, 1000, R.drawable.asia15));
-		achieves.add(new Achieve(User.ASIA, 30, 2000, R.drawable.asia30));
-		achieves.add(new Achieve(User.EXOTIC, 2, 200, R.drawable.exotic2));
-		achieves.add(new Achieve(User.EXOTIC, 5, 500, R.drawable.exotic5));
-		achieves.add(new Achieve(User.EXOTIC, 10, 1000, R.drawable.exotic10));
-		achieves.add(new Achieve(User.EXOTIC, 20, 2000, R.drawable.exotic20));	
-		return achieves;
+	public ArrayList<Achievement> getAchievements(){
+		ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+		achievements.add(new Achievement(User.AMERICA, 20, 200, R.drawable.america20, R.string.american_achievement));
+		achievements.add(new Achievement(User.AMERICA, 50, 500, R.drawable.america50, R.string.american_achievement));
+		achievements.add(new Achievement(User.AMERICA, 100, 1000, R.drawable.america100, R.string.american_achievement));
+		achievements.add(new Achievement(User.AMERICA, 200, 2000, R.drawable.america200, R.string.american_achievement));
+		achievements.add(new Achievement(User.EUROPE, 5, 200, R.drawable.europe5, R.string.european_achievement));
+		achievements.add(new Achievement(User.EUROPE, 12, 500, R.drawable.europe12, R.string.european_achievement));
+		achievements.add(new Achievement(User.EUROPE, 25, 1000, R.drawable.europe25, R.string.european_achievement));
+		achievements.add(new Achievement(User.EUROPE, 50, 2000, R.drawable.europe50, R.string.european_achievement));
+		achievements.add(new Achievement(User.ASIA, 3, 200, R.drawable.asia3, R.string.asian_achievement));
+		achievements.add(new Achievement(User.ASIA, 7, 500, R.drawable.asia7, R.string.asian_achievement));
+		achievements.add(new Achievement(User.ASIA, 15, 1000, R.drawable.asia15, R.string.asian_achievement));
+		achievements.add(new Achievement(User.ASIA, 30, 2000, R.drawable.asia30, R.string.asian_achievement));
+		achievements.add(new Achievement(User.EXOTIC, 2, 200, R.drawable.exotic2, R.string.exotic_achievement));
+		achievements.add(new Achievement(User.EXOTIC, 5, 500, R.drawable.exotic5, R.string.exotic_achievement));
+		achievements.add(new Achievement(User.EXOTIC, 10, 1000, R.drawable.exotic10, R.string.exotic_achievement));
+		achievements.add(new Achievement(User.EXOTIC, 20, 2000, R.drawable.exotic20, R.string.exotic_achievement));	
+		return achievements;
 	}
 	
 	/* Facebook attribute getters & setters */
@@ -132,6 +134,12 @@ public class MovieTimesUpApplication extends Application {
 		}
 		
 		return friendsAsArrayListOfStrings;
+	}
+		
+	public String deAccent(String str) {
+	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 	
 	public GraphUser getFriend(int index) {

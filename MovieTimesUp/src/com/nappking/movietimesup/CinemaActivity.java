@@ -12,13 +12,13 @@ import org.json.JSONException;
 import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
-import com.nappking.movietimesup.adapter.MovieListAdapter;
+import com.nappking.movietimesup.adapter.MovieGridAdapter;
 import com.nappking.movietimesup.database.DBActivity;
+import com.nappking.movietimesup.entities.Cinema;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.LoadUserDataTask;
 import com.nappking.movietimesup.task.WebServiceTask;
-import com.nappking.movietimesup.widget.Cinema;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -41,7 +41,6 @@ public class CinemaActivity extends DBActivity{
 	private static final int LOCKED = 4;
 	private static final int UNLOCK_COST=25;
 	public static final String POSITION="POSITION";
-	public static final String SOLVED="SOLVED";
     
 	private GridView grid;
 	private TextView txPoints;
@@ -135,10 +134,10 @@ public class CinemaActivity extends DBActivity{
 		}
 		//MovieListAdapter to show correctly the movies
 		if (grid.getAdapter() == null || stateChanged) {
-			MovieListAdapter movieAdapter = new MovieListAdapter(this, mSelectedMovies, mLockedMovies, mUnlockedMovies);		
+			MovieGridAdapter movieAdapter = new MovieGridAdapter(this, mSelectedMovies, mLockedMovies, mUnlockedMovies);		
 			grid.setAdapter(movieAdapter);
 		}else{
-			((MovieListAdapter)grid.getAdapter()).setValues(mLockedMovies, mUnlockedMovies);
+			((MovieGridAdapter)grid.getAdapter()).setValues(mLockedMovies, mUnlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
 		txSeconds.setText(user.getSeconds()+"");		
@@ -262,7 +261,6 @@ public class CinemaActivity extends DBActivity{
 					Bundle myBundle = new Bundle();
 					myBundle.putSerializable(Movie.class.toString(), movie);
 					myBundle.putInt(POSITION, index);
-					myBundle.putInt(SOLVED, numItemsUnlocked);
 					myIntent.putExtras(myBundle);
 					startActivityForResult(myIntent, GAME_CODE);
 				}

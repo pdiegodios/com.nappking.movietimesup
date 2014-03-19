@@ -16,11 +16,11 @@ import com.nappking.movietimesup.R;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBActivity;
+import com.nappking.movietimesup.entities.Achievement;
+import com.nappking.movietimesup.entities.Clue;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
-import com.nappking.movietimesup.widget.Achieve;
-import com.nappking.movietimesup.widget.Clue;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -149,10 +149,8 @@ public class FilmActivity extends DBActivity{
 	private List<String> trivia;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
-	private boolean newLevel = false;
-	private Achieve achieve;
+	private List<Achievement> achievements;
 	private int mIndex=-1;	
-	private int mSolved;	
 	private User mUser;
 			
 	
@@ -290,7 +288,7 @@ public class FilmActivity extends DBActivity{
 	    		dialog.show();
 	    	}
 	        
-	        mCountDown=new CountDownTimer(TIME_TO_BET+600,INTERVAL) {
+	        mCountDown=new CountDownTimer(TIME_TO_BET+200,INTERVAL) {
 	        	int currentProgress = max;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
@@ -496,14 +494,7 @@ public class FilmActivity extends DBActivity{
 		}
 		mClues = cluesAvailable;
 		return cluesRemoved;
-	}
-	
-	private String deAccent(String str) {
-	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
-	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-	    return pattern.matcher(nfdNormalizedString).replaceAll("");
-	}
-	
+	}	
 	
 	
 	
@@ -518,7 +509,7 @@ public class FilmActivity extends DBActivity{
 		}
      	movie = 				(Movie) this.getIntent().getExtras().getSerializable(Movie.class.toString());
 		mIndex = 				this.getIntent().getIntExtra(CinemaActivity.POSITION, -1);
-		mSolved = 				this.getIntent().getIntExtra(CinemaActivity.SOLVED, 0);
+		achievements = 			new ArrayList<Achievement>();
      	imm = 					(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
 		animZoomIn = 			AnimationUtils.loadAnimation(this, R.anim.zoomin);
 		animZoomOut = 			AnimationUtils.loadAnimation(this, R.anim.zoomout);
@@ -906,10 +897,10 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onClick(View v) {
 				imm.hideSoftInputFromWindow(title.getWindowToken(), 0);
-				String titleAnswered = deAccent(title.getText().toString());
-				String originalTitle = deAccent(movie.getOriginalTitle());
-				String title = deAccent(movie.getTitle());
-				String alternativeTitle = deAccent(movie.getAlternativeTitle());
+				String titleAnswered = ((MovieTimesUpApplication)getApplication()).deAccent(title.getText().toString());
+				String originalTitle = ((MovieTimesUpApplication)getApplication()).deAccent(movie.getOriginalTitle());
+				String title = ((MovieTimesUpApplication)getApplication()).deAccent(movie.getTitle());
+				String alternativeTitle = ((MovieTimesUpApplication)getApplication()).deAccent(movie.getAlternativeTitle());
 				if(titleAnswered.equalsIgnoreCase(alternativeTitle)||
 						titleAnswered.equalsIgnoreCase(originalTitle)||
 						titleAnswered.equalsIgnoreCase(title)){
@@ -1019,17 +1010,58 @@ public class FilmActivity extends DBActivity{
 
 	
 	private void showEndingDialogs(){
-		if(newLevel){
-			
-		}
-		else if(achieve!=null){
-			
+		if(achievements!=null && !achievements.isEmpty()){
+			showAchievement(achievements.remove(0));
 		}
 		else{
 			finish();
 		}
 	}
+	
+	private void showAchievement(Achievement a){  
+        final Dialog dialog = new Dialog(this, R.style.SlideDialog);
+        dialog.setContentView(R.layout.dialog_achievement);
+        dialog.setCancelable(false);
+        //instantiate elements in the dialog
+        Button shareButton = (Button) dialog.findViewById(R.id.shareButton);
+        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+		TextView title = (TextView) dialog.findViewById(R.id.title);
+		TextView message = (TextView) dialog.findViewById(R.id.message);
+		TextView foreground_text = (TextView) dialog.findViewById(R.id.foreground_text);
+		ImageView image = (ImageView) dialog.findViewById(R.id.image_achievement);
 		
+		//set values & actions
+		if(a.getField().equals(User.CINEMAS)){
+			int cinemas = mUser.getCinemas();
+			title.setText(getResources().getString(R.string.level_number)+" "+cinemas+" "+
+					getResources().getString(R.string.unlocked));
+			foreground_text.setText(cinemas+"");
+		}
+		else{
+			title.setText(getResources().getString(R.string.youvewon)+" "+a.getReward()+" "+
+					getResources().getString(R.string.secondswon));
+		}
+		message.setText(getResources().getString(a.getMessage()));
+		image.setImageResource(a.getResource());
+		
+		/*
+		shareButton.setOnClickListener(new OnClickListener() {				
+			@Override
+			public void onClick(View v) {
+				//TODO: Share && then continue showiEndingDialogs
+			}
+		});*/
+		
+		cancelButton.setOnClickListener(new OnClickListener() {				
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+				showEndingDialogs();
+			}
+		});
+		dialog.show();
+    }
+	
 	
 	//BACKGROUND METHODS
 	/**
@@ -1047,43 +1079,54 @@ public class FilmActivity extends DBActivity{
 				mUser.addLockedMovie(movie.getId());
 			}
 			else{
+				String continent = movie.getContinent().substring(0, 2).toUpperCase();
+				String field="";
+				int goal=0;
+				boolean levelUnlocked=false;
 				mUser.addUnlockedMovie(movie.getId());
 				mUser.setScore(mUser.getScore()+movie.getPoints());
-				if(movie.getMasterpiece())
+				if(movie.getMasterpiece()){
 					mUser.setMasterpiece(mUser.getMasterpiece()+1);
-				if(movie.getCult())
+				}
+				if(movie.getCult()){
 					mUser.setCult(mUser.getCult()+1);
-				if((mSolved+1)==UNBLOCK_LEVEL){ //Unblock new level
-					mUser.setCinemas(mUser.getCinemas()+1);
-					newLevel = true;
-				}	
-				String continent = movie.getContinent().substring(0, 2).toUpperCase();
+				}
 				if(continent.equals("AM")){
 					mUser.setAmerica(mUser.getAmerica()+1);
-					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
-						if(a.getField().equals(User.AMERICA) && a.getGoal()==mUser.getAmerica())
-							achieve=a;
-					}
+					field = User.AMERICA;
+					goal = mUser.getAmerica();
 				}
 				else if(continent.equals("EU")){
 					mUser.setEurope(mUser.getEurope()+1);
-					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
-						if(a.getField().equals(User.EUROPE) && a.getGoal()==mUser.getEurope())
-							achieve=a;
-					}
+					field = User.EUROPE;
+					goal = mUser.getEurope();
 				}
 				else if(continent.equals("AS")){
 					mUser.setAsia(mUser.getAsia()+1);
-					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
-						if(a.getField().equals(User.ASIA) && a.getGoal()==mUser.getAsia())
-							achieve=a;
-					}
+					field = User.ASIA;
+					goal = mUser.getAsia();
 				}
 				else{
 					mUser.setExotic(mUser.getExotic()+1);
-					for(Achieve a: ((MovieTimesUpApplication) this.getApplication()).getAchieves()){
-						if(a.getField().equals(User.EXOTIC) && a.getGoal()==mUser.getExotic())
-							achieve=a;
+					field = User.EXOTIC;
+					goal = mUser.getExotic();
+				}
+				int totalSolved = mUser.getAmerica()+mUser.getAsia()+mUser.getEurope()+mUser.getExotic();
+				if((totalSolved % UNBLOCK_LEVEL) == 0){ //Unblock new level
+					mUser.setCinemas(mUser.getCinemas()+1);
+					levelUnlocked=true;
+				}	
+				if(levelUnlocked){
+					achievements.add(new Achievement(User.CINEMAS, 0, 0, R.drawable.cinema_enable25, R.string.nextlevel));
+				}
+				if(!field.isEmpty() && goal>0){
+					for(Achievement a: ((MovieTimesUpApplication)getApplication()).getAchievements()){
+						if(a.getField().equals(field) && a.getGoal()==goal){
+							//If user got an achievement it will get a reward
+							achievements.add(a); 
+							mUser.setSeconds(mUser.getSeconds()+a.getReward());
+							break;
+						}
 					}
 				}
 			}

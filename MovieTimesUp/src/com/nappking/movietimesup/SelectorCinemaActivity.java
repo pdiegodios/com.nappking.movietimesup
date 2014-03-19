@@ -9,12 +9,12 @@ import java.util.List;
 import com.nappking.movietimesup.R;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
-import com.nappking.movietimesup.adapter.CinemaListAdapter;
+import com.nappking.movietimesup.adapter.CinemaGridAdapter;
 import com.nappking.movietimesup.database.DBActivity;
+import com.nappking.movietimesup.entities.Cinema;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.LoadUserDataTask;
-import com.nappking.movietimesup.widget.Cinema;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -36,7 +36,7 @@ public class SelectorCinemaActivity extends DBActivity{
 	
 	private List<Cinema> mCinemas;
 	private GridView grid;
-	private ImageView lookfor;
+	private ImageView search;
 	private Animation bounce;
 	
 	@Override
@@ -44,7 +44,7 @@ public class SelectorCinemaActivity extends DBActivity{
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_grid_cinema);		
      	grid = 	(GridView) findViewById(R.id.grid);	
-     	lookfor = 	(ImageView) findViewById(R.id.lookfor);
+     	search = (ImageView) findViewById(R.id.search);
 		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
 		update();
 		setListeners();
@@ -53,14 +53,14 @@ public class SelectorCinemaActivity extends DBActivity{
 	@Override
 	protected void onResume(){
 		super.onResume();
-		lookfor.startAnimation(bounce);
+		search.startAnimation(bounce);
 		update();
 		updateUser();
 	}
 	
 	@Override
 	protected void onPause() {
-		lookfor.clearAnimation();
+		search.clearAnimation();
 		super.onPause();
 	}
 
@@ -105,12 +105,17 @@ public class SelectorCinemaActivity extends DBActivity{
 				if(index<=unlockedCinemas){
 					unlocked=true;
 					solvedMovies = 0;
-					rawResults = daoMovie.queryRaw("SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index);
-					for(String[] resultColumns: rawResults){
-						String movieId = resultColumns[0];
-						if(unlockedMovies.contains(movieId))
-							solvedMovies=solvedMovies+1;
+					String ids = "(";
+					for(String id: unlockedMovies){
+						ids=ids+"\'"+id+"\',";
 					}
+					ids=ids.substring(0, ids.length()-1);
+					ids=ids+")";
+					Log.i("QUERY", "SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
+							" AND WHERE "+Movie.ID+" IN "+ids);
+					rawResults = daoMovie.queryRaw("SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
+							" AND "+Movie.ID+" IN "+ids);
+					solvedMovies=rawResults.getResults().size();
 				}else{
 					unlocked=false;
 					solvedMovies=0;
@@ -128,7 +133,7 @@ public class SelectorCinemaActivity extends DBActivity{
 		//We obtain all the cinemas 
 		createCinemas();
 		//CinemaListAdapter to show correctly the cinemas
-		CinemaListAdapter cinemaAdapter = new CinemaListAdapter(this, mCinemas);		
+		CinemaGridAdapter cinemaAdapter = new CinemaGridAdapter(this, mCinemas);		
 		grid.setAdapter(cinemaAdapter);
 	}
 	
@@ -165,6 +170,13 @@ public class SelectorCinemaActivity extends DBActivity{
 					myIntent.putExtras(myBundle);
 					startActivity(myIntent);
 				}
+			}
+		});
+		search.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent(getBaseContext(), FilmSearchActivity.class);
+				startActivity(myIntent);				
 			}
 		});
 	}
