@@ -12,10 +12,7 @@ import android.widget.TextView;
 import com.nappking.movietimesup.R;
 import com.nappking.movietimesup.entities.Cinema;
 
-public class CinemaGridAdapter extends BaseAdapter{
-	private final static int COMPLETE = 125;
-	private final static int EACH = 5;
-	
+public class CinemaGridAdapter extends BaseAdapter{	
 	private List<Cinema> mCinemas;
 	private Context mContext;
     

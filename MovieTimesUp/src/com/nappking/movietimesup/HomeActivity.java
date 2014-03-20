@@ -2,8 +2,6 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,7 +38,6 @@ import com.facebook.widget.LoginButton;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBFragmentActivity;
 import com.nappking.movietimesup.entities.User;
-import com.nappking.movietimesup.task.LoadUserDataTask;
 
 /**
  *  Entry point for the app that represents the home screen with the Play button etc. and
@@ -100,7 +97,7 @@ public class HomeActivity extends DBFragmentActivity {
         fbUiLifecycleHelper.onCreate(savedInstanceState);
         
 		setContentView(R.layout.home);
-		
+
 		FragmentManager fm = getSupportFragmentManager();
         fragments[FIRST] = fm.findFragmentById(R.id.firstFragment);
         fragments[FB_LOGGED_OUT_HOME] = fm.findFragmentById(R.id.fbLoggedOutHomeFragment);
@@ -111,7 +108,7 @@ public class HomeActivity extends DBFragmentActivity {
             transaction.hide(fragments[i]);
         }
         transaction.commit();
-		
+
 		// Restore the logged-in user's information if it has been saved and the existing data in the application
 		// has been destroyed (i.e. the app hasn't been used for a while and memory on the device is low)
 		// - only do this if the session is open for the social version only
@@ -120,7 +117,7 @@ public class HomeActivity extends DBFragmentActivity {
  			if (savedInstanceState != null) {
 				boolean loggedInState = savedInstanceState.getBoolean(MovieTimesUpApplication.getLoggedInKey(), false);
 	 			((MovieTimesUpApplication)getApplication()).setLoggedIn(loggedInState);
-	 			
+
 		 		if ( ((MovieTimesUpApplication)getApplication()).isLoggedIn() &&
 		 			 ( ((MovieTimesUpApplication)getApplication()).getFriends() == null ||
 		 			   ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() == null) ) {
@@ -131,7 +128,7 @@ public class HomeActivity extends DBFragmentActivity {
 		 					GraphUser currentFBUser = GraphObject.Factory.create(new JSONObject(currentFBUserJSONString), GraphUser.class);
 		 					((MovieTimesUpApplication)getApplication()).setCurrentFBUser(currentFBUser);
 	 					}
-	 			        
+
 	 			        // friends
 	 					ArrayList<String> friendsJSONStringArrayList = savedInstanceState.getStringArrayList(MovieTimesUpApplication.getFriendsKey());
 	 					if (friendsJSONStringArrayList != null) {
@@ -156,7 +153,7 @@ public class HomeActivity extends DBFragmentActivity {
  		// Call onActivityResult on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onActivityResult(requestCode, resultCode, data);
     }
-	
+
  	@Override
     protected void onResumeFragments() {
 		super.onResumeFragments();
@@ -186,7 +183,7 @@ public class HomeActivity extends DBFragmentActivity {
 			}
 		}
     }
-	
+
 	@Override
     public void onResume() {
         super.onResume();
@@ -202,27 +199,7 @@ public class HomeActivity extends DBFragmentActivity {
  		
  		updateUser();
     }
-	
-	private void updateUser(){
-		Dao<User, Integer> daoUser;
-		try {
-			daoUser = getHelper().getUserDAO();
-			int totalMovies = (int)getHelper().getMovieDAO().countOf();
-			User user = daoUser.queryForId(1);
-			if(user!=null){
-				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()
-						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
-					//It's more than 10min since last time it was updated or there are new movies
-					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
-					new LoadUserDataTask(this, user).execute();
-				}						
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
     @Override
     public void onPause() {
         super.onPause();
@@ -230,7 +207,7 @@ public class HomeActivity extends DBFragmentActivity {
         //Call onPause on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onPause();
     }
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);		
@@ -249,14 +226,14 @@ public class HomeActivity extends DBFragmentActivity {
 	        		((MovieTimesUpApplication)getApplication()).getFriendsAsArrayListOfStrings());
         }
 	}
-	
+
 	@Override
     public void onDestroy() {
  		super.onDestroy();
  		// Call onDestroy on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onDestroy();
     }
-	
+
     private void showFragment(int fragmentIndex, boolean addToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -295,7 +272,7 @@ public class HomeActivity extends DBFragmentActivity {
         	}
         }
     }
-	
+
 	/* Facebook Integration Only ... */
 
 	// Call back on HomeActivity when the session state changes to update the view accordingly
@@ -309,23 +286,23 @@ public class HomeActivity extends DBFragmentActivity {
 				// Logged in, but shouldn't be, so load the FBLoggedOutHomeFragment
 	        	showFragment(FB_LOGGED_OUT_HOME, false);
 	        }
-			
+
 			// Note that error checking for failed logins is done as within an ErrorListener attached to the
 			// LoginButton within FBLoggedOutHomeFragment
 		}
 	}
-	
+
 	// Fetch user information and login (i.e switch to the personalized HomeFragment)
 	private void fetchUserInformationAndLogin() {
 		final Session session = Session.getActiveSession();
 		if (session != null && session.isOpened()) {
 			// If the session is open, make an API call to get user information required for the app
-			
+
 			// Show the progress spinner during this network call
 			if (fragments[FB_LOGGED_OUT_HOME] != null && ((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer != null) {
 				((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer.setVisibility(View.VISIBLE);
 			}
-			
+
 			// Get the user's list of friends
 			Request friendsRequest = Request.newMyFriendsRequest(session, new Request.GraphUserListCallback() {
 
@@ -344,10 +321,10 @@ public class HomeActivity extends DBFragmentActivity {
 			Bundle params = new Bundle();
 			params.putString("fields", "name,first_name,last_name");
 			friendsRequest.setParameters(params);
-			
+
 			// Get current logged in user information
 			Request meRequest = Request.newMeRequest(session, new Request.GraphUserCallback() {
-				
+
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
 					FacebookRequestError error = response.getError();
@@ -360,7 +337,7 @@ public class HomeActivity extends DBFragmentActivity {
 					}
 				}
 			});
-			
+
 			// Create a RequestBatch and add a callback once the batch of requests completes
 			RequestBatch requestBatch = new RequestBatch(friendsRequest, meRequest);
 			requestBatch.addCallback(new RequestBatch.Callback() {
@@ -376,25 +353,25 @@ public class HomeActivity extends DBFragmentActivity {
 					}
 				}
 			});
-			
+
 			// Execute the batch of requests asynchronously
 			requestBatch.executeAsync();
 		}
 	}
-	
+
 	// Switches to the personalized HomeFragment as the user has just logged in
 	private void loadPersonalizedFragment() {
 		if (isResumed) {
 			// Personalize the HomeFragment
 			((HomeFragment)fragments[HOME]).personalizeHomeFragment();
-			
+
 			// Load the HomeFragment personalized
 			showFragment(HOME, false);
 		} else {
 			showError(getString(R.string.error_switching_screens), true);
 		}
 	}
-	
+
     void handleError(FacebookRequestError error, boolean logout) {
         DialogInterface.OnClickListener listener = null;
         String dialogBody = null;
@@ -483,7 +460,7 @@ public class HomeActivity extends DBFragmentActivity {
         	logout();
         }
     }
-	
+
 	// Show user error message as a toast
 	void showError(String error, boolean logout) {
 		Toast.makeText(this, error, Toast.LENGTH_LONG).show();
@@ -491,11 +468,11 @@ public class HomeActivity extends DBFragmentActivity {
 			logout();
 		}
 	}
-	
+
     private void logout() {
     	// Close the session, which will cause a callback to show the logout screen
 		Session.getActiveSession().closeAndClearTokenInformation();
-		
+
 		// Clear any permissions associated with the LoginButton
 		LoginButton loginButton = (LoginButton) findViewById(R.id.loginButton);
 		Animation bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
@@ -504,5 +481,5 @@ public class HomeActivity extends DBFragmentActivity {
 			loginButton.clearPermissions();
 		}
     }
-	
+
 }

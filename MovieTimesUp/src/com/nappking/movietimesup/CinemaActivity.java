@@ -2,8 +2,6 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -17,7 +15,6 @@ import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Cinema;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
-import com.nappking.movietimesup.task.LoadUserDataTask;
 import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
@@ -92,27 +89,6 @@ public class CinemaActivity extends DBActivity{
 		super.onResume();
 		update(false);
 		updateUser();
-	}
-
-	private void updateUser(){
-		Dao<User, Integer> daoUser;
-		try {
-			daoUser = getHelper().getUserDAO();
-			int totalMovies = (int)getHelper().getMovieDAO().countOf();
-			User user = daoUser.queryForId(1);
-			if(user!=null){
-				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()
-						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
-					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 10min since last time it was updated or there are new movies
-					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
-					new LoadUserDataTask(this, user).execute();
-				}						
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void update(boolean stateChanged){     	

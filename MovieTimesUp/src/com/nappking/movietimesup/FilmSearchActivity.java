@@ -20,12 +20,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class FilmSearchActivity extends DBActivity{
     private EditText inputSearch;
 	private ListView movieList;
-	private TextView emptyList;
 	private int textLength;
     private String text;
     private List<Movie> movie_sort;
@@ -40,8 +38,6 @@ public class FilmSearchActivity extends DBActivity{
 		movie_sort  = new ArrayList<Movie>();
 		movies = new ArrayList<Movie>();
 		movieList = (ListView) findViewById(android.R.id.list);
-		emptyList = (TextView) findViewById(android.R.id.empty);
-		emptyList.setVisibility(View.INVISIBLE);
 		inputSearch = (EditText) findViewById(R.id.inputSearch);
 		setListeners();
 		update();
@@ -63,6 +59,7 @@ public class FilmSearchActivity extends DBActivity{
 			QueryBuilder<Movie, Integer> qb = getHelper().getMovieDAO().queryBuilder();
 			Where<Movie,Integer> where = qb.where();
 			where.in(Movie.ID, idMovies);
+			qb.orderBy(Movie.TITLE, true);
 			movies=qb.query();
 			MovieListAdapter adapter = new MovieListAdapter(this, R.layout.item_film_searchable, movies);
 			movieList.setAdapter(adapter);	
@@ -92,14 +89,6 @@ public class FilmSearchActivity extends DBActivity{
 					}
 				}
 				movieList.setAdapter(new MovieListAdapter(getBaseContext(), R.layout.item_film_searchable, movie_sort));
-				if(movie_sort.isEmpty()){
-					movieList.setVisibility(View.INVISIBLE);
-					emptyList.setVisibility(View.VISIBLE);
-				}
-				else{
-					movieList.setVisibility(View.VISIBLE);
-					emptyList.setVisibility(View.INVISIBLE);
-				}
 			}			
 		});
 		

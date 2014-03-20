@@ -1,13 +1,11 @@
 package com.nappking.movietimesup;
 
 import java.sql.SQLException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +55,6 @@ public class FilmActivity extends DBActivity{
 	private static int LONG_TIME = 6000;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
-    private static final int UNBLOCK_LEVEL = 15;
     
 	//Seconds to unveil some clues before bet
 	private int mCurrentSeconds = 30;
@@ -288,7 +285,7 @@ public class FilmActivity extends DBActivity{
 	    		dialog.show();
 	    	}
 	        
-	        mCountDown=new CountDownTimer(TIME_TO_BET+200,INTERVAL) {
+	        mCountDown=new CountDownTimer(TIME_TO_BET,INTERVAL) {
 	        	int currentProgress = max;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
@@ -300,7 +297,7 @@ public class FilmActivity extends DBActivity{
 		        		textCamera.setVisibility(View.VISIBLE);
 		        		textCamera.startAnimation(fadeInText);
 		        	}
-		        	else if(currentProgress==10){
+		        	else if(currentProgress==15){
 		        		textAction.setVisibility(View.VISIBLE);
 		        		textAction.startAnimation(fadeInText);
 		        	}
@@ -1032,7 +1029,7 @@ public class FilmActivity extends DBActivity{
 		
 		//set values & actions
 		if(a.getField().equals(User.CINEMAS)){
-			int cinemas = mUser.getCinemas();
+			int cinemas = mUser.getTotalCinemas();
 			title.setText(getResources().getString(R.string.level_number)+" "+cinemas+" "+
 					getResources().getString(R.string.unlocked));
 			foreground_text.setText(cinemas+"");
@@ -1111,9 +1108,8 @@ public class FilmActivity extends DBActivity{
 					field = User.EXOTIC;
 					goal = mUser.getExotic();
 				}
-				int totalSolved = mUser.getAmerica()+mUser.getAsia()+mUser.getEurope()+mUser.getExotic();
-				if((totalSolved % UNBLOCK_LEVEL) == 0){ //Unblock new level
-					mUser.setCinemas(mUser.getCinemas()+1);
+				int totalSolved = mUser.getTotalSolved();
+				if((totalSolved % MovieTimesUpApplication.UNLOCK_LEVEL) == 0){ //Unblock new level
 					levelUnlocked=true;
 				}	
 				if(levelUnlocked){

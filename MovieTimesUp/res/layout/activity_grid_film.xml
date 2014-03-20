@@ -65,10 +65,12 @@
 		style="@style/layoutLeft">
 		<TextView 
 		    android:id="@+id/points"
-		    style="@style/infoTextLeftButton"/>		
+		    style="@style/infoTextLeftButton"
+		    android:textSize="@dimen/grid_text_size_bigger"/>		
 		<TextView 
 		    android:id="@+id/seconds"
-		    style="@style/infoTextLeftButton"/>
+		    style="@style/infoTextLeftButton"
+		    android:textSize="@dimen/grid_text_size_default"/>
 	</LinearLayout>
 		
 	<LinearLayout 

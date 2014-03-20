@@ -26,36 +26,36 @@ public class AddMovie {
 		
 		int id = 51;
 		int points = 1;
-		int cinema = 1;
-		int year = 1986;
+		int cinema = 2;
+		int year = 1980;
 		boolean masterpiece = false;
-		boolean cult = false;
-		String title = "Parque Jurásico";
-		String alternative_title = "Jurassic Park";
-		String original_title = "Jurassic Park";
-		String continent = "América";
+		boolean cult = true;
+		String title = "Aterriza como puedas";
+		String alternative_title = "¿Y dónde está el piloto?";
+		String original_title = "Airplane!";
+		String continent = "Améirca";
 		String country = "USA";
-		String director = "Steven Spielberg";
-		String genre = "Ciencia ficción";
-		String poster = "";
-		String  filmaffinity_id = "152490";
-		String imdb_id = "tt0107290";
-		String actor1="Laura Dern";
-		String actor2="Jeff Goldblum";
-		String actor3="Sam Neill";
-		String character1="Dr. Alan Grant";
-		String character2="Dra. Ellie Sattler";
-		String character3="Dr. Ian Malcolm";
-		String other1 ="Inició una fiebre de merchandising a su alrededor. Sigue siendo una de las películas más taquilleras de todos los tiempos";
-		String other2 ="El director afirmó que no permitiría ver a sus hijos la película hasta que estos no cumpliesen al menos quince años por considerarla demasiado \"terrorífica\"";
-		String other3 ="El rugido era una combinación de sonidos de perro, pingüino, tigre, cocodrilo y elefante";
-		String quote1="Yo invito a científicos y usted a una estrella de rock.";
-		String quote2="¡Lo ha logrado! ¡Ese loco hijo de puta lo ha logrado!";
-		String quote3="-Todos los parques sufren retrasos. Cuando inauguraron Disneylandia en 1956, nada funcionó. -Pero, los piratas del caribe se averían, no se comen a los turistas.";
-		String plot = "El multimillonario X consigue hacer realidad su sueño de crear con ellos un parque temático en una isla remota con " +
-				"clonaciones de dinosaurios del Jurásico. Antes de abrirlo al público, invita a una pareja de eminentes científicos y a un " +
-				"matemático para que comprueben la viabilidad del proyecto. Pero las medidas de seguridad del parque no prevén el instinto de " +
-				"supervivencia de la madre naturaleza ni la codicia humana.";
+		String director = "Jim Abrahams, David & Jerry Zucker";
+		String genre = "Comedia";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BNDU2MjE4MTcwNl5BMl5BanBnXkFtZTgwNDExOTMxMDE@._V1_SX214_.jpg";
+		String  filmaffinity_id = "445878";
+		String imdb_id = "tt0080339";
+		String actor1="Leslie Nielsen";
+		String actor2="Robert Hays";
+		String actor3="Julie Hagerty";
+		String character1="Ted Striker";
+		String character2="Dr. Rumack";
+		String character3="Elaine";
+		String other1 ="El famoso píloto automático que aparece en la película fue bautizado con el nombre de Otto y permaneció años en el garaje del director";
+		String other2 ="Posiblemente la película que inició las sagas de parodias basadas en otras películas";
+		String other3 ="Todos los actores secundarios fueron escogidos por estar asociados en la mente del público a papeles serios y dramáticos";
+		String quote1="No hay ninguna razón para alarmarse, y esperamos que disfruten del vuelo. Por cierto, ¿Hay alguien a bordo que sepa pilotar un avión?";
+		String quote2="-Azafata tenemos que llevarlos a un hospital. -¿Qué es, doctor?  -Es un edificio grande lleno de enfermos y casi nunca hay camas.";
+		String quote3="-¿Nervioso?. -Sí, un poco. -¿Es la primera vez?. -No, ya había estado nervioso antes.";
+		String plot = "El vuelo 209 de la Trans American sale de Los Ángeles con destino a Chicago. Entre el pasaje " +
+				"se encuentran una serie de curiosos personajes. Entre ellos, un ex-piloto de combate que, en pleno vuelo, " +
+				"se verá obligado a hacerse con el mando del avión comercial, tras quedar los pilotos indispuestos por una " +
+				"comida en mal estado.";
 
 		
 		//CLIENT

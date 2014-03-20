@@ -64,27 +64,27 @@ public class HomeFragment extends Fragment {
     
     // FrameLayout of the progressContainer
     private FrameLayout progressContainer;
-	
+
 	// TextView for the You Scored message
     private TextView youScoredTextView;
-	
+
 	// userImage ProfilePictureView to display the user's profile pic
     private ProfilePictureView userImage;
-	
+
 	// TextView for the user's name
     private TextView welcomeTextView;
-	    
+
 	// Buttons ...
     private ImageView playButton;
     private ImageView scoresButton;
     private ImageView challengeButton;
     private ImageView bragButton;
-	
+
 	// Parameters of a WebDialog that should be displayed
     private WebDialog dialog = null;
     private String dialogAction = null;
     private Bundle dialogParams = null;
-	
+
 	// Attributes for posting back to Facebook
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private static final int REAUTH_ACTIVITY_CODE = 100;
@@ -98,8 +98,8 @@ public class HomeFragment extends Fragment {
 		setRetainInstance(true);
 		application = (MovieTimesUpApplication) getActivity().getApplication();
 	}
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 		View v;		
@@ -139,11 +139,11 @@ public class HomeFragment extends Fragment {
 	        });			
 			updateButtonVisibility();
 		}
-		
+
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);		
 		youScoredTextView = (TextView)v.findViewById(R.id.youScoredTextView);
 		updateYouScoredTextView();
-		
+
 		playButton = (ImageView)v.findViewById(R.id.playButton);
 		playButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -152,16 +152,16 @@ public class HomeFragment extends Fragment {
 				return false;
 			}
         });
-		
+
 		// Hide the progressContainer
 		progressContainer.setVisibility(View.INVISIBLE);
-		
+
 		// Restore the state
 		restoreState(savedInstanceState);
-		
+
 		return v;
 	}
-	
+
 	private void updateUser(){
 		//If there is not user associated, one is created in the local database
 		DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
@@ -181,7 +181,6 @@ public class HomeFragment extends Fragment {
 				user.setScore(0);
 				user.setSeconds(moviesCount*100);
 				user.setMovies(moviesCount);
-				user.setCinemas(1);
 				user.setMasterpiece(0);
 				user.setCult(0);
 				user.setAmerica(0);
@@ -201,7 +200,7 @@ public class HomeFragment extends Fragment {
             OpenHelperManager.releaseHelper();
 		}
 	}
-	
+
 	// Personalize this HomeFragment (social-version only)
 	void personalizeHomeFragment() {
 		if (application.getCurrentFBUser() != null) {	
@@ -216,24 +215,24 @@ public class HomeFragment extends Fragment {
             welcomeTextView.setText("Welcome, " + application.getCurrentFBUser().getFirstName());
 		}
 	}
-	
+
 	// Restores the state during onCreateView
 	private void restoreState(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			pendingPost = savedInstanceState.getBoolean(PENDING_POST_KEY, false);
 		}
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();		
@@ -250,7 +249,7 @@ public class HomeFragment extends Fragment {
 			dialog.dismiss();
 		}
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -261,28 +260,28 @@ public class HomeFragment extends Fragment {
 	private void onPlayButtonTouched() {
 		startFilmMenu();
     }
-	
+
 	private void startFilmMenu() {
         Intent i = new Intent(getActivity(), SelectorCinemaActivity.class);
         startActivity(i);
 	}
-	
+
 	// Called when the Challenge button is touched
 	private void onChallengeButtonTouched() {
 		sendChallenge();
 	}
-	
+
 	// Called when the Brag button is touched
 	private void onBragButtonTouched() {
 		sendBrag();
 	}
-	
+
 	// Called when the Scores button is touched
 	private void onScoresButtonTouched() {
 		Intent i = new Intent(getActivity(), ScoreboardActivity.class);
 		startActivityForResult(i, 0);
 	}
-	
+
 	// Called when the Activity is returned to - needs to be caught for the following two scenarios:
 	// 1. Returns from an authentication dialog requesting write permissions - tested with
 	//    requestCode == REAUTH_ACTIVITY_CODE - if successfully got permissions, execute a session
@@ -297,7 +296,7 @@ public class HomeFragment extends Fragment {
 			Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
         }
 	}
-	
+
 	// Update with the user's score
 	void updateYouScoredTextView() {
 		if (youScoredTextView != null) {
@@ -306,7 +305,7 @@ public class HomeFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	// Hide/show buttons based on whether the user has played a game yet or not
 	void updateButtonVisibility() {
 		if (scoresButton != null && challengeButton != null && bragButton != null) {
@@ -328,10 +327,10 @@ public class HomeFragment extends Fragment {
 			}
 		}
 	}
-	
-	
+
+
 	/* Facebook Integration */
-	
+
 	// Pop up a request dialog for the user to invite their friends to smash them back in Friend Smash
 	private void sendChallenge() {
     	Bundle params = new Bundle();
@@ -360,14 +359,14 @@ public class HomeFragment extends Fragment {
     	// Show FBDialog without a notification bar
     	showDialogWithoutNotificationBar("apprequests", params);
 	}
-		
+
 	// Pop up a filtered request dialog for the user to invite their friends that have Android devices
 	// to smash them back in Friend Smash
 	private void sendFilteredChallenge() {
 		// Okay, we're going to filter our friends by their device, we're looking for friends with an Android device
 		// Show the progressContainer during the network call
 		progressContainer.setVisibility(View.VISIBLE);
-		
+
 		// Get a list of the user's friends' names and devices
 		final Session session = Session.getActiveSession();
 		Request friendDevicesGraphPathRequest = Request.newGraphPathRequest(session, "me/friends", new Request.Callback() {
@@ -375,7 +374,7 @@ public class HomeFragment extends Fragment {
 			public void onCompleted(Response response) {
 				// Hide the progressContainer now that the network call has completed
 				progressContainer.setVisibility(View.INVISIBLE);
-				
+
 				FacebookRequestError error = response.getError();
 				if (error != null) {
 					Log.e(MovieTimesUpApplication.TAG, error.toString());
@@ -385,13 +384,13 @@ public class HomeFragment extends Fragment {
 						// Get the result
 						GraphObject graphObject = response.getGraphObject();
 						JSONArray dataArray = (JSONArray)graphObject.getProperty("data");
-						
+
 						if (dataArray.length() > 0) {
 							// Ensure the user has at least one friend ...
-							
+
 							// Store the filtered friend ids in the following List
 							ArrayList<String> filteredFriendIDs = new ArrayList<String>();
-							
+
 							for (int i=0; i<dataArray.length(); i++) {
 								JSONObject currentUser = dataArray.optJSONObject(i);
 								if (currentUser != null) {
@@ -412,16 +411,16 @@ public class HomeFragment extends Fragment {
 									}
 								}
 							}
-							
+
 							// Now we have a list of friends with an Android device, we can send requests to them
 					    	Bundle params = new Bundle();
-					    	
+
 					    	// Uncomment following link once uploaded on Google Play for deep linking
 					    	// params.putString("link", "https://play.google.com/store/apps/details?id=com.facebook.android.friendsmash");
-					    	
+
 					    	// We create our parameter dictionary as we did before
 					    	params.putString("message", "I just smashed " + application.getScore() + " friends! Can you beat it?");
-					    	
+
 					    	// We have the same list of suggested friends
 					    	String [] suggestedFriends = {
 					    		    "695755709",
@@ -430,10 +429,10 @@ public class HomeFragment extends Fragment {
 					    		    "286400088",
 					    		    "627802916",
 					    	};
-							    	
+
 					    	// Of course, not all of our suggested friends will have Android devices - we need to filter them down
 					    	ArrayList<String> validSuggestedFriends = new ArrayList<String>();
-		             
+
 		                    // So, we loop through each suggested friend
 		                    for (String suggestedFriend : suggestedFriends){
 		                        // If they are on our device filtered list, we know they have an Android device
@@ -443,7 +442,7 @@ public class HomeFragment extends Fragment {
 		                        }
 		                    }
 		                    params.putString("suggestions", TextUtils.join(",", validSuggestedFriends.toArray(new String[validSuggestedFriends.size()])));
-							    	
+
 					    	// Show FBDialog without a notification bar
 					    	showDialogWithoutNotificationBar("apprequests", params);
 						}
@@ -457,29 +456,29 @@ public class HomeFragment extends Fragment {
 		friendDevicesGraphPathRequest.setParameters(extraParamsBundle);
 		Request.executeBatchAsync(friendDevicesGraphPathRequest);
 	}
-	
+
 	// Pop up a feed dialog for the user to brag to their friends about their score and to offer
 	// them the opportunity to smash them back in Friend Smash
 	private void sendBrag() {
 		// This function will invoke the Feed Dialog to post to a user's Timeline and News Feed
 	    // It will attempt to use the Facebook Native Share dialog
 	    // If that's not supported we'll fall back to the web based dialog.
-		
+
 		GraphUser currentFBUser = application.getCurrentFBUser();
-		
+
 		// This first parameter is used for deep linking so that anyone who clicks the link will start smashing this user
     	// who sent the post
 		String link = "https://apps.facebook.com/friendsmashsample/?challenge_brag=";
 		if (currentFBUser != null) {
 			link += currentFBUser.getId();
 		}
-		
+
 		// Define the other parameters
 		String name = "Checkout my Friend Smash greatness!";
 		String caption = "Come smash me back!";
 		String description = "I just smashed " + application.getScore() + " friends! Can you beat my score?";
 	    String picture = "http://www.friendsmash.com/images/logo_large.jpg";
-		
+
 	    if (FacebookDialog.canPresentShareDialog(getActivity(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
 	    	// Create the Native Share dialog
 			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
@@ -488,7 +487,7 @@ public class HomeFragment extends Fragment {
 			.setCaption(caption)
 			.setPicture(picture)
 			.build();
-			
+
 			// Show the Native Share dialog
 			((HomeActivity)getActivity()).getFbUiLifecycleHelper().trackPendingDialogCall(shareDialog.present());
 		} else {
@@ -499,18 +498,18 @@ public class HomeFragment extends Fragment {
 	    	params.putString("caption", caption);
 	    	params.putString("description", description);
 	    	params.putString("picture", picture);
-	    	
+
 	    	// Show FBDialog without a notification bar
 	    	showDialogWithoutNotificationBar("feed", params);
 		}
 	}
-	
+
 	// Show a dialog (feed or request) without a notification bar (i.e. full screen)
 	private void showDialogWithoutNotificationBar(String action, Bundle params) {
 		// Create the dialog
 		dialog = new WebDialog.Builder(getActivity(), Session.getActiveSession(), action, params).setOnCompleteListener(
 				new WebDialog.OnCompleteListener() {
-			
+
 			@Override
 			public void onComplete(Bundle values, FacebookException error) {
 				if (error != null && !(error instanceof FacebookOperationCanceledException)) {
@@ -521,7 +520,7 @@ public class HomeFragment extends Fragment {
 				dialogParams = null;
 			}
 		}).build();
-		
+
 		// Hide the notification bar and resize to full screen
 		Window dialog_window = dialog.getWindow();
     	dialog_window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -533,19 +532,19 @@ public class HomeFragment extends Fragment {
     	// Show the dialog
     	dialog.show();
 	}
-	
+
 	// Called when the session state has changed
 	void tokenUpdated() {
 		if (pendingPost) {
 			facebookPostAll();
         }
 	}
-	
+
 	// Post all information to Facebook for the user (score, achievement and custom OG action)
 	private void facebookPostAll() {
 		pendingPost = false;
 		Session session = Session.getActiveSession();
-		
+
 		if (session == null || !session.isOpened()) {
             return;
         }
@@ -565,7 +564,7 @@ public class HomeFragment extends Fragment {
 		// Post Achievemnt to Facebook
 		postAchievement();
 	}
-	
+
 	void requestPublishPermissions(Session session) {
         if (session != null) {
             Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS)
@@ -576,13 +575,13 @@ public class HomeFragment extends Fragment {
             session.requestNewPublishPermissions(newPermissionsRequest);
         }
     }
-	
+
 	// Post score to Facebook
 	private void postScore() {
 		final int score = application.getScore();
 		if (score > 0) {
 			// Only post the score if they smashed at least one friend!
-			
+
 			// Post the score to FB (for score stories and distribution)
 			Bundle fbParams = new Bundle();
 			fbParams.putString("score", "" + score);
@@ -604,7 +603,7 @@ public class HomeFragment extends Fragment {
 						}
 					});
 			Request.executeBatchAsync(postScoreRequest);
-			
+
 			// Post the score to our servers for the high score table
 			AsyncTask.execute(new Runnable() {
 				public void run() {
@@ -616,7 +615,7 @@ public class HomeFragment extends Fragment {
 						nameValuePairs.add(new BasicNameValuePair("fbid", application.getCurrentFBUser().getId()));
 						nameValuePairs.add(new BasicNameValuePair("score", "" + score));
 						httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-						
+
 						// Execute the HTTP Post request and log the result
 						HttpResponse responsePost = httpClient.execute(httpPost);
 						HttpEntity responseEntity = responsePost.getEntity();
@@ -630,7 +629,7 @@ public class HomeFragment extends Fragment {
 			});
 		}
 	}
-	
+
 	// Post achievement to Facebook
 	private void postAchievement() {
 		int score = application.getScore();
@@ -667,14 +666,14 @@ public class HomeFragment extends Fragment {
 			Request.executeBatchAsync(postScoreRequest);
 		}
 	}
-	
-	
+
+
 	// Getters & Setters
-	
+
 	public boolean isPendingPost() {
 		return pendingPost;
 	}
-	
+
 	public void setPendingPost(boolean pendingPost) {
 		this.pendingPost = pendingPost;
 	}

@@ -2,8 +2,6 @@ package com.nappking.movietimesup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.nappking.movietimesup.R;
@@ -14,7 +12,6 @@ import com.nappking.movietimesup.database.DBActivity;
 import com.nappking.movietimesup.entities.Cinema;
 import com.nappking.movietimesup.entities.Movie;
 import com.nappking.movietimesup.entities.User;
-import com.nappking.movietimesup.task.LoadUserDataTask;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -46,7 +43,6 @@ public class SelectorCinemaActivity extends DBActivity{
      	grid = 	(GridView) findViewById(R.id.grid);	
      	search = (ImageView) findViewById(R.id.search);
 		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
-		update();
 		setListeners();
 	}
 	
@@ -63,27 +59,6 @@ public class SelectorCinemaActivity extends DBActivity{
 		search.clearAnimation();
 		super.onPause();
 	}
-
-	private void updateUser(){
-		Dao<User, Integer> daoUser;
-		try {
-			daoUser = getHelper().getUserDAO();
-			int totalMovies = (int)getHelper().getMovieDAO().countOf();
-			User user = daoUser.queryForId(1);
-			if(user!=null){
-				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()
-						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
-					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 10min since last time it was updated or there are new movies
-					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
-					new LoadUserDataTask(this, user).execute();
-				}						
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	private void createCinemas(){
 		mCinemas = new ArrayList<Cinema>();
@@ -94,33 +69,36 @@ public class SelectorCinemaActivity extends DBActivity{
 			Dao<User, Integer> daoUser = getHelper().getUserDAO();
 			GenericRawResults<String[]> rawResults = daoMovie.queryRaw("SELECT COUNT(DISTINCT "+Movie.CINEMA+") FROM "+Movie.TABLE);
 			User user = daoUser.queryForId(1);
-			unlockedCinemas = user.getCinemas();
+			unlockedCinemas = user.getTotalCinemas();
 			List<String> unlockedMovies = user.getUnlockedMovies();
 			totalCinemas = Integer.parseInt(rawResults.getFirstResult()[0]);
 			
 			Cinema cinema;
 			boolean unlocked;
 			int solvedMovies;
+			
+			Log.i("UNLOCKED CINEMAS", unlockedCinemas+"");
 			for(int index=1;index<=totalCinemas;index++){	
 				if(index<=unlockedCinemas){
 					unlocked=true;
 					solvedMovies = 0;
-					String ids = "(";
-					for(String id: unlockedMovies){
-						ids=ids+"\'"+id+"\',";
+					if(!unlockedMovies.isEmpty()){
+						String ids = "(";
+						for(String id: unlockedMovies){
+							ids=ids+"\'"+id+"\',";
+						}
+						ids=ids.substring(0, ids.length()-1);
+						ids=ids+")";
+						Log.i("QUERY", "SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
+								" AND "+Movie.ID+" IN "+ids);
+						rawResults = daoMovie.queryRaw("SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
+								" AND "+Movie.ID+" IN "+ids);
+						solvedMovies=rawResults.getResults().size();
 					}
-					ids=ids.substring(0, ids.length()-1);
-					ids=ids+")";
-					Log.i("QUERY", "SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
-							" AND WHERE "+Movie.ID+" IN "+ids);
-					rawResults = daoMovie.queryRaw("SELECT "+Movie.ID+" FROM "+Movie.TABLE+" WHERE "+Movie.CINEMA+" = "+index+
-							" AND "+Movie.ID+" IN "+ids);
-					solvedMovies=rawResults.getResults().size();
 				}else{
 					unlocked=false;
 					solvedMovies=0;
-				}
-				
+				}				
 				cinema = new Cinema(index, unlocked, solvedMovies);
 				mCinemas.add(cinema);
 			}	

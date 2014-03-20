@@ -18,12 +18,14 @@ import com.nappking.movietimesup.entities.User;
  */
 public class MovieTimesUpApplication extends Application {	
 	// Tag used when logging all messages with the same tag (e.g. for demoing purposes)
-	static final String TAG = "MovieTimesUp";	
+	public static final String TAG = "MovieTimesUp";	
     public static final String URL = "http://movietimesup.gestores.cloudbees.net/rest/";
 	// Switch between the non-social and social Facebook versions of the game
-	static final boolean IS_SOCIAL = true;
-	static final int TIME_FOR_SERVICE=15*60*1000; //15min
+	public static final int TIME_FOR_SERVICE=15*60*1000; //15min
+    public static final int UNLOCK_LEVEL = 15;
+    public static final boolean IS_SOCIAL = true;
 	// Player's current score
+    private boolean soundEnabled = true;
 	private int score = 0;
 	private int seconds = 0;
 	// Last time LoadUserDataTask was called
@@ -64,6 +66,14 @@ public class MovieTimesUpApplication extends Application {
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 	}
+
+	public boolean getSoundEnabled() {
+		return soundEnabled;
+	}
+
+	public void setSoundEnabled(boolean enabled) {
+		this.soundEnabled = enabled;
+	}
 	
 	public long getLastUpdateCall() {
 		return lastUpdateCall;
@@ -103,7 +113,6 @@ public class MovieTimesUpApplication extends Application {
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 		if (!loggedIn) {
-			setLastUpdateCall(-1);
 			setCurrentFBUser(null);
         	setFriends(null);
         	setFriendlyUserList(null);

@@ -41,10 +41,8 @@ import android.widget.TextView;
 import com.facebook.Session;
 import com.nappking.movietimesup.R;
 import com.nappking.movietimesup.entities.User;
-import com.nappking.movietimesup.task.WebServiceTask;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
-import com.google.gson.Gson;
 
 /**
  *  Fragment shown once a user opens the scoreboard
