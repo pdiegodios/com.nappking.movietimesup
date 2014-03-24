@@ -246,6 +246,23 @@ public class HomeFragment extends Fragment {
 	}
 	
 	private void updatePoints(){
+		DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
+		try {
+			Dao <User,Integer> daoUser = helper.getUserDAO();
+			User user = daoUser.queryForId(1);
+			if(user!=null){
+				application.setScore(user.getScore());
+				application.setUnlockedMovies(user.getTotalSolved());
+				application.setSeconds(user.getSeconds());
+				application.setLevel(user.getTotalCinemas());
+			}
+			helper = null;
+			OpenHelperManager.releaseHelper();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			helper = null;
+	        OpenHelperManager.releaseHelper();
+		}	
 		userPoints.setText(application.getScore()+"");
 		userMovies.setText(application.getUnlockedMovies()+"");
 		userSeconds.setText(application.getSeconds()+"");
