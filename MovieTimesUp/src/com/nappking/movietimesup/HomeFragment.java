@@ -128,10 +128,12 @@ public class HomeFragment extends Fragment {
 		bragButton = (ImageView)v.findViewById(R.id.bragButton);
 		playButton = (ImageView)v.findViewById(R.id.playButton);
 		// Personalize this HomeFragment
-		personalizeHomeFragment();				
+		personalizeHomeFragment();	
+		updatePoints();
 		setListeners();		
 		updateButtonVisibility();
-
+		
+     	billboard.start();
 		// Hide the progressContainer
 		progressContainer.setVisibility(View.INVISIBLE);
 		// Restore the state
@@ -222,12 +224,6 @@ public class HomeFragment extends Fragment {
 				Log.i("HomeFragment", "LoadUserData called");
 				new LoadUserDataTask(this.getActivity(), user).execute();
 			}
-			else{
-				application.setScore(user.getScore());
-				application.setSeconds(user.getSeconds());
-				application.setLevel(user.getTotalCinemas());
-				application.setUnlockedMovies(user.getTotalSolved());
-			}
 			helper = null;
 			OpenHelperManager.releaseHelper();
 		} catch (SQLException e) {
@@ -247,7 +243,9 @@ public class HomeFragment extends Fragment {
 				userImage.setVisibility(View.VISIBLE);
 			}
 		}
-     	billboard.start();
+	}
+	
+	private void updatePoints(){
 		userPoints.setText(application.getScore()+"");
 		userMovies.setText(application.getUnlockedMovies()+"");
 		userSeconds.setText(application.getSeconds()+"");
