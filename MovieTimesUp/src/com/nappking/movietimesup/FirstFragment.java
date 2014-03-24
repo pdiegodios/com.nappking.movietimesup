@@ -47,7 +47,7 @@ public class FirstFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_home_first, parent, false);
+		View v = inflater.inflate(R.layout.fragment_first, parent, false);
 		progressContainer = v.findViewById(R.id.progressContainer);
 		progressContainer.setVisibility(View.INVISIBLE);		
 		// Set an error listener for the login button

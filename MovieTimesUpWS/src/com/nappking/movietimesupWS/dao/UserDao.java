@@ -18,18 +18,18 @@ public class UserDao implements IUserDao{
 	private PreparedStatement _statement;
 	
 	//Statements
-	private String insert = "INSERT into "+User.TABLE+"("+User.USER+", "+User.NAME+", "+
-			User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+User.LASTUPDATE+", "+
-			User.LASTFOREGROUND+", "+User.DAYS+", "+User.MOVIES+", "+User.CINEMAS+", "+User.MASTERPIECE+", "+
-			User.CULT+", "+User.AMERICA+", "+User.EUROPE+", "+User.ASIA+", "+User.EXOTIC+
-			") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+User.SCORE+" = ?, "+
-			User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+User.LASTUPDATE+" = ?, "+
-			User.LASTFOREGROUND+" = ?, "+User.DAYS+" = ?, "+User.MOVIES+" = ?, "+User.CINEMAS+" = ?, "+
-			User.MASTERPIECE+" = ?, "+User.CULT+" = ?, "+User.AMERICA+" = ?, "+User.EUROPE+" = ?, "+
-			User.ASIA+" = ?, "+User.EXOTIC+" = ?  WHERE "+User.USER +" = ?";
+	private String insert = "INSERT into "+User.TABLE+"("+User.USER+", "+User.NAME+", "+User.EMAIL+", "+
+			User.PASSWORD+", "+User.SCORE+", "+User.SECONDS+", "+User.LOCKED+", "+User.UNLOCKED+", "+
+			User.LASTUPDATE+", "+User.LASTFOREGROUND+", "+User.DAYS+", "+User.MOVIES+", "+
+			User.MASTERPIECE+", "+User.CULT+", "+User.AMERICA+", "+User.EUROPE+", "+User.ASIA+", "+User.EXOTIC+
+			") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String update = "UPDATE "+User.TABLE +" set "+User.NAME+" = ?, "+
+			User.SCORE+" = ?, "+User.SECONDS+" = ?, "+User.LOCKED+" = ?, "+User.UNLOCKED+" = ?, "+
+			User.LASTUPDATE+" = ?, "+User.LASTFOREGROUND+" = ?, "+User.DAYS+" = ?, "+User.MOVIES+" = ?, "+
+			User.MASTERPIECE+" = ?, "+User.CULT+" = ?, "+User.AMERICA+" = ?, "+
+			User.EUROPE+" = ?, "+User.ASIA+" = ?, "+User.EXOTIC+" = ?  WHERE "+User.USER +" = ?";
 	private String selectAll = "SELECT * from "+User.TABLE;
-	private String selectByID = "SELECT * from "+User.TABLE+" WHERE "+User.USER +"= ?";
+	private String selectByID = "SELECT * from "+User.TABLE+" WHERE "+User.USER +"= ? OR "+User.EMAIL+"= ?";
 	
 	public int save(User c) throws SQLException {
 		int idInserted = 0;
@@ -38,21 +38,22 @@ public class UserDao implements IUserDao{
 			_statement = _connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
 			_statement.setString(1, c.getUser());
 			_statement.setString(2, c.getName());
-			_statement.setInt(3, c.getScore());
-			_statement.setInt(4, c.getSeconds());
-			_statement.setString(5, toString(c.getLockedMovies()));
-			_statement.setString(6, toString(c.getUnlockedMovies()));
-			_statement.setLong(7, c.getLastUpdate());
-			_statement.setLong(8, c.getLastForeground());
-			_statement.setInt(9, c.getDays());
-			_statement.setInt(10, c.getMovies());
-			_statement.setInt(11, c.getCinemas());
-			_statement.setInt(12, c.getMasterpiece());
-			_statement.setInt(13, c.getCult());
-			_statement.setInt(14, c.getAmerica());
-			_statement.setInt(15, c.getEurope());
-			_statement.setInt(16, c.getAsia());
-			_statement.setInt(17, c.getExotic());
+			_statement.setString(3, c.getEmail());
+			_statement.setString(4, c.getPassword());
+			_statement.setInt(5, c.getScore());
+			_statement.setInt(6, c.getSeconds());
+			_statement.setString(7, toString(c.getLockedMovies()));
+			_statement.setString(8, toString(c.getUnlockedMovies()));
+			_statement.setLong(9, c.getLastUpdate());
+			_statement.setLong(10, c.getLastForeground());
+			_statement.setInt(11, c.getDays());
+			_statement.setInt(12, c.getMovies());
+			_statement.setInt(13, c.getMasterpiece());
+			_statement.setInt(14, c.getCult());
+			_statement.setInt(15, c.getAmerica());
+			_statement.setInt(16, c.getEurope());
+			_statement.setInt(17, c.getAsia());
+			_statement.setInt(18, c.getExotic());
 			_statement.executeUpdate();			
 			_result = _statement.getGeneratedKeys();
 			if (_result.next()) {
@@ -81,15 +82,13 @@ public class UserDao implements IUserDao{
 			_statement.setLong(7, c.getLastForeground());
 			_statement.setInt(8, c.getDays());
 			_statement.setInt(9, c.getMovies());
-			_statement.setInt(10, c.getCinemas());
-			_statement.setInt(11, c.getMasterpiece());
-			_statement.setInt(12, c.getCult());
-			_statement.setInt(13, c.getAmerica());
-			_statement.setInt(14, c.getEurope());
-			_statement.setInt(15, c.getAsia());
-			_statement.setInt(16, c.getExotic());
-			_statement.setString(17, c.getUser());
-			
+			_statement.setInt(10, c.getMasterpiece());
+			_statement.setInt(11, c.getCult());
+			_statement.setInt(12, c.getAmerica());
+			_statement.setInt(13, c.getEurope());
+			_statement.setInt(14, c.getAsia());
+			_statement.setInt(15, c.getExotic());
+			_statement.setString(16, c.getUser());			
 			nupdate = _statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,21 +110,22 @@ public class UserDao implements IUserDao{
 				user.setId(_result.getLong(1));
 				user.setUser(_result.getString(2));
 				user.setName(_result.getString(3));
-				user.setScore(_result.getInt(4));
-				user.setSeconds(_result.getInt(5));
-				user.setLockedMovies(fromString(_result.getString(6)));
-				user.setUnlockedMovies(fromString(_result.getString(7)));
-				user.setLastUpdate(_result.getLong(8));
-				user.setLastForeground(_result.getLong(9));
-				user.setDays(_result.getInt(10));
-				user.setMovies(_result.getInt(11));
-				user.setCinemas(_result.getInt(12));
-				user.setMasterpiece(_result.getInt(13));
-				user.setCult(_result.getInt(14));
-				user.setAmerica(_result.getInt(15));
-				user.setEurope(_result.getInt(16));
-				user.setAsia(_result.getInt(17));
-				user.setExotic(_result.getInt(18));
+				user.setEmail(_result.getString(4));
+				user.setPassword(_result.getString(5));
+				user.setScore(_result.getInt(6));
+				user.setSeconds(_result.getInt(7));
+				user.setLockedMovies(fromString(_result.getString(8)));
+				user.setUnlockedMovies(fromString(_result.getString(9)));
+				user.setLastUpdate(_result.getLong(10));
+				user.setLastForeground(_result.getLong(11));
+				user.setDays(_result.getInt(12));
+				user.setMovies(_result.getInt(13));
+				user.setMasterpiece(_result.getInt(14));
+				user.setCult(_result.getInt(15));
+				user.setAmerica(_result.getInt(16));
+				user.setEurope(_result.getInt(17));
+				user.setAsia(_result.getInt(18));
+				user.setExotic(_result.getInt(19));
 				users.add(user);
 			}			
 		} catch (SQLException e) {
@@ -140,27 +140,29 @@ public class UserDao implements IUserDao{
 			_connection = new ConnectionDB().getConnection();
 			_statement = _connection.prepareStatement(selectByID);
 			_statement.setString(1, idUser);
+			_statement.setString(2, idUser);
 			_result = _statement.executeQuery();			
 			while (_result.next()) {
 				user = new User();
 				user.setId(_result.getLong(1));
 				user.setUser(_result.getString(2));
 				user.setName(_result.getString(3));
-				user.setScore(_result.getInt(4));
-				user.setSeconds(_result.getInt(5));
-				user.setLockedMovies(fromString(_result.getString(6)));
-				user.setUnlockedMovies(fromString(_result.getString(7)));
-				user.setLastUpdate(_result.getLong(8));
-				user.setLastForeground(_result.getLong(9));
-				user.setDays(_result.getInt(10));
-				user.setMovies(_result.getInt(11));
-				user.setCinemas(_result.getInt(12));
-				user.setMasterpiece(_result.getInt(13));
-				user.setCult(_result.getInt(14));
-				user.setAmerica(_result.getInt(15));
-				user.setEurope(_result.getInt(16));
-				user.setAsia(_result.getInt(17));
-				user.setExotic(_result.getInt(18));
+				user.setEmail(_result.getString(4));
+				user.setPassword(_result.getString(5));
+				user.setScore(_result.getInt(6));
+				user.setSeconds(_result.getInt(7));
+				user.setLockedMovies(fromString(_result.getString(8)));
+				user.setUnlockedMovies(fromString(_result.getString(9)));
+				user.setLastUpdate(_result.getLong(10));
+				user.setLastForeground(_result.getLong(11));
+				user.setDays(_result.getInt(12));
+				user.setMovies(_result.getInt(13));
+				user.setMasterpiece(_result.getInt(14));
+				user.setCult(_result.getInt(15));
+				user.setAmerica(_result.getInt(16));
+				user.setEurope(_result.getInt(17));
+				user.setAsia(_result.getInt(18));
+				user.setExotic(_result.getInt(19));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

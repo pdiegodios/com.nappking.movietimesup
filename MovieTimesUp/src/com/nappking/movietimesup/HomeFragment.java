@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,9 +27,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,8 +48,10 @@ import com.nappking.movietimesup.R;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.LoginButton;
 import com.facebook.widget.ProfilePictureView;
 import com.facebook.widget.WebDialog;
+import com.facebook.widget.LoginButton.OnErrorListener;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBHelper;
@@ -59,26 +64,24 @@ import com.nappking.movietimesup.task.LoadUserDataTask;
  *  the start screen for the non-social version of the game
  */
 public class HomeFragment extends Fragment {	
-	// Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
-    private MovieTimesUpApplication application;
+	// Store the Application 
+    private MovieTimesUpApplication application;    
     
-    // FrameLayout of the progressContainer
-    private FrameLayout progressContainer;
-
-	// TextView for the You Scored message
-    private TextView youScoredTextView;
-
-	// userImage ProfilePictureView to display the user's profile pic
+    View progressContainer;
+    private AnimationDrawable billboard;
     private ProfilePictureView userImage;
-
-	// TextView for the user's name
-    private TextView welcomeTextView;
+    private TextView userPoints;
+    private TextView userLevel;
+    private TextView userSeconds;
+    private TextView userMovies;
 
 	// Buttons ...
     private ImageView playButton;
     private ImageView scoresButton;
     private ImageView challengeButton;
     private ImageView bragButton;
+    private ImageView loginButton;
+    private LoginButton login;
 
 	// Parameters of a WebDialog that should be displayed
     private WebDialog dialog = null;
@@ -103,72 +106,97 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 		View v;		
-		if (!MovieTimesUpApplication.IS_SOCIAL) {
-			v = inflater.inflate(R.layout.fragment_home, parent, false);
-		} else {
-			v = inflater.inflate(R.layout.fragment_home_fb_logged_in, parent, false);				
-			// Set the userImage ProfilePictureView
-			userImage = (ProfilePictureView) v.findViewById(R.id.userImage);			
-			// Set the welcomeTextView TextView
-			welcomeTextView = (TextView)v.findViewById(R.id.welcomeTextView);			
-			// Personalize this HomeFragment
-			personalizeHomeFragment();			
-			scoresButton = (ImageView)v.findViewById(R.id.scoresButton);
-			scoresButton.setOnTouchListener(new View.OnTouchListener() {
-	            @Override
-				public boolean onTouch(View v, MotionEvent event) {
-	            	onScoresButtonTouched();
-					return false;
-				}
-	        });			
-			challengeButton = (ImageView)v.findViewById(R.id.challengeButton);
-			challengeButton.setOnTouchListener(new View.OnTouchListener() {
-	            @Override
-				public boolean onTouch(View v, MotionEvent event) {
-	            	onChallengeButtonTouched();
-					return false;
-				}
-	        });			
-			bragButton = (ImageView)v.findViewById(R.id.bragButton);
-			bragButton.setOnTouchListener(new View.OnTouchListener() {
-	            @Override
-				public boolean onTouch(View v, MotionEvent event) {
-	            	onBragButtonTouched();
-					return false;
-				}
-	        });			
-			updateButtonVisibility();
-		}
+		v = inflater.inflate(R.layout.fragment_home, parent, false);	
+		// Set an error listener for the login button
+		login = (LoginButton) v.findViewById(R.id.login);	
+		loginButton = (ImageView) v.findViewById(R.id.loginButton);		
 
-		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);		
-		youScoredTextView = (TextView)v.findViewById(R.id.youScoredTextView);
-		updateYouScoredTextView();
-
+     	billboard = (AnimationDrawable) v.findViewById(R.id.billboard).getBackground();
+		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
+     	
+     	//User Info
+		userImage = (ProfilePictureView) v.findViewById(R.id.userImage);
+		userImage.setVisibility(View.INVISIBLE);	
+		userPoints = (TextView)v.findViewById(R.id.userPoints);
+		userMovies = (TextView)v.findViewById(R.id.userMovies);
+		userSeconds = (TextView)v.findViewById(R.id.userSeconds);
+		userLevel = (TextView)v.findViewById(R.id.userLevel);	
+		
+		//Buttons
+		scoresButton = (ImageView)v.findViewById(R.id.scoresButton);
+		challengeButton = (ImageView)v.findViewById(R.id.challengeButton);
+		bragButton = (ImageView)v.findViewById(R.id.bragButton);
 		playButton = (ImageView)v.findViewById(R.id.playButton);
+		// Personalize this HomeFragment
+		personalizeHomeFragment();				
+		setListeners();		
+		updateButtonVisibility();
+
+		// Hide the progressContainer
+		progressContainer.setVisibility(View.INVISIBLE);
+		// Restore the state
+		restoreState(savedInstanceState);
+		
+		return v;
+	}
+
+	private void setListeners(){
+		scoresButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
+            	onScoresButtonTouched();
+				return false;
+			}
+        });					
+		challengeButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
+            	onChallengeButtonTouched();
+				return false;
+			}
+        });					
+		bragButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
+            	onBragButtonTouched();
+				return false;
+			}
+        });		
+
 		playButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
 			public boolean onTouch(View v, MotionEvent event) {
             	onPlayButtonTouched();
 				return false;
 			}
-        });
-
-		// Hide the progressContainer
-		progressContainer.setVisibility(View.INVISIBLE);
-
-		// Restore the state
-		restoreState(savedInstanceState);
-
-		return v;
+        });	
+		
+		login.setOnErrorListener(new OnErrorListener() {	
+			@Override
+			public void onError(FacebookException error) {
+				if (error != null && !(error instanceof FacebookOperationCanceledException)) {
+					// Failed probably due to network error (rather than user canceling dialog which would throw a FacebookOperationCanceledException)
+					((HomeActivity)getActivity()).showError(getResources().getString(R.string.network_error), false);
+				}
+			}
+			
+		});
+		
+		loginButton.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				login.performClick();
+			}
+		});
 	}
-
-	private void updateUser(){
+	
+	private void checkUser(){
 		//If there is not user associated, one is created in the local database
 		DBHelper helper = OpenHelperManager.getHelper(application.getBaseContext(), DBHelper.class);
 		try {
 			Dao <User,Integer> daoUser = helper.getUserDAO();
 			User user = daoUser.queryForId(1);
-			if(user==null){
+			if(user==null && application.getCurrentFBUser()!=null){
 				Dao <Movie,Integer> daoMovie = helper.getMovieDAO();
 				int moviesCount = daoMovie.queryForAll().size();
 				user = new User();
@@ -187,10 +215,18 @@ public class HomeFragment extends Fragment {
 				user.setEurope(0);
 				user.setAsia(0);
 				user.setExotic(0);
+				user.setPassword("");
+				user.setEmail("");
 				user.setUser(application.getCurrentFBUser().getId());
 				daoUser.create(user);
 				Log.i("HomeFragment", "LoadUserData called");
 				new LoadUserDataTask(this.getActivity(), user).execute();
+			}
+			else{
+				application.setScore(user.getScore());
+				application.setSeconds(user.getSeconds());
+				application.setLevel(user.getTotalCinemas());
+				application.setUnlockedMovies(user.getTotalSolved());
 			}
 			helper = null;
 			OpenHelperManager.releaseHelper();
@@ -203,17 +239,19 @@ public class HomeFragment extends Fragment {
 
 	// Personalize this HomeFragment (social-version only)
 	void personalizeHomeFragment() {
+		checkUser();  
 		if (application.getCurrentFBUser() != null) {	
-			updateUser();
-			// Personalize this HomeFragment if the currentFBUser has been fetched			
-			// Set the id for the userImage ProfilePictureView
-            // that in turn displays the profile picture
-            userImage.setProfileId(application.getCurrentFBUser().getId());
-            // and show the cropped (square) version ...
-            userImage.setCropped(true);            
-            // Set the welcomeTextView Textview's text to the user's name
-            welcomeTextView.setText("Welcome, " + application.getCurrentFBUser().getFirstName());
+			if(userImage!=null){
+	            userImage.setProfileId(application.getCurrentFBUser().getId());
+	            userImage.setCropped(true);
+				userImage.setVisibility(View.VISIBLE);
+			}
 		}
+     	billboard.start();
+		userPoints.setText(application.getScore()+"");
+		userMovies.setText(application.getUnlockedMovies()+"");
+		userSeconds.setText(application.getSeconds()+"");
+		userLevel.setText(application.getLevel()+"");
 	}
 
 	// Restores the state during onCreateView
@@ -297,34 +335,32 @@ public class HomeFragment extends Fragment {
         }
 	}
 
-	// Update with the user's score
-	void updateYouScoredTextView() {
-		if (youScoredTextView != null) {
-			if (application.getScore() >= 0) {
-				youScoredTextView.setText("You Scored " + application.getScore() + "!");
-			}
-		}
-	}
-
 	// Hide/show buttons based on whether the user has played a game yet or not
 	void updateButtonVisibility() {
-		if (scoresButton != null && challengeButton != null && bragButton != null) {
-			if (application.getScore() >= 0) {
-				// The player has played at least one game, so show the buttons
-				scoresButton.setVisibility(View.VISIBLE);
-				if(application.getScore()>0)
-					bragButton.setVisibility(View.VISIBLE);
-			}
-			if (application.getSeconds()>50){
-				challengeButton.setVisibility(View.VISIBLE);
-			}	
-			else {
-				// The player hasn't played a game yet, so hide the buttons (except scoresButton
-				// that should always be shown)
-				scoresButton.setVisibility(View.VISIBLE);
-				challengeButton.setVisibility(View.INVISIBLE);
+		if (scoresButton != null && challengeButton != null && bragButton != null && loginButton!=null) {
+			if(!application.isLoggedIn()){
+				scoresButton.setVisibility(View.INVISIBLE);
 				bragButton.setVisibility(View.INVISIBLE);
+				challengeButton.setVisibility(View.INVISIBLE);
+				userImage.setVisibility(View.INVISIBLE);
+				loginButton.setBackgroundResource(R.drawable.login);
 			}
+			else{
+				//TODO: Change visibility in the future
+				scoresButton.setVisibility(View.INVISIBLE);
+				loginButton.setBackgroundResource(R.drawable.logout);
+				userImage.setVisibility(View.VISIBLE);
+				if(application.getScore()>0) bragButton.setVisibility(View.INVISIBLE);
+				else bragButton.setVisibility(View.INVISIBLE);
+				
+				if (application.getSeconds()>=50) challengeButton.setVisibility(View.INVISIBLE);
+				else challengeButton.setVisibility(View.INVISIBLE);
+			}
+			AnimationDrawable loginAnimation;
+			loginAnimation = (AnimationDrawable) loginButton.getBackground();
+			loginAnimation.setEnterFadeDuration(500);
+			loginAnimation.setExitFadeDuration(500);
+	     	loginAnimation.start();
 		}
 	}
 

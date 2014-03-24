@@ -20,6 +20,8 @@ public class User implements Serializable{
     //Columns
     public static final String ROWID = 		"_id";
     public static final String USER = 		"idUser";
+    public static final String EMAIL = 		"email";
+    public static final String PASSWORD =	"password";
     public static final String NAME = 		"name";
     public static final String SCORE = 		"score";
     public static final String SECONDS = 	"seconds";
@@ -42,6 +44,10 @@ public class User implements Serializable{
     private int _id;
     @DatabaseField(columnName = USER)
     private String user;
+    @DatabaseField(columnName = EMAIL)
+    private String email;
+    @DatabaseField(columnName = PASSWORD)
+    private String password;
     @DatabaseField(columnName = NAME)
     private String name;
     @DatabaseField(columnName = SCORE)
@@ -78,7 +84,9 @@ public class User implements Serializable{
     
     //getters
     public long getId()							{return this._id;}    
-    public String getUser()						{return this.user;}    
+    public String getUser()						{return this.user;}   
+    public String getEmail()					{return this.email;}   
+    public String getPassword()					{return this.password;}    
     public String getName()						{return this.name;} 
     public int getScore()						{return this.score;}
     public int getSeconds()						{return this.seconds;}
@@ -95,15 +103,17 @@ public class User implements Serializable{
     public int getAsia()						{return this.asia;}
     public int getExotic()						{return this.exotic;}
     public int getTotalCinemas(){
-    	return ((america+asia+europe+exotic)/MovieTimesUpApplication.UNLOCK_LEVEL)+1;
+    	return (unlockedMovies.size()/MovieTimesUpApplication.UNLOCK_LEVEL)+1;
     }
     public int getTotalSolved(){
-    	return america+asia+europe+exotic;
+    	return unlockedMovies.size();
     }
 
     //setters
     public void setId(int id)										{this._id=id;}  
     public void setUser(String user)								{this.user=user;}
+    public void setEmail(String email)								{this.email=email;}   
+    public void setPassword(String password)						{this.password=password;}    
     public void setName(String name)								{this.name=name;}
 	public void setScore(int score)									{this.score=score;} 
 	public void setSeconds(int seconds)								{this.seconds=seconds;} 

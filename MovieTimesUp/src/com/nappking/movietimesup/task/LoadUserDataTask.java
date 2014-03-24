@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -85,8 +86,10 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		
 		if(mUser!=null){
 			if(mContext!=null){
-				((MovieTimesUpApplication)mContext.getApplicationContext()).setScore(mUser.getScore());
-				((MovieTimesUpApplication)mContext.getApplicationContext()).setSeconds(mUser.getSeconds());
+				((MovieTimesUpApplication)((Activity)mContext).getApplication()).setScore(mUser.getScore());
+				((MovieTimesUpApplication)((Activity)mContext).getApplication()).setSeconds(mUser.getSeconds());
+				((MovieTimesUpApplication)((Activity)mContext).getApplication()).setUnlockedMovies(mUser.getTotalSolved());
+				((MovieTimesUpApplication)((Activity)mContext).getApplication()).setLevel(mUser.getTotalCinemas());
 			}
 			checkForSeconds();
 		}

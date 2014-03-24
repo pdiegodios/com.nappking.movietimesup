@@ -45,18 +45,16 @@ import com.nappking.movietimesup.entities.User;
  *  within this activity using Fragments.
  */
 public class HomeActivity extends DBFragmentActivity {   
-    
+    private static final String TAG = "HomeActivity";
     // Uri used in handleError() below
     private static final Uri M_FACEBOOK_URL = Uri.parse("http://m.facebook.com");
-
 	// Declare the UiLifecycleHelper for Facebook session management
     private UiLifecycleHelper fbUiLifecycleHelper;
 
 	// Fragment attributes
-    private static final int FB_LOGGED_OUT_HOME = 0;
-    private static final int HOME = 1;
-    private static final int FIRST = 2;
-    private static final int FRAGMENT_COUNT = FIRST +1;
+    private static final int HOME = 0;
+    private static final int FIRST = 1;
+    private static final int FRAGMENT_COUNT = 2;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
  	
  	// Boolean recording whether the activity has been resumed so that
@@ -66,15 +64,18 @@ public class HomeActivity extends DBFragmentActivity {
  	// Constructor
  	public HomeActivity() {
  		super();
+ 		Log.i(TAG, "HomeActivity");
  	}
  	
  	// Getter for the fbUiLifecycleHelper
  	public UiLifecycleHelper getFbUiLifecycleHelper() {
+ 		Log.i(TAG, "getFbUiLifecycleHelper");
 		return fbUiLifecycleHelper;
 	}
  	
  	@Override
     public void onCreate(Bundle savedInstanceState) {
+ 		Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     	// Instantiate the fbUiLifecycleHelper and call onCreate() on it
         fbUiLifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
@@ -100,7 +101,6 @@ public class HomeActivity extends DBFragmentActivity {
 
 		FragmentManager fm = getSupportFragmentManager();
         fragments[FIRST] = fm.findFragmentById(R.id.firstFragment);
-        fragments[FB_LOGGED_OUT_HOME] = fm.findFragmentById(R.id.fbLoggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -111,39 +111,35 @@ public class HomeActivity extends DBFragmentActivity {
 
 		// Restore the logged-in user's information if it has been saved and the existing data in the application
 		// has been destroyed (i.e. the app hasn't been used for a while and memory on the device is low)
-		// - only do this if the session is open for the social version only
- 		if (MovieTimesUpApplication.IS_SOCIAL) {
-			// loggedIn
- 			if (savedInstanceState != null) {
-				boolean loggedInState = savedInstanceState.getBoolean(MovieTimesUpApplication.getLoggedInKey(), false);
-	 			((MovieTimesUpApplication)getApplication()).setLoggedIn(loggedInState);
+		if (savedInstanceState != null) {
+			boolean loggedInState = savedInstanceState.getBoolean(MovieTimesUpApplication.getLoggedInKey(), false);
+ 			((MovieTimesUpApplication)getApplication()).setLoggedIn(loggedInState);
 
-		 		if ( ((MovieTimesUpApplication)getApplication()).isLoggedIn() &&
-		 			 ( ((MovieTimesUpApplication)getApplication()).getFriends() == null ||
-		 			   ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() == null) ) {
-	 				try {
-	 					// currentFBUser
-	 					String currentFBUserJSONString = savedInstanceState.getString(MovieTimesUpApplication.getCurrentFbUserKey());
-	 					if (currentFBUserJSONString != null) {
-		 					GraphUser currentFBUser = GraphObject.Factory.create(new JSONObject(currentFBUserJSONString), GraphUser.class);
-		 					((MovieTimesUpApplication)getApplication()).setCurrentFBUser(currentFBUser);
-	 					}
+	 		if (((MovieTimesUpApplication)getApplication()).isLoggedIn() &&
+	 			 (((MovieTimesUpApplication)getApplication()).getFriends() == null ||
+	 			   ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() == null) ) {
+ 				try {
+ 					// currentFBUser
+ 					String currentFBUserJSONString = savedInstanceState.getString(MovieTimesUpApplication.getCurrentFbUserKey());
+ 					if (currentFBUserJSONString != null) {
+	 					GraphUser currentFBUser = GraphObject.Factory.create(new JSONObject(currentFBUserJSONString), GraphUser.class);
+	 					((MovieTimesUpApplication)getApplication()).setCurrentFBUser(currentFBUser);
+ 					}
 
-	 			        // friends
-	 					ArrayList<String> friendsJSONStringArrayList = savedInstanceState.getStringArrayList(MovieTimesUpApplication.getFriendsKey());
-	 					if (friendsJSONStringArrayList != null) {
-		 					ArrayList<GraphUser> friends = new ArrayList<GraphUser>();
-		 					Iterator<String> friendsJSONStringArrayListIterator = friendsJSONStringArrayList.iterator();
-		 					while (friendsJSONStringArrayListIterator.hasNext()) {
-		 							friends.add(GraphObject.Factory.create(new JSONObject(friendsJSONStringArrayListIterator.next()), GraphUser.class));
-		 					}
-		 					((MovieTimesUpApplication)getApplication()).setFriends(friends);
+ 			        // friends
+ 					ArrayList<String> friendsJSONStringArrayList = savedInstanceState.getStringArrayList(MovieTimesUpApplication.getFriendsKey());
+ 					if (friendsJSONStringArrayList != null) {
+	 					ArrayList<GraphUser> friends = new ArrayList<GraphUser>();
+	 					Iterator<String> friendsJSONStringArrayListIterator = friendsJSONStringArrayList.iterator();
+	 					while (friendsJSONStringArrayListIterator.hasNext()) {
+	 							friends.add(GraphObject.Factory.create(new JSONObject(friendsJSONStringArrayListIterator.next()), GraphUser.class));
 	 					}
-	 				} catch (JSONException e) {
-	 					Log.e(MovieTimesUpApplication.TAG, e.toString());
-	 				}
+	 					((MovieTimesUpApplication)getApplication()).setFriends(friends);
+ 					}
+ 				} catch (JSONException e) {
+ 					Log.e(MovieTimesUpApplication.TAG, e.toString());
  				}
-	 		}
+			}
  		}
     }
  	
@@ -153,46 +149,47 @@ public class HomeActivity extends DBFragmentActivity {
  		// Call onActivityResult on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onActivityResult(requestCode, resultCode, data);
     }
-
+ 	
  	@Override
-    protected void onResumeFragments() {
+ 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		if (!MovieTimesUpApplication.IS_SOCIAL) {
+		
+		Session session = Session.getActiveSession();
+		if (session != null && session.isOpened() && ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null) {
+			((MovieTimesUpApplication)getApplication()).setLoggedIn(true);
 			showFragment(HOME, false);
 		} else {
-			Session session = Session.getActiveSession();
-			if (session != null && session.isOpened() && ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null) {
-				showFragment(HOME, false);
-			} else {
-				Boolean isFirst = false;
-				try {
-					Dao<User,Integer> daoUser = getHelper().getUserDAO();
-					User user = daoUser.queryForId(1);
-					if(user!=null && user.getUser()!=null && !user.getUser().equals("")){
-						showFragment(FB_LOGGED_OUT_HOME,false);
-						((MovieTimesUpApplication)this.getApplication()).setScore(user.getScore());
-						((MovieTimesUpApplication)this.getApplication()).setSeconds(user.getSeconds());
-					}
-					else isFirst=true;
-				} catch (SQLException e) {
-					isFirst=true;
-					e.printStackTrace();
+			((MovieTimesUpApplication)getApplication()).setLoggedIn(false);
+			Boolean isFirst = false;
+			try {
+				Dao<User,Integer> daoUser = getHelper().getUserDAO();
+				User user = daoUser.queryForId(1);
+				if(user!=null && user.getUser()!=null && !user.getUser().equals("")){
+					showFragment(HOME,false);
+					((MovieTimesUpApplication)getApplication()).setScore(user.getScore());
+					((MovieTimesUpApplication)getApplication()).setSeconds(user.getSeconds());
+					((MovieTimesUpApplication)getApplication()).setUnlockedMovies(user.getTotalSolved());
+					((MovieTimesUpApplication)getApplication()).setLevel(user.getTotalCinemas());
 				}
-				if(isFirst)
-					showFragment(FIRST, false);
+				else isFirst=true;
+			} catch (SQLException e) {
+				isFirst=true;
+				e.printStackTrace();
 			}
+			if(isFirst)
+				showFragment(FIRST, false);
 		}
     }
 
 	@Override
     public void onResume() {
+ 		Log.i(TAG, "onResume");
         super.onResume();
         isResumed = true;        
-        // Call onResume on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onResume();        
         // Hide the notification bar
  		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-     	getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+ 		
   		// Measure mobile app install ads
  		// Ref: https://developers.facebook.com/docs/tutorials/mobile-app-ads/
  		AppEventsLogger.activateApp(this, ((MovieTimesUpApplication)getApplication()).getString(R.string.app_id));
@@ -202,16 +199,16 @@ public class HomeActivity extends DBFragmentActivity {
 
     @Override
     public void onPause() {
+ 		Log.i(TAG, "onPause");
         super.onPause();
         isResumed = false;
-        //Call onPause on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onPause();
     }
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+ 		Log.i(TAG, "onSaveInstanceState");
 		super.onSaveInstanceState(outState);		
-		// Call onSaveInstanceState on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onSaveInstanceState(outState);        
   		// Save the logged-in state
   		outState.putBoolean(MovieTimesUpApplication.getLoggedInKey(), ((MovieTimesUpApplication)getApplication()).isLoggedIn());
@@ -229,12 +226,13 @@ public class HomeActivity extends DBFragmentActivity {
 
 	@Override
     public void onDestroy() {
+ 		Log.i(TAG, "onDestroy");
  		super.onDestroy();
- 		// Call onDestroy on fbUiLifecycleHelper
   		fbUiLifecycleHelper.onDestroy();
     }
 
     private void showFragment(int fragmentIndex, boolean addToBackStack) {
+ 		Log.i(TAG, "showFragment "+fragmentIndex);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         for (int i = 0; i < fragments.length; i++) {
@@ -248,28 +246,9 @@ public class HomeActivity extends DBFragmentActivity {
             transaction.addToBackStack(null);
         }
         transaction.commit();
-        
-        // Do other changes depending on the fragment that is now showing
-        if (MovieTimesUpApplication.IS_SOCIAL) {
-        	switch (fragmentIndex) {
-        		case FB_LOGGED_OUT_HOME:
-        			// Hide the progressContainer in FBLoggedOutHomeFragment 
-        			if (fragments[FB_LOGGED_OUT_HOME] != null && ((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]) != null) {
-        				((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
-        			}
-        			// Set the loggedIn attribute
-        			((MovieTimesUpApplication)getApplication()).setLoggedIn(false);
-        			break;
-        		case HOME:
-        			// Update the youScoredTextView in HomeFragment
-        			if (fragments[HOME] != null) {
-        				((HomeFragment)fragments[HOME]).updateYouScoredTextView();
-        				((HomeFragment)fragments[HOME]).updateButtonVisibility();
-        			}
-        			// Set the loggedIn attribute
-        			((MovieTimesUpApplication)getApplication()).setLoggedIn(true);
-        			break;
-        	}
+        if(fragmentIndex==HOME){
+        	((HomeFragment)fragments[HOME]).progressContainer.setVisibility(View.INVISIBLE);
+        	((HomeFragment)fragments[HOME]).updateButtonVisibility();
         }
     }
 
@@ -277,35 +256,37 @@ public class HomeActivity extends DBFragmentActivity {
 
 	// Call back on HomeActivity when the session state changes to update the view accordingly
 	private void updateView() {
+ 		Log.i(TAG, "updateView");
 		if (isResumed) {
 			Session session = Session.getActiveSession();
-			if (session.isOpened() && !((MovieTimesUpApplication)getApplication()).isLoggedIn() && fragments[HOME] != null) {
-				// Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
-				fetchUserInformationAndLogin();
-	        } else if (session.isClosed() && ((MovieTimesUpApplication)getApplication()).isLoggedIn() && fragments[FB_LOGGED_OUT_HOME] != null) {
-				// Logged in, but shouldn't be, so load the FBLoggedOutHomeFragment
-	        	showFragment(FB_LOGGED_OUT_HOME, false);
-	        }
-
-			// Note that error checking for failed logins is done as within an ErrorListener attached to the
-			// LoginButton within FBLoggedOutHomeFragment
+			if(fragments[HOME]!=null){
+				if (session.isOpened() && !((MovieTimesUpApplication)getApplication()).isLoggedIn()) {
+					((MovieTimesUpApplication)getApplication()).setLoggedIn(true);
+					// Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
+					fetchUserInformationAndLogin();
+		        } else if(session.isClosed() && ((MovieTimesUpApplication)getApplication()).isLoggedIn()){
+					((MovieTimesUpApplication)getApplication()).setLoggedIn(false);
+					// Logged in, but shouldn't be, so reload the HomeFragment
+		        	showFragment(HOME, false);
+		        }
+			}
 		}
 	}
 
 	// Fetch user information and login (i.e switch to the personalized HomeFragment)
 	private void fetchUserInformationAndLogin() {
+ 		Log.i(TAG, "fetchUserInformationAndLogin");
 		final Session session = Session.getActiveSession();
 		if (session != null && session.isOpened()) {
 			// If the session is open, make an API call to get user information required for the app
 
 			// Show the progress spinner during this network call
-			if (fragments[FB_LOGGED_OUT_HOME] != null && ((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer != null) {
-				((FBLoggedOutHomeFragment)fragments[FB_LOGGED_OUT_HOME]).progressContainer.setVisibility(View.VISIBLE);
+			if (fragments[HOME] != null && ((HomeFragment)fragments[HOME]).progressContainer != null) {
+				((HomeFragment)fragments[HOME]).progressContainer.setVisibility(View.VISIBLE);
 			}
 
 			// Get the user's list of friends
 			Request friendsRequest = Request.newMyFriendsRequest(session, new Request.GraphUserListCallback() {
-
 				@Override
 				public void onCompleted(List<GraphUser> users, Response response) {
 					FacebookRequestError error = response.getError();
@@ -324,7 +305,6 @@ public class HomeActivity extends DBFragmentActivity {
 
 			// Get current logged in user information
 			Request meRequest = Request.newMeRequest(session, new Request.GraphUserCallback() {
-
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
 					FacebookRequestError error = response.getError();
@@ -341,7 +321,6 @@ public class HomeActivity extends DBFragmentActivity {
 			// Create a RequestBatch and add a callback once the batch of requests completes
 			RequestBatch requestBatch = new RequestBatch(friendsRequest, meRequest);
 			requestBatch.addCallback(new RequestBatch.Callback() {
-
 				@Override
 				public void onBatchCompleted(RequestBatch batch) {
 					if ( ((MovieTimesUpApplication)getApplication()).getCurrentFBUser() != null &&
@@ -361,10 +340,10 @@ public class HomeActivity extends DBFragmentActivity {
 
 	// Switches to the personalized HomeFragment as the user has just logged in
 	private void loadPersonalizedFragment() {
+ 		Log.i(TAG, "loadPersonalizedFragment");
 		if (isResumed) {
 			// Personalize the HomeFragment
 			((HomeFragment)fragments[HOME]).personalizeHomeFragment();
-
 			// Load the HomeFragment personalized
 			showFragment(HOME, false);
 		} else {
@@ -373,6 +352,7 @@ public class HomeActivity extends DBFragmentActivity {
 	}
 
     void handleError(FacebookRequestError error, boolean logout) {
+ 		Log.i(TAG, "handleError");
         DialogInterface.OnClickListener listener = null;
         String dialogBody = null;
 
@@ -463,6 +443,7 @@ public class HomeActivity extends DBFragmentActivity {
 
 	// Show user error message as a toast
 	void showError(String error, boolean logout) {
+ 		Log.i(TAG, "showError");
 		Toast.makeText(this, error, Toast.LENGTH_LONG).show();
 		if (logout) {
 			logout();
@@ -470,6 +451,7 @@ public class HomeActivity extends DBFragmentActivity {
 	}
 
     private void logout() {
+ 		Log.i(TAG, "logout");
     	// Close the session, which will cause a callback to show the logout screen
 		Session.getActiveSession().closeAndClearTokenInformation();
 

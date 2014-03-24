@@ -70,7 +70,7 @@ public class SplashActivity extends Activity{
     	 */
 		//SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);		
 		//Recuperamos intervalo de consulta para las notificaciones
-		int interval = 24; //min
+		int interval = 24; //hour
 		
 		//Servicio de Alarma
 		AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);

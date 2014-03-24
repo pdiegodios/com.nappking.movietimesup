@@ -21,5 +21,19 @@
     <dimen name="grid_text_margin">8dp</dimen>
     <dimen name="grid_spectators_height">100dp</dimen>   
     <dimen name="grid_cinema_icon">160dp</dimen>
+    <dimen name="grid_cinema_padding">87dp</dimen>
+    
+    
+    <dimen name="main_text_big">60sp</dimen>
+    <dimen name="main_text_default">30sp</dimen>
+    <dimen name="main_billboard_width">600dp</dimen>
+    <dimen name="main_billboard_height">720dp</dimen>
+    <dimen name="main_panel_size_big">192dp</dimen>
+    <dimen name="main_panel_size">96dp</dimen>
+    <dimen name="main_margin_big">75dp</dimen>
+    <dimen name="main_margin_medium">48dp</dimen>
+    <dimen name="main_margin_small">31dp</dimen>
+    <dimen name="main_facebook_width">680dp</dimen>
+    <dimen name="main_facebook_heigth">200dp</dimen>
     
 </resources>

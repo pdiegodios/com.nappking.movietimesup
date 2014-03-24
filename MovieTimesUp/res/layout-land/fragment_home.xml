@@ -3,73 +3,134 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.nappking.movietimesup"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <ImageView 
-        android:id="@+id/background"
         android:src="@drawable/street_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
+    
+	<FrameLayout 
+        android:id="@+id/billboard"
+        android:layout_height="@dimen/main_billboard_height"
+        android:layout_width="@dimen/main_billboard_width"
+        android:layout_gravity="bottom|left"
+        android:background="@drawable/billboardtransition">
+        <LinearLayout 
+            android:orientation="vertical"
+            android:layout_width="@dimen/main_panel_size"
+            android:layout_height="@dimen/main_panel_size_big"
+            android:layout_marginTop="@dimen/main_margin_big"
+            android:layout_marginRight="@dimen/main_margin_medium"
+            android:gravity="center_vertical"
+            android:layout_gravity="top|right">
+            <TextView 
+                android:id="@+id/userSeconds"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textSize="@dimen/main_text_default"
+                android:textColor="@color/greylighter"/>
+            <TextView 
+                android:id="@+id/userLevel"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_default"
+                android:textStyle="bold"
+                android:textColor="@color/greylighter"/>
+            <TextView 
+                android:id="@+id/userMovies"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/main_text_default"
+                android:textStyle="bold"
+                android:textColor="@color/greylighter"/>
+        </LinearLayout>    
+			    
+	    <com.facebook.widget.ProfilePictureView
+	        android:id="@+id/userImage"
+            android:layout_gravity="top|left"
+            android:layout_width="@dimen/main_panel_size_big"
+            android:layout_height="@dimen/main_panel_size_big"
+            android:layout_marginTop="@dimen/main_margin_big"
+            android:layout_marginLeft="@dimen/main_margin_medium"/>
+	    
+        <TextView 
+            android:id="@+id/userPoints"
+            android:layout_gravity="top|center_horizontal"
+            android:gravity="center"
+            android:layout_width="@dimen/main_panel_size_big"
+            android:layout_height="@dimen/main_panel_size_big"
+            android:layout_marginTop="@dimen/main_margin_big"
+            android:layout_marginLeft="@dimen/main_margin_small"
+            android:textSize="@dimen/main_text_big"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+    </FrameLayout>
 
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:orientation="vertical"
-	    android:background="@android:color/transparent" >
-	    
-	    <FrameLayout
+	    android:orientation="vertical">
+
+	    <ImageView
+	        android:id="@+id/playButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right"
+	        android:layout_marginRight="20dp"
+	        android:src="@drawable/playsign" />
+
+	    <LinearLayout
 	        android:layout_width="match_parent"
-		    android:layout_height="wrap_content">
-	    
-		    <RelativeLayout
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="left" >
-		        
-			    <ImageView
-			        android:id="@+id/imageView1"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:paddingTop="4dip"
-			        android:src="@drawable/welcome_panel" />
-			    
-			    <LinearLayout
-			        android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			        android:layout_marginLeft="86dp"
-			        android:layout_marginTop="10dp"
-			    	android:orientation="vertical">
-			    	
-		       	    <TextView
-				        android:id="@+id/welcomeTextView"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        style="@style/PlayerNameFont"
-				        android:text="@string/welcome_message"/>
-		       	    
-		       	    <TextView
-				        android:id="@+id/youScoredTextView"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        style="@style/YouScoredFont"
-				        android:text="@string/you_scored_message"/>
-			        
-			    </LinearLayout>
-			    
-		    </RelativeLayout>
+	        android:layout_height="match_parent"
+            android:orientation="vertical"
+	        android:gravity="bottom|right">
 		    
 		    <ImageView
-		        android:id="@+id/playButton"
+		        android:id="@+id/scoresButton"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_marginTop="4dp"
-		        android:layout_gravity="right"
-		        android:src="@drawable/playnow_button" />
-	
-	    </FrameLayout>
-	    
-	</LinearLayout>  	
+		        android:layout_gravity="bottom|right"
+		        android:src="@drawable/scores_button" />
+		    
+		    <ImageView
+		        android:id="@+id/challengeButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="4dp"
+		        android:layout_gravity="bottom|right"
+		        android:src="@drawable/challenge_button" />
+    
+	        <ImageView
+		        android:id="@+id/bragButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="4dp"
+		        android:layout_gravity="bottom|right"
+		        android:src="@drawable/brag_button" />
+		 	<com.facebook.widget.LoginButton
+		 	    android:id="@+id/login"
+	            custom:login_text=""
+	            custom:logout_text=""
+	            android:layout_width="0dip"
+	            android:layout_height="0dip"
+	            style="@style/empty"/>	   	
+		 	<ImageView
+	            android:id="@+id/loginButton"
+	            android:layout_width="@dimen/main_facebook_width"
+	            android:layout_height="@dimen/main_facebook_heigth"
+	            android:background="@drawable/login"/>
+        </LinearLayout>
+	</LinearLayout>
   	
 	<FrameLayout android:id="@+id/progressContainer"
 	    android:background="@drawable/street_dark_background"
@@ -82,5 +143,4 @@
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center"/>
   	</FrameLayout>
-	
 </FrameLayout>

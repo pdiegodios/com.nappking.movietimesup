@@ -12,6 +12,8 @@ public class User {
     public static final String ROWID = 		"_id";
     public static final String USER = 		"idUser";
     public static final String NAME = 		"name";
+    public static final String EMAIL = 		"email";
+    public static final String PASSWORD =	"password";
     public static final String SCORE = 		"score";
     public static final String SECONDS = 	"seconds";
     public static final String LOCKED = 	"locked";
@@ -20,7 +22,6 @@ public class User {
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES = 	"movies";
-    public static final String CINEMAS = 	"cinemas";
     public static final String MASTERPIECE ="masterpiece";
     public static final String CULT =		"cult";
     public static final String AMERICA =	"america";
@@ -30,7 +31,7 @@ public class User {
     
 	//Fields
     private long _id;
-    private String user, name;
+    private String user, email, password, name;
     private int score;
     private int seconds;
     private ArrayList<Integer> lockedMovies;
@@ -39,7 +40,6 @@ public class User {
     private long lastForeground;
     private int days;
     private int movies;
-    private int cinemas;
     private int masterpiece;
     private int cult;
     private int america;
@@ -54,6 +54,8 @@ public class User {
     public long getId()								{return this._id;}    
     public String getUser()							{return this.user;}  
     public String getName()							{return this.name;}  
+    public String getEmail()						{return this.email;}  
+    public String getPassword()						{return this.password;}  
     public int getScore()							{return this.score;}
     public int getSeconds()							{return this.seconds;}
     public ArrayList<Integer> getLockedMovies()		{return this.lockedMovies;}
@@ -62,7 +64,6 @@ public class User {
     public long getLastForeground()					{return this.lastForeground;}
     public int getDays()							{return this.days;}
     public int getMovies()							{return this.movies;}
-    public int getCinemas()							{return this.cinemas;}
     public int getMasterpiece()						{return this.masterpiece;}
     public int getCult()							{return this.cult;}
     public int getAmerica()							{return this.america;}
@@ -74,6 +75,8 @@ public class User {
     public void setId(long id)											{this._id=id;}  
     public void setUser(String user)									{this.user=user;}
     public void setName(String name)									{this.name=name;}
+    public void setEmail(String email)									{this.email=email;}
+    public void setPassword(String password)							{this.password=password;}
 	public void setScore(int score)										{this.score=score;} 
 	public void setSeconds(int seconds)									{this.seconds=seconds;} 
     public void setLockedMovies(ArrayList<Integer> lockedMovies)		{this.lockedMovies = lockedMovies;}
@@ -82,7 +85,6 @@ public class User {
     public void setLastForeground(long lastForeground)					{this.lastForeground=lastForeground;}	
 	public void setDays(int days)										{this.days=days;} 	
 	public void setMovies(int movies)									{this.movies=movies;}
-    public void setCinemas(int cinemas)									{this.cinemas=cinemas;}
     public void setMasterpiece(int masterpiece)							{this.masterpiece = masterpiece;}
     public void setCult(int cult)										{this.cult = cult;}
     public void setAmerica(int america)									{this.america = america;}

@@ -27,7 +27,7 @@
         android:id="@+id/isComplete"
         android:background="@android:color/transparent"
         android:src="@drawable/check"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_width="50dp"
         android:layout_height="50dp"/>    
 </FrameLayout>

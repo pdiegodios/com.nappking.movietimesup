@@ -28,11 +28,12 @@ public class MovieTimesUpApplication extends Application {
     private boolean soundEnabled = true;
 	private int score = 0;
 	private int seconds = 0;
+	private int unlockedMovies = 0;
+	private int level = 0;
 	// Last time LoadUserDataTask was called
 	private long lastUpdateCall = -1;	
 	
 	/* Facebook application attributes */
-
 	// Logged in status of the user
 	private boolean loggedIn = false;
 	private static final String LOGGED_IN_KEY = "logged_in";	
@@ -65,6 +66,22 @@ public class MovieTimesUpApplication extends Application {
 
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
+	}
+
+	public int getUnlockedMovies() {
+		return unlockedMovies;
+	}
+
+	public void setUnlockedMovies(int unlockedMovies) {
+		this.unlockedMovies = unlockedMovies;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public boolean getSoundEnabled() {

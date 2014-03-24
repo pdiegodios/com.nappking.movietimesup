@@ -21,8 +21,6 @@ import com.nappking.movietimesup.entities.User;
 import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
@@ -51,8 +49,13 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 public class FilmActivity extends DBActivity{
+	private static final String AMERICA = "AM";
+	private static final String ASIA = "AS";
+	private static final String EUROPE = "EU";
+	private static final String AFRICA = "AF";
+	private static final String OCEANIA = "OC";
 	private static int SHORT_TIME = 2500;
-	private static int LONG_TIME = 6000;
+	private static int LONG_TIME = 6500;
     private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
     
@@ -236,14 +239,6 @@ public class FilmActivity extends DBActivity{
 	        final TextView textCamera = (TextView) dialog.findViewById(R.id.cameratext);
 	        final TextView textAction = (TextView) dialog.findViewById(R.id.actiontext);
 	        final ImageView play = (ImageView) dialog.findViewById(R.id.play);
-			final Animation bounce = AnimationUtils.loadAnimation(dialog.getContext(), R.anim.bouncing_bigger);
-			play.setAnimation(bounce);
-			dialog.setOnShowListener(new OnShowListener() {				
-				@Override
-				public void onShow(DialogInterface dialog) {	
-					bounce.startNow();
-				}
-			});
 	        textLights.setVisibility(View.INVISIBLE);
 	        textCamera.setVisibility(View.INVISIBLE);
 	        textAction.setVisibility(View.INVISIBLE);
@@ -285,11 +280,11 @@ public class FilmActivity extends DBActivity{
 	    		dialog.show();
 	    	}
 	        
-	        mCountDown=new CountDownTimer(TIME_TO_BET,INTERVAL) {
+	        mCountDown=new CountDownTimer(TIME_TO_BET+200,INTERVAL) {
 	        	int currentProgress = max;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
-		        	if(currentProgress==max-10){
+		        	if(currentProgress==max-15){
 		        		textLights.setVisibility(View.VISIBLE);
 		        		textLights.startAnimation(fadeInText);
 		        	}
@@ -410,9 +405,15 @@ public class FilmActivity extends DBActivity{
 	 * the movie will be blocked.
 	 */
 	private void endGame(){
-		//mCountDown.cancel();
 		if(!mIsFinished){
 			mIsFinished=true;
+			if(mCountDown!=null){
+				mCountDown.cancel();
+			}	
+			if(beeps!=null && beeps.isPlaying()){
+				beeps.stop();
+			}
+			textseconds.setText("");
 			this.iAnswer.setClickable(false);
 			if(mInTime){ //USER WIN POINTS & UNLOCK THE MOVIE
 				//Unlock movie and add points to User score
@@ -513,7 +514,6 @@ public class FilmActivity extends DBActivity{
 		animFadeIn = 			AnimationUtils.loadAnimation(this, R.anim.fadein);
 		animFadeOutInfo = 		AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 		animFadeOutInfo.setDuration(1500);
-		animFadeOutInfo.setInterpolator(getBaseContext(),android.R.interpolator.anticipate);
 		animFadeOut = 			AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 		animSlideInBottom = 	AnimationUtils.loadAnimation(this, R.anim.slideinbottom);
 		animSlideOutBottom =	AnimationUtils.loadAnimation(this, R.anim.slideoutbottom);
@@ -559,7 +559,7 @@ public class FilmActivity extends DBActivity{
      	beeps = 				MediaPlayer.create(this, R.raw.final_beeps);
      	final OnCompletionListener finishSound = new OnCompletionListener(){
 			@Override
-			public void onCompletion(MediaPlayer mp) { //LOCK
+			public void onCompletion(MediaPlayer mp) { //SHOW ACHIEVEMENTS & EXIT
 				mp.stop();
 				showEndingDialogs();
 			}     		
@@ -760,7 +760,7 @@ public class FilmActivity extends DBActivity{
 					mCounterLocation = 1;
 					blocation.setImageResource(R.drawable.location1);
 					displaySelectedClue(getResources().getString(R.string.continent).toUpperCase(Locale.getDefault()),
-							movie.getContinent(),infolocation, LOCATION);
+							getContinent(movie.getContinent()),infolocation, LOCATION);
 				}
 				else if (mCounterLocation ==1){
 					mCounterLocation = 2;
@@ -1076,7 +1076,7 @@ public class FilmActivity extends DBActivity{
 				mUser.addLockedMovie(movie.getId());
 			}
 			else{
-				String continent = movie.getContinent().substring(0, 2).toUpperCase();
+				String continent = movie.getContinent();
 				String field="";
 				int goal=0;
 				boolean levelUnlocked=false;
@@ -1088,17 +1088,17 @@ public class FilmActivity extends DBActivity{
 				if(movie.getCult()){
 					mUser.setCult(mUser.getCult()+1);
 				}
-				if(continent.equals("AM")){
+				if(continent.equals(AMERICA)){
 					mUser.setAmerica(mUser.getAmerica()+1);
 					field = User.AMERICA;
 					goal = mUser.getAmerica();
 				}
-				else if(continent.equals("EU")){
+				else if(continent.equals(EUROPE)){
 					mUser.setEurope(mUser.getEurope()+1);
 					field = User.EUROPE;
 					goal = mUser.getEurope();
 				}
-				else if(continent.equals("AS")){
+				else if(continent.equals(ASIA)){
 					mUser.setAsia(mUser.getAsia()+1);
 					field = User.ASIA;
 					goal = mUser.getAsia();
@@ -1109,7 +1109,7 @@ public class FilmActivity extends DBActivity{
 					goal = mUser.getExotic();
 				}
 				int totalSolved = mUser.getTotalSolved();
-				if((totalSolved % MovieTimesUpApplication.UNLOCK_LEVEL) == 0){ //Unblock new level
+				if((totalSolved % MovieTimesUpApplication.UNLOCK_LEVEL) == 0){ //Unlock new level
 					levelUnlocked=true;
 				}	
 				if(levelUnlocked){
@@ -1129,7 +1129,9 @@ public class FilmActivity extends DBActivity{
 			mUser.setLastUpdate(System.currentTimeMillis());
 			daoUser.update(mUser);
 			((MovieTimesUpApplication)this.getApplication()).setScore(mUser.getScore());
-			((MovieTimesUpApplication)this.getApplication()).setSeconds(mUser.getSeconds());
+			((MovieTimesUpApplication)this.getApplicationContext()).setSeconds(mUser.getSeconds());
+			((MovieTimesUpApplication)this.getApplicationContext()).setUnlockedMovies(mUser.getTotalSolved());
+			((MovieTimesUpApplication)this.getApplicationContext()).setLevel(mUser.getTotalCinemas());
 			users.add(mUser);			
 			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);			
 			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
@@ -1184,5 +1186,25 @@ public class FilmActivity extends DBActivity{
 			}
 		}
 		mClues.clear();
+	}
+	
+	private String getContinent(String continent){
+		int resource=R.string.america;
+		if(continent.equals(ASIA)){
+			resource= R.string.asia;
+		}
+		else if(continent.equals(EUROPE)){
+			resource= R.string.europe;
+		}
+		else if(continent.equals(ASIA)){
+			resource= R.string.asia;
+		}
+		else if(continent.equals(AFRICA)){
+			resource= R.string.africa;
+		}
+		else if(continent.equals(OCEANIA)){
+			resource= R.string.oceania;
+		}
+		return getString(resource);
 	}
 }

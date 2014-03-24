@@ -98,6 +98,11 @@
     <string name="exotic_achievement">Nuevo logro exótico desbloqueado</string>
     <string name="share">Compartir</string>
     <string name="txSearchable">Busca..</string>
-    <string name="empty_list">No hay coincidencias.</string>    
+    <string name="empty_list">No hay coincidencias.</string>     
+    <string name="europe">Europa</string>
+    <string name="america">América</string>
+    <string name="asia">Asia</string>
+    <string name="africa">África</string>
+    <string name="oceania">Oceanía</string> 
     
 </resources>
