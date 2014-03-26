@@ -129,7 +129,6 @@ public class HomeFragment extends Fragment {
 		playButton = (ImageView)v.findViewById(R.id.playButton);
 		// Personalize this HomeFragment
 		personalizeHomeFragment();	
-		updatePoints();
 		setListeners();		
 		updateButtonVisibility();
 		
@@ -205,11 +204,11 @@ public class HomeFragment extends Fragment {
 				user.setName(application.getCurrentFBUser().getName());
 				user.setLockedMovies(new ArrayList<String>());
 				user.setUnlockedMovies(new ArrayList<String>());
-				user.setLastUpdate(Long.valueOf("0"));
-				user.setLastForeground(Long.valueOf("0"));
+				user.setLastUpdate(Long.valueOf("10"));
+				user.setLastForeground(Long.valueOf("10"));
 				user.setDays(0);
 				user.setScore(0);
-				user.setSeconds(moviesCount*100);
+				user.setSeconds(MovieTimesUpApplication.SECONDS_FOR_LEVEL);
 				user.setMovies(moviesCount);
 				user.setMasterpiece(0);
 				user.setCult(0);
@@ -283,6 +282,7 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onResume() {
+		updatePoints();
 		super.onResume();
 	}
 
@@ -331,8 +331,9 @@ public class HomeFragment extends Fragment {
 
 	// Called when the Scores button is touched
 	private void onScoresButtonTouched() {
+		Log.i(this.getActivity().toString(), "onScoresButtonTouched");
 		Intent i = new Intent(getActivity(), ScoreboardActivity.class);
-		startActivityForResult(i, 0);
+		startActivity(i);
 	}
 
 	// Called when the Activity is returned to - needs to be caught for the following two scenarios:
@@ -362,7 +363,7 @@ public class HomeFragment extends Fragment {
 			}
 			else{
 				//TODO: Change visibility in the future
-				scoresButton.setVisibility(View.INVISIBLE);
+				scoresButton.setVisibility(View.VISIBLE);
 				loginButton.setBackgroundResource(R.drawable.logout);
 				userImage.setVisibility(View.VISIBLE);
 				if(application.getScore()>0) bragButton.setVisibility(View.INVISIBLE);
@@ -606,7 +607,6 @@ public class HomeFragment extends Fragment {
             requestPublishPermissions(session);
             return;
         }
-
         // If you get this far, then you'll have write permissions to post
         
 		// Post the score to Facebook
@@ -641,7 +641,6 @@ public class HomeFragment extends Fragment {
 					fbParams,
                     HttpMethod.POST,
                     new Request.Callback() {
-
 						@Override
 						public void onCompleted(Response response) {
 							FacebookRequestError error = response.getError();
@@ -656,7 +655,7 @@ public class HomeFragment extends Fragment {
 			Request.executeBatchAsync(postScoreRequest);
 
 			// Post the score to our servers for the high score table
-			AsyncTask.execute(new Runnable() {
+			/*AsyncTask.execute(new Runnable() {
 				public void run() {
 					HttpClient httpClient = new DefaultHttpClient();
 					HttpPost httpPost = new HttpPost("http://www.friendsmash.com/scores");
@@ -677,7 +676,7 @@ public class HomeFragment extends Fragment {
 						Log.e(MovieTimesUpApplication.TAG, "Posting Score to Server failed: " + e.getMessage());
 					}
 				}
-			});
+			});*/
 		}
 	}
 

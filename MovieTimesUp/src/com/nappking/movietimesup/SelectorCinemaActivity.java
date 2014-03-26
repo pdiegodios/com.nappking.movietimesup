@@ -124,12 +124,10 @@ public class SelectorCinemaActivity extends DBActivity{
 				
 				if(!cinema.isUnlocked()){ //Locked cinema
 		            final Dialog dialog = new Dialog(SelectorCinemaActivity.this, R.style.SlideDialog);
-		            dialog.setContentView(R.layout.dialog_clapper_option);
+		            dialog.setContentView(R.layout.dialog_clapper_one_option);
 		            dialog.setCancelable(true);
 		            //instantiate elements in the dialog
-		            Button actionButton = (Button) dialog.findViewById(R.id.actionButton);
 		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
-		            actionButton.setVisibility(View.INVISIBLE);
 		            cancelButton.setText(android.R.string.ok);
 					TextView text = (TextView) dialog.findViewById(R.id.text);	
 					text.setText("Cinema #"+cinema.getId()+" is locked.");

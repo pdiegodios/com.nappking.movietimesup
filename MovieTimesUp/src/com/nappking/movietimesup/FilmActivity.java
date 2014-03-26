@@ -11,6 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.nappking.movietimesup.R;
+import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.nappking.movietimesup.database.DBActivity;
@@ -280,7 +285,7 @@ public class FilmActivity extends DBActivity{
 	    		dialog.show();
 	    	}
 	        
-	        mCountDown=new CountDownTimer(TIME_TO_BET+200,INTERVAL) {
+	        mCountDown=new CountDownTimer(TIME_TO_BET,INTERVAL) {
 	        	int currentProgress = max;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
@@ -1028,10 +1033,17 @@ public class FilmActivity extends DBActivity{
 		ImageView image = (ImageView) dialog.findViewById(R.id.image_achievement);
 		
 		//set values & actions
-		if(a.getField().equals(User.CINEMAS)){
+		if(a.getField().equals(User.CULT)){
+			title.setText(getResources().getString(R.string.new_cult_unlocked));
+		}
+		else if(a.getField().equals(User.MASTERPIECE)){
+			title.setText(getResources().getString(R.string.new_masterpiece_unlocked));
+		}
+		else if(a.getField().equals(User.CINEMAS)){
 			int cinemas = mUser.getTotalCinemas();
-			title.setText(getResources().getString(R.string.level_number)+" "+cinemas+" "+
-					getResources().getString(R.string.unlocked));
+			title.setText(getResources().getString(R.string.level_number)+cinemas+" "+
+					getResources().getString(R.string.unlocked)+"\n"+
+					getResources().getString(R.string.seconds_for_level));
 			foreground_text.setText(cinemas+"");
 		}
 		else{
@@ -1045,7 +1057,7 @@ public class FilmActivity extends DBActivity{
 		shareButton.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-				//TODO: Share && then continue showiEndingDialogs
+				//TODO: Share && then continue showEndingDialogs
 			}
 		});*/
 		
@@ -1079,14 +1091,15 @@ public class FilmActivity extends DBActivity{
 				String continent = movie.getContinent();
 				String field="";
 				int goal=0;
-				boolean levelUnlocked=false;
 				mUser.addUnlockedMovie(movie.getId());
 				mUser.setScore(mUser.getScore()+movie.getPoints());
 				if(movie.getMasterpiece()){
 					mUser.setMasterpiece(mUser.getMasterpiece()+1);
+					achievements.add(new Achievement(User.MASTERPIECE, 0, 0, R.drawable.masterpiece, R.string.use_them_to_get_extras));
 				}
-				if(movie.getCult()){
+				else if(movie.getCult()){
 					mUser.setCult(mUser.getCult()+1);
+					achievements.add(new Achievement(User.CULT, 0, 0, R.drawable.cult_movie, R.string.use_them_to_get_extras));
 				}
 				if(continent.equals(AMERICA)){
 					mUser.setAmerica(mUser.getAmerica()+1);
@@ -1110,11 +1123,9 @@ public class FilmActivity extends DBActivity{
 				}
 				int totalSolved = mUser.getTotalSolved();
 				if((totalSolved % MovieTimesUpApplication.UNLOCK_LEVEL) == 0){ //Unlock new level
-					levelUnlocked=true;
-				}	
-				if(levelUnlocked){
 					achievements.add(new Achievement(User.CINEMAS, 0, 0, R.drawable.cinema_enable25, R.string.nextlevel));
-				}
+					mUser.setSeconds(mUser.getSeconds()+MovieTimesUpApplication.SECONDS_FOR_LEVEL);
+				}	
 				if(!field.isEmpty() && goal>0){
 					for(Achievement a: ((MovieTimesUpApplication)getApplication()).getAchievements()){
 						if(a.getField().equals(field) && a.getGoal()==goal){
@@ -1124,14 +1135,12 @@ public class FilmActivity extends DBActivity{
 							break;
 						}
 					}
-				}
+				}			
+				//Post Score to Facebook
+				postScore();				
 			}
 			mUser.setLastUpdate(System.currentTimeMillis());
 			daoUser.update(mUser);
-			((MovieTimesUpApplication)this.getApplication()).setScore(mUser.getScore());
-			((MovieTimesUpApplication)this.getApplicationContext()).setSeconds(mUser.getSeconds());
-			((MovieTimesUpApplication)this.getApplicationContext()).setUnlockedMovies(mUser.getTotalSolved());
-			((MovieTimesUpApplication)this.getApplicationContext()).setLevel(mUser.getTotalCinemas());
 			users.add(mUser);			
 			WebServiceTask wsUser = new WebServiceTask(WebServiceTask.POST_TASK);			
 			JSONArray jsonArray = new JSONArray(new Gson().toJson(users));
@@ -1145,6 +1154,32 @@ public class FilmActivity extends DBActivity{
 			e.printStackTrace();
 		}
 	}	
+	
+	private void postScore(){
+		// Post the score to FB (for score stories and distribution)
+		if(Session.getActiveSession()!=null){
+			Bundle fbParams = new Bundle();
+			fbParams.putString("score", "" + mUser.getScore());
+			//fbParams.putString("access_token", "" + Session.getActiveSession().getAccessToken());
+			Request postScoreRequest = new Request(Session.getActiveSession(),
+				//mUser.getUser()+"/scores",
+				"me/scores",
+				fbParams,
+                HttpMethod.POST,
+                new Request.Callback() {
+					@Override
+					public void onCompleted(Response response) {
+						FacebookRequestError error = response.getError();
+						if (error != null) {
+							Log.e(MovieTimesUpApplication.TAG, "Posting Score to Facebook failed: " + error.getErrorMessage());
+						} else {
+							Log.i(MovieTimesUpApplication.TAG, "Score posted successfully to Facebook");
+						}
+					}
+				});
+			Request.executeBatchAsync(postScoreRequest);
+		}
+	}
 	
 	private void releaseAll() {
 		if(projector!=null){

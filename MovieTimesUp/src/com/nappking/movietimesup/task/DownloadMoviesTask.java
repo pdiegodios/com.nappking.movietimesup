@@ -55,7 +55,6 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 	private String mCountPath = "movies/count";
 	private String mSincePath = "movies/since";
 	private boolean mService = false;
-	private int mFilmCounter = 0;
 	
 	public DownloadMoviesTask(Context c){
 		this.mContext=c;
@@ -86,18 +85,16 @@ public class DownloadMoviesTask extends AsyncTask<String,Void,Integer>{
 		}
 		else{
 			//It was called from NotificationService
+			Log.i(mContext.toString(), result+"");
 			if(result==0){ 
 				//There are new movies downloaded
-				text= mContext.getResources().getString(R.string.you_got)+" "+mFilmCounter*100+" "+
-						mContext.getResources().getString(R.string.points)+" "+
-						mContext.getResources().getString(R.string.and)+" "+mFilmCounter+" "+
-						mContext.getResources().getString(R.string.new_movies_to_guess);
+				text= mContext.getResources().getString(R.string.enter_to_get_seconds);
 				Intent intent = new Intent(this.mContext, HomeActivity.class);
         		PendingIntent pIntent = PendingIntent.getActivity(this.mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         		// Construimos la notificación. Podemos también añadir acciones
         		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(this.mContext)
-        		        .setContentTitle(mContext.getResources().getString(R.string.movies)+"!!")
+        		        .setContentTitle(mContext.getResources().getString(R.string.new_movies_to_guess)+"!!")
         		        .setContentText(text)
         		        .setLights(0xff0000ff, 100, 100)
         		        .setSmallIcon(R.drawable.movie_notification)

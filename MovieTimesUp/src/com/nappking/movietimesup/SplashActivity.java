@@ -25,7 +25,6 @@ import android.widget.ImageView;
 public class SplashActivity extends Activity{
 	ImageView iEllipsis;
 	AnimationDrawable animEllipsis;
-	public static int mSecondsExtra;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +35,6 @@ public class SplashActivity extends Activity{
      	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         new DownloadMoviesTask(this).execute();
         checkNotifications();
-    }
-    
-    public static void setSecondsExtra(int seconds){
-    	mSecondsExtra = seconds;
     }
 
 	@Override

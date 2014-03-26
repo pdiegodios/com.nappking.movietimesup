@@ -73,6 +73,9 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 			case 4: 
 				text= mContext.getResources().getString(R.string.error_updating_user);
 				break;
+			case 5: 
+				text= mContext.getResources().getString(R.string.created_user);
+				break;
 			default: 
 				text= mContext.getResources().getString(R.string.network_error);
 				break;
@@ -99,25 +102,25 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 		int result = 0;
 		String read_user = readUserFeed(MovieTimesUpApplication.URL+mPath);
 		try{
-			if((read_user==ERROR) && mUser!=null){
-				//If there is not user associated in the server we have to create a new user in the WS
-				List<User> users = new ArrayList<User>();
-				users.add(this.mUser);
-				sendUser("SAVE");	
-				result=1;		
-			}
-			else{
+			if(!read_user.equals(ERROR)){
 				//Read the user from WS
 				JSONObject itemjson = new JSONObject(read_user);
 				Log.i("User from WS: ", itemjson.toString());
 				User user = new Gson().fromJson(itemjson.toString(), User.class);
 				if(mUser!=null && user!=null){
-					if(user.getLastUpdate()==mUser.getLastUpdate()){
+					if(user.getLastUpdate()==0){
+						//This User doesn't exist in Server
+						List<User> users = new ArrayList<User>();
+						users.add(this.mUser);
+						sendUser("SAVE");	
+						result=5;		
+					}else if(user.getLastUpdate()==mUser.getLastUpdate()){
+						//User in server is the last user available && the same in local database
 						result = 3;
 					}
 					else if(user.getLastUpdate()>mUser.getLastUpdate()){
 						Log.i("UPDATE", "ACTUALIZADO!!");
-						//If user from WS was updated after user from Database
+						//If user from WS was updated in other device after user from local Database
 						mUser.setUnlockedMovies(user.getUnlockedMovies());
 						mUser.setLockedMovies(user.getLockedMovies());
 						mUser.setScore(user.getScore());
@@ -241,15 +244,6 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 				mUser.setLastUpdate(System.currentTimeMillis());
 				mUser.setLastForeground(System.currentTimeMillis());
 				showExtra(secondsExtra);
-				updated=true;
-			}
-
-			//SECONDS FOR NEW MOVIES
-			int totalMovies=(int) getHelper().getMovieDAO().countOf();
-			if(totalMovies>mUser.getMovies()){
-				int secondsForMovies = (totalMovies - mUser.getMovies())*100;
-				mUser.setSeconds(mUser.getSeconds()+secondsForMovies);
-				mUser.setMovies(totalMovies);
 				updated=true;
 			}
 			

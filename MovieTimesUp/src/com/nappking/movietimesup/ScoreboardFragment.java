@@ -10,19 +10,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -38,10 +31,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.nappking.movietimesup.R;
-import com.nappking.movietimesup.entities.User;
-import com.facebook.model.GraphUser;
+import com.facebook.model.GraphObject;
 import com.facebook.widget.ProfilePictureView;
 
 /**
@@ -50,11 +46,9 @@ import com.facebook.widget.ProfilePictureView;
 public class ScoreboardFragment extends Fragment {
 	
     // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
-	private MovieTimesUpApplication application;
-    
+	private MovieTimesUpApplication application;    
 	// LinearLayout as the container for the scoreboard entries
-	private LinearLayout scoreboardContainer;
-	
+	private LinearLayout scoreboardContainer;	
 	// FrameLayout of the progress container to show the spinner
 	private FrameLayout progressContainer;
 	
@@ -63,31 +57,23 @@ public class ScoreboardFragment extends Fragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		
-		application = (MovieTimesUpApplication) getActivity().getApplication();
-		
+		Log.i(getActivity().toString(), "OnCreate");
+		super.onCreate(savedInstanceState);		
+		application = (MovieTimesUpApplication) getActivity().getApplication();		
 		// Instantiate the handler
-		uiHandler = new Handler();
-		
+		uiHandler = new Handler();		
 		setRetainInstance(true);
 	}
 	
-	@TargetApi(13)
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-			Bundle savedInstanceState) {
-		
-		View v = inflater.inflate(R.layout.fragment_scoreboard, parent, false);
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+		Log.i(getActivity().toString(), "OnCreateView");		
+		View v = inflater.inflate(R.layout.fragment_scoreboard, parent, false);		
 		scoreboardContainer = (LinearLayout)v.findViewById(R.id.scoreboardContainer);
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
 
 		// Set the progressContainer as invisible by default
 		progressContainer.setVisibility(View.INVISIBLE);
-		
-		// Note: Scoreboard is populated during onResume below
 		
 		return v;
 	}
@@ -99,27 +85,22 @@ public class ScoreboardFragment extends Fragment {
 		
 		Intent i = new Intent();
 		i.putExtras(bundle);
-		
-		getActivity().setResult(Activity.RESULT_CANCELED, i);
 		getActivity().finish();
 	}
 	
 	@Override
 	public void onResume() {
+		Log.i(getActivity().toString(), "onResume");		
 		super.onResume();
-
 		// Populate scoreboard - fetch information if necessary ...
 		if (application.getFriendlyUserList() == null) {
-			// scoreboardEntriesList is null, so fetch the information from Facebook (scoreboard will be updated in
-			// the scoreboardEntriesFetched callback) and show the progress spinner while doing so
 			progressContainer.setVisibility(View.VISIBLE);
 			fetchScoreboardEntries();
 		} else {
 			// Information has already been fetched, so populate the scoreboard
 			populateScoreboard();
 		}
-	}
-	
+	}	
 	 
     private String inputStreamToString(InputStream is) {
         String line = "";
@@ -141,115 +122,80 @@ public class ScoreboardFragment extends Fragment {
 	// Fetch a List of ScoreboardEntry objects with the scores and details
 	// of the user and their friends' scores who have played FriendSmash
 	private void fetchScoreboardEntries () {
-		// Fetch the scores ...
-		AsyncTask.execute(new Runnable() {
-			public void run() {
-				try {
-					List<User> users = new ArrayList<User>();
-					
-					// Get the attributes used for the HTTP GET
-					String currentUserFBID = application.getCurrentFBUser().getId();
-					String currentUserAccessToken = Session.getActiveSession().getAccessToken();
-
-					HttpClient httpclient = new DefaultHttpClient();
-					HttpPost post = new HttpPost("http://movietimesup.gestores.cloudbees.net/rest/users/scores");
-					
-					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-					for(GraphUser graph:application.getFriends()){
-						nameValuePairs.add(new BasicNameValuePair("id", graph.getId()));
-					}       
-					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			        // Execute HTTP Post Request
-			        HttpResponse response = httpclient.execute(post);
-			        
-				    //RESPONSE
-				    Log.i("Response --> ", inputStreamToString(response.getEntity().getContent()));
-				    
-					/*
-					// Execute the HTTP Get to our server for the scores of the user's friends
-					HttpClient client = new DefaultHttpClient();
-					String getURL = "http://www.friendsmash.com/scores?fbid=" + currentUserFBID + "&access_token=" + currentUserAccessToken;
-					HttpGet get = new HttpGet(getURL);
-					HttpResponse responseGet = client.execute(get);
-					
-					// Parse the response
-					HttpEntity responseEntity = responseGet.getEntity();
-					String response = EntityUtils.toString(responseEntity);
-					if (!response.equals(null)) {
-						JSONArray responseJSONArray = new JSONArray(response);
-						
-						// Go through the response JSON Array to populate the scoreboard
-						if (responseJSONArray != null && responseJSONArray.length() > 0) {
-							
-							// Loop through all users that have been retrieved
-							for (int i=0; i<responseJSONArray.length(); i++) {
-								// Store the user details in the following attributes
-								String userID = null;
-								String userName = null;
-								int userScore = -1;
-								
-								// Extract the user information
-								JSONObject currentUser = responseJSONArray.optJSONObject(i);
-								if (currentUser != null) {
-									userID = currentUser.optString("fbid");
-									userName = currentUser.optString("first_name");
-									String fetchedScoreAsString = currentUser.optString("highscore");
-									if (fetchedScoreAsString != null) {
-										userScore = Integer.parseInt(fetchedScoreAsString);
-									}
-									if (userID != null && userName != null && userScore >= 0) {
-										// All attributes have been successfully fetched, so create a new
-										// ScoreboardEntry and add it to the List
-										ScoreboardEntry currentUserScoreboardEntry =
-												new ScoreboardEntry(userID, userName, userScore);
-										scoreboardEntriesList.add(currentUserScoreboardEntry);
-									}
-								}
+		Log.i(getActivity().toString(), "fetchScoreBoardEntries");
+		// Fetch the scores ...		
+		
+		if(Session.getActiveSession()!=null){
+			// Get the attributes used for the HTTP GET
+			//String currentUserFBID = application.getCurrentFBUser().getId();
+			//String currentUserAccessToken = Session.getActiveSession().getAccessToken();
+			Request getScoreRequest = new Request(Session.getActiveSession(),
+					//mUser.getUser()+"/scores",
+					getResources().getString(R.string.app_id)+"/scores",
+					null,
+	                HttpMethod.GET,
+	                new Request.Callback() {
+						@Override
+						public void onCompleted(Response response) {
+							//TODO: Make WORK
+					        Log.d("log_tag", "response: " + response.toString());
+					        try{
+					            GraphObject graphObject  = response.getGraphObject();
+					            JSONObject  innerJson = graphObject.getInnerJSONObject();
+					            JSONArray   jsonArray = innerJson.getJSONArray( "data" );
+					            List<ScoreboardEntry> entries = new ArrayList<ScoreboardEntry>();
+					            for (int i=0; i <(jsonArray.length()); i++){
+					                JSONObject json = jsonArray.getJSONObject( i );
+					                int score     = json.getInt("score");
+					                JSONObject user   = json.getJSONObject("user");
+					                String id = user.getString("id");
+					                String name = user.getString("name");
+					                ScoreboardEntry entry = new ScoreboardEntry(id, name, score);
+					                Log.i("Element", "id:"+id+" name:"+name+" score:"+score);
+					                entries.add(entry);
+					            }
+					    		Comparator<ScoreboardEntry> comparator = Collections.reverseOrder();
+					    		Collections.sort(entries, comparator);
+					            application.setFriendlyUserList(entries);					    		
+					    		// Populate the scoreboard on the UI thread
+					    		uiHandler.post(new Runnable() {
+					    			@Override
+					    			public void run() {
+					    				populateScoreboard();
+					    			}
+					    		});
+					        }
+					        catch ( Throwable t ){
+					            t.printStackTrace();
+					        }
+							FacebookRequestError error = response.getError();
+							if (error != null) {
+								Log.e(MovieTimesUpApplication.TAG, "Getting Scoreboard to Facebook failed: " + error.getErrorMessage());
+							} else {
+								Log.i(MovieTimesUpApplication.TAG, "Scoreboard got successfully to Facebook");
 							}
 						}
-					}*/
-				
-					// Now that all scores should have been fetched and added to the scoreboardEntriesList, sort it,
-					// set it within scoreboardFragment and then callback to scoreboardFragment to populate the scoreboard
-					Comparator<ScoreboardEntry> comparator = Collections.reverseOrder();
-					//Collections.sort(scoreboardEntriesList, comparator);
-					//application.setFriendlyUserList(scoreboardEntriesList);
-					
-					// Populate the scoreboard on the UI thread
-					uiHandler.post(new Runnable() {
-						@Override
-						public void run() {
-							populateScoreboard();
-						}
 					});
-				} catch (Exception e) {
-					Log.e(MovieTimesUpApplication.TAG, e.toString());
-					closeAndShowError(getResources().getString(R.string.network_error));
-				}
-			}
-		});
+			Request.executeBatchAsync(getScoreRequest);
+		}
 	}
 
 	private void populateScoreboard() {
 		// Ensure all components are firstly removed from scoreboardContainer
-		scoreboardContainer.removeAllViews();
-		
+		scoreboardContainer.removeAllViews();		
 		// Ensure the progress spinner is hidden
-		progressContainer.setVisibility(View.INVISIBLE);
-		
+		progressContainer.setVisibility(View.INVISIBLE);		
 		// Ensure scoreboardEntriesList is not null and not empty first
 		if (application.getFriendlyUserList() == null || application.getFriendlyUserList().size() <= 0) {
 			closeAndShowError(getResources().getString(R.string.error_no_scores));
 		} else {
 			// Iterate through scoreboardEntriesList, creating new UI elements for each entry
 			int index = 0;
-			Iterator<User> userIterator = application.getFriendlyUserList().iterator();
+			Iterator<ScoreboardEntry> userIterator = application.getFriendlyUserList().iterator();
 			while (userIterator.hasNext()) {
 				// Get the current scoreboard entry
-				final User currentUser = userIterator.next();
-				
-				// FrameLayout Container for the currentScoreboardEntry ...
-				
+				final ScoreboardEntry currentUser = userIterator.next();				
+				// FrameLayout Container for the currentScoreboardEntry ...				
 				// Create and add a new FrameLayout to display the details of this entry
 				FrameLayout frameLayout = new FrameLayout(getActivity());
 				scoreboardContainer.addView(frameLayout);
@@ -377,7 +323,6 @@ public class ScoreboardFragment extends Fragment {
 				// Finally make this frameLayout clickable so that a game starts with the user smashing
 				// the user represented by this frameLayout in the scoreContainer
 				frameLayout.setOnTouchListener(new OnTouchListener() {
-
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -393,8 +338,7 @@ public class ScoreboardFragment extends Fragment {
 						} else {
 							return true;
 						}
-					}
-					
+					}					
 				});
 			    
 			    // Increment the index before looping back

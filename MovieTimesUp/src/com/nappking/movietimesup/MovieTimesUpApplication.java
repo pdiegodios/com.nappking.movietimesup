@@ -23,6 +23,7 @@ public class MovieTimesUpApplication extends Application {
 	// Switch between the non-social and social Facebook versions of the game
 	public static final int TIME_FOR_SERVICE=15*60*1000; //15min
     public static final int UNLOCK_LEVEL = 15;
+    public static final int SECONDS_FOR_LEVEL = 2500;
     public static final boolean IS_SOCIAL = true;
 	// Player's current score
     private boolean soundEnabled = true;
@@ -45,13 +46,12 @@ public class MovieTimesUpApplication extends Application {
 	private static final String FRIENDS_KEY = "friends";	
 	// List of ordered ScoreboardEntry objects in order from highest to lowest score to
 	// be shown in the ScoreboardFragment
-	private List<User> friendlyUsers = null;	
+	private List<ScoreboardEntry> friendlyUsers = null;	
 	// FacebookRequestError to show when the GameFragment closes
 	private FacebookRequestError gameFragmentFBRequestError = null;
 		
 
-	/*getters & setters */
-	
+	/*getters & setters */	
 	public int getScore() {
 		return score;
 	}
@@ -180,12 +180,12 @@ public class MovieTimesUpApplication extends Application {
 		this.friends = friends;
 	}
 
-	public List<User> getFriendlyUserList() {
+	public List<ScoreboardEntry> getFriendlyUserList() {
 		return friendlyUsers;
 	}
 
-	public void setFriendlyUserList(List<User> users) {
-		this.friendlyUsers = users;
+	public void setFriendlyUserList(List<ScoreboardEntry> entries) {
+		this.friendlyUsers = entries;
 	}
 
 	public FacebookRequestError getGameFragmentFBRequestError() {

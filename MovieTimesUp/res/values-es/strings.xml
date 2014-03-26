@@ -29,9 +29,10 @@
 	<string name="check_movies">"Comprobando si hay nuevas películas"</string>
     <string name="check_user">"Comprobando la información de usuario"</string>
     <string name="upload_user">"Subiendo información de usuario"</string>
-    <string name="downloaded_user">"Descargada información de usuario reciente"</string>
+    <string name="downloaded_user">"Descargada información de usuario más reciente"</string>
     <string name="already_updated_user">"Usuario ya actualizado"</string>
-    <string name="uploaded_user">"Subida información de usuario reciente"</string>
+    <string name="uploaded_user">"Actualizada información de usuario en servidor"</string>
+    <string name="created_user">"Nuevo usuario creado en el servidor"</string>
     <string name="download_user">"Descargando información de usuario desde el servicio web"</string>
     <string name="movies_downloaded">"¡Nuevas películas descargadas!"</string>
     <string name="movies_downloaded_false">"Ya tienes todas las películas"</string>
@@ -74,6 +75,10 @@
     <string name="bonus_message">Entra cada día para conseguir más segundos</string>
     <string name="game_over_sub">la película ha sido bloquedada</string>
     <string name="you_got">Consigues</string>
+    <string name="new_cult_unlocked">¡Película de culto desbloqueada!</string>
+    <string name="new_masterpiece_unlocked">¡Obra maestra desbloqueada!</string>
+    <string name="use_them_to_get_extras">Acumúlalas y cámbialas por bonificaciones</string>
+    <string name="enter_to_get_seconds">Entra hoy para conseguir segundos extra</string>
     <string name="new_movies_to_guess">"nuevas películas para adivinar"</string>
     <string name="and">"y"</string>
     <string name="points">puntos</string>
@@ -90,7 +95,8 @@
     <string name="loading">Cargando</string>
     <string name="congrats">¡Felicidades!</string>
     <string name="level_number">Nivel #</string>
-    <string name="unlocked">desbloqueado</string>    
+    <string name="unlocked">desbloqueado</string>   
+    <string name="seconds_for_level">2500 segundos por cada nivel nuevo</string> 
     <string name="nextlevel">Acierta 15 películas para acceder al siguiente nivel</string>
     <string name="european_achievement">Nuevo logro europeo desbloqueado</string>
     <string name="asian_achievement">Nuevo logro asiático desbloqueado</string>

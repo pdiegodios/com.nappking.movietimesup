@@ -27,35 +27,36 @@ public class AddMovie {
 		int id = 51;
 		int points = 1;
 		int cinema = 2;
-		int year = 1980;
+		int year = 2000;
 		boolean masterpiece = false;
-		boolean cult = false;
-		String title = "";
-		String alternative_title = "";
-		String original_title = "";
-		String continent = "AM";
-		String country = "USA";
-		String director = "";
-		String genre = "";
-		String poster = "";
-		String  filmaffinity_id = "445878";
-		String imdb_id = "tt0080339";
-		String actor1="Leslie Nielsen";
-		String actor2="Robert Hays";
-		String actor3="Julie Hagerty";
-		String character1="Ted Striker";
-		String character2="Dr. Rumack";
-		String character3="Elaine";
-		String other1 ="El famoso píloto automático que aparece en la película fue bautizado con el nombre de Otto y permaneció años en el garaje del director";
-		String other2 ="Posiblemente la película que inició las sagas de parodias basadas en otras películas";
-		String other3 ="Todos los actores secundarios fueron escogidos por estar asociados en la mente del público a papeles serios y dramáticos";
-		String quote1="No hay ninguna razón para alarmarse, y esperamos que disfruten del vuelo. Por cierto, ¿Hay alguien a bordo que sepa pilotar un avión?";
-		String quote2="-Azafata tenemos que llevarlos a un hospital. -¿Qué es, doctor?  -Es un edificio grande lleno de enfermos y casi nunca hay camas.";
-		String quote3="-¿Nervioso?. -Sí, un poco. -¿Es la primera vez?. -No, ya había estado nervioso antes.";
-		String plot = "El vuelo 209 de la Trans American sale de Los Ángeles con destino a Chicago. Entre el pasaje " +
-				"se encuentran una serie de curiosos personajes. Entre ellos, un ex-piloto de combate que, en pleno vuelo, " +
-				"se verá obligado a hacerse con el mando del avión comercial, tras quedar los pilotos indispuestos por una " +
-				"comida en mal estado.";
+		boolean cult = true;
+		String title = "Snatch. Cerdos y diamantes";
+		String alternative_title = "Cerdos y diamantes";
+		String original_title = "Snatch";
+		String continent = "EU";
+		String country = "UK";
+		String director = "Guy Ritchie";
+		String genre = "Thriller-Comedia Negra";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMTk5NzE0MDQyNl5BMl5BanBnXkFtZTcwNzk4Mjk3OA@@._V1_SY317_CR2,0,214,317_.jpg";
+		String  filmaffinity_id = "568510";
+		String imdb_id = "tt0208092";
+		String actor1="Brad Pitt";
+		String actor2="Benicio Del Toro";
+		String actor3="Vinnie Jones";
+		String character1="Franky \"Cuatro dedos\"";
+		String character2="Tony \"Dientes de bala\"";
+		String character3="Turco";
+		String other1 ="Uno de los actores fue un afamado jugador de futbol conocido por sus salvajes entradas";
+		String other2 ="En la película suena \"Lucky Star\" de Madonna, que ese año se casó con el director";
+		String other3 ="Crítica P.Kurt: \"delirante y violento filme con mucho humor negro(...). Fiel a su estilo, el director inglés volvió a no defraudar a sus numerosos seguidores y reafirmar a sus detractores.\"";
+		String quote1="¿Para qué cojones quiero una caravana sin una puta rueda?";
+		String quote2="Nunca debéis subestimar lo predecible que es la estupidez.";
+		String quote3="Para cada acción hay una reacción, y la reacción de un gitano es algo muy jodido.";
+		String plot = "X es un ladrón de diamantes que tiene que entregar un valioso ejemplar a su jefe Y, pero, antes de hacerlo, " +
+				"se deja convencer por un tal Z para apostar en un combate ilegal de boxeo. En realidad, se trata de una trampa para " +
+				"arrebatarle el diamante. Cuando Y se entera, contrata a W para encontrar a X y al diamante. Descubierto el triste " +
+				"destino de X, la recuperación de la gema desaparecida provoca una situación caótica, donde el engaño, el chantaje y el " +
+				"fraude se mezclan de forma sangrienta con perros, diamantes, boxeadores y gran variedad de armas.";
 
 		
 		//CLIENT

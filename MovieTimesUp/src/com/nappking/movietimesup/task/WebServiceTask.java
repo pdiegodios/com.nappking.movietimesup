@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -82,11 +83,8 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
     }
      
     private HttpResponse doResponse(String url) {         
-        // Use our connection and data timeouts as parameters for our
-        // DefaultHttpClient
         HttpClient httpclient = new DefaultHttpClient(getHttpParams());
-        HttpResponse response = null;
-
+        HttpResponse response=null;
         try {
             switch (taskType) {
             case POST_TASK:

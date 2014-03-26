@@ -30,8 +30,9 @@
     <string name="check_movies">"Checking if there are new movies"</string>
     <string name="check_user">"Checking user data"</string>
     <string name="upload_user">"Uploading user data"</string>
-    <string name="downloaded_user">"user data downloaded"</string>
-    <string name="uploaded_user">"user data uploaded"</string>
+    <string name="downloaded_user">"User data downloaded"</string>
+    <string name="uploaded_user">"User data uploaded"</string>
+    <string name="created_user">"New user created in Server"</string>
     <string name="already_updated_user">"User data already updated"</string>
     <string name="download_user">"Downloading user data from Webservice"</string>
     <string name="movies_downloaded">"Downloaded new movies!"</string>
@@ -76,6 +77,10 @@
     <string name="game_over_sub">the movie has been locked</string>
     <string name="game_won">Congrats!</string>
     <string name="you_got">you got</string>
+    <string name="new_cult_unlocked">¡Cult film unlocked!</string>
+    <string name="new_masterpiece_unlocked">¡Masterpiece unlocked!</string>
+    <string name="use_them_to_get_extras">Use them to get some extras</string>
+    <string name="enter_to_get_seconds">Enter today to get extra seconds</string>
     <string name="new_movies_to_guess">"new movies to guess"</string>
     <string name="and">"and"</string>
     <string name="movies">"Movies"</string>
@@ -92,6 +97,7 @@
     <string name="loading">Loading</string>
     <string name="level_number">Level #</string>
     <string name="unlocked">unlocked</string>    
+    <string name="seconds_for_level">2500 seconds for each new level</string>
     <string name="nextlevel">Hit 15 films to get a new level</string>
     <string name="european_achievement">New european achievement unlocked</string>
     <string name="asian_achievement">New asian achievement unlocked</string>

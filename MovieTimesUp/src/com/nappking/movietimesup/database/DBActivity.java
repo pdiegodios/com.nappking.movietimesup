@@ -59,14 +59,12 @@ public abstract class DBActivity extends Activity{
 		Dao<User, Integer> daoUser;
 		try {
 			daoUser = getHelper().getUserDAO();
-			int totalMovies = (int)getHelper().getMovieDAO().countOf();
 			User user = daoUser.queryForId(1);
 			if(user!=null){
 				Calendar now = GregorianCalendar.getInstance();
-				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()
-						+MovieTimesUpApplication.TIME_FOR_SERVICE)) || (totalMovies>user.getMovies())){
+				if((now.getTimeInMillis()>(((MovieTimesUpApplication)getApplication()).getLastUpdateCall()+MovieTimesUpApplication.TIME_FOR_SERVICE))){
 					Log.i("UPDATE USER", "IT'S TIME TO CHECK WS");
-					//It's more than 10min since last time it was updated or there are new movies
+					//It's more than 15min since last time it was updated 
 					((MovieTimesUpApplication)getApplication()).setLastUpdateCall(System.currentTimeMillis());
 					Log.i("LOAD USER FROM:", this.toString());
 					new LoadUserDataTask(this, user).execute();
