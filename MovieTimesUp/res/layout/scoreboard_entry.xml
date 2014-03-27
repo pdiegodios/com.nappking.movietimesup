@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:background="@android:drawable/editbox_dropdown_dark_frame"
+    android:layout_margin="2dp">   
+    <com.facebook.widget.ProfilePictureView
+     	android:id="@+id/userImage"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/scoreboard_size"
+        android:layout_height="@dimen/scoreboard_size"
+        android:layout_margin="5dp"/>
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+	    <TextView 
+	        android:id="@+id/userName"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:textSize="@dimen/grid_text_size_bigger"
+	        android:gravity="center_vertical"
+	        android:textStyle="bold"
+	        android:textColor="@color/white"
+	        android:layout_weight="1"/>
+	    <TextView 
+	        android:id="@+id/userPoints"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:textColor="@color/white"
+	        android:textSize="@dimen/grid_text_size_bigger"
+	        android:gravity="center_vertical"
+	        android:layout_weight="1"/>
+	</LinearLayout>
+</LinearLayout>

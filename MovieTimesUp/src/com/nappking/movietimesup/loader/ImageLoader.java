@@ -48,12 +48,19 @@ public class ImageLoader {
         Bitmap bitmap=memoryCache.get(id);
         if(bitmap!=null){
             imageView.setImageBitmap(bitmap);
-            progress.setVisibility(View.INVISIBLE);
+            if(progress!=null){
+            	progress.setVisibility(View.INVISIBLE);
+            }
         }    
         else{
             queuePhoto(id, url, imageView, progress);
             imageView.setImageResource(default_image);
         }
+    }
+    
+    public Bitmap getImage(int id){
+    	Bitmap bitmap=memoryCache.get(id);
+        return bitmap;
     }
         
     private void queuePhoto(int id, String url, ImageView imageView, ProgressBar progress){
@@ -194,17 +201,25 @@ public class ImageLoader {
     class BitmapDisplayer implements Runnable{
         Bitmap bitmap;
         PhotoToLoad photoToLoad;
+        ProgressBar progress;
+        ImageView image;
         public BitmapDisplayer(Bitmap b, PhotoToLoad p){bitmap=b;photoToLoad=p;}
         public void run(){
+        	progress = photoToLoad.getProgress();
+        	image = photoToLoad.getImage();
             if(imageViewReused(photoToLoad))
                 return;
             if(bitmap!=null){
-                photoToLoad.getImage().setImageBitmap(bitmap);
-                photoToLoad.getProgress().setVisibility(View.INVISIBLE);
+                image.setImageBitmap(bitmap);
+                if(progress!=null){
+                	progress.setVisibility(View.INVISIBLE);
+                }
             }
             else{
-                photoToLoad.getImage().setImageResource(default_image);
-            	photoToLoad.getProgress().setVisibility(View.INVISIBLE);
+                image.setImageResource(default_image);
+                if(progress!=null){
+                	progress.setVisibility(View.INVISIBLE);
+                }
         	}	
         }
     }

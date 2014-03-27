@@ -4,23 +4,59 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/gallery">
 
    	<EditText
    	    android:id="@+id/inputSearch"
    	    android:layout_width="match_parent"
-   	    android:layout_height="100dp"
+   	    android:layout_height="@dimen/main_panel_size"
 		android:nextFocusUp="@id/inputSearch" 
 		android:nextFocusLeft="@id/inputSearch"
-   	    android:layout_weight="1"
+		android:textSize="@dimen/scheme_default_text_size"
    	    android:drawableLeft="@drawable/search"
    	    android:hint="@string/txSearchable"
-   	    android:inputType="textVisiblePassword"/>
-    <ListView
-        android:id="@android:id/list"
+   	    android:inputType="textVisiblePassword"
+   	    android:background="@color/greytranser"/>    
+    <LinearLayout 
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
-    </ListView>
+        android:layout_height="@dimen/main_panel_size"
+        android:gravity="center">
+        <ImageView 
+            android:id="@+id/extra"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_panel_size"/>
+        <LinearLayout 
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+	        android:layout_marginLeft="@dimen/grid_text_margin">
+	        <TextView 
+	            android:id="@+id/title"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="center"
+	            android:textSize="@dimen/scheme_title_text_size"
+	            android:textStyle="bold"
+	            android:textColor="@color/white"
+	            android:singleLine="true"/>
+	        <TextView 
+	            android:id="@+id/info"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:layout_weight="2"
+	            android:gravity="center"
+	            android:textColor="@color/white"
+	            android:textSize="@dimen/template_info"/>
+        </LinearLayout>
+    </LinearLayout>
+    <com.nappking.movietimesup.widget.CoverFlow
+        android:id="@+id/coverFlow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.nappking.movietimesup.widget.CoverFlow>
 	
 </LinearLayout>

@@ -115,7 +115,7 @@
 		            <ImageView 
 		                android:id="@+id/bonus"
 		                android:layout_width="match_parent"
-		                android:layout_height="match_parent"
+		                android:layout_height="@dimen/scheme_icon_size"
 		                android:layout_weight="1"/>
 		            <FrameLayout 
 		                android:layout_width="match_parent"

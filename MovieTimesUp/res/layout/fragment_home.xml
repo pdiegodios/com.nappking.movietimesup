@@ -126,8 +126,8 @@
 	            style="@style/empty"/>	   	
 		 	<ImageView
 	            android:id="@+id/loginButton"
-	            android:layout_width="@dimen/main_billboard_width"
-	            android:layout_height="@dimen/main_panel_size"
+	            android:layout_width="@dimen/main_facebook_width"
+	            android:layout_height="@dimen/main_facebook_height"
 	            android:background="@drawable/login"/>
         </LinearLayout>
 	</LinearLayout>

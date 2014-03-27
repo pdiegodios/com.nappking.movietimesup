@@ -34,6 +34,8 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.nappking.movietimesup.R;
+import com.nappking.movietimesup.adapter.ScoreboardEntryAdapter;
+import com.nappking.movietimesup.widget.ListView3d;
 import com.facebook.model.GraphObject;
 import com.facebook.widget.ProfilePictureView;
 
@@ -41,12 +43,8 @@ import com.facebook.widget.ProfilePictureView;
  *  Fragment shown once a user opens the scoreboard
  */
 public class ScoreboardFragment extends Fragment {
-	
-    // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
 	private MovieTimesUpApplication application;    
-	// LinearLayout as the container for the scoreboard entries
-	private LinearLayout scoreboardContainer;	
-	// FrameLayout of the progress container to show the spinner
+	private ListView3d scoreboardList;
 	private FrameLayout progressContainer;
 	private ProfilePictureView pictureFirst;
 	private TextView nameFirst;
@@ -69,14 +67,13 @@ public class ScoreboardFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 		Log.i(getActivity().toString(), "OnCreateView");		
 		View v = inflater.inflate(R.layout.fragment_scoreboard, parent, false);		
-		scoreboardContainer = (LinearLayout)v.findViewById(R.id.scoreboardContainer);
+		scoreboardList = (ListView3d)v.findViewById(android.R.id.list);
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
 		
 		pictureFirst = (ProfilePictureView)v.findViewById(R.id.userImageFirst);
 		nameFirst = (TextView)v.findViewById(R.id.userNameFirst);
 		pointsFirst = (TextView)v.findViewById(R.id.userPointsFirst);
 
-		// Set the progressContainer as invisible by default
 		progressContainer.setVisibility(View.INVISIBLE);
 		
 		return v;
@@ -96,14 +93,8 @@ public class ScoreboardFragment extends Fragment {
 	public void onResume() {
 		Log.i(getActivity().toString(), "onResume");		
 		super.onResume();
-		// Populate scoreboard - fetch information if necessary ...
-		//if (application.getFriendlyUserList() == null) {
-			progressContainer.setVisibility(View.VISIBLE);
-			fetchScoreboardEntries();
-		//} else {
-			// Information has already been fetched, so populate the scoreboard
-		//	populateScoreboard();
-		//}
+		progressContainer.setVisibility(View.VISIBLE);
+		fetchScoreboardEntries();
 	}	
 	 
     private String inputStreamToString(InputStream is) {
@@ -123,10 +114,8 @@ public class ScoreboardFragment extends Fragment {
         return total.toString();
     }
 	
-	// Fetch a List of ScoreboardEntry objects with the scores and details
-	// of the user and their friends' scores who have played FriendSmash
+
 	private void fetchScoreboardEntries () {
-		Log.i(getActivity().toString(), "fetchScoreBoardEntries");
 		// Fetch the scores ...		
 		
 		if(Session.getActiveSession()!=null){
@@ -134,7 +123,6 @@ public class ScoreboardFragment extends Fragment {
 			//String currentUserFBID = application.getCurrentFBUser().getId();
 			//String currentUserAccessToken = Session.getActiveSession().getAccessToken();
 			Request getScoreRequest = new Request(Session.getActiveSession(),
-					//mUser.getUser()+"/scores",
 					getResources().getString(R.string.app_id)+"/scores",
 					null,
 	                HttpMethod.GET,
@@ -150,12 +138,11 @@ public class ScoreboardFragment extends Fragment {
 					            List<ScoreboardEntry> entries = new ArrayList<ScoreboardEntry>();
 					            for (int i=0; i <(jsonArray.length()); i++){
 					                JSONObject json = jsonArray.getJSONObject( i );
-					                int score     = json.getInt("score");
-					                JSONObject user   = json.getJSONObject("user");
+					                int score = json.getInt("score");
+					                JSONObject user = json.getJSONObject("user");
 					                String id = user.getString("id");
 					                String name = user.getString("name");
 					                ScoreboardEntry entry = new ScoreboardEntry(id, name, score);
-					                Log.i("Element", "id:"+id+" name:"+name+" score:"+score);
 					                entries.add(entry);
 					            }
 					    		Comparator<ScoreboardEntry> comparator = Collections.reverseOrder();
@@ -185,12 +172,13 @@ public class ScoreboardFragment extends Fragment {
 	}
 
 	private void populateScoreboard() {
-		// Ensure all components are firstly removed from scoreboardContainer
-		scoreboardContainer.removeAllViews();		
-		// Ensure the progress spinner is hidden
+		scoreboardList.removeAllViewsInLayout();
 		progressContainer.setVisibility(View.INVISIBLE);
+		
 		// User id to show a different View
+		//TODO: Star user
 		String userFBID = application.getCurrentFBUser().getId(); 
+		
 		// Ensure scoreboardEntriesList is not null and not empty first
 		if (application.getFriendlyUserList() == null || application.getFriendlyUserList().size() <= 0) {
 			closeAndShowError(getResources().getString(R.string.error_no_scores));
@@ -210,139 +198,11 @@ public class ScoreboardFragment extends Fragment {
 			//ScoreboardEntry entry = new ScoreboardEntry("1040076773", "Lino Villar Martinez", 41);
 			application.getFriendlyUserList().add(entry);
 			application.getFriendlyUserList().add(entry2);
+			application.getFriendlyUserList().add(entry);
+			application.getFriendlyUserList().add(entry2);
+			application.getFriendlyUserList().add(entry);
 			
-			
-			Iterator<ScoreboardEntry> userIterator = application.getFriendlyUserList().iterator();
-			while (userIterator.hasNext()) {
-				// Get the current scoreboard entry
-				final ScoreboardEntry currentUser = userIterator.next();				
-				// FrameLayout Container for the currentScoreboardEntry ...				
-				// Create and add a new FrameLayout to display the details of this entry
-				FrameLayout frameLayout = new FrameLayout(getActivity());
-				scoreboardContainer.addView(frameLayout);
-				
-				// Set the attributes for this frameLayout
-				int topPadding = getResources().getDimensionPixelSize(R.dimen.scoreboard_entry_top_margin);
-				frameLayout.setPadding(0, topPadding, 0, 0);
-				
-				// ImageView background image ...
-				{
-					// Create and add an ImageView for the background image to this entry
-					ImageView backgroundImageView = new ImageView(getActivity());
-					frameLayout.addView(backgroundImageView);
-					
-					// Set the image of the backgroundImageView
-					String uri = "drawable/scores_stub_even";
-					if (index % 2 != 0) {
-						// Odd entry
-						uri = "drawable/scores_stub_odd";
-					}
-				    int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-				    Drawable image = getResources().getDrawable(imageResource);
-				    backgroundImageView.setImageDrawable(image);
-					
-				    // Other attributes of backgroundImageView to modify
-				    FrameLayout.LayoutParams backgroundImageViewLayoutParams = new FrameLayout.LayoutParams(
-				    		FrameLayout.LayoutParams.WRAP_CONTENT,
-				    		FrameLayout.LayoutParams.WRAP_CONTENT);
-				    int backgroundImageViewMarginTop = getResources().getDimensionPixelSize(R.dimen.scoreboard_background_imageview_margin_top);
-				    backgroundImageViewLayoutParams.setMargins(0, backgroundImageViewMarginTop, 0, 0);
-				    backgroundImageViewLayoutParams.gravity = Gravity.LEFT;
-					if (index % 2 != 0) {
-						// Odd entry
-						backgroundImageViewLayoutParams.gravity = Gravity.RIGHT;
-					}
-					backgroundImageView.setLayoutParams(backgroundImageViewLayoutParams);
-				}
-				
-			    // ProfilePictureView of the current user ...
-				{
-				    // Create and add a ProfilePictureView for the current user entry's profile picture
-				    ProfilePictureView profilePictureView = new ProfilePictureView(getActivity());
-				    frameLayout.addView(profilePictureView);
-				    
-				    // Set the attributes of the profilePictureView
-				    int profilePictureViewWidth = getResources().getDimensionPixelSize(R.dimen.scoreboard_profile_picture_view_width);
-				    FrameLayout.LayoutParams profilePictureViewLayoutParams = new FrameLayout.LayoutParams(profilePictureViewWidth, profilePictureViewWidth);
-				    int profilePictureViewMarginLeft = 0;
-				    int profilePictureViewMarginTop = getResources().getDimensionPixelSize(R.dimen.scoreboard_profile_picture_view_margin_top);
-				    int profilePictureViewMarginRight = 0;
-				    int profilePictureViewMarginBottom = 0;
-				    if (index % 2 == 0) {
-				    	profilePictureViewMarginLeft = getResources().getDimensionPixelSize(R.dimen.scoreboard_profile_picture_view_margin_left);
-					} else {
-						profilePictureViewMarginRight = getResources().getDimensionPixelSize(R.dimen.scoreboard_profile_picture_view_margin_right);
-					}
-				    profilePictureViewLayoutParams.setMargins(profilePictureViewMarginLeft, profilePictureViewMarginTop,
-				    		profilePictureViewMarginRight, profilePictureViewMarginBottom);
-				    profilePictureViewLayoutParams.gravity = Gravity.LEFT;
-					if (index % 2 != 0) {
-						// Odd entry
-						profilePictureViewLayoutParams.gravity = Gravity.RIGHT;
-					}
-					profilePictureView.setLayoutParams(profilePictureViewLayoutParams);
-				    
-				    // Finally set the id of the user to show their profile pic
-				    profilePictureView.setProfileId(currentUser.getId()+"");
-				}
-				
-				// LinearLayout to hold the text in this entry
-				
-				// Create and add a LinearLayout to hold the TextViews
-				LinearLayout textViewsLinearLayout = new LinearLayout(getActivity());
-				frameLayout.addView(textViewsLinearLayout);
-				
-				// Set the attributes for this textViewsLinearLayout
-				FrameLayout.LayoutParams textViewsLinearLayoutLayoutParams = new FrameLayout.LayoutParams(
-						FrameLayout.LayoutParams.WRAP_CONTENT,
-						FrameLayout.LayoutParams.WRAP_CONTENT);
-				int textViewsLinearLayoutMarginLeft = 0;
-			    int textViewsLinearLayoutMarginTop = getResources().getDimensionPixelSize(R.dimen.scoreboard_textviews_linearlayout_margin_top);
-			    int textViewsLinearLayoutMarginRight = 0;
-			    int textViewsLinearLayoutMarginBottom = 0;
-			    if (index % 2 == 0) {
-			    	textViewsLinearLayoutMarginLeft = getResources().getDimensionPixelSize(R.dimen.scoreboard_textviews_linearlayout_margin_left);
-				} else {
-					textViewsLinearLayoutMarginRight = getResources().getDimensionPixelSize(R.dimen.scoreboard_textviews_linearlayout_margin_right);
-				}
-			    textViewsLinearLayoutLayoutParams.setMargins(textViewsLinearLayoutMarginLeft, textViewsLinearLayoutMarginTop,
-			    		textViewsLinearLayoutMarginRight, textViewsLinearLayoutMarginBottom);
-			    textViewsLinearLayoutLayoutParams.gravity = Gravity.LEFT;
-				if (index % 2 != 0) {
-					// Odd entry
-					textViewsLinearLayoutLayoutParams.gravity = Gravity.RIGHT;
-				}
-				textViewsLinearLayout.setLayoutParams(textViewsLinearLayoutLayoutParams);
-				textViewsLinearLayout.setOrientation(LinearLayout.VERTICAL);
-				
-				// TextView with the position and name of the current user
-				{
-					// Set the text that should go in this TextView first
-					int position = index+2;
-					String currentScoreboardEntryTitle = position + ". " + currentUser.getName();
-					
-					// Create and add a TextView for the current user position and first name
-				    TextView titleTextView = new TextView(getActivity());
-				    textViewsLinearLayout.addView(titleTextView);
-				    
-				    // Set the text and other attributes for this TextView
-				    titleTextView.setText(currentScoreboardEntryTitle);
-				    titleTextView.setTextAppearance(getActivity(), R.style.ScoreboardPlayerNameFont);
-				}
-				
-				// TextView with the score of the current user
-				{
-					// Create and add a TextView for the current user score
-				    TextView scoreTextView = new TextView(getActivity());
-				    textViewsLinearLayout.addView(scoreTextView);
-				    
-				    // Set the text and other attributes for this TextView
-				    scoreTextView.setText(getResources().getString(R.string.points)+": "+ currentUser.getScore());
-				    scoreTextView.setTextAppearance(getActivity(), R.style.ScoreboardPlayerScoreFont);
-				}			    
-			    // Increment the index before looping back
-				index++;
-			}
+			scoreboardList.setAdapter(new ScoreboardEntryAdapter(this.getActivity(),application.getFriendlyUserList()));
 		}
 	}
 }

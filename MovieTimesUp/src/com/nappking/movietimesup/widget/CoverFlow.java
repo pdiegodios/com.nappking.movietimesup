@@ -32,12 +32,10 @@ public class CoverFlow extends Gallery {
 
     //Graphics Camera used for transforming the matrix of ImageViews
     private Camera mCamera = new Camera();
-
     //The maximum angle the Child ImageView will be rotated by   
-    private int mMaxRotationAngle = 60;
-    
+    private int mMaxRotationAngle = 60;    
     //The maximum zoom on the centre Child
-    private int mMaxZoom = -120;
+    private int mMaxZoom = -100;
     
     /**
      * The Centre of the Coverflow 
@@ -111,8 +109,7 @@ public class CoverFlow extends Gallery {
 	 * {@inheritDoc}
 	 * @see #setStaticTransformationsEnabled(boolean) 
 	 */ 
-    protected boolean getChildStaticTransformation(View child, Transformation t) {
-  
+    protected boolean getChildStaticTransformation(View child, Transformation t) {  
     	final int childCenter = getCenterOfView(child);
     	final int childWidth = child.getWidth() ;
     	int rotationAngle = 0;
@@ -166,7 +163,7 @@ public class CoverFlow extends Gallery {
          
     	//As the angle of the view gets less, zoom in     
     	if ( rotation < mMaxRotationAngle ) {
-    		float zoomAmount = (float) (mMaxZoom +  (rotation * 1.5));
+    		float zoomAmount = (float) (mMaxZoom + (rotation * 1.5));
     		mCamera.translate(0.0f, 0.0f, zoomAmount);          
     	} 
       

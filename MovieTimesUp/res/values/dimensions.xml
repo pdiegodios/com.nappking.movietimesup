@@ -13,9 +13,10 @@
     <dimen name="scoreboard_textviews_linearlayout_margin_left">86dp</dimen>
     <dimen name="scoreboard_textviews_linearlayout_margin_right">86dp</dimen>
     
-    <dimen name="scoreboard_top_margin">15dp</dimen>
-    <dimen name="scoreboard_first_size">56dp</dimen>
-    <dimen name="scoreboard_entry_width">280dp</dimen>
+    <dimen name="scoreboard_margin">15dp</dimen>
+    <dimen name="scoreboard_size">40dp</dimen>
+    <dimen name="scoreboard_first_size">75dp</dimen>
+    <dimen name="scoreboard_entry_width">300dp</dimen>
     
     <dimen name="scheme_title_text_size">22sp</dimen>
     <dimen name="scheme_default_text_size">14sp</dimen>
@@ -49,6 +50,9 @@
     <dimen name="main_margin_medium">22dp</dimen>
     <dimen name="main_margin_small">14dp</dimen>
     <dimen name="main_facebook_width">320dp</dimen>
-    <dimen name="main_facebook_heigth">90dp</dimen>
+    <dimen name="main_facebook_height">90dp</dimen>
+    
+    <dimen name="search_cover_width">210dp</dimen>
+    <dimen name="search_cover_height">320dp</dimen>
     
 </resources>
