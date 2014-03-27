@@ -2,6 +2,10 @@
 
 <resources>
     
+    <dimen name="scoreboard_top_margin">25dp</dimen>
+    <dimen name="scoreboard_first_size">90dp</dimen>
+    <dimen name="scoreboard_entry_width">450dp</dimen>
+    
     <dimen name="scheme_title_text_size">44sp</dimen>
     <dimen name="scheme_default_text_size">24sp</dimen>
     <dimen name="scheme_icon_size">60dp</dimen>

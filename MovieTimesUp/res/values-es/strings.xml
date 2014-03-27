@@ -78,8 +78,8 @@
     <string name="new_cult_unlocked">¡Película de culto desbloqueada!</string>
     <string name="new_masterpiece_unlocked">¡Obra maestra desbloqueada!</string>
     <string name="use_them_to_get_extras">Acumúlalas y cámbialas por bonificaciones</string>
-    <string name="enter_to_get_seconds">Entra hoy para conseguir segundos extra</string>
-    <string name="new_movies_to_guess">"nuevas películas para adivinar"</string>
+    <string name="enter_to_get_seconds">"Entra hoy para conseguir segundos extra"</string>
+    <string name="new_movies_to_guess">"Nuevas películas para adivinar"</string>
     <string name="and">"y"</string>
     <string name="points">puntos</string>
     <string name="movies">"Películas"</string>
@@ -95,8 +95,8 @@
     <string name="loading">Cargando</string>
     <string name="congrats">¡Felicidades!</string>
     <string name="level_number">Nivel #</string>
-    <string name="unlocked">desbloqueado</string>   
-    <string name="seconds_for_level">2500 segundos por cada nivel nuevo</string> 
+    <string name="unlocked">desbloqueado</string>    
+    <string name="seconds_for_level">Consigues 2500 segundos</string>    
     <string name="nextlevel">Acierta 15 películas para acceder al siguiente nivel</string>
     <string name="european_achievement">Nuevo logro europeo desbloqueado</string>
     <string name="asian_achievement">Nuevo logro asiático desbloqueado</string>

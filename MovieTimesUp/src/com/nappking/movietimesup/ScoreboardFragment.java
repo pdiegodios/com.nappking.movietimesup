@@ -13,7 +13,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,9 +21,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -51,6 +48,9 @@ public class ScoreboardFragment extends Fragment {
 	private LinearLayout scoreboardContainer;	
 	// FrameLayout of the progress container to show the spinner
 	private FrameLayout progressContainer;
+	private ProfilePictureView pictureFirst;
+	private TextView nameFirst;
+	private TextView pointsFirst;
 	
 	// Handler for putting messages on Main UI thread from background thread after fetching the scores
 	private Handler uiHandler;
@@ -71,6 +71,10 @@ public class ScoreboardFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_scoreboard, parent, false);		
 		scoreboardContainer = (LinearLayout)v.findViewById(R.id.scoreboardContainer);
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
+		
+		pictureFirst = (ProfilePictureView)v.findViewById(R.id.userImageFirst);
+		nameFirst = (TextView)v.findViewById(R.id.userNameFirst);
+		pointsFirst = (TextView)v.findViewById(R.id.userPointsFirst);
 
 		// Set the progressContainer as invisible by default
 		progressContainer.setVisibility(View.INVISIBLE);
@@ -93,13 +97,13 @@ public class ScoreboardFragment extends Fragment {
 		Log.i(getActivity().toString(), "onResume");		
 		super.onResume();
 		// Populate scoreboard - fetch information if necessary ...
-		if (application.getFriendlyUserList() == null) {
+		//if (application.getFriendlyUserList() == null) {
 			progressContainer.setVisibility(View.VISIBLE);
 			fetchScoreboardEntries();
-		} else {
+		//} else {
 			// Information has already been fetched, so populate the scoreboard
-			populateScoreboard();
-		}
+		//	populateScoreboard();
+		//}
 	}	
 	 
     private String inputStreamToString(InputStream is) {
@@ -184,13 +188,30 @@ public class ScoreboardFragment extends Fragment {
 		// Ensure all components are firstly removed from scoreboardContainer
 		scoreboardContainer.removeAllViews();		
 		// Ensure the progress spinner is hidden
-		progressContainer.setVisibility(View.INVISIBLE);		
+		progressContainer.setVisibility(View.INVISIBLE);
+		// User id to show a different View
+		String userFBID = application.getCurrentFBUser().getId(); 
 		// Ensure scoreboardEntriesList is not null and not empty first
 		if (application.getFriendlyUserList() == null || application.getFriendlyUserList().size() <= 0) {
 			closeAndShowError(getResources().getString(R.string.error_no_scores));
 		} else {
 			// Iterate through scoreboardEntriesList, creating new UI elements for each entry
 			int index = 0;
+			ScoreboardEntry first = application.getFriendlyUserList().remove(0);
+			pictureFirst.setProfileId(first.getId());
+			pictureFirst.setCropped(true);
+			pointsFirst.setText(getResources().getString(R.string.points)+": "+first.getScore());
+			nameFirst.setText(first.getName());
+			
+			
+			//EXAMPLE
+			ScoreboardEntry entry = new ScoreboardEntry("1040076773", "Lino Villar Martinez", 41);
+			ScoreboardEntry entry2 = new ScoreboardEntry("100002705642205", "Pablo Diego Dios", 25);
+			//ScoreboardEntry entry = new ScoreboardEntry("1040076773", "Lino Villar Martinez", 41);
+			application.getFriendlyUserList().add(entry);
+			application.getFriendlyUserList().add(entry2);
+			
+			
 			Iterator<ScoreboardEntry> userIterator = application.getFriendlyUserList().iterator();
 			while (userIterator.hasNext()) {
 				// Get the current scoreboard entry
@@ -297,7 +318,7 @@ public class ScoreboardFragment extends Fragment {
 				// TextView with the position and name of the current user
 				{
 					// Set the text that should go in this TextView first
-					int position = index+1;
+					int position = index+2;
 					String currentScoreboardEntryTitle = position + ". " + currentUser.getName();
 					
 					// Create and add a TextView for the current user position and first name
@@ -316,31 +337,9 @@ public class ScoreboardFragment extends Fragment {
 				    textViewsLinearLayout.addView(scoreTextView);
 				    
 				    // Set the text and other attributes for this TextView
-				    scoreTextView.setText("Score: " + currentUser.getScore());
+				    scoreTextView.setText(getResources().getString(R.string.points)+": "+ currentUser.getScore());
 				    scoreTextView.setTextAppearance(getActivity(), R.style.ScoreboardPlayerScoreFont);
-				}
-				
-				// Finally make this frameLayout clickable so that a game starts with the user smashing
-				// the user represented by this frameLayout in the scoreContainer
-				frameLayout.setOnTouchListener(new OnTouchListener() {
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						if (event.getAction() == MotionEvent.ACTION_UP) {
-							Bundle bundle = new Bundle();
-							bundle.putString("user_id", currentUser.getId()+"");
-
-							Intent i = new Intent();
-							i.putExtras(bundle);
-						
-							getActivity().setResult(Activity.RESULT_FIRST_USER , i);
-							getActivity().finish();
-							return false;
-						} else {
-							return true;
-						}
-					}					
-				});
-			    
+				}			    
 			    // Increment the index before looping back
 				index++;
 			}

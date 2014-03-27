@@ -6,20 +6,70 @@
     android:orientation="vertical"
     android:background="@drawable/red_carpet">
 
-    <ScrollView 
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:fillViewport="false">
-    
-	    <LinearLayout
-	        android:id="@+id/scoreboardContainer"
-	        android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:orientation="vertical"
-	    	android:paddingTop="6dp"
-	        android:paddingBottom="10dp" />
-    
-   	</ScrollView>
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="@dimen/scoreboard_entry_width"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/scoreboard_top_margin">
+            <ImageView 
+                android:src="@drawable/masterpiece"
+                android:layout_width="@dimen/scoreboard_first_size"
+                android:layout_height="@dimen/scoreboard_first_size"/>        
+	        <com.facebook.widget.ProfilePictureView
+		        android:id="@+id/userImageFirst"
+	            android:layout_gravity="center"
+	            android:layout_width="@dimen/scoreboard_first_size"
+	            android:layout_height="@dimen/scoreboard_first_size"/>
+            <LinearLayout 
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical">
+                <TextView 
+                    android:id="@+id/userNameFirst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/grid_text_size_bigger"
+                    android:textColor="@color/white"
+                    android:text="Perico Palotes"/>
+                <TextView 
+                    android:id="@+id/userPointsFirst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/grid_text_size_bigger"
+                    android:textColor="@color/white"
+            		android:layout_marginTop="@dimen/grid_text_margin"
+                    android:text="Puntos: 65"/>
+                
+            </LinearLayout>
+        </LinearLayout>        
+        
+	    <ScrollView 
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fillViewport="false">
+	    
+		    <LinearLayout
+		        android:id="@+id/scoreboardContainer"
+		        android:layout_width="match_parent"
+		    	android:layout_height="match_parent"
+		    	android:orientation="vertical"
+		    	android:paddingTop="6dp"
+		        android:paddingBottom="10dp" />
+	    
+	   	</ScrollView>
+   	
+   	</LinearLayout>
+   	
     <FrameLayout android:id="@+id/progressContainer"
 	    android:background="@drawable/street_dark_background"
 	    android:layout_width="match_parent"
@@ -31,5 +81,5 @@
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center"/>
   	</FrameLayout>
-    
+  	
 </FrameLayout>

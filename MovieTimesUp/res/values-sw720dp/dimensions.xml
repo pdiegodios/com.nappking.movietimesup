@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>    
         
+    <dimen name="scoreboard_top_margin">33dp</dimen>
+    <dimen name="scoreboard_first_size">120dp</dimen>
+    <dimen name="scoreboard_entry_width">590dp</dimen>
+        
     <dimen name="scheme_title_text_size">55sp</dimen>
     <dimen name="scheme_default_text_size">30sp</dimen>
     <dimen name="scheme_icon_size">80dp</dimen>

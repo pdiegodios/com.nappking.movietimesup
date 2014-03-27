@@ -282,6 +282,7 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onResume() {
+		Log.i("HomeFragment", "onResume --> Update Points");
 		updatePoints();
 		super.onResume();
 	}

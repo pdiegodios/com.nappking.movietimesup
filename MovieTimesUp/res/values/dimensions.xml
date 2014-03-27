@@ -2,6 +2,7 @@
 <resources>
     
     <dimen name="icon_width">96dp</dimen>
+    
     <dimen name="scoreboard_entry_top_margin">4dp</dimen>
     <dimen name="scoreboard_background_imageview_margin_top">4dp</dimen>
     <dimen name="scoreboard_profile_picture_view_width">69dp</dimen>
@@ -11,6 +12,10 @@
     <dimen name="scoreboard_textviews_linearlayout_margin_top">20dp</dimen>
     <dimen name="scoreboard_textviews_linearlayout_margin_left">86dp</dimen>
     <dimen name="scoreboard_textviews_linearlayout_margin_right">86dp</dimen>
+    
+    <dimen name="scoreboard_top_margin">15dp</dimen>
+    <dimen name="scoreboard_first_size">56dp</dimen>
+    <dimen name="scoreboard_entry_width">280dp</dimen>
     
     <dimen name="scheme_title_text_size">22sp</dimen>
     <dimen name="scheme_default_text_size">14sp</dimen>

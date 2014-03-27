@@ -1042,8 +1042,7 @@ public class FilmActivity extends DBActivity{
 		else if(a.getField().equals(User.CINEMAS)){
 			int cinemas = mUser.getTotalCinemas();
 			title.setText(getResources().getString(R.string.level_number)+cinemas+" "+
-					getResources().getString(R.string.unlocked)+"\n"+
-					getResources().getString(R.string.seconds_for_level));
+					getResources().getString(R.string.unlocked)+"\n");
 			foreground_text.setText(cinemas+"");
 		}
 		else{
@@ -1095,11 +1094,11 @@ public class FilmActivity extends DBActivity{
 				mUser.setScore(mUser.getScore()+movie.getPoints());
 				if(movie.getMasterpiece()){
 					mUser.setMasterpiece(mUser.getMasterpiece()+1);
-					achievements.add(new Achievement(User.MASTERPIECE, 0, 0, R.drawable.masterpiece, R.string.use_them_to_get_extras));
+					achievements.add(new Achievement(User.MASTERPIECE, 0, 0, R.drawable.masterpiece_big, R.string.use_them_to_get_extras));
 				}
 				else if(movie.getCult()){
 					mUser.setCult(mUser.getCult()+1);
-					achievements.add(new Achievement(User.CULT, 0, 0, R.drawable.cult_movie, R.string.use_them_to_get_extras));
+					achievements.add(new Achievement(User.CULT, 0, 0, R.drawable.cult_movie_big, R.string.use_them_to_get_extras));
 				}
 				if(continent.equals(AMERICA)){
 					mUser.setAmerica(mUser.getAmerica()+1);

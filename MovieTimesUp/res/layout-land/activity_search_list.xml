@@ -16,7 +16,6 @@
    	    android:drawableLeft="@drawable/search"
    	    android:hint="@string/txSearchable"
    	    android:inputType="textVisiblePassword"/>
-    	
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
