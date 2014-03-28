@@ -10,13 +10,16 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
         <LinearLayout 
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/main_facebook_width"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/scoreboard_margin">
+            android:layout_marginTop="@dimen/scoreboard_margin"
+            android:layout_marginBottom="2dp"
+    		android:background="@android:drawable/editbox_dropdown_dark_frame">
             <ImageView 
                 android:src="@drawable/masterpiece"
                 android:layout_width="@dimen/scoreboard_first_size"
@@ -61,6 +64,12 @@
             
         </com.nappking.movietimesup.widget.ListView3d>
    	</LinearLayout>
+   	<ImageView 
+   	    android:layout_width="match_parent"
+   	    android:layout_height="@dimen/main_facebook_width"
+   	    android:scaleType="fitXY"
+   	    android:src="@drawable/lights"/>
+   	
     <FrameLayout android:id="@+id/progressContainer"
 	    android:background="@drawable/street_dark_background"
 	    android:layout_width="match_parent"
