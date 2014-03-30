@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textStyle="bold"
-                android:textSize="@dimen/main_text_default"
+                android:textSize="@dimen/text_size4"
                 android:textColor="@color/greylighter"/>
             <TextView 
                 android:id="@+id/userLevel"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_default"
+                android:textSize="@dimen/text_size4"
                 android:textStyle="bold"
                 android:textColor="@color/greylighter"/>
             <TextView 
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/main_text_default"
+                android:textSize="@dimen/text_size4"
                 android:textStyle="bold"
                 android:textColor="@color/greylighter"/>
         </LinearLayout>    
@@ -70,7 +70,7 @@
             android:layout_height="@dimen/main_panel_size_big"
             android:layout_marginTop="@dimen/main_margin_big"
             android:layout_marginLeft="@dimen/main_margin_small"
-            android:textSize="@dimen/main_text_big"
+            android:textSize="@dimen/text_size8"
             android:textStyle="bold"
             android:textColor="@color/black"/>
     </FrameLayout>
@@ -85,7 +85,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="right"
-	        android:layout_marginRight="20dp"
+	        android:layout_marginRight="@dimen/grid_horizontal_spacing"
 	        android:src="@drawable/playsign" />
 
 	    <LinearLayout
@@ -93,14 +93,6 @@
 	        android:layout_height="match_parent"
             android:orientation="vertical"
 	        android:gravity="bottom|right">
-		    
-		    <ImageView
-		        android:id="@+id/scoresButton"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="4dp"
-		        android:layout_gravity="bottom|right"
-		        android:src="@drawable/scores_button" />
 		    
 		    <ImageView
 		        android:id="@+id/challengeButton"
@@ -117,6 +109,15 @@
 		        android:layout_marginBottom="4dp"
 		        android:layout_gravity="bottom|right"
 		        android:src="@drawable/brag_button" />
+		    
+		    <ImageView
+		        android:id="@+id/scoresButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="4dp"
+		        android:layout_gravity="bottom|right"
+		        android:src="@drawable/scores_button" />
+		    
 		 	<com.facebook.widget.LoginButton
 		 	    android:id="@+id/login"
 	            custom:login_text=""

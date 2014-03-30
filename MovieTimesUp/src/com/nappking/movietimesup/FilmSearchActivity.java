@@ -50,8 +50,9 @@ public class FilmSearchActivity extends DBActivity{
 		title = (TextView) findViewById(R.id.title);
 		info = (TextView) findViewById(R.id.info);
 		extra = (ImageView) findViewById(R.id.extra);
-        int width = (int) (getResources().getDimension(R.dimen.search_cover_width) /getResources().getDisplayMetrics().density);
-    	coverFlow.setSpacing(-width/4);
+		int width = Math.round(getResources().getDimension(R.dimen.search_cover_width));
+    	
+		coverFlow.setSpacing(-width/4);
     	coverFlow.setAnimationDuration(1000);
 		inputSearch = (EditText) findViewById(R.id.inputSearch);
 		setListeners();
@@ -78,7 +79,10 @@ public class FilmSearchActivity extends DBActivity{
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		mIndex = savedInstanceState.getInt(INDEX,0);
-		mSearch = savedInstanceState.getString(SEARCH, "");
+		mSearch = (String) savedInstanceState.get(SEARCH);
+		if (mSearch==null){
+			mSearch = "";
+		}
 	}
 		
 	private void update() {

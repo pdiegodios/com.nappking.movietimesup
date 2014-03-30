@@ -3,28 +3,28 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.nappking.movietimesup"
     >    
-    <style name="Theme.filmstrip" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.filmstrip" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
     	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/texture</item>
 	</style>
-    <style name="Theme.gradient" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.gradient" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
     	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/gradientbackground</item>
 	</style>	
-    <style name="Theme.movie" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.movie" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
     	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/filmtransition</item>
 	</style>	
-    <style name="Theme.street" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.street" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
     	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/street_background</item>
 	</style>
 	
-    <style name="Theme.street_dark" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.street_dark" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
 	    <item name="android:windowBackground">@drawable/street_dark_background</item>
 	</style>
@@ -106,7 +106,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>     
         <item name="android:gravity">center_vertical|right</item>  
-        <item name="android:paddingRight">@dimen/grid_text_margin</item>  
+        <item name="android:paddingRight">@dimen/grid_margin_text</item>  
         <item name="android:textColor">@color/white</item> 
         <item name="android:textStyle">bold</item> 
     </style>
@@ -116,13 +116,13 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>     
         <item name="android:gravity">center_vertical|right</item>  
-        <item name="android:layout_marginRight">@dimen/grid_button_margin</item>  
+        <item name="android:layout_marginRight">@dimen/grid_size_small</item>  
         <item name="android:textStyle">bold</item> 
     </style>
     
     <style name="layoutLeft">  
-        <item name="android:layout_width">@dimen/grid_button_size</item>
-        <item name="android:layout_height">@dimen/grid_button_size</item>
+        <item name="android:layout_width">@dimen/grid_size_normal</item>
+        <item name="android:layout_height">@dimen/grid_size_normal</item>
         <item name="android:layout_weight">1</item>     
         <item name="android:layout_gravity">top|left</item>  
         <item name="android:layout_margin">6dp</item>  
@@ -130,8 +130,8 @@
     </style>
     
     <style name="layoutRight">  
-        <item name="android:layout_width">@dimen/grid_button_size</item>
-        <item name="android:layout_height">@dimen/grid_button_size2</item>
+        <item name="android:layout_width">@dimen/grid_size_normal</item>
+        <item name="android:layout_height">@dimen/grid_size_big</item>
         <item name="android:layout_weight">1</item>     
         <item name="android:layout_gravity">top|right</item>  
         <item name="android:layout_margin">6dp</item>  

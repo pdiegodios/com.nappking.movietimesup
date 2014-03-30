@@ -97,7 +97,6 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/title"
-		            android:text="Casablanca"
 		            android:singleLine="true"
 		            android:layout_gravity="center_vertical"
 		            android:gravity="center_vertical"
@@ -105,7 +104,7 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:textStyle="bold"
-		            android:textSize="@dimen/scheme_title_text_size"
+		            android:textSize="@dimen/text_size7"
 		            android:textColor="@color/white"/>       
 		        <LinearLayout 
 		            android:layout_width="match_parent"
@@ -130,7 +129,7 @@
 				            android:layout_width="match_parent"
 				            android:layout_height="match_parent"
 				            android:gravity="center"
-				            android:textSize="@dimen/scheme_title_text_size"
+				            android:textSize="@dimen/text_size3"
 				            android:textColor="@color/white"
 				            android:textStyle="bold"/>
 		            </FrameLayout>
@@ -142,21 +141,19 @@
 	            android:layout_height="wrap_content">
 		        <TextView 
 		            android:id="@+id/originalTitle"
-		            android:text="Casablanca"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
-		            android:textSize="@dimen/scheme_default_text_size"
+		            android:textSize="@dimen/text_size3"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>		        
 		        <TextView 
 		            android:id="@+id/country_year"
-		            android:text="USA, 1942"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:gravity="right"
-		            android:textSize="@dimen/scheme_default_text_size"
+		            android:textSize="@dimen/text_size3"
 		            android:textColor="@color/greylight"
 		            android:textStyle="italic"/>
 	        </LinearLayout>
@@ -201,7 +198,7 @@
 	                    android:layout_height="wrap_content"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
-		            	android:textSize="@dimen/scheme_default_text_size"
+		            	android:textSize="@dimen/text_size3"
 	                    android:gravity="bottom"
 	                    android:text="@string/genre"/>    
 		            <TextView 
@@ -211,7 +208,7 @@
 		                android:layout_gravity="bottom"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
-		            	android:textSize="@dimen/scheme_default_text_size"
+		            	android:textSize="@dimen/text_size3"
 		                android:gravity="bottom"/>	
 		        </LinearLayout>	
 		    </LinearLayout>
@@ -243,7 +240,7 @@
 		                android:id="@+id/director_header"
 	                    android:layout_width="match_parent"
 	                    android:layout_height="wrap_content"
-		            	android:textSize="@dimen/scheme_default_text_size"
+		            	android:textSize="@dimen/text_size3"
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 	                    android:gravity="bottom"
@@ -253,7 +250,7 @@
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="bottom"
-		            	android:textSize="@dimen/scheme_default_text_size"
+		            	android:textSize="@dimen/text_size3"
 		                android:textColor="@color/black"
 		                android:textStyle="bold"
 		                android:gravity="bottom"/>	
@@ -287,7 +284,7 @@
 	      	        android:id="@+id/actor_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	            	android:textSize="@dimen/scheme_default_text_size"
+	            	android:textSize="@dimen/text_size3"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -297,7 +294,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
-	            	android:textSize="@dimen/scheme_default_text_size"
+	            	android:textSize="@dimen/text_size3"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 					android:gravity="bottom"/>	
@@ -331,7 +328,7 @@
 	      	        android:id="@+id/character_header"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
-	            	android:textSize="@dimen/scheme_default_text_size"
+	            	android:textSize="@dimen/text_size3"
 	                android:textStyle="italic"
 	                android:textColor="@color/greydark"
 	                android:gravity="bottom"
@@ -341,7 +338,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
-	            	android:textSize="@dimen/scheme_default_text_size"
+	            	android:textSize="@dimen/text_size3"
 					android:textColor="@color/black"
 					android:textStyle="bold"
 	              	android:gravity="bottom"/>	
@@ -376,7 +373,7 @@
 		                android:id="@+id/storyline_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -385,7 +382,7 @@
 		      	        android:id="@+id/storyline_text"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 						android:layout_gravity="bottom"
 						android:textColor="@color/black"
 						android:textStyle="bold"
@@ -421,7 +418,7 @@
 		                android:id="@+id/quotes_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -431,7 +428,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	
@@ -466,7 +463,7 @@
 		                android:id="@+id/trivia_header"
 		                android:layout_width="match_parent"
 		                android:layout_height="wrap_content"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 		                android:textStyle="italic"
 		                android:textColor="@color/greydark"
 		                android:gravity="bottom"
@@ -476,7 +473,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="bottom"
-	            		android:textSize="@dimen/scheme_default_text_size"	
+	            		android:textSize="@dimen/text_size3"	
 						android:textColor="@color/black"
 						android:textStyle="bold"
 		              	android:gravity="bottom"/>	

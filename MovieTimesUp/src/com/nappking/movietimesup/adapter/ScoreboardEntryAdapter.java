@@ -5,29 +5,22 @@ import java.util.List;
 import com.facebook.widget.ProfilePictureView;
 import com.nappking.movietimesup.R;
 import com.nappking.movietimesup.ScoreboardEntry;
-import com.nappking.movietimesup.adapter.CinemaGridAdapter.ViewHolder;
-import com.nappking.movietimesup.entities.Cinema;
-import com.nappking.movietimesup.entities.Movie;
-import com.nappking.movietimesup.loader.ImageLoader;
-import com.nappking.movietimesup.widget.CoverFlow;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ScoreboardEntryAdapter extends BaseAdapter {
 	private List<ScoreboardEntry> mEntries;
+	private String mUserId;
 	private Context mContext;
 
-    public ScoreboardEntryAdapter(Context context, List<ScoreboardEntry> entries) {
+    public ScoreboardEntryAdapter(Context context, List<ScoreboardEntry> entries, String userId) {
         this.mEntries = entries;
+        this.mUserId = userId;
         this.mContext = context;
     }
     
@@ -43,7 +36,7 @@ public class ScoreboardEntryAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int arg0) {
-		return new Long(mEntries.get(arg0).getId());
+		return Long.valueOf(mEntries.get(arg0).getId());
 	}	
 
     static class ViewHolder{
@@ -72,6 +65,12 @@ public class ScoreboardEntryAdapter extends BaseAdapter {
         ScoreboardEntry entry = (ScoreboardEntry) mEntries.get(position);
         holder.position = position;
         if (entry != null) {
+        	if(entry.getId().equals(mUserId)){
+        		convertView.setBackgroundResource(android.R.drawable.editbox_dropdown_light_frame);
+        		int white = mContext.getResources().getColor(R.color.white);
+        		holder.name.setTextColor(white);
+        		holder.points.setText(white);
+        	}
         	holder.picture.setProfileId(entry.getId());
         	holder.name.setText(position+2+". "+entry.getName());
         	holder.points.setText(mContext.getResources().getString(R.string.points)+": "+ entry.getScore());

@@ -10,6 +10,7 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.michaelnovakjr.numberpicker.NumberPicker;
 import com.nappking.movietimesup.R;
 import com.facebook.FacebookRequestError;
 import com.facebook.HttpMethod;
@@ -48,7 +49,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -61,7 +61,7 @@ public class FilmActivity extends DBActivity{
 	private static final String OCEANIA = "OC";
 	private static int SHORT_TIME = 2500;
 	private static int LONG_TIME = 6500;
-    private static final int TIME_TO_BET = 10000;
+    private static final int TIME_TO_BET = 9600;
     private static final int INTERVAL = 100;
     
 	//Seconds to unveil some clues before bet
@@ -152,6 +152,7 @@ public class FilmActivity extends DBActivity{
 	private List<String> actors;
 	private List<String> characters;
 	private List<String> trivia;
+	private String[] secondValues;
 	private boolean mIsFinished = false;
 	private boolean mInTime = false;
 	private List<Achievement> achievements;
@@ -253,14 +254,12 @@ public class FilmActivity extends DBActivity{
 	    		limit = 500;
 	    	}
 	    	int iter = (int) Math.ceil(limit/5d);
-	    	String[] values = new String[iter];
+	    	secondValues = new String[iter];
 	    	for(int i=1; i<iter; i++){
-	    		values[i-1] = Integer.toString(5*i);
+	    		secondValues[i-1] = Integer.toString(5*i);
 	    	}
-	    	values[iter-1] = Integer.toString((int)limit);
-	    	secondsPicked.setDisplayedValues(values);
-	    	secondsPicked.setMaxValue(iter-1);
-	    	secondsPicked.setMinValue(0);
+	    	secondValues[iter-1] = Integer.toString((int)limit);
+	    	secondsPicked.setRange(0, iter-1, secondValues);
 	    	int selection = 19;
 	    	switch(movie.getPoints()){
 	    	case 1: break;
@@ -270,11 +269,11 @@ public class FilmActivity extends DBActivity{
 	    	case 5: selection = selection+8;break;
 	    	default: break;
 	    	}
-	    	if(iter>=selection){
-	    		secondsPicked.setValue(selection);
+	    	if(iter>selection){
+	    		secondsPicked.setCurrent(selection);
 	    	}    
 	    	else{
-	    		secondsPicked.setValue(iter);
+	    		secondsPicked.setCurrent(iter);
 	    	}
 	        final ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
 	    	final int max = TIME_TO_BET/INTERVAL;
@@ -312,8 +311,7 @@ public class FilmActivity extends DBActivity{
 		        		beeps.stop();
 			        }
 					dialog.dismiss();
-					String[] values = secondsPicked.getDisplayedValues();
-					mCurrentSeconds = Integer.parseInt(values[secondsPicked.getValue()]);
+					mCurrentSeconds = Integer.parseInt(secondValues[secondsPicked.getCurrent()]);
 					mUser.setSeconds(mUser.getSeconds()-mCurrentSeconds);
 					startGame();
 			    }
@@ -1025,7 +1023,7 @@ public class FilmActivity extends DBActivity{
         dialog.setContentView(R.layout.dialog_achievement);
         dialog.setCancelable(false);
         //instantiate elements in the dialog
-        Button shareButton = (Button) dialog.findViewById(R.id.shareButton);
+        //Button shareButton = (Button) dialog.findViewById(R.id.shareButton);
         Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
 		TextView title = (TextView) dialog.findViewById(R.id.title);
 		TextView message = (TextView) dialog.findViewById(R.id.message);

@@ -1,31 +1,22 @@
 package com.nappking.movietimesup;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.FacebookRequestError;
@@ -55,7 +46,6 @@ public class ScoreboardFragment extends Fragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.i(getActivity().toString(), "OnCreate");
 		super.onCreate(savedInstanceState);		
 		application = (MovieTimesUpApplication) getActivity().getApplication();		
 		// Instantiate the handler
@@ -65,7 +55,6 @@ public class ScoreboardFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-		Log.i(getActivity().toString(), "OnCreateView");		
 		View v = inflater.inflate(R.layout.fragment_scoreboard, parent, false);		
 		scoreboardList = (ListView3d)v.findViewById(android.R.id.list);
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
@@ -96,23 +85,6 @@ public class ScoreboardFragment extends Fragment {
 		progressContainer.setVisibility(View.VISIBLE);
 		fetchScoreboardEntries();
 	}	
-	 
-    private String inputStreamToString(InputStream is) {
-        String line = "";
-        StringBuilder total = new StringBuilder();
-        // Wrap a BufferedReader around the InputStream
-        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-        try {
-            // Read response until the end
-            while ((line = rd.readLine()) != null) {
-                total.append(line);
-            }
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-        // Return full string
-        return total.toString();
-    }
 	
 
 	private void fetchScoreboardEntries () {
@@ -183,26 +155,15 @@ public class ScoreboardFragment extends Fragment {
 		if (application.getFriendlyUserList() == null || application.getFriendlyUserList().size() <= 0) {
 			closeAndShowError(getResources().getString(R.string.error_no_scores));
 		} else {
-			// Iterate through scoreboardEntriesList, creating new UI elements for each entry
-			int index = 0;
+			// Set First User in the scoreboard
 			ScoreboardEntry first = application.getFriendlyUserList().remove(0);
 			pictureFirst.setProfileId(first.getId());
 			pictureFirst.setCropped(true);
 			pointsFirst.setText(getResources().getString(R.string.points)+": "+first.getScore());
-			nameFirst.setText(first.getName());
+			nameFirst.setText("1. "+first.getName());			
 			
-			
-			//EXAMPLE
-			ScoreboardEntry entry = new ScoreboardEntry("1040076773", "Lino Villar Martinez", 41);
-			ScoreboardEntry entry2 = new ScoreboardEntry("100002705642205", "Pablo Diego Dios", 25);
-			//ScoreboardEntry entry = new ScoreboardEntry("1040076773", "Lino Villar Martinez", 41);
-			application.getFriendlyUserList().add(entry);
-			application.getFriendlyUserList().add(entry2);
-			application.getFriendlyUserList().add(entry);
-			application.getFriendlyUserList().add(entry2);
-			application.getFriendlyUserList().add(entry);
-			
-			scoreboardList.setAdapter(new ScoreboardEntryAdapter(this.getActivity(),application.getFriendlyUserList()));
+			// Set adapter with rest of users in the scoreboard
+			scoreboardList.setAdapter(new ScoreboardEntryAdapter(this.getActivity(),application.getFriendlyUserList(), userFBID));
 		}
 	}
 }

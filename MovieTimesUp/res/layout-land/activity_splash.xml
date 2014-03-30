@@ -37,15 +37,15 @@
 	             <TextView 
 	                 android:text="@string/loading"
 	                 android:layout_width="wrap_content"
-	                 android:layout_height="40dp"
-	                 android:textSize="30sp"
+	                 android:layout_height="@dimen/scheme_icon_size"
+	                 android:textSize="@dimen/text_size8"
 	                 android:textColor="@color/reddark"
 	                 android:textStyle="bold|italic"
 	                 android:typeface="sans"
 	                 android:gravity="bottom"/>
 	             <LinearLayout 
 	                 android:orientation="horizontal"
-	                 android:layout_width="35dp"
+	                 android:layout_width="@dimen/scheme_icon_size"
 	                 android:layout_height="match_parent">
 		             <ImageView 
 		                 android:id="@+id/loading"
@@ -53,7 +53,7 @@
 		                 android:layout_width="wrap_content"
 		                 android:layout_height="wrap_content"
 		                 android:layout_gravity="left|bottom"     
-		                 android:layout_marginBottom="3dp"    
+		                 android:layout_marginBottom="@dimen/grid_margin_text"    
 		                 />
 	             </LinearLayout>
              </LinearLayout>

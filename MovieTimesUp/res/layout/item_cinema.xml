@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="@dimen/grid_cover_width"
+    android:layout_height="@dimen/grid_cover_width"
     android:layout_gravity="center">
     <ImageView
         android:id="@+id/cinemaButton" 
 	    android:layout_width="match_parent"
-	    android:layout_height="100dp"   
+	    android:layout_height="@dimen/grid_cover_width"   
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:background="@android:color/transparent"
@@ -19,7 +19,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="50sp"
+        android:textSize="@dimen/text_size9_5"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:gravity="center"/>
@@ -28,6 +28,6 @@
         android:background="@android:color/transparent"
         android:src="@drawable/check"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>    
+        android:layout_width="@dimen/main_panel_size"
+        android:layout_height="@dimen/main_panel_size"/>    
 </FrameLayout>

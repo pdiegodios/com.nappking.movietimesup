@@ -24,8 +24,8 @@ public class CoverAdapter extends BaseAdapter {
     public CoverAdapter(Context context, List<Movie> movies) {
         this.mMovies = movies;
         this.mContext = context;
-        this.mWidth = (int) (mContext.getResources().getDimension(R.dimen.search_cover_width) / mContext.getResources().getDisplayMetrics().density); 
-        this.mHeight = (int) (mContext.getResources().getDimension(R.dimen.search_cover_height) / mContext.getResources().getDisplayMetrics().density);
+        this.mWidth = Math.round(mContext.getResources().getDimension(R.dimen.search_cover_width));
+        this.mHeight =  Math.round(mContext.getResources().getDimension(R.dimen.search_cover_height));
         imageLoader=new ImageLoader(mContext.getApplicationContext());
     }
     

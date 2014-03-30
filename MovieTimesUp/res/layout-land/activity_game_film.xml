@@ -9,13 +9,12 @@
 	    android:id="@+id/seconds"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:padding="30dp"
 	    android:textStyle="bold"
 	    android:typeface="serif"
 	    android:textColor="@color/greylight"
 	    android:layout_gravity="center"
 	    android:gravity="center"
-	    android:textSize="@dimen/template_seconds"/>
+	    android:textSize="@dimen/text_size10"/>
 	<LinearLayout 
 	    android:orientation="vertical"
 	    android:layout_width="match_parent"
@@ -47,12 +46,12 @@
 	    	        android:layout_width="match_parent"
 	    	        android:layout_height="match_parent"
 	    	        android:layout_weight="1.4"
-	    	        android:paddingBottom="5dp"
-	    	        android:paddingLeft="3dp"
-	    	        android:paddingRight="3dp"
+	    	        android:paddingBottom="@dimen/grid_margin_text"
+	    	        android:paddingLeft="@dimen/grid_margin_text"
+	    	        android:paddingRight="@dimen/grid_margin_text"
 					android:gravity="center_horizontal|bottom"
 		            android:textColor="@color/black"
-		            android:textSize="@dimen/template_title"
+		            android:textSize="@dimen/text_size4"
 		            android:typeface="serif"
 		            android:imeOptions="flagNoExtractUi"
 		            android:singleLine="true"
@@ -71,8 +70,7 @@
                     android:layout_marginRight="10dp"                     
             		android:layout_weight="2.1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/resolve"
-                    />
+                    android:src="@drawable/resolve"/>
                 
                 <LinearLayout 
                     android:orientation="horizontal"
@@ -130,7 +128,7 @@
 		            android:textColor="@color/greydark"
 		            android:typeface="serif"
 		            android:gravity="center"
-		            android:textSize="@dimen/template_title_clue"/>
+		            android:textSize="@dimen/text_size9"/>
 		        <TextView 
 		            android:id="@+id/textclue"
 		            android:layout_width="match_parent"
@@ -139,7 +137,7 @@
 		            android:textColor="@color/black"
 		            android:typeface="serif"
 		            android:gravity="center"
-		            android:textSize="@dimen/template_clue"
+		            android:textSize="@dimen/text_size7"
 		            android:singleLine="false"/>
 	        </LinearLayout>
 	        
@@ -156,7 +154,7 @@
 		            android:layout_width="match_parent"   
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"
 		            android:layout_weight="1"/>
@@ -166,7 +164,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -176,7 +174,7 @@
 		            android:layout_width="match_parent"   
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"  
 		            android:layout_weight="1"/>
@@ -189,7 +187,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -199,7 +197,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -209,7 +207,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -222,7 +220,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -232,7 +230,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>
@@ -242,7 +240,7 @@
 		            android:layout_width="match_parent"  
 	    	    	android:gravity="center_horizontal|bottom" 
 					android:paddingLeft="12dp"
-					android:textSize="@dimen/template_info"
+					android:textSize="@dimen/text_size2"
 					android:textStyle="bold"
 					android:textColor="@color/reddark"   
 		            android:layout_weight="1"/>

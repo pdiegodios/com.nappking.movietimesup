@@ -5,24 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,7 +30,6 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionDefaultAudience;
 import com.nappking.movietimesup.R;
-import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.LoginButton;
@@ -375,8 +359,8 @@ public class HomeFragment extends Fragment {
 			}
 			AnimationDrawable loginAnimation;
 			loginAnimation = (AnimationDrawable) loginButton.getBackground();
-			loginAnimation.setEnterFadeDuration(500);
-			loginAnimation.setExitFadeDuration(500);
+			//loginAnimation.setEnterFadeDuration(500);
+			//loginAnimation.setExitFadeDuration(500);
 	     	loginAnimation.start();
 		}
 	}
@@ -415,7 +399,7 @@ public class HomeFragment extends Fragment {
 
 	// Pop up a filtered request dialog for the user to invite their friends that have Android devices
 	// to smash them back in Friend Smash
-	private void sendFilteredChallenge() {
+	/*private void sendFilteredChallenge() {
 		// Okay, we're going to filter our friends by their device, we're looking for friends with an Android device
 		// Show the progressContainer during the network call
 		progressContainer.setVisibility(View.VISIBLE);
@@ -508,7 +492,7 @@ public class HomeFragment extends Fragment {
 		extraParamsBundle.putString("fields", "name,devices");
 		friendDevicesGraphPathRequest.setParameters(extraParamsBundle);
 		Request.executeBatchAsync(friendDevicesGraphPathRequest);
-	}
+	}*/
 
 	// Pop up a feed dialog for the user to brag to their friends about their score and to offer
 	// them the opportunity to smash them back in Friend Smash

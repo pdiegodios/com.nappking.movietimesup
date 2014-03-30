@@ -3,48 +3,50 @@
     
     <dimen name="icon_width">96dp</dimen>
     
-    <dimen name="scoreboard_entry_top_margin">4dp</dimen>
-    <dimen name="scoreboard_background_imageview_margin_top">4dp</dimen>
-    <dimen name="scoreboard_profile_picture_view_width">69dp</dimen>
-    <dimen name="scoreboard_profile_picture_view_margin_top">9dp</dimen>
-    <dimen name="scoreboard_profile_picture_view_margin_left">5dp</dimen>
-    <dimen name="scoreboard_profile_picture_view_margin_right">5dp</dimen>
-    <dimen name="scoreboard_textviews_linearlayout_margin_top">20dp</dimen>
-    <dimen name="scoreboard_textviews_linearlayout_margin_left">86dp</dimen>
-    <dimen name="scoreboard_textviews_linearlayout_margin_right">86dp</dimen>
-    
+    <!-- TEXT SIZES -->
+    <dimen name="text_size1">10sp</dimen>
+    <dimen name="text_size2">12sp</dimen>
+    <dimen name="text_size3">14sp</dimen>
+    <dimen name="text_size4">16sp</dimen>
+    <dimen name="text_size5">18sp</dimen>
+    <dimen name="text_size6">20sp</dimen>
+    <dimen name="text_size7">22sp</dimen>
+    <dimen name="text_size8">25sp</dimen>
+    <dimen name="text_size9">30sp</dimen>
+    <dimen name="text_size9_5">50sp</dimen>
+    <dimen name="text_size10">140sp</dimen>
+        
+    <!-- SCOREBOARD -->
     <dimen name="scoreboard_margin">15dp</dimen>
     <dimen name="scoreboard_size">40dp</dimen>
     <dimen name="scoreboard_first_size">75dp</dimen>
     <dimen name="scoreboard_entry_width">300dp</dimen>
-    
-    <dimen name="scheme_title_text_size">22sp</dimen>
-    <dimen name="scheme_default_text_size">14sp</dimen>
+        
+    <!-- FILM INFO -->
     <dimen name="scheme_icon_size">30dp</dimen>
         
-    <dimen name="template_seconds">140sp</dimen>
-    <dimen name="template_title_clue">25sp</dimen>
-    <dimen name="template_clue">20sp</dimen>
-    <dimen name="template_title">15sp</dimen>
-    <dimen name="template_info">10sp</dimen>
+    <!-- FILM GAME -->
     <dimen name="template_margin">60dp</dimen>
     
-    <dimen name="grid_curtain_width">80dp</dimen>
-    <dimen name="grid_button_margin">33dp</dimen>
-    <dimen name="grid_button_size">80dp</dimen>
-    <dimen name="grid_button_size2">160dp</dimen>
-    <dimen name="grid_text_size_default">14sp</dimen>
-    <dimen name="grid_text_size_bigger">17sp</dimen>
-    <dimen name="grid_text_margin">2dp</dimen>
-    <dimen name="grid_spectators_height">40dp</dimen>   
-    <dimen name="grid_cinema_icon">100dp</dimen>
-    <dimen name="grid_cinema_padding">35dp</dimen>
+    <!-- CINEMA -->    
+    <dimen name="grid_size_small">40dp</dimen> 
+    <dimen name="grid_size_normal">80dp</dimen>
+    <dimen name="grid_size_big">160dp</dimen>
+    <dimen name="grid_padding">45dp</dimen>
+    <dimen name="grid_margin_text">2dp</dimen>  
+    <dimen name="grid_vertical_spacing">24dp</dimen>
+    <dimen name="grid_horizontal_spacing">16dp</dimen>
     
-    <dimen name="main_text_big">30sp</dimen>
-    <dimen name="main_text_default">17sp</dimen>
+    <dimen name="grid_item_width">120dp</dimen>
+    <dimen name="grid_item_height">185dp</dimen>
+    <dimen name="grid_cover_width">112dp</dimen>
+    <dimen name="grid_cover_height">173dp</dimen>
+    <dimen name="grid_text_width">130dp</dimen>
+    
+    <!-- MAIN MENU -->
     <dimen name="main_billboard_width">275dp</dimen>
     <dimen name="main_billboard_height">330dp</dimen>
-    <dimen name="main_panel_size_big">88dp</dimen>
+    <dimen name="main_panel_size_big">90dp</dimen>
     <dimen name="main_panel_size">44dp</dimen>
     <dimen name="main_margin_big">34dp</dimen>
     <dimen name="main_margin_medium">22dp</dimen>
@@ -52,7 +54,8 @@
     <dimen name="main_facebook_width">320dp</dimen>
     <dimen name="main_facebook_height">90dp</dimen>
     
-    <dimen name="search_cover_width">210dp</dimen>
-    <dimen name="search_cover_height">320dp</dimen>
+    <!-- SEARCH -->
+    <dimen name="search_cover_width">143dp</dimen>
+    <dimen name="search_cover_height">220dp</dimen>
     
 </resources>

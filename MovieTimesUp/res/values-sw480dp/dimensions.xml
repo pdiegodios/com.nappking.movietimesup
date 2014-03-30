@@ -3,38 +3,45 @@
 <resources>    
     
     
+    <!-- TEXT SIZES -->
+    <dimen name="text_size1">13sp</dimen>
+    <dimen name="text_size2">15sp</dimen>
+    <dimen name="text_size3">18sp</dimen>
+    <dimen name="text_size4">20sp</dimen>
+    <dimen name="text_size5">18sp</dimen>
+    <dimen name="text_size6">23sp</dimen>
+    <dimen name="text_size7">28sp</dimen>
+    <dimen name="text_size8">31sp</dimen>
+    <dimen name="text_size9">38sp</dimen>
+    <dimen name="text_size9_5">63sp</dimen>
+    <dimen name="text_size10">180sp</dimen>
+    
     <dimen name="scoreboard_margin">19dp</dimen>
     <dimen name="scoreboard_size">55dp</dimen>
     <dimen name="scoreboard_first_size">95dp</dimen>
     <dimen name="scoreboard_entry_width">380dp</dimen>
     
-    <dimen name="scheme_title_text_size">28sp</dimen>
-    <dimen name="scheme_default_text_size">18sp</dimen>
-    <dimen name="scheme_icon_size">50dp</dimen>
+    <dimen name="scheme_icon_size">38dp</dimen>
     
-    <dimen name="template_seconds">200sp</dimen>
-    <dimen name="template_title_clue">38sp</dimen>
-    <dimen name="template_clue">33sp</dimen>
-    <dimen name="template_title">25sp</dimen>
-    <dimen name="template_info">14sp</dimen>
-    <dimen name="template_margin">100dp</dimen>
+    <dimen name="template_margin">75dp</dimen>
     
-    <dimen name="grid_curtain_width">110dp</dimen>
-    <dimen name="grid_button_margin">45dp</dimen>
-    <dimen name="grid_button_size">110dp</dimen>
-    <dimen name="grid_button_size2">220dp</dimen>
-    <dimen name="grid_text_size_default">18sp</dimen>
-    <dimen name="grid_text_size_bigger">22sp</dimen>
-    <dimen name="grid_text_margin">3dp</dimen>
-    <dimen name="grid_spectators_height">65dp</dimen>   
-    <dimen name="grid_cinema_icon">120dp</dimen>  
-    <dimen name="grid_cinema_padding">57dp</dimen>
+    <dimen name="grid_size_small">50dp</dimen> 
+    <dimen name="grid_size_normal">100dp</dimen>
+    <dimen name="grid_size_big">200dp</dimen>
+    <dimen name="grid_padding">57dp</dimen>
+    <dimen name="grid_margin_text">3dp</dimen>  
+    <dimen name="grid_vertical_spacing">30dp</dimen>
+    <dimen name="grid_horizontal_spacing">20dp</dimen>
     
-    <dimen name="main_text_big">34sp</dimen>
-    <dimen name="main_text_default">20sp</dimen>
+    <dimen name="grid_item_width">150dp</dimen>
+    <dimen name="grid_item_height">230dp</dimen>
+    <dimen name="grid_cover_width">140dp</dimen>
+    <dimen name="grid_cover_height">216dp</dimen>
+    <dimen name="grid_text_width">162dp</dimen>
+    
     <dimen name="main_billboard_width">350dp</dimen>
     <dimen name="main_billboard_height">420dp</dimen>
-    <dimen name="main_panel_size_big">112dp</dimen>
+    <dimen name="main_panel_size_big">115dp</dimen>
     <dimen name="main_panel_size">56dp</dimen>
     <dimen name="main_margin_big">43dp</dimen>
     <dimen name="main_margin_medium">28dp</dimen>
@@ -43,7 +50,7 @@
     <dimen name="main_facebook_height">120dp</dimen>
     
     
-    <dimen name="search_cover_width">160dp</dimen>
-    <dimen name="search_cover_heigth">250dp</dimen>
+    <dimen name="search_cover_width">178dp</dimen>
+    <dimen name="search_cover_height">275dp</dimen>
     
 </resources>

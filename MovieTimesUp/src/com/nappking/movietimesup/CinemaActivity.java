@@ -59,6 +59,8 @@ public class CinemaActivity extends DBActivity{
 	private int mCinemaId;	
 	private int numItemsLocked;		
 	private int numItemsUnlocked;
+	private int mTextSizeBig;
+	private int mTextSizeNormal;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -78,6 +80,8 @@ public class CinemaActivity extends DBActivity{
     	selectReady =		(ImageButton) findViewById(R.id.itemsReady);
     	selectLocked =		(ImageButton) findViewById(R.id.itemsLocked);
     	selectUnlocked =	(ImageButton) findViewById(R.id.itemsUnlocked);
+    	mTextSizeBig = (int) Math.round(getResources().getDimension(R.dimen.text_size5) / getResources().getDisplayMetrics().density);
+    	mTextSizeNormal = (int) Math.round(getResources().getDimension(R.dimen.text_size3) / getResources().getDisplayMetrics().density);
     	
     	mSelectedMovies = new ArrayList<Movie>();
     	mState = ALL;		
@@ -289,13 +293,13 @@ public class CinemaActivity extends DBActivity{
 		switch(mState){
 		case ALL:
 			txNumItems.setTextColor(getResources().getColor(R.color.white));
-			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
+			txNumItems.setTextSize(mTextSizeBig);
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsLocked.setTextSize(mTextSizeNormal);
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsUnlocked.setTextSize(mTextSizeNormal);
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsReady.setTextSize(mTextSizeNormal);
 			selectAll.setSelected(true);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(false);
@@ -304,13 +308,13 @@ public class CinemaActivity extends DBActivity{
 			break;
 		case READY:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItems.setTextSize(mTextSizeNormal);
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsLocked.setTextSize(mTextSizeNormal);
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsUnlocked.setTextSize(mTextSizeNormal);
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
+			txNumItemsReady.setTextSize(mTextSizeBig);
 			selectAll.setSelected(false);
 			selectReady.setSelected(true);
 			selectUnlocked.setSelected(false);
@@ -324,13 +328,13 @@ public class CinemaActivity extends DBActivity{
 			break;
 		case UNLOCKED:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItems.setTextSize(mTextSizeNormal);
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsLocked.setTextSize(mTextSizeNormal);
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
+			txNumItemsUnlocked.setTextSize(mTextSizeBig);
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsReady.setTextSize(mTextSizeNormal);
 			selectAll.setSelected(false);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(true);
@@ -343,13 +347,13 @@ public class CinemaActivity extends DBActivity{
 			break;
 		case LOCKED:
 			txNumItems.setTextColor(getResources().getColor(R.color.black));
-			txNumItems.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItems.setTextSize(mTextSizeNormal);
 			txNumItemsLocked.setTextColor(getResources().getColor(R.color.white));
-			txNumItemsLocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_bigger) / getResources().getDisplayMetrics().density));
+			txNumItemsLocked.setTextSize(mTextSizeBig);
 			txNumItemsUnlocked.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsUnlocked.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsUnlocked.setTextSize(mTextSizeNormal);
 			txNumItemsReady.setTextColor(getResources().getColor(R.color.black));
-			txNumItemsReady.setTextSize((getResources().getDimension(R.dimen.grid_text_size_default) / getResources().getDisplayMetrics().density));
+			txNumItemsReady.setTextSize(mTextSizeNormal);
 			selectAll.setSelected(false);
 			selectReady.setSelected(false);
 			selectUnlocked.setSelected(false);
