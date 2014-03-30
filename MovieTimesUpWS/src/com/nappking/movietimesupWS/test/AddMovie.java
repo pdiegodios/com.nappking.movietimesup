@@ -25,38 +25,36 @@ public class AddMovie {
 		String action = SAVE;
 		
 		int id = 51;
-		int points = 1;
-		int cinema = 2;
-		int year = 2000;
+		int points = 2;
+		int cinema = 3;
+		int year = 1993;
 		boolean masterpiece = false;
 		boolean cult = true;
-		String title = "Snatch. Cerdos y diamantes";
-		String alternative_title = "Cerdos y diamantes";
-		String original_title = "Snatch";
-		String continent = "EU";
-		String country = "UK";
-		String director = "Guy Ritchie";
-		String genre = "Thriller-Comedia Negra";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMTk5NzE0MDQyNl5BMl5BanBnXkFtZTcwNzk4Mjk3OA@@._V1_SY317_CR2,0,214,317_.jpg";
-		String  filmaffinity_id = "568510";
-		String imdb_id = "tt0208092";
-		String actor1="Brad Pitt";
-		String actor2="Benicio Del Toro";
-		String actor3="Vinnie Jones";
-		String character1="Franky \"Cuatro dedos\"";
-		String character2="Tony \"Dientes de bala\"";
-		String character3="Turco";
-		String other1 ="Uno de los actores fue un afamado jugador de futbol conocido por sus salvajes entradas";
-		String other2 ="En la película suena \"Lucky Star\" de Madonna, que ese año se casó con el director";
-		String other3 ="Crítica P.Kurt: \"delirante y violento filme con mucho humor negro(...). Fiel a su estilo, el director inglés volvió a no defraudar a sus numerosos seguidores y reafirmar a sus detractores.\"";
-		String quote1="¿Para qué cojones quiero una caravana sin una puta rueda?";
-		String quote2="Nunca debéis subestimar lo predecible que es la estupidez.";
-		String quote3="Para cada acción hay una reacción, y la reacción de un gitano es algo muy jodido.";
-		String plot = "X es un ladrón de diamantes que tiene que entregar un valioso ejemplar a su jefe Y, pero, antes de hacerlo, " +
-				"se deja convencer por un tal Z para apostar en un combate ilegal de boxeo. En realidad, se trata de una trampa para " +
-				"arrebatarle el diamante. Cuando Y se entera, contrata a W para encontrar a X y al diamante. Descubierto el triste " +
-				"destino de X, la recuperación de la gema desaparecida provoca una situación caótica, donde el engaño, el chantaje y el " +
-				"fraude se mezclan de forma sangrienta con perros, diamantes, boxeadores y gran variedad de armas.";
+		String title = "Pesadilla antes de navidad";
+		String alternative_title = "El extraño mundo de Jack";
+		String original_title = "The Nightmare Before Christmas";
+		String continent = "AM";
+		String country = "Estados Unidos";
+		String director = "Henry Selick";
+		String genre = "Animación";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMTc5MDY0MjkwNV5BMl5BanBnXkFtZTcwNTk2Njk3OA@@._V1_SY317_CR12,0,214,317_.jpg";
+		String  filmaffinity_id = "366417";
+		String imdb_id = "tt0107688";
+		String actor1="Danny Elfman (voz original)";
+		String actor2="Oogie Boogie/Oingo Boingo (villano)";
+		String actor3="Zero (perro fantasma)";
+		String character1="Jack Skellington";
+		String character2="Sally";
+		String character3="Santa";
+		String other1 ="La historia es de Tim Burton";
+		String other2 ="El merchandising de la película sigue siendo muy popular, principalmente entre los góticos";
+		String other3 ="La banda sonora es de Danny Elfman y es una parte fundamental del film";
+		String quote1="¡Esto es Halloween! ¡Esto es Halloween!";
+		String quote2="¿Dulce o travesura? Maten al vecino, de ansiedad.";
+		String quote3="Los niños se arrojan nieve en vez de tirar cabezas. Están haciendo juguetes y no hay muertos. No hay ningún monstruo, ni siquiera una pesadilla y en su lugar hay sentimientos de alegría.";
+		String plot = "Cuando X, descubre la Navidad, se queda fascinado y decide mejorarla. Sin embargo, su visión de la festividad " +
+				"es totalmente contraria al espíritu navideño. Sus planes incluyen el secuestro de Santa Claus y la introducción de " +
+				"cambios bastante macabros. Sólo su novia Y es consciente del error que está cometiendo. ";
 
 		
 		//CLIENT

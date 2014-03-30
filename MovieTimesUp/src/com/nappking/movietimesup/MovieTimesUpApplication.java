@@ -165,7 +165,9 @@ public class MovieTimesUpApplication extends Application {
 	public String deAccent(String str) {
 	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
 	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-	    return pattern.matcher(nfdNormalizedString).replaceAll("");
+	    String result = pattern.matcher(nfdNormalizedString).replaceAll("");
+	    String onlyAlphabetical = result.replaceAll("[^a-zA-Z]", "");
+	    return onlyAlphabetical;
 	}
 	
 	public GraphUser getFriend(int index) {

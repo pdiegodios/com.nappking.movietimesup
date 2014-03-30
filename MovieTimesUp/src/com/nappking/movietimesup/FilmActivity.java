@@ -61,7 +61,7 @@ public class FilmActivity extends DBActivity{
 	private static final String OCEANIA = "OC";
 	private static int SHORT_TIME = 2500;
 	private static int LONG_TIME = 6500;
-    private static final int TIME_TO_BET = 9600;
+    private static final int TIME_TO_BET = 10000;
     private static final int INTERVAL = 100;
     
 	//Seconds to unveil some clues before bet
