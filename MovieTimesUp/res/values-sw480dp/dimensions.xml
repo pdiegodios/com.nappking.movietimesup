@@ -33,11 +33,11 @@
     <dimen name="grid_vertical_spacing">30dp</dimen>
     <dimen name="grid_horizontal_spacing">20dp</dimen>
     
-    <dimen name="grid_item_width">150dp</dimen>
-    <dimen name="grid_item_height">230dp</dimen>
-    <dimen name="grid_cover_width">140dp</dimen>
-    <dimen name="grid_cover_height">216dp</dimen>
-    <dimen name="grid_text_width">162dp</dimen>
+    <dimen name="grid_item_width">134dp</dimen>
+    <dimen name="grid_item_height">205dp</dimen>
+    <dimen name="grid_cover_width">125dp</dimen>
+    <dimen name="grid_cover_height">193dp</dimen>
+    <dimen name="grid_text_width">145dp</dimen>
     
     <dimen name="main_billboard_width">350dp</dimen>
     <dimen name="main_billboard_height">420dp</dimen>

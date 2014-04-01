@@ -55,7 +55,7 @@ public class CinemaGridAdapter extends BaseAdapter{
     	if(cinema.isUnlocked()){
     		//Movie was locked and you can see anything about that 
     		int solved = cinema.getSolvedMovies();
-    		if(solved>=25){
+    		if(solved>=24){
     			v.complete.setVisibility(View.VISIBLE);
     		}
     		v.icon.setImageResource(getCinemaResource(solved));    		
@@ -92,7 +92,6 @@ public class CinemaGridAdapter extends BaseAdapter{
 			case 22: resource=R.drawable.cinema_enable22;break;
 			case 23: resource=R.drawable.cinema_enable23;break;
 			case 24: resource=R.drawable.cinema_enable24;break;
-			case 25: resource=R.drawable.cinema_enable25;break;
 			default:break;	
 		}
     	

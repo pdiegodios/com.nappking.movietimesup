@@ -1120,7 +1120,7 @@ public class FilmActivity extends DBActivity{
 				}
 				int totalSolved = mUser.getTotalSolved();
 				if((totalSolved % MovieTimesUpApplication.UNLOCK_LEVEL) == 0){ //Unlock new level
-					achievements.add(new Achievement(User.CINEMAS, 0, 0, R.drawable.cinema_enable25, R.string.nextlevel));
+					achievements.add(new Achievement(User.CINEMAS, 0, 0, R.drawable.cinema_enable24, R.string.nextlevel));
 					mUser.setSeconds(mUser.getSeconds()+MovieTimesUpApplication.SECONDS_FOR_LEVEL);
 				}	
 				if(!field.isEmpty() && goal>0){

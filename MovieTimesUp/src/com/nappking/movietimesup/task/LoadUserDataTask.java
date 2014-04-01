@@ -307,6 +307,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 				dialog.dismiss();
 			}
 		});
+		if(mContext!=null)
 		dialog.show();
     }
 	

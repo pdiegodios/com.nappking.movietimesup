@@ -22,7 +22,7 @@ public class MovieTimesUpApplication extends Application {
     public static final String URL = "http://movietimesup.gestores.cloudbees.net/rest/";
 	// Switch between the non-social and social Facebook versions of the game
 	public static final int TIME_FOR_SERVICE=15*60*1000; //15min
-    public static final int UNLOCK_LEVEL = 15;
+    public static final int UNLOCK_LEVEL = 10;
     public static final int SECONDS_FOR_LEVEL = 2500;
     public static final boolean IS_SOCIAL = true;
 	// Player's current score

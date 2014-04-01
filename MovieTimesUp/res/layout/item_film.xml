@@ -24,14 +24,14 @@
         <FrameLayout 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:gravity="right">
+            android:layout_weight="4">
 		    <ImageView 
 		        android:id="@+id/starpoints"
 		        android:background="@android:color/transparent"
 		        android:src="@drawable/bookmark"
 		        android:layout_width="wrap_content"
-		        android:layout_height="match_parent"/>
+		        android:layout_height="match_parent"
+		        android:layout_gravity="center_horizontal"/>
 		    <TextView 
 		        android:id="@+id/moviepoints"
 		        android:layout_width="wrap_content"

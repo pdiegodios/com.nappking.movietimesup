@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -316,17 +318,16 @@ public class HomeFragment extends Fragment {
 
 	// Called when the Scores button is touched
 	private void onScoresButtonTouched() {
+		facebookPostAll();
 		Log.i(this.getActivity().toString(), "onScoresButtonTouched");
 		Intent i = new Intent(getActivity(), ScoreboardActivity.class);
 		startActivity(i);
 	}
 
 	// Called when the Activity is returned to - needs to be caught for the following two scenarios:
-	// 1. Returns from an authentication dialog requesting write permissions - tested with
-	//    requestCode == REAUTH_ACTIVITY_CODE - if successfully got permissions, execute a session
-	//    state change callback to then attempt to post their information to Facebook (again)
-	// 2. Returns from a finished game - test status with resultCode and if successfully ended, update
-	//    their score and complete the game over process, otherwise show an error if there is one
+	// Returns from an authentication dialog requesting write permissions - tested with
+	// requestCode == REAUTH_ACTIVITY_CODE - if successfully got permissions, execute a session
+	// state change callback to then attempt to post their information to Facebook (again)
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		if (requestCode == REAUTH_ACTIVITY_CODE) {
             // This ensures a session state change is recorded so that the tokenUpdated() callback is triggered
@@ -581,27 +582,41 @@ public class HomeFragment extends Fragment {
 	private void facebookPostAll() {
 		pendingPost = false;
 		Session session = Session.getActiveSession();
-
 		if (session == null || !session.isOpened()) {
             return;
         }
-
         List<String> permissions = session.getPermissions();
         if (!permissions.containsAll(PERMISSIONS)) {
             pendingPost = true;
             requestPublishPermissions(session);
             return;
         }
-        // If you get this far, then you'll have write permissions to post
-        
+        // If you get this far, then you'll have write permissions to post        
 		// Post the score to Facebook
 		postScore();
-
 		// Post Achievemnt to Facebook
 		//postAchievement();
 	}
 
 	void requestPublishPermissions(Session session) {
+		final Dialog dialog = new Dialog(this.getActivity(), R.style.SlideDialog);
+        dialog.setContentView(R.layout.dialog_clapper_one_option);
+        dialog.setCancelable(true);
+        Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+		TextView text = (TextView) dialog.findViewById(R.id.text);			
+		TextView subText = (TextView) dialog.findViewById(R.id.subText);				
+		//set values & actions
+        cancelButton.setText(android.R.string.ok);
+		text.setText(getResources().getString(R.string.upload_score));
+		subText.setText(getResources().getString(R.string.permissions_needed));
+		cancelButton.setOnClickListener(new OnClickListener() {	//Cancel				
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+        dialog.show();
+        
         if (session != null) {
             Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS)
                     // demonstrate how to set an audience for the publish permissions,
@@ -616,8 +631,6 @@ public class HomeFragment extends Fragment {
 	private void postScore() {
 		final int score = application.getScore();
 		if (score > 0) {
-			// Only post the score if they smashed at least one friend!
-
 			// Post the score to FB (for score stories and distribution)
 			Bundle fbParams = new Bundle();
 			fbParams.putString("score", "" + score);

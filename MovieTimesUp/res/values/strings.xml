@@ -8,12 +8,6 @@
     <string name="app_key2">aJrNqXlTlqwjcbqmF+cP2VEjBnDd+6VShD0tAAZ8CnL7LpbJ4PMT3RUYE+zZPgtLIfN+rDKc0HrvMvzJSYfQ</string>
     <string name="app_key3">hin8CxI+BXQgBAd8mMWrQKzNUhjzFfeQ+EYG/S8fAk5pSdhHmcJE6vXvEXB1EdzibAqPZIqqOj8YsW/dDvY</string>
     <string name="app_key4">bFhC04tjOj9D/1VWaIol6XZ7bhhC0XXTlhKfD7seZjGlwkCryejNrcjL85vQpQ5AfWAW0moS5ygN0WBGW</string> 
-    <string name="uncover_10_id">uncover_10</string>   
-    <string name="unlock_20_id">unlock_20</string>   
-    <string name="seconds_2000_id">seconds_2000</string>   
-    <string name="seconds_5000_id">seconds_5000</string>   
-    <string name="seconds_10000_id">seconds_10000</string>    
-    <string name="seconds_20000_id">seconds_20000</string>  
     <string name="app_key5">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkcB5xmQObHgrDQT7</string>
     <string name="title_activity_home">Movie Time\'s Up</string>
     <string name="registration">To finish your registration, you must login with Facebook. We\'ll never post without your permission.</string>
@@ -102,6 +96,8 @@
     <string name="seconds">seconds</string>
     <string name="give_up_question">Coward, do you want to give up?</string>
     <string name="are_you_ready">Are you ready?</string>
+    <string name="upload_score">Upload your score</string>
+    <string name="permissions_needed">We need your permission, only for the scoreboard</string>
     <string name="initial_warning">You can\'t stop from this point</string>
     <string name="movie_will_be_locked">This movie will be locked</string>
     <string name="bettext">How many seconds do you need?</string>
@@ -109,7 +105,7 @@
     <string name="level_number">Level #</string>
     <string name="unlocked">unlocked</string>    
     <string name="seconds_for_level">You got 2500 seconds</string>  
-    <string name="nextlevel">Hit 15 films to get a new level</string>
+    <string name="nextlevel">Hit 10 films to get a new level</string>
     <string name="european_achievement">New european achievement unlocked</string>
     <string name="asian_achievement">New asian achievement unlocked</string>
     <string name="american_achievement">New american achievement unlocked</string>

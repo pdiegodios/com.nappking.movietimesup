@@ -378,7 +378,7 @@ public class CinemaActivity extends DBActivity{
                 case GAME_CODE:
                 	int index = data.getIntExtra(POSITION, -1);
                 	//GET ACHIEVE IF THIS IS DIFFERENT TO NULL
-                	updateItemAt(index);
+                	updateItemAt(index);	
                     break;
                 default: 
                 	break;

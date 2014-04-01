@@ -27,35 +27,34 @@ public class AddMovie {
 		int id = 51;
 		int points = 1;
 		int cinema = 2;
-		int year = 2000;
+		int year = 2012;
 		boolean masterpiece = false;
 		boolean cult = false;
-		String title = "Gladiator";
-		String alternative_title = "Gladiador";
-		String original_title = "Gladiator";
+		String title = "Django desencadenado";
+		String alternative_title = "Django";
+		String original_title = "Django unchained";
 		String continent = "AM";
 		String country = "Estados Unidos";
-		String director = "Ridley Scott";
-		String genre = "Acción";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMTgwMzQzNTQ1Ml5BMl5BanBnXkFtZTgwMDY2NTYxMTE@._V1_SY317_CR0,0,214,317_.jpg";
-		String  filmaffinity_id = "392075";
-		String imdb_id = "tt0172495";
-		String actor1="Russell Crowe";
-		String actor2="Joaquin Phoenix";
-		String actor3="Richard Harris";
-		String character1="Máximo";
-		String character2="Cómodo";
-		String character3="Marco Aurelio";
-		String other1 ="5 Oscars: Mejor película, actor y tres técnicos";
-		String other2 ="Al principio de la película, cuando está todo el campo de batalla cubierto de cadáveres, uno de esos cadáveres aparece vestido con un pantalón vaquero";
-		String other3 ="Crítica Cinemanía: \"Emocionante retorno a un género perdido (...) La aventura está servida, los que la vamos a disfrutar la saludamos\"";
-		String quote1="Lo que hacemos en la vida tiene su eco en la eternidad";
-		String quote2="Si os veis cabalgando solos por verdes prados, el rostro bañado por el sol, que no os cause temor, estareis en el Elíseo y ya habréis muerto";
-		String quote3="...padre de un hijo asesinado, marido de una mujer asesinada, y alcanzaré mi venganza en esta vida o en la otra.";
-		String plot = "En el año 180, el Imperio Romano domina todo el mundo conocido. Tras una gran victoria sobre " +
-				"los bárbaros del norte, el anciano emperador X decide transferir el poder a Y, bravo general de sus " +
-				"ejércitos y hombre de inquebrantable lealtad al imperio. Pero su hijo Z, que aspiraba al trono, no lo " +
-				"acepta y trata de asesinar a Y.";
+		String director = "Quentin Tarantino";
+		String genre = "Western";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1_SX214_.jpg";
+		String  filmaffinity_id = "929558";
+		String imdb_id = "tt1853728";
+		String actor1="Leonardo DiCaprio";
+		String actor2="Christoph Waltz";
+		String actor3="Jamie Foxx";
+		String character1="Dr. King Schultz";
+		String character2="Django";
+		String character3="Calvin Candie";
+		String other1 ="Un cameo del director en la película termina de manera \"explosiva\"";
+		String other2 ="Ennio Morricone dijo del director: \"coloca la música sin coherencia y no puedes hacer nada con alguien así\"";
+		String other3 ="La película está llena de guiños a otras películas del género western, principalmente de Sergio Corbucci, de quien el director es fan";
+		String quote1="La \"d\" es muda, paleto";
+		String quote2="-He contado seis tiros, negro. -He contado dos armas, negro";
+		String quote3="-¡Me ha roto la pierna! -Sin duda. Ahora si hace el favor de mantener sus berridos al mínimo podré terminar de interrogar al joven";
+		String plot = "En Texas, dos años antes de estallar la Guerra Civil Americana, un cazarecompensas alemán que le sigue la pista a unos asesinos " +
+				"para cobrar por sus cabezas, le promete al esclavo negro X dejarlo en libertad si le ayuda a atraparlos. Él acepta pues luego quiere ir " +
+				"a buscar a su esposa Y, una esclava que están en una plantación del terrateniente Z";
 
 		
 		//CLIENT
