@@ -67,9 +67,9 @@ public class ScoreboardEntryAdapter extends BaseAdapter {
         if (entry != null) {
         	if(entry.getId().equals(mUserId)){
         		convertView.setBackgroundResource(android.R.drawable.editbox_dropdown_light_frame);
-        		int white = mContext.getResources().getColor(R.color.white);
-        		holder.name.setTextColor(white);
-        		holder.points.setText(white);
+        		int black = mContext.getResources().getColor(R.color.black);
+        		holder.name.setTextColor(black);
+        		holder.points.setTextColor(black);
         	}
         	holder.picture.setProfileId(entry.getId());
         	holder.name.setText(position+2+". "+entry.getName());

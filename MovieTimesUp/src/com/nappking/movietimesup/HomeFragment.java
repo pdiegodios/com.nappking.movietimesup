@@ -598,7 +598,7 @@ public class HomeFragment extends Fragment {
 		postScore();
 
 		// Post Achievemnt to Facebook
-		postAchievement();
+		//postAchievement();
 	}
 
 	void requestPublishPermissions(Session session) {
@@ -638,30 +638,6 @@ public class HomeFragment extends Fragment {
 						}
 					});
 			Request.executeBatchAsync(postScoreRequest);
-
-			// Post the score to our servers for the high score table
-			/*AsyncTask.execute(new Runnable() {
-				public void run() {
-					HttpClient httpClient = new DefaultHttpClient();
-					HttpPost httpPost = new HttpPost("http://www.friendsmash.com/scores");
-					try {
-						// Add data
-						List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-						nameValuePairs.add(new BasicNameValuePair("fbid", application.getCurrentFBUser().getId()));
-						nameValuePairs.add(new BasicNameValuePair("score", "" + score));
-						httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-						// Execute the HTTP Post request and log the result
-						HttpResponse responsePost = httpClient.execute(httpPost);
-						HttpEntity responseEntity = responsePost.getEntity();
-						String response = EntityUtils.toString(responseEntity);
-						Log.i(MovieTimesUpApplication.TAG, "Score post to server: " + response);
-					} catch (Exception e) {
-						Log.e(MovieTimesUpApplication.TAG, e.toString());
-						Log.e(MovieTimesUpApplication.TAG, "Posting Score to Server failed: " + e.getMessage());
-					}
-				}
-			});*/
 		}
 	}
 

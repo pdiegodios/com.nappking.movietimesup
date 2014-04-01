@@ -4,6 +4,17 @@
 
     <string name="app_name">Movie Time\'s Up</string>
     <string name="app_id">1408220052751357</string>
+    <string name="app_key1">uQ57KUSMEZwivKsjfTuR5r3i7YJnV7hm9ceQv0gLC/eiE3BWY3BHlvG4neJc1Og2cCt9dqKXD0y9jQIDAQAB</string>
+    <string name="app_key2">aJrNqXlTlqwjcbqmF+cP2VEjBnDd+6VShD0tAAZ8CnL7LpbJ4PMT3RUYE+zZPgtLIfN+rDKc0HrvMvzJSYfQ</string>
+    <string name="app_key3">hin8CxI+BXQgBAd8mMWrQKzNUhjzFfeQ+EYG/S8fAk5pSdhHmcJE6vXvEXB1EdzibAqPZIqqOj8YsW/dDvY</string>
+    <string name="app_key4">bFhC04tjOj9D/1VWaIol6XZ7bhhC0XXTlhKfD7seZjGlwkCryejNrcjL85vQpQ5AfWAW0moS5ygN0WBGW</string> 
+    <string name="uncover_10_id">uncover_10</string>   
+    <string name="unlock_20_id">unlock_20</string>   
+    <string name="seconds_2000_id">seconds_2000</string>   
+    <string name="seconds_5000_id">seconds_5000</string>   
+    <string name="seconds_10000_id">seconds_10000</string>    
+    <string name="seconds_20000_id">seconds_20000</string>  
+    <string name="app_key5">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkcB5xmQObHgrDQT7</string>
     <string name="title_activity_home">Movie Time\'s Up</string>
     <string name="registration">To finish your registration, you must login with Facebook. We\'ll never post without your permission.</string>
     <string name="welcome_message">Welcome, Player</string>

@@ -284,11 +284,11 @@ public class FilmActivity extends DBActivity{
 	    		dialog.show();
 	    	}
 	        
-	        mCountDown=new CountDownTimer(TIME_TO_BET,INTERVAL) {
+	        mCountDown=new CountDownTimer(TIME_TO_BET,INTERVAL-10) {
 	        	int currentProgress = max;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
-		        	if(currentProgress==max-15){
+		        	if(currentProgress==max-10){
 		        		textLights.setVisibility(View.VISIBLE);
 		        		textLights.startAnimation(fadeInText);
 		        	}
@@ -296,7 +296,7 @@ public class FilmActivity extends DBActivity{
 		        		textCamera.setVisibility(View.VISIBLE);
 		        		textCamera.startAnimation(fadeInText);
 		        	}
-		        	else if(currentProgress==15){
+		        	else if(currentProgress==10){
 		        		textAction.setVisibility(View.VISIBLE);
 		        		textAction.startAnimation(fadeInText);
 		        	}
@@ -1040,7 +1040,7 @@ public class FilmActivity extends DBActivity{
 		else if(a.getField().equals(User.CINEMAS)){
 			int cinemas = mUser.getTotalCinemas();
 			title.setText(getResources().getString(R.string.level_number)+cinemas+" "+
-					getResources().getString(R.string.unlocked)+"\n");
+					getResources().getString(R.string.unlocked)+"\n"+getResources().getString(R.string.seconds_for_level));
 			foreground_text.setText(cinemas+"");
 		}
 		else{
