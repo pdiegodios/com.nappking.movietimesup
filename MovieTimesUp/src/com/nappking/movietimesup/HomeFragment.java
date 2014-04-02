@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
     private TextView userMovies;
 
 	// Buttons ...
+    private ImageView redboxButton;
     private ImageView playButton;
     private ImageView scoresButton;
     private ImageView challengeButton;
@@ -95,9 +96,8 @@ public class HomeFragment extends Fragment {
 		v = inflater.inflate(R.layout.fragment_home, parent, false);	
 		// Set an error listener for the login button
 		login = (LoginButton) v.findViewById(R.id.login);	
-		loginButton = (ImageView) v.findViewById(R.id.loginButton);		
+		loginButton = (ImageView) v.findViewById(R.id.loginButton);	
 
-     	billboard = (AnimationDrawable) v.findViewById(R.id.billboard).getBackground();
 		progressContainer = (FrameLayout)v.findViewById(R.id.progressContainer);
      	
      	//User Info
@@ -109,18 +109,20 @@ public class HomeFragment extends Fragment {
 		userLevel = (TextView)v.findViewById(R.id.userLevel);	
 		
 		//Buttons
+     	redboxButton = (ImageView) v.findViewById(R.id.redbox);
 		scoresButton = (ImageView)v.findViewById(R.id.scoresButton);
 		challengeButton = (ImageView)v.findViewById(R.id.challengeButton);
 		bragButton = (ImageView)v.findViewById(R.id.bragButton);
 		playButton = (ImageView)v.findViewById(R.id.playButton);
+		
+		//Animations
+     	billboard = (AnimationDrawable) v.findViewById(R.id.billboard).getBackground();
+     	
 		// Personalize this HomeFragment
 		personalizeHomeFragment();	
 		setListeners();		
 		updateButtonVisibility();
 		
-     	billboard.start();
-		// Hide the progressContainer
-		progressContainer.setVisibility(View.INVISIBLE);
 		// Restore the state
 		restoreState(savedInstanceState);
 		
@@ -128,6 +130,13 @@ public class HomeFragment extends Fragment {
 	}
 
 	private void setListeners(){
+		redboxButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
+            	onRedboxButtonTouched();
+				return false;
+			}
+        });		
 		scoresButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -263,12 +272,17 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onPause() {
+     	billboard.stop();
+     	//redbox.stop();
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
 		Log.i("HomeFragment", "onResume --> Update Points");
+		// Hide the progressContainer & start animations
+		progressContainer.setVisibility(View.INVISIBLE);
+     	billboard.start();
 		updatePoints();
 		super.onResume();
 	}
@@ -315,6 +329,13 @@ public class HomeFragment extends Fragment {
 	private void onBragButtonTouched() {
 		sendBrag();
 	}
+	
+	// Called when the redbox button is touched
+	private void onRedboxButtonTouched() {
+		Log.i(this.getActivity().toString(), "onRedboxButtonTouched");
+		Intent i = new Intent(getActivity(), ShopActivity.class);
+		startActivity(i);
+	}
 
 	// Called when the Scores button is touched
 	private void onScoresButtonTouched() {
@@ -345,12 +366,12 @@ public class HomeFragment extends Fragment {
 				bragButton.setVisibility(View.INVISIBLE);
 				challengeButton.setVisibility(View.INVISIBLE);
 				userImage.setVisibility(View.INVISIBLE);
-				loginButton.setBackgroundResource(R.drawable.login);
+				loginButton.setBackgroundResource(R.drawable.login_fb2);
 			}
 			else{
 				//TODO: Change visibility in the future
 				scoresButton.setVisibility(View.VISIBLE);
-				loginButton.setBackgroundResource(R.drawable.logout);
+				loginButton.setBackgroundResource(R.drawable.logout_fb2);
 				userImage.setVisibility(View.VISIBLE);
 				if(application.getScore()>0) bragButton.setVisibility(View.INVISIBLE);
 				else bragButton.setVisibility(View.INVISIBLE);
@@ -358,11 +379,11 @@ public class HomeFragment extends Fragment {
 				if (application.getSeconds()>=50) challengeButton.setVisibility(View.INVISIBLE);
 				else challengeButton.setVisibility(View.INVISIBLE);
 			}
-			AnimationDrawable loginAnimation;
-			loginAnimation = (AnimationDrawable) loginButton.getBackground();
+			//AnimationDrawable loginAnimation;
+			//loginAnimation = (AnimationDrawable) loginButton.getBackground();
 			//loginAnimation.setEnterFadeDuration(500);
 			//loginAnimation.setExitFadeDuration(500);
-	     	loginAnimation.start();
+	     	//loginAnimation.start();
 		}
 	}
 

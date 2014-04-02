@@ -14,7 +14,7 @@ package com.nappking.movietimesup.widget;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * This code is base on the Android Gallery widget and was Created 
+ * This code is based on the Android Gallery widget and was Created 
  * by Neil Davies neild001 'at' gmail dot com to be a Coverflow widget
  * 
  * @author Neil Davies

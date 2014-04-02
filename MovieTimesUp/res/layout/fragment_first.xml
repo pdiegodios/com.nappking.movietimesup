@@ -32,7 +32,7 @@
 		        android:gravity="center_vertical|center_horizontal"
 		        android:textStyle="bold"
 		        android:textColor="@color/white"
-		        android:textSize="@dimen/text_size6"
+		        android:textSize="@dimen/text_size5"
 	    		android:background="@color/com_facebook_blue"
 		        android:text="@string/registration"/>	        
 	    </LinearLayout>

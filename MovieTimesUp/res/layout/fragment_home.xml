@@ -129,10 +129,19 @@
 	            android:id="@+id/loginButton"
 	            android:layout_width="@dimen/main_facebook_width"
 	            android:layout_height="@dimen/main_facebook_height"
-	            android:background="@drawable/login"/>
+	            android:background="@drawable/login_fb2"/>
         </LinearLayout>
 	</LinearLayout>
-  	
+	
+	<ImageView 
+	    android:id="@+id/redbox"
+	    android:layout_height="@dimen/main_redbox_height"
+	    android:layout_width="@dimen/main_redbox_width"
+	    android:layout_marginLeft="@dimen/grid_horizontal_spacing"
+	    android:layout_gravity="bottom|left"
+	    android:gravity="bottom"
+	    android:src="@drawable/redbox1"/>
+	
 	<FrameLayout android:id="@+id/progressContainer"
 	    android:background="@drawable/street_dark_background"
 	    android:layout_width="match_parent"
@@ -144,4 +153,5 @@
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center"/>
   	</FrameLayout>
+  	
 </FrameLayout>

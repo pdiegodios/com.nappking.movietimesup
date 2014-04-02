@@ -218,7 +218,9 @@ public class CinemaActivity extends DBActivity{
 								buyButton.setOnClickListener(new OnClickListener() { //Buy									
 									@Override
 									public void onClick(View v) { //Call operations to buy some seconds
-										
+										Intent i = new Intent(CinemaActivity.this, ShopActivity.class);
+										startActivity(i);
+										dialogBuy.dismiss();
 									}
 								});
 								dialogBuy.show();

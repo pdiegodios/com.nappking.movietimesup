@@ -46,6 +46,8 @@
     <!-- MAIN MENU -->
     <dimen name="main_billboard_width">275dp</dimen>
     <dimen name="main_billboard_height">330dp</dimen>
+    <dimen name="main_redbox_width">104dp</dimen>
+    <dimen name="main_redbox_height">156dp</dimen>
     <dimen name="main_panel_size_big">90dp</dimen>
     <dimen name="main_panel_size">44dp</dimen>
     <dimen name="main_margin_big">34dp</dimen>

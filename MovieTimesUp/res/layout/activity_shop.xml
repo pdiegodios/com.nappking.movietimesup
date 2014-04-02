@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout 
+        android:id="@+id/screen_main"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2,000s -->"/>
+            <TextView 
+                android:id="@+id/price2000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5,000s -->"/>
+            <TextView 
+                android:id="@+id/price5000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10,000s -->"/>
+            <TextView 
+                android:id="@+id/price10000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20,000s -->"/>
+            <TextView 
+                android:id="@+id/price20000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>            
+        </LinearLayout>
+   	</LinearLayout>
+   	
+    <FrameLayout android:id="@+id/screen_wait"
+	    android:background="@drawable/street_dark_background"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:clickable="true">
+	    <ProgressBar
+	      style="@android:style/Widget.ProgressBar"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:layout_gravity="center"/>
+  	</FrameLayout>
+  	
+</FrameLayout>

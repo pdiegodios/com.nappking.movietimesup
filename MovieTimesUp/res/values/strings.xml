@@ -4,11 +4,11 @@
 
     <string name="app_name">Movie Time\'s Up</string>
     <string name="app_id">1408220052751357</string>
-    <string name="app_key1">uQ57KUSMEZwivKsjfTuR5r3i7YJnV7hm9ceQv0gLC/eiE3BWY3BHlvG4neJc1Og2cCt9dqKXD0y9jQIDAQAB</string>
-    <string name="app_key2">aJrNqXlTlqwjcbqmF+cP2VEjBnDd+6VShD0tAAZ8CnL7LpbJ4PMT3RUYE+zZPgtLIfN+rDKc0HrvMvzJSYfQ</string>
-    <string name="app_key3">hin8CxI+BXQgBAd8mMWrQKzNUhjzFfeQ+EYG/S8fAk5pSdhHmcJE6vXvEXB1EdzibAqPZIqqOj8YsW/dDvY</string>
-    <string name="app_key4">bFhC04tjOj9D/1VWaIol6XZ7bhhC0XXTlhKfD7seZjGlwkCryejNrcjL85vQpQ5AfWAW0moS5ygN0WBGW</string> 
-    <string name="app_key5">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkcB5xmQObHgrDQT7</string>
+    <string name="app_key1">EZwivKsjfTuR5r3i7YJnV7hm9ceQv0gLC/eiE3BWY3BHlvG4neJc1Og2cCt9dqKXD0y9jQIDAQAB</string>
+    <string name="app_key2">qmF+cP2VEjBnDd+6VShD0tAAZ8CnL7LpbJ4PMT3RUYE+zZPgtLIfN+rDKc0HrvMvzJSYfQuQ57KUSM</string>
+    <string name="app_key3">8mMWrQKzNUhjzFfeQ+EYG/S8fAk5pSdhHmcJE6vXvEXB1EdzibAqPZIqqOj8YsW/dDvYaJrNqXlTlqwjcb</string>
+    <string name="app_key4">/1VWaIol6XZ7bhhC0XXTlhKfD7seZjGlwkCryejNrcjL85vQpQ5AfWAW0moS5ygN0WBGWhin8CxI+BXQgBAd</string> 
+    <string name="app_key5">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkcB5xmQObHgrDQT7bFhC04tjOj9D</string>
     <string name="title_activity_home">Movie Time\'s Up</string>
     <string name="registration">To finish your registration, you must login with Facebook. We\'ll never post without your permission.</string>
     <string name="welcome_message">Welcome, Player</string>
@@ -45,7 +45,7 @@
 
     <!-- OPTIONS -->
     <string name="unlock">Unlock</string>
-    <string name="buy">Buy</string>
+    <string name="buy">Kiosk</string>
     <string name="give_up">Give up</string>
     <string name="play">Action!</string>
     <string name="camera">..camera..</string>
@@ -91,7 +91,7 @@
     <string name="movies">"Movies"</string>
     <string name="points">points</string>
     <string name="not_enough_seconds">You don\'t have enough seconds</string>
-    <string name="buy_seconds">Buy seconds to beat your friends</string>
+    <string name="buy_seconds">Get more seconds to beat your friends in the kiosk</string>
     <string name="unlock_cost">Unlock costs</string>
     <string name="seconds">seconds</string>
     <string name="give_up_question">Coward, do you want to give up?</string>
@@ -104,7 +104,7 @@
     <string name="loading">Loading</string>
     <string name="level_number">Level #</string>
     <string name="unlocked">unlocked</string>    
-    <string name="seconds_for_level">You got 2500 seconds</string>  
+    <string name="seconds_for_level">You got 2400 seconds</string>  
     <string name="nextlevel">Hit 10 films to get a new level</string>
     <string name="european_achievement">New european achievement unlocked</string>
     <string name="asian_achievement">New asian achievement unlocked</string>

@@ -40,6 +40,8 @@
     
     <dimen name="main_billboard_width">450dp</dimen>
     <dimen name="main_billboard_height">540dp</dimen>
+    <dimen name="main_redbox_width">167dp</dimen>
+    <dimen name="main_redbox_height">250dp</dimen>
     <dimen name="main_panel_size_big">145dp</dimen>
     <dimen name="main_panel_size">72dp</dimen>
     <dimen name="main_margin_big">55dp</dimen>

@@ -42,7 +42,7 @@ public class SelectorCinemaActivity extends DBActivity{
 		setContentView(R.layout.activity_grid_cinema);		
      	grid = 	(GridView) findViewById(R.id.grid);	
      	search = (ImageView) findViewById(R.id.search);
-		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing);
+		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing_bigger);
 		setListeners();
 	}
 	

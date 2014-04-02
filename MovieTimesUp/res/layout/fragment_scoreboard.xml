@@ -40,13 +40,13 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size7"
+                    android:textSize="@dimen/text_size6"
                     android:textColor="@color/white"/>
                 <TextView 
                     android:id="@+id/userPointsFirst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size7"
+                    android:textSize="@dimen/text_size6"
                     android:textColor="@color/white"
             		android:layout_marginTop="@dimen/grid_margin_text"/>
                 
@@ -57,6 +57,8 @@
             android:layout_width="@dimen/main_facebook_width"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+			android:focusable="false"
+            android:background="@android:color/transparent"
             android:scrollbars="none">
             
         </com.nappking.movietimesup.widget.ListView3d>
