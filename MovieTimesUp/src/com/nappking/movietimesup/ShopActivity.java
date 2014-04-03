@@ -37,10 +37,11 @@ public class ShopActivity extends DBActivity{
 	private static final List<String> SKUS = new ArrayList<String>(Arrays.asList(SKU_SECONDS_2000, SKU_SECONDS_5000, SKU_SECONDS_10000, SKU_SECONDS_20000));
 	private static final int RC_REQUEST = 101; 
     
+	/*
 	private String seconds2000Price ="?";
 	private String seconds5000Price ="?";
 	private String seconds10000Price ="?";
-	private String seconds20000Price ="?";
+	private String seconds20000Price ="?";*/
 	
 	private Button buy2000;
 	private Button buy5000;
@@ -98,7 +99,7 @@ public class ShopActivity extends DBActivity{
 		buy2000.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				onBuyButtonClicked(v, "android.test.purchased");
+				onBuyButtonClicked(v, SKU_SECONDS_2000);
 			}
 		});
 		buy5000.setOnClickListener(new OnClickListener() {			
@@ -137,7 +138,7 @@ public class ShopActivity extends DBActivity{
             }
             if(inventory!=null){
 	            //Recovery prices for products
-	            if(inventory.getSkuDetails(SKU_SECONDS_2000)!=null)
+	            /*if(inventory.getSkuDetails(SKU_SECONDS_2000)!=null)
 	            	seconds2000Price = inventory.getSkuDetails(SKU_SECONDS_2000).getPrice();
 	            if(inventory.getSkuDetails(SKU_SECONDS_5000)!=null)
 	            	seconds5000Price = inventory.getSkuDetails(SKU_SECONDS_5000).getPrice();
@@ -145,7 +146,7 @@ public class ShopActivity extends DBActivity{
 	            	seconds10000Price = inventory.getSkuDetails(SKU_SECONDS_10000).getPrice();
 	            if(inventory.getSkuDetails(SKU_SECONDS_20000)!=null)
 	            	seconds20000Price = inventory.getSkuDetails(SKU_SECONDS_20000).getPrice();           
-            
+            */
 	            // Check for deliveries -- if we own some product, we should consume it inmediately
 	            for(String sku: SKUS){
 	            	checkPurchase(inventory,sku);
@@ -324,10 +325,6 @@ public class ShopActivity extends DBActivity{
 	
     // updates UI to reflect model
     public void updateUi() {
-    	((TextView) findViewById(R.id.price2000)).setText(seconds2000Price);
-    	((TextView) findViewById(R.id.price5000)).setText(seconds5000Price);
-    	((TextView) findViewById(R.id.price10000)).setText(seconds10000Price);
-    	((TextView) findViewById(R.id.price20000)).setText(seconds20000Price);
     }
 
     // Enables or disables the "please wait" screen.

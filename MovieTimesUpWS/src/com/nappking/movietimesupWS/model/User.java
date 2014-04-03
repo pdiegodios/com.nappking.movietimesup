@@ -22,6 +22,7 @@ public class User {
     public static final String LASTFOREGROUND = "lastForeground";
     public static final String DAYS = 		"days";
     public static final String MOVIES = 	"movies";
+    public static final String WILDCARD =	"wildcard";
     public static final String MASTERPIECE ="masterpiece";
     public static final String CULT =		"cult";
     public static final String AMERICA =	"america";
@@ -40,6 +41,7 @@ public class User {
     private long lastForeground;
     private int days;
     private int movies;
+    private int wildcard;
     private int masterpiece;
     private int cult;
     private int america;
@@ -65,6 +67,7 @@ public class User {
     public int getDays()							{return this.days;}
     public int getMovies()							{return this.movies;}
     public int getMasterpiece()						{return this.masterpiece;}
+    public int getWildcard()						{return this.wildcard;}
     public int getCult()							{return this.cult;}
     public int getAmerica()							{return this.america;}
     public int getEurope()							{return this.europe;}
@@ -86,6 +89,7 @@ public class User {
 	public void setDays(int days)										{this.days=days;} 	
 	public void setMovies(int movies)									{this.movies=movies;}
     public void setMasterpiece(int masterpiece)							{this.masterpiece = masterpiece;}
+    public void setWildcard(int wildcard)								{this.wildcard = wildcard;}
     public void setCult(int cult)										{this.cult = cult;}
     public void setAmerica(int america)									{this.america = america;}
     public void setEurope(int europe)									{this.europe = europe;}

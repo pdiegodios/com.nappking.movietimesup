@@ -105,7 +105,7 @@
     <string name="level_number">Level #</string>
     <string name="unlocked">unlocked</string>    
     <string name="seconds_for_level">You got 2400 seconds</string>  
-    <string name="nextlevel">Hit 10 films to get a new level</string>
+    <string name="nextlevel">Hit 12 films to get a new level</string>
     <string name="european_achievement">New european achievement unlocked</string>
     <string name="asian_achievement">New asian achievement unlocked</string>
     <string name="american_achievement">New american achievement unlocked</string>

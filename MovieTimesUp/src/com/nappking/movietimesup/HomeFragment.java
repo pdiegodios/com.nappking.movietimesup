@@ -206,6 +206,7 @@ public class HomeFragment extends Fragment {
 				user.setSeconds(MovieTimesUpApplication.SECONDS_FOR_LEVEL);
 				user.setMovies(moviesCount);
 				user.setMasterpiece(0);
+				user.setWildcard(0);
 				user.setCult(0);
 				user.setAmerica(0);
 				user.setEurope(0);

@@ -25,36 +25,36 @@ public class AddMovie {
 		String action = SAVE;
 		
 		int id = 51;
-		int points = 1;
-		int cinema = 2;
-		int year = 2012;
+		int points = 2;
+		int cinema = 3;
+		int year = 1993;
 		boolean masterpiece = false;
-		boolean cult = false;
-		String title = "Django desencadenado";
-		String alternative_title = "Django";
-		String original_title = "Django unchained";
+		boolean cult = true;
+		String title = "Pesadilla antes de navidad";
+		String alternative_title = "El extraño mundo de Jack";
+		String original_title = "The Nightmare Before Christmas";
 		String continent = "AM";
 		String country = "Estados Unidos";
-		String director = "Quentin Tarantino";
-		String genre = "Western";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1_SX214_.jpg";
-		String  filmaffinity_id = "929558";
-		String imdb_id = "tt1853728";
-		String actor1="Leonardo DiCaprio";
-		String actor2="Christoph Waltz";
-		String actor3="Jamie Foxx";
-		String character1="Dr. King Schultz";
-		String character2="Django";
-		String character3="Calvin Candie";
-		String other1 ="Un cameo del director en la película termina de manera \"explosiva\"";
-		String other2 ="Ennio Morricone dijo del director: \"coloca la música sin coherencia y no puedes hacer nada con alguien así\"";
-		String other3 ="La película está llena de guiños a otras películas del género western, principalmente de Sergio Corbucci, de quien el director es fan";
-		String quote1="La \"d\" es muda, paleto";
-		String quote2="-He contado seis tiros, negro. -He contado dos armas, negro";
-		String quote3="-¡Me ha roto la pierna! -Sin duda. Ahora si hace el favor de mantener sus berridos al mínimo podré terminar de interrogar al joven";
-		String plot = "En Texas, dos años antes de estallar la Guerra Civil Americana, un cazarecompensas alemán que le sigue la pista a unos asesinos " +
-				"para cobrar por sus cabezas, le promete al esclavo negro X dejarlo en libertad si le ayuda a atraparlos. Él acepta pues luego quiere ir " +
-				"a buscar a su esposa Y, una esclava que están en una plantación del terrateniente Z";
+		String director = "Henry Selick";
+		String genre = "Animación";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMTc5MDY0MjkwNV5BMl5BanBnXkFtZTcwNTk2Njk3OA@@._V1_SY317_CR12,0,214,317_.jpg";
+		String  filmaffinity_id = "366417";
+		String imdb_id = "tt0107688";
+		String actor1="Danny Elfman (voz original)";
+		String actor2="Oogie Boogie/Oingo Boingo (villano)";
+		String actor3="Zero (perro fantasma)";
+		String character1="Jack Skellington";
+		String character2="Sally";
+		String character3="Santa";
+		String other1 ="La historia es de Tim Burton";
+		String other2 ="El merchandising de la película sigue siendo muy popular, principalmente entre los góticos";
+		String other3 ="La banda sonora es de Danny Elfman y es una parte fundamental del film";
+		String quote1="¡Esto es Halloween! ¡Esto es Halloween!";
+		String quote2="¿Dulce o travesura? Maten al vecino, de ansiedad.";
+		String quote3="Los niños se arrojan nieve en vez de tirar cabezas. Están haciendo juguetes y no hay muertos. No hay ningún monstruo, ni siquiera una pesadilla y en su lugar hay sentimientos de alegría.";
+		String plot = "Cuando X, descubre la Navidad, se queda fascinado y decide mejorarla. Sin embargo, su visión de la festividad " +
+				"es totalmente contraria al espíritu navideño. Sus planes incluyen el secuestro de Santa Claus y la introducción de " +
+				"cambios bastante macabros. Sólo su novia Y es consciente del error que está cometiendo. ";
 
 		
 		//CLIENT

@@ -5,5 +5,5 @@
 	    android:state_selected="true"/>
 	<item 
 	    android:drawable="@drawable/locked_unselected"
-	    android:state_selected="false"></item>
+	    android:state_selected="false"/>
 </selector>

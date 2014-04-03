@@ -56,6 +56,13 @@
     <dimen name="main_facebook_width">320dp</dimen>
     <dimen name="main_facebook_height">90dp</dimen>
     
+    <!-- SHOP MENU -->
+    <dimen name="shop_bar">80dp</dimen>
+    <dimen name="shop_item_height">60dp</dimen>
+    <dimen name="shop_item_width_small">90dp</dimen>
+    <dimen name="shop_item_width_normal">180dp</dimen>
+    <dimen name="shop_item_padding">14dp</dimen>
+    
     <!-- SEARCH -->
     <dimen name="search_cover_width">143dp</dimen>
     <dimen name="search_cover_height">220dp</dimen>

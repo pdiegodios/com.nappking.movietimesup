@@ -129,6 +129,7 @@ public class LoadUserDataTask extends AsyncTask<String,Void,Integer>{
 						mUser.setDays(user.getDays());
 						mUser.setLastUpdate(user.getLastUpdate());
 						mUser.setLastForeground(user.getLastForeground());
+						mUser.setWildcard(user.getWildcard());
 						mUser.setMasterpiece(user.getMasterpiece());
 						mUser.setCult(user.getCult());
 						mUser.setAmerica(user.getAmerica());

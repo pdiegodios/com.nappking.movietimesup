@@ -32,6 +32,7 @@ public class User implements Serializable{
     public static final String DAYS = 		"days";
     public static final String MOVIES =		"movies";
     public static final String CINEMAS =	"cinemas";
+    public static final String WILDCARD =	"wildcard";
     public static final String MASTERPIECE ="masterpiece";
     public static final String CULT =		"cult";
     public static final String AMERICA =	"america";
@@ -66,6 +67,8 @@ public class User implements Serializable{
     private int days;
     @DatabaseField(columnName = MOVIES)
     private int movies;
+    @DatabaseField(columnName = WILDCARD)
+    private int wildcard;
     @DatabaseField(columnName = MASTERPIECE)
     private int masterpiece;
     @DatabaseField(columnName = CULT)
@@ -97,6 +100,7 @@ public class User implements Serializable{
     public int getDays()						{return this.days;}
     public int getMovies()						{return this.movies;}
     public int getMasterpiece()					{return this.masterpiece;}
+    public int getWildcard()					{return this.wildcard;}
     public int getCult()						{return this.cult;}
     public int getAmerica()						{return this.america;}
     public int getEurope()						{return this.europe;}
@@ -124,6 +128,7 @@ public class User implements Serializable{
     public void setDays(int days)									{this.days = days;}
     public void setMovies(int movies)								{this.movies = movies;}
     public void setMasterpiece(int masterpiece)						{this.masterpiece = masterpiece;}
+    public void setWildcard(int wildcard)							{this.wildcard = wildcard;}
     public void setCult(int cult)									{this.cult = cult;}
     public void setAmerica(int america)								{this.america = america;}
     public void setEurope(int europe)								{this.europe = europe;}

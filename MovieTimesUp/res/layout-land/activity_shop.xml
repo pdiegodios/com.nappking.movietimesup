@@ -4,118 +4,129 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <LinearLayout 
         android:id="@+id/screen_main"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="top|center_horizontal"
+        android:layout_margin="@dimen/main_margin_small">
         <LinearLayout 
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button 
-                android:id="@+id/buy2000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size6"
-                android:text="Comprar"/>
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:layout_height="@dimen/shop_bar">
             <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"
-                android:text="2,000s -->"/>
+                android:id="@+id/seconds"
+                android:background="@drawable/seconds_shop"
+                android:layout_width="@dimen/shop_item_width_normal"
+                android:paddingBottom="@dimen/shop_item_padding"
+                android:paddingLeft="@dimen/shop_item_padding"
+                style="@style/text_seconds"/>       
             <TextView 
-                android:id="@+id/price2000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"/>
+                android:id="@+id/wildcards"
+                android:background="@drawable/wildcard_shop"
+                android:layout_width="@dimen/shop_item_width_small"
+                android:paddingBottom="@dimen/shop_item_padding"
+                android:paddingLeft="@dimen/shop_item_padding"
+                style="@style/text_seconds"/>      
+            <TextView 
+                android:id="@+id/masterpieces"
+                android:background="@drawable/masterpiece_shop"
+                android:layout_width="@dimen/shop_item_width_small"
+                android:paddingBottom="@dimen/shop_item_padding"
+                android:paddingLeft="@dimen/shop_item_padding"
+                style="@style/text_seconds"
+                android:textColor="@color/greendark"/>      
+            <TextView 
+                android:id="@+id/cult_movies"
+                android:background="@drawable/cult_shop"
+                android:layout_width="@dimen/shop_item_width_small"
+                android:paddingBottom="@dimen/shop_item_padding"
+                android:paddingLeft="@dimen/shop_item_padding"
+                style="@style/text_seconds"
+                android:textColor="@color/greendark"/>      
         </LinearLayout>
-        <LinearLayout 
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+        
+	    <LinearLayout 
+	        android:orientation="vertical"
+	        android:gravity="center"
+	        android:layout_height="match_parent"
+	        android:layout_width="fill_parent">
             <Button 
-                android:id="@+id/buy5000"
+                android:background="@drawable/wildcard_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size6"
-                android:text="Comprar"/>
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"
-                android:text="5,000s -->"/>
-            <TextView 
-                android:id="@+id/price5000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <LinearLayout 
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button 
-                android:id="@+id/buy10000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size6"
-                android:text="Comprar"/>
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"
-                android:text="10,000s -->"/>
-            <TextView 
-                android:id="@+id/price10000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <LinearLayout 
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button 
-                android:id="@+id/buy20000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size6"
-                android:text="Comprar"/>
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"
-                android:text="20,000s -->"/>
-            <TextView 
-                android:id="@+id/price20000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size6"
-                android:textStyle="bold"/>            
-        </LinearLayout>
+                android:layout_height="wrap_content"/>
+	        <LinearLayout 
+	            android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="center">
+	            <Button 
+	                android:background="@drawable/ticket_20s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:background="@drawable/ticket_100s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:background="@drawable/ticket_200s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="center">
+	            <Button 
+	                android:background="@drawable/ticket_500s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:background="@drawable/ticket_1000s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:id="@+id/buy2000"
+	                android:background="@drawable/ticket_2000s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:gravity="center">
+	            <Button 
+	                android:id="@+id/buy5000"
+	                android:background="@drawable/ticket_5000s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:id="@+id/buy10000"
+	                android:background="@drawable/ticket_10000s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	            <Button 
+	                android:id="@+id/buy20000"
+	                android:background="@drawable/ticket_20000s_button"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"/>
+	        </LinearLayout>
+	    </LinearLayout>
    	</LinearLayout>
+
+    
+   	<ImageView 
+   	    android:src="@drawable/screen"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="fill_parent"
+   	    android:scaleType="fitXY"/>
    	
     <FrameLayout android:id="@+id/screen_wait"
 	    android:background="@drawable/street_dark_background"
@@ -128,5 +139,4 @@
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center"/>
   	</FrameLayout>
-  	
 </FrameLayout>
