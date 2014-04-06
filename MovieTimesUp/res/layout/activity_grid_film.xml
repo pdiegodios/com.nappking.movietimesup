@@ -60,6 +60,9 @@
 		<ImageView 
 		    android:src="@drawable/seconds_info" 	  
 			style="@style/infoButton"/>
+		<ImageView 
+		    android:src="@drawable/wildcard_info" 	  
+			style="@style/infoButton"/>
 	</LinearLayout>
 	<LinearLayout   
 		style="@style/layoutLeft">
@@ -69,6 +72,10 @@
 		    android:textSize="@dimen/text_size5"/>		
 		<TextView 
 		    android:id="@+id/seconds"
+		    style="@style/infoTextLeftButton"
+		    android:textSize="@dimen/text_size3"/>
+		<TextView 
+		    android:id="@+id/wildcards"
 		    style="@style/infoTextLeftButton"
 		    android:textSize="@dimen/text_size3"/>
 	</LinearLayout>

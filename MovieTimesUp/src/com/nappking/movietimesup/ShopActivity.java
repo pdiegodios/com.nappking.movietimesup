@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -30,25 +31,51 @@ import com.nappking.movietimesup.util.Purchase;
 public class ShopActivity extends DBActivity{
 	private IabHelper mHelper;
 	private static final String TAG="ShopFragment";
+	private static final int TICKET_20 = 1;
+	private static final int TICKET_WILDCARD = 2;
+	private static final int TICKET_100 = 3;
+	private static final int TICKET_200 = 4;
+	private static final int TICKET_500 = 5;
+	private static final int TICKET_1000 = 6;
+	private static final int TICKET_2000 = 7;
+	private static final int TICKET_5000 = 8;
+	private static final int TICKET_10000 = 9;
+	private static final int TICKET_20000 = 10;
 	private static final String SKU_SECONDS_2000 = "seconds_2000";
 	private static final String SKU_SECONDS_5000 = "seconds_5000";
 	private static final String SKU_SECONDS_10000 = "seconds_10000";
 	private static final String SKU_SECONDS_20000 = "seconds_20000";
 	private static final List<String> SKUS = new ArrayList<String>(Arrays.asList(SKU_SECONDS_2000, SKU_SECONDS_5000, SKU_SECONDS_10000, SKU_SECONDS_20000));
 	private static final int RC_REQUEST = 101; 
-    
-	/*
-	private String seconds2000Price ="?";
-	private String seconds5000Price ="?";
-	private String seconds10000Price ="?";
-	private String seconds20000Price ="?";*/
 	
+	private TextView txSeconds;
+	private TextView txWildcards;
+	private TextView txMasterpieces;
+	private TextView txCult_movies;
+
+	private ImageView ticketSelected;
+	private TextView priceSelected;
+	
+	private Button buyButton;
+	
+	private Button buy20;
+	private Button buyWildcard;
+	private Button buy100;
+	private Button buy200;
+	private Button buy500;
+	private Button buy1000;
 	private Button buy2000;
 	private Button buy5000;
 	private Button buy10000;
 	private Button buy20000;
 	
+	private TextView price2000;
+	private TextView price5000;
+	private TextView price10000;
+	private TextView price20000;
+	
 	private User mUser;
+	private int mSelection;
 	
 	
 	@Override
@@ -65,6 +92,8 @@ public class ShopActivity extends DBActivity{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		initialize();
 		
 		mHelper = new IabHelper(this, base64EncodedPublicKey);
 		Log.d(TAG, "base64EncodedPublicKey: "+base64EncodedPublicKey);
@@ -84,42 +113,109 @@ public class ShopActivity extends DBActivity{
 			}
 		});		
 
-		initialize();
 		setListeners();		
 	}
 	
 	private void initialize(){
-		buy2000 = (Button) findViewById(R.id.buy2000);
-		buy5000 = (Button) findViewById(R.id.buy5000);
-		buy10000 = (Button) findViewById(R.id.buy10000);
-		buy20000 = (Button) findViewById(R.id.buy20000);
+		txSeconds = (TextView) findViewById(R.id.seconds);
+		txWildcards = (TextView) findViewById(R.id.wildcards);
+		txMasterpieces = (TextView) findViewById(R.id.masterpieces);
+		txCult_movies = (TextView) findViewById(R.id.cult_movies);
+
+		ticketSelected = (ImageView) findViewById(R.id.ticketSelected);
+		priceSelected = (TextView) findViewById(R.id.priceSelected);
+		
+		buyButton = (Button) findViewById(R.id.buyButton);
+		
+		buy20 = (Button) findViewById(R.id.ticket_20s);
+		buyWildcard = (Button) findViewById(R.id.ticket_wildcard);
+		buy100 = (Button) findViewById(R.id.ticket_100s);
+		buy200 = (Button) findViewById(R.id.ticket_200s);
+		buy500 = (Button) findViewById(R.id.ticket_500s);
+		buy1000 = (Button) findViewById(R.id.ticket_1000s);
+		buy2000 = (Button) findViewById(R.id.ticket_2000s);
+		buy5000 = (Button) findViewById(R.id.ticket_5000s);
+		buy10000 = (Button) findViewById(R.id.ticket_10000s);
+		buy20000 = (Button) findViewById(R.id.ticket_20000s);
+		
+		price2000 = (TextView) findViewById(R.id.ticket_2000s_price);
+		price5000 = (TextView) findViewById(R.id.ticket_5000s_price);
+		price10000 = (TextView) findViewById(R.id.ticket_10000s_price);
+		price20000 = (TextView) findViewById(R.id.ticket_20000s_price);
 	}
 	
 	private void setListeners(){
+		buyButton.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onBuyButtonClicked();
+			}
+		});
+		buy20.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_20);
+			}
+		});
+		buyWildcard.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_WILDCARD);
+			}
+		});
+		buy100.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_100);
+			}
+		});
+		buy200.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_200);
+			}
+		});
+		buy500.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_500);
+			}
+		});
+		buy1000.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				onSelectedButton(TICKET_1000);
+			}
+		});
 		buy2000.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				onBuyButtonClicked(v, SKU_SECONDS_2000);
+				onSelectedButton(TICKET_2000);
 			}
 		});
 		buy5000.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				onBuyButtonClicked(v, SKU_SECONDS_5000);
+				onSelectedButton(TICKET_5000);
 			}
 		});
 		buy10000.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				onBuyButtonClicked(v, SKU_SECONDS_10000);
+				onSelectedButton(TICKET_10000);
 			}
 		});
 		buy20000.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				onBuyButtonClicked(v, SKU_SECONDS_20000);
+				onSelectedButton(TICKET_20000);
 			}
 		});
+	}
+	
+	private void onSelectedButton(int selection){
+		mSelection = selection;
+		updateUi();
 	}
 	
 	// Listener that's called when we finish querying the items and subscriptions we own
@@ -138,15 +234,15 @@ public class ShopActivity extends DBActivity{
             }
             if(inventory!=null){
 	            //Recovery prices for products
-	            /*if(inventory.getSkuDetails(SKU_SECONDS_2000)!=null)
-	            	seconds2000Price = inventory.getSkuDetails(SKU_SECONDS_2000).getPrice();
+	            if(inventory.getSkuDetails(SKU_SECONDS_2000)!=null)
+	            	price2000.setText(inventory.getSkuDetails(SKU_SECONDS_2000).getPrice());
 	            if(inventory.getSkuDetails(SKU_SECONDS_5000)!=null)
-	            	seconds5000Price = inventory.getSkuDetails(SKU_SECONDS_5000).getPrice();
+	            	price5000.setText(inventory.getSkuDetails(SKU_SECONDS_5000).getPrice());
 	            if(inventory.getSkuDetails(SKU_SECONDS_10000)!=null)
-	            	seconds10000Price = inventory.getSkuDetails(SKU_SECONDS_10000).getPrice();
+	            	price10000.setText(inventory.getSkuDetails(SKU_SECONDS_10000).getPrice());
 	            if(inventory.getSkuDetails(SKU_SECONDS_20000)!=null)
-	            	seconds20000Price = inventory.getSkuDetails(SKU_SECONDS_20000).getPrice();           
-            */
+	            	price20000.setText(inventory.getSkuDetails(SKU_SECONDS_20000).getPrice());      
+	            
 	            // Check for deliveries -- if we own some product, we should consume it inmediately
 	            for(String sku: SKUS){
 	            	checkPurchase(inventory,sku);
@@ -169,7 +265,50 @@ public class ShopActivity extends DBActivity{
     }
     
     // User clicked the "Buy" button
-    private void onBuyButtonClicked(View arg0, String sku) {
+    private void onBuyButtonClicked() {
+		switch(mSelection){
+		case TICKET_20:
+			mUser.setCult(mUser.getCult()-1);
+			uploadUser(20);
+			break;
+		case TICKET_WILDCARD:
+			mUser.setCult(mUser.getCult()-2);
+			mUser.setWildcard(mUser.getWildcard()+1);
+			uploadUser(0);
+			break;
+		case TICKET_100:
+			mUser.setCult(mUser.getCult()-3);
+			uploadUser(100);
+			break;
+		case TICKET_200:
+			mUser.setMasterpiece(mUser.getMasterpiece()-1);
+			uploadUser(200);
+			break;
+		case TICKET_500:
+			mUser.setCult(mUser.getCult()-10);
+			uploadUser(500);
+			break;
+		case TICKET_1000:
+			mUser.setMasterpiece(mUser.getMasterpiece()-3);
+			uploadUser(1000);
+			break;
+		case TICKET_2000:
+			launchPurchase(SKU_SECONDS_2000);
+			break;
+		case TICKET_5000:
+			launchPurchase(SKU_SECONDS_5000);
+			break;
+		case TICKET_10000:
+			launchPurchase(SKU_SECONDS_10000);
+			break;
+		case TICKET_20000:
+			launchPurchase(SKU_SECONDS_20000);
+			break;
+		default:break;
+		}
+    }
+    
+    private void launchPurchase(String sku){
         Log.d(TAG, "Buy button clicked for "+sku);
         // launch the gas purchase UI flow.
         setWaitScreen(true);
@@ -281,7 +420,6 @@ public class ShopActivity extends DBActivity{
             else {
                 complain("Error while consuming: " + result);
             }
-            updateUi();
             setWaitScreen(false);
             Log.d(TAG, "End consumption flow.");
         }
@@ -294,6 +432,7 @@ public class ShopActivity extends DBActivity{
 	 */
 	private void uploadUser(int seconds){
 		try {
+			mSelection=0;
 			List<User> users = new ArrayList<User>();
 			Dao<User,Integer> daoUser = getHelper().getUserDAO();
 			if(mUser==null){
@@ -314,6 +453,7 @@ public class ShopActivity extends DBActivity{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		updateUi();
 	}	
 	
 	@Override
@@ -325,6 +465,111 @@ public class ShopActivity extends DBActivity{
 	
     // updates UI to reflect model
     public void updateUi() {
+    	int seconds = mUser.getSeconds();
+    	int wildcards = mUser.getWildcard();
+    	int masterpieces = mUser.getMasterpiece();
+    	int cult_movies = mUser.getCult();
+    	
+    	//Update User info
+    	if(mUser!=null){
+    		txSeconds.setText(seconds+"\'\'");
+    		txWildcards.setText(wildcards+"");
+    		txMasterpieces.setText(masterpieces+"");
+    		txCult_movies.setText(cult_movies+"");
+    	}
+    	
+    	//Update enable tickets
+		buy20.setEnabled(false);
+		buyWildcard.setEnabled(false);
+		buy100.setEnabled(false);
+		buy200.setEnabled(false);
+		buy500.setEnabled(false);
+		buy1000.setEnabled(false);
+    	if(cult_movies>0){
+    		buy20.setEnabled(true);
+    		if(cult_movies<10){
+    			buy500.setEnabled(false);
+    			if(cult_movies<3){
+    				buy100.setEnabled(false);
+    				if(cult_movies<2){
+    					buyWildcard.setEnabled(false);
+    				}
+    				else{
+        				buyWildcard.setEnabled(true);
+    				}
+    			}
+    			else{
+    				buy100.setEnabled(true);
+    				buyWildcard.setEnabled(true);
+    			}
+    		}
+    		else{
+    			buy100.setEnabled(true);
+    			buyWildcard.setEnabled(true);
+    			buy500.setEnabled(true);
+    		}    		
+    	}
+    	if(masterpieces>0){
+    		buy200.setEnabled(true);
+    		if(masterpieces<3)
+    			buy1000.setEnabled(false);
+    		else
+    			buy1000.setEnabled(true);
+    	}
+    	
+    	
+    	//Update selection
+    	if(mSelection>0){
+    		buyButton.setEnabled(true);
+    		switch(mSelection){
+    		case TICKET_20:
+    			ticketSelected.setImageResource(R.drawable.ticket_20s_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_WILDCARD:
+    			ticketSelected.setImageResource(R.drawable.wildcard_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_100:
+    			ticketSelected.setImageResource(R.drawable.ticket_100s_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_200:
+    			ticketSelected.setImageResource(R.drawable.ticket_200s_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_500:
+    			ticketSelected.setImageResource(R.drawable.ticket_500s_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_1000:
+    			ticketSelected.setImageResource(R.drawable.ticket_1000s_enabled);
+    			priceSelected.setText("");
+    			break;
+    		case TICKET_2000:
+    			ticketSelected.setImageResource(R.drawable.ticket_2000s_enabled);
+    			priceSelected.setText(price2000.getText());
+    			break;
+    		case TICKET_5000:
+    			ticketSelected.setImageResource(R.drawable.ticket_5000s_enabled);
+    			priceSelected.setText(price5000.getText());
+    			break;
+    		case TICKET_10000:
+    			ticketSelected.setImageResource(R.drawable.ticket_10000s_enabled);
+    			priceSelected.setText(price10000.getText());
+    			break;
+    		case TICKET_20000:
+    			ticketSelected.setImageResource(R.drawable.ticket_20000s_enabled);
+    			priceSelected.setText(price20000.getText());
+    			break;
+    		default:break;
+    		}
+    	}	
+    	else {
+    		buyButton.setEnabled(false);
+    		ticketSelected.setImageResource(R.drawable.ticket_selectable);
+    	}	
+    	
     }
 
     // Enables or disables the "please wait" screen.

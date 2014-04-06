@@ -31,6 +31,7 @@
     <!-- CINEMA -->    
     <dimen name="grid_size_small">40dp</dimen> 
     <dimen name="grid_size_normal">80dp</dimen>
+    <dimen name="grid_size_normal_plus">120dp</dimen>
     <dimen name="grid_size_big">160dp</dimen>
     <dimen name="grid_padding">45dp</dimen>
     <dimen name="grid_margin_text">2dp</dimen>  
@@ -46,8 +47,10 @@
     <!-- MAIN MENU -->
     <dimen name="main_billboard_width">275dp</dimen>
     <dimen name="main_billboard_height">330dp</dimen>
-    <dimen name="main_redbox_width">104dp</dimen>
-    <dimen name="main_redbox_height">156dp</dimen>
+    <dimen name="main_redbox_width">90dp</dimen>
+    <dimen name="main_redbox_height">135dp</dimen>
+    <dimen name="main_panel_size_bigger">160dp</dimen>
+    <dimen name="main_panel_size_big2">135dp</dimen>
     <dimen name="main_panel_size_big">90dp</dimen>
     <dimen name="main_panel_size">44dp</dimen>
     <dimen name="main_margin_big">34dp</dimen>
@@ -58,6 +61,7 @@
     
     <!-- SHOP MENU -->
     <dimen name="shop_bar">80dp</dimen>
+    <dimen name="shop_item_height_small">40dp</dimen>
     <dimen name="shop_item_height">60dp</dimen>
     <dimen name="shop_item_width_small">90dp</dimen>
     <dimen name="shop_item_width_normal">180dp</dimen>

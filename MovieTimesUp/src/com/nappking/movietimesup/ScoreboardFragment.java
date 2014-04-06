@@ -124,6 +124,7 @@ public class ScoreboardFragment extends Fragment {
 					    		uiHandler.post(new Runnable() {
 					    			@Override
 					    			public void run() {
+					    				if(getActivity()!=null && !getActivity().isFinishing())
 					    				populateScoreboard();
 					    			}
 					    		});

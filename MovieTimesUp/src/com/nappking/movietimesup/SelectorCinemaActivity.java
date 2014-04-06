@@ -15,6 +15,7 @@ import com.nappking.movietimesup.entities.User;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ public class SelectorCinemaActivity extends DBActivity{
 	private GridView grid;
 	private ImageView search;
 	private Animation bounce;
+    private AnimationDrawable statsAnimation;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -43,12 +45,14 @@ public class SelectorCinemaActivity extends DBActivity{
      	grid = 	(GridView) findViewById(R.id.grid);	
      	search = (ImageView) findViewById(R.id.search);
 		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing_bigger);
+     	statsAnimation = (AnimationDrawable) findViewById(R.id.stats).getBackground();
 		setListeners();
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
+     	statsAnimation.start();
 		search.startAnimation(bounce);
 		update();
 		updateUser();
@@ -57,6 +61,7 @@ public class SelectorCinemaActivity extends DBActivity{
 	@Override
 	protected void onPause() {
 		search.clearAnimation();
+     	statsAnimation.stop();
 		super.onPause();
 	}
 	

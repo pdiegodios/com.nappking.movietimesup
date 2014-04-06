@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment {
     private ImageView redboxButton;
     private ImageView playButton;
     private ImageView scoresButton;
-    private ImageView challengeButton;
-    private ImageView bragButton;
     private ImageView loginButton;
     private LoginButton login;
 
@@ -111,8 +109,6 @@ public class HomeFragment extends Fragment {
 		//Buttons
      	redboxButton = (ImageView) v.findViewById(R.id.redbox);
 		scoresButton = (ImageView)v.findViewById(R.id.scoresButton);
-		challengeButton = (ImageView)v.findViewById(R.id.challengeButton);
-		bragButton = (ImageView)v.findViewById(R.id.bragButton);
 		playButton = (ImageView)v.findViewById(R.id.playButton);
 		
 		//Animations
@@ -144,21 +140,6 @@ public class HomeFragment extends Fragment {
 				return false;
 			}
         });					
-		challengeButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-			public boolean onTouch(View v, MotionEvent event) {
-            	onChallengeButtonTouched();
-				return false;
-			}
-        });					
-		bragButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-			public boolean onTouch(View v, MotionEvent event) {
-            	onBragButtonTouched();
-				return false;
-			}
-        });		
-
 		playButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -361,11 +342,9 @@ public class HomeFragment extends Fragment {
 
 	// Hide/show buttons based on whether the user has played a game yet or not
 	void updateButtonVisibility() {
-		if (scoresButton != null && challengeButton != null && bragButton != null && loginButton!=null) {
+		if (scoresButton != null && loginButton!=null) {
 			if(!application.isLoggedIn()){
 				scoresButton.setVisibility(View.INVISIBLE);
-				bragButton.setVisibility(View.INVISIBLE);
-				challengeButton.setVisibility(View.INVISIBLE);
 				userImage.setVisibility(View.INVISIBLE);
 				loginButton.setBackgroundResource(R.drawable.login_fb2);
 			}
@@ -374,17 +353,7 @@ public class HomeFragment extends Fragment {
 				scoresButton.setVisibility(View.VISIBLE);
 				loginButton.setBackgroundResource(R.drawable.logout_fb2);
 				userImage.setVisibility(View.VISIBLE);
-				if(application.getScore()>0) bragButton.setVisibility(View.INVISIBLE);
-				else bragButton.setVisibility(View.INVISIBLE);
-				
-				if (application.getSeconds()>=50) challengeButton.setVisibility(View.INVISIBLE);
-				else challengeButton.setVisibility(View.INVISIBLE);
 			}
-			//AnimationDrawable loginAnimation;
-			//loginAnimation = (AnimationDrawable) loginButton.getBackground();
-			//loginAnimation.setEnterFadeDuration(500);
-			//loginAnimation.setExitFadeDuration(500);
-	     	//loginAnimation.start();
 		}
 	}
 

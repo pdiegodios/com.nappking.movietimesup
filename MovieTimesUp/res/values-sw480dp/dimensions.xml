@@ -27,6 +27,7 @@
     
     <dimen name="grid_size_small">50dp</dimen> 
     <dimen name="grid_size_normal">100dp</dimen>
+    <dimen name="grid_size_normal_plus">150dp</dimen>
     <dimen name="grid_size_big">200dp</dimen>
     <dimen name="grid_padding">57dp</dimen>
     <dimen name="grid_margin_text">3dp</dimen>  
@@ -41,8 +42,10 @@
     
     <dimen name="main_billboard_width">350dp</dimen>
     <dimen name="main_billboard_height">420dp</dimen>
-    <dimen name="main_redbox_width">130dp</dimen>
-    <dimen name="main_redbox_height">195dp</dimen>
+    <dimen name="main_redbox_width">110dp</dimen>
+    <dimen name="main_redbox_height">165dp</dimen>
+    <dimen name="main_panel_size_bigger">205dp</dimen>
+    <dimen name="main_panel_size_big2">172dp</dimen>
     <dimen name="main_panel_size_big">115dp</dimen>
     <dimen name="main_panel_size">56dp</dimen>
     <dimen name="main_margin_big">43dp</dimen>
@@ -53,6 +56,7 @@
     
     <!-- SHOP MENU -->
     <dimen name="shop_bar">100dp</dimen>
+    <dimen name="shop_item_height_small">50dp</dimen>
     <dimen name="shop_item_height">76dp</dimen>
     <dimen name="shop_item_width_small">114dp</dimen>
     <dimen name="shop_item_width_normal">228dp</dimen>

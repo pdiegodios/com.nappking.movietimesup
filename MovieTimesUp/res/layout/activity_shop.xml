@@ -11,6 +11,8 @@
         android:layout_height="fill_parent"
         android:gravity="top|center_horizontal"
         android:layout_margin="@dimen/main_margin_small">
+        
+        <!-- INFO USER -->
         <LinearLayout 
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -48,15 +50,63 @@
                 android:textColor="@color/greendark"/>      
         </LinearLayout>
         
+        <!-- INFO TICKET SELECTED -->
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+	        android:layout_weight="1">
+            <FrameLayout 
+                android:layout_width="@dimen/shop_item_width_normal"
+                android:layout_height="@dimen/shop_bar"
+			    android:layout_marginRight="@dimen/main_margin_small">
+	            <ImageView 
+	                android:id="@+id/ticketSelected"
+	                android:src="@drawable/ticket_selectable"
+	                android:layout_width="@dimen/shop_item_width_normal"
+	                android:layout_height="@dimen/shop_bar"
+	                android:scaleType="fitXY"
+	                android:padding="@dimen/grid_margin_text"/>
+	            <TextView 
+	                android:id="@+id/priceSelected"
+					android:layout_gravity="right"
+					android:gravity="center"
+					android:textSize="@dimen/text_size4"
+					android:textStyle="bold"
+					android:textColor="@color/white"
+	                android:layout_width="@dimen/shop_item_height"
+                	android:layout_height="@dimen/shop_bar"
+	                android:layout_marginLeft="@dimen/grid_margin_text"/>
+            </FrameLayout>
+			<Button 
+			    android:id="@+id/buyButton"
+			    android:layout_width="@dimen/shop_bar"
+			    android:layout_height="@dimen/shop_bar"
+			    android:layout_marginLeft="@dimen/main_margin_small"
+			    android:background="@drawable/buy_button"/>
+        </LinearLayout>
+        
+        <!-- TICKETS -->
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/main_margin_small"
+            android:background="@color/greydark"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/grid_size_small">
+            <TextView 
+				android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_size1"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="@string/select_ticket"/>
+        </LinearLayout>
 	    <LinearLayout 
 	        android:orientation="vertical"
 	        android:gravity="center"
-	        android:layout_height="match_parent"
+	        android:layout_height="@dimen/main_redbox_width"
 	        android:layout_width="fill_parent">
-            <Button 
-                android:background="@drawable/wildcard_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 	        <LinearLayout 
 	            android:orientation="horizontal"
 	            android:layout_width="fill_parent"
@@ -64,37 +114,35 @@
 	            android:layout_weight="1"
 	            android:gravity="center">
 	            <Button 
+	                android:id="@+id/ticket_20s"
 	                android:background="@drawable/ticket_20s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
 	            <Button 
+	                android:id="@+id/ticket_wildcard"
+	                android:background="@drawable/wildcard_button"
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
+	            <Button 
+	                android:id="@+id/ticket_100s"
 	                android:background="@drawable/ticket_100s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
 	            <Button 
+	                android:id="@+id/ticket_200s"
 	                android:background="@drawable/ticket_200s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-	        </LinearLayout>
-	        <LinearLayout 
-	            android:orientation="horizontal"
-	            android:layout_width="fill_parent"
-	            android:layout_height="match_parent"
-	            android:layout_weight="1"
-	            android:gravity="center">
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
 	            <Button 
+	                android:id="@+id/ticket_500s"
 	                android:background="@drawable/ticket_500s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-	            <Button 
-	                android:background="@drawable/ticket_1000s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-	            <Button 
-	                android:id="@+id/buy2000"
-	                android:background="@drawable/ticket_2000s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
 	        </LinearLayout>
 	        <LinearLayout 
 	            android:orientation="horizontal"
@@ -103,20 +151,91 @@
 	            android:layout_weight="1"
 	            android:gravity="center">
 	            <Button 
-	                android:id="@+id/buy5000"
-	                android:background="@drawable/ticket_5000s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-	            <Button 
-	                android:id="@+id/buy10000"
-	                android:background="@drawable/ticket_10000s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-	            <Button 
-	                android:id="@+id/buy20000"
-	                android:background="@drawable/ticket_20000s_button"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
+	                android:id="@+id/ticket_1000s"
+	                android:background="@drawable/ticket_1000s_button"
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text"/>
+	            <FrameLayout 
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text">
+		            <Button 
+	                	android:id="@+id/ticket_2000s"
+		                android:background="@drawable/ticket_2000s_button"
+		                android:layout_width="@dimen/shop_item_width_small"
+		                android:layout_height="@dimen/shop_item_height_small"/>
+		            <TextView 
+	                	android:id="@+id/ticket_2000s_price"
+						android:layout_gravity="right"
+						android:gravity="center"
+						android:textSize="@dimen/text_size1"
+						android:textStyle="bold"
+						android:textColor="@color/white"
+		                android:layout_width="@dimen/main_margin_big"
+	                	android:layout_height="@dimen/shop_item_height_small"
+		                android:layout_marginLeft="@dimen/grid_margin_text"/>
+	            </FrameLayout>
+	            <FrameLayout 
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text">
+		            <Button 
+	                	android:id="@+id/ticket_5000s"
+		                android:background="@drawable/ticket_5000s_button"
+		                android:layout_width="@dimen/shop_item_width_small"
+		                android:layout_height="@dimen/shop_item_height_small"/>
+		            <TextView 
+	                	android:id="@+id/ticket_5000s_price"
+						android:layout_gravity="right"
+						android:gravity="center"
+						android:textSize="@dimen/text_size1"
+						android:textStyle="bold"
+						android:textColor="@color/white"
+		                android:layout_width="@dimen/main_margin_big"
+		                android:layout_height="@dimen/shop_item_height_small"
+		                android:layout_marginLeft="@dimen/grid_margin_text"/>
+	            </FrameLayout>
+	            <FrameLayout 
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text">
+		            <Button 
+	                	android:id="@+id/ticket_10000s"
+		                android:background="@drawable/ticket_10000s_button"
+		                android:layout_width="@dimen/shop_item_width_small"
+		                android:layout_height="@dimen/shop_item_height_small"/>
+		            <TextView 
+	                	android:id="@+id/ticket_10000s_price"
+						android:layout_gravity="right"
+						android:gravity="center"
+						android:textSize="@dimen/text_size1"
+						android:textStyle="bold"
+						android:textColor="@color/white"
+		                android:layout_width="@dimen/main_margin_big"
+		                android:layout_height="@dimen/shop_item_height_small"
+		                android:layout_marginLeft="@dimen/grid_margin_text"/>
+	            </FrameLayout>
+	            <FrameLayout 
+	                android:layout_width="@dimen/shop_item_width_small"
+	                android:layout_height="@dimen/shop_item_height_small"
+	                android:layout_margin="@dimen/grid_margin_text">
+		            <Button 
+	                	android:id="@+id/ticket_20000s"
+		                android:background="@drawable/ticket_20000s_button"
+		                android:layout_width="@dimen/shop_item_width_small"
+		                android:layout_height="@dimen/shop_item_height_small"/>
+		            <TextView 
+	                	android:id="@+id/ticket_20000s_price"
+						android:layout_gravity="right"
+						android:gravity="center"
+						android:textSize="@dimen/text_size1"
+						android:textStyle="bold"
+						android:textColor="@color/white"
+		                android:layout_width="@dimen/main_margin_big"
+		                android:layout_height="@dimen/shop_item_height_small"
+		                android:layout_marginLeft="@dimen/grid_margin_text"/>
+	            </FrameLayout>
 	        </LinearLayout>
 	    </LinearLayout>
    	</LinearLayout>
@@ -127,7 +246,7 @@
    	    android:layout_width="fill_parent"
    	    android:layout_height="fill_parent"
    	    android:scaleType="fitXY"/>
-   	
+
     <FrameLayout android:id="@+id/screen_wait"
 	    android:background="@drawable/street_dark_background"
 	    android:layout_width="match_parent"
@@ -139,4 +258,5 @@
 	      android:layout_height="wrap_content"
 	      android:layout_gravity="center"/>
   	</FrameLayout>
+  	
 </FrameLayout>

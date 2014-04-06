@@ -19,6 +19,7 @@ import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,7 @@ public class CinemaActivity extends DBActivity{
 	private GridView grid;
 	private TextView txPoints;
 	private TextView txSeconds;
+	private TextView txWildcards;
 	private TextView txNumItems;
 	private TextView txNumItemsReady;
 	private TextView txNumItemsLocked;
@@ -72,6 +74,7 @@ public class CinemaActivity extends DBActivity{
      	grid = 				(GridView) findViewById(R.id.grid);
      	txPoints = 			(TextView) findViewById(R.id.points);
      	txSeconds = 		(TextView) findViewById(R.id.seconds);
+     	txWildcards = 		(TextView) findViewById(R.id.wildcards);
     	txNumItems = 		(TextView) findViewById(R.id.numItems);
     	txNumItemsReady = 	(TextView) findViewById(R.id.numItemsReady);
     	txNumItemsLocked = 	(TextView) findViewById(R.id.numItemsLocked);
@@ -82,7 +85,8 @@ public class CinemaActivity extends DBActivity{
     	selectUnlocked =	(ImageButton) findViewById(R.id.itemsUnlocked);
     	mTextSizeBig = (int) Math.round(getResources().getDimension(R.dimen.text_size5) / getResources().getDisplayMetrics().density);
     	mTextSizeNormal = (int) Math.round(getResources().getDimension(R.dimen.text_size3) / getResources().getDisplayMetrics().density);
-    	
+
+     	
     	mSelectedMovies = new ArrayList<Movie>();
     	mState = ALL;		
 		setListeners();
@@ -93,6 +97,11 @@ public class CinemaActivity extends DBActivity{
 		super.onResume();
 		update(false);
 		updateUser();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
 	}
 	
 	private void update(boolean stateChanged){     	
@@ -120,7 +129,8 @@ public class CinemaActivity extends DBActivity{
 			((MovieGridAdapter)grid.getAdapter()).setValues(mLockedMovies, mUnlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
-		txSeconds.setText(user.getSeconds()+"");		
+		txSeconds.setText(user.getSeconds()+"");	
+		txWildcards.setText(user.getWildcard()+"");			
 		numItemsLocked = 0;		
 		numItemsUnlocked = 0;
 		for(Movie movie:mMovies){
