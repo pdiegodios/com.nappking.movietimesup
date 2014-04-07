@@ -76,6 +76,10 @@
     <string name="day2">Day 2</string>
     <string name="day3">Day 3</string>
     <string name="day4">Next Days</string>
+    <string name="cinema_number">Cinema #</string>
+    <string name="is_locked">is locked</string>
+    <string name="need_hit">You need hit</string>
+    <string name="film_more">films more</string>
     <string name="youvewon">You\'ve won </string>
     <string name="bonus_message">Enter every day to win more seconds</string>
     <string name="secondswon"> seconds!</string>
@@ -110,6 +114,12 @@
     <string name="asian_achievement">New asian achievement unlocked</string>
     <string name="american_achievement">New american achievement unlocked</string>
     <string name="exotic_achievement">New exotic achievement unlocked</string>
+    <string name="europe">Europe</string>
+    <string name="america">America</string>
+    <string name="asia">Asia</string>
+    <string name="exotic">Oceania and Africa</string>
+    <string name="africa">Africa</string>
+    <string name="oceania">Oceania</string> 
     <string name="share">Share</string>
     <string name="txSearchable">Search..</string>
     <string name="empty_list">No matches.</string> 

@@ -37,6 +37,8 @@ public class SelectorCinemaActivity extends DBActivity{
 	private ImageView search;
 	private Animation bounce;
     private AnimationDrawable statsAnimation;
+    private int moviesToUnlock;
+    private int unlockedCinemas;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -68,7 +70,6 @@ public class SelectorCinemaActivity extends DBActivity{
 	private void createCinemas(){
 		mCinemas = new ArrayList<Cinema>();
 		int totalCinemas = 0;
-		int unlockedCinemas = 0;
 		try {
 			Dao<Movie, Integer> daoMovie = getHelper().getMovieDAO();
 			Dao<User, Integer> daoUser = getHelper().getUserDAO();
@@ -78,6 +79,7 @@ public class SelectorCinemaActivity extends DBActivity{
 			List<String> unlockedMovies = user.getUnlockedMovies();
 			totalCinemas = Integer.parseInt(rawResults.getFirstResult()[0]);
 			
+			moviesToUnlock = unlockedMovies.size() % MovieTimesUpApplication.UNLOCK_LEVEL;
 			Cinema cinema;
 			boolean unlocked;
 			int solvedMovies;
@@ -135,7 +137,8 @@ public class SelectorCinemaActivity extends DBActivity{
 		            Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
 		            cancelButton.setText(android.R.string.ok);
 					TextView text = (TextView) dialog.findViewById(R.id.text);	
-					text.setText("Cinema #"+cinema.getId()+" is locked.");
+					text.setText(getResources().getString(R.string.cinema_number)+cinema.getId()+" "+getResources().getString(R.string.is_locked)+"\n"+
+							getResources().getString(R.string.need_hit)+" "+(moviesToUnlock+(cinema.getId()-unlockedCinemas)*12)+" "+getResources().getString(R.string.film_more));
 					cancelButton.setOnClickListener(new OnClickListener() {	//Action				
 						@Override
 						public void onClick(View v) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+	<array name="carousel_entries">
+		<item>@drawable/america</item>		
+		<item>@drawable/europe</item> 		
+		<item>@drawable/asia</item>		
+		<item>@drawable/exotic</item>					
+	</array>	
+	<array name="carousel_names">
+	    <item>@string/america</item>
+	    <item>@string/europe</item>
+	    <item>@string/asia</item>
+	    <item>@string/exotic</item>
+	</array>
+</resources>

@@ -62,6 +62,9 @@
     <dimen name="shop_item_width_normal">396dp</dimen>
     <dimen name="shop_item_padding">30dp</dimen>
     
+    <!-- ACHIEVES -->    
+    <dimen name="achieve_bar_padding">18dp</dimen>
+    
     <dimen name="search_cover_width">313dp</dimen>
     <dimen name="search_cover_height">484dp</dimen>
     
