@@ -111,12 +111,18 @@
     <string name="share">Compartir</string>
     <string name="txSearchable">Busca..</string>
     <string name="empty_list">No hay coincidencias.</string>     
+    <string name="all">Total</string>
     <string name="europe">Europa</string>
     <string name="america">América</string>
     <string name="asia">Asia</string>
-    <string name="exotic">África y Oceanía</string>
+    <string name="exotic">Exótico</string>
     <string name="africa">África</string>
     <string name="oceania">Oceanía</string> 
+    <string name="all_description">Películas acertadas de todas las disponibles</string>
+    <string name="europe_description">Descubre películas europeas para conseguir segundos extra</string>
+    <string name="america_description">Descubre películas americanas para conseguir segundos extra</string>
+    <string name="asia_description">Descubre películas asiáticas para conseguir segundos extra</string>
+    <string name="exotic_description">Descubre películas de África y Oceanía para conseguir segundos extra</string>
 	<string name="select_ticket">Seleccione su ticket:</string>
     
 </resources>

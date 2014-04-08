@@ -40,9 +40,9 @@
 	    android:scaleType="fitCenter"/>
 	<ImageView 
 	    android:id="@+id/stats"
-	    android:background="@drawable/statstransition"
+	    android:background="@drawable/stats"
 	    android:layout_gravity="bottom|left"
-	    android:layout_height="@dimen/main_panel_size_big"
-	    android:layout_width="@dimen/main_panel_size_big2"
-	    android:scaleType="fitCenter"/>
+	    android:layout_height="@dimen/main_panel_size_bigger"
+	    android:layout_width="@dimen/main_panel_size_bigger"
+	    android:scaleType="fitXY"/>
 </FrameLayout>

@@ -61,7 +61,7 @@ public class Carousel extends CarouselSpinner implements GestureDetector.OnGestu
 	/**
 	 * Default max quantity of images
 	 */
-	private static final int MAX_QUANTITY = 12;
+	private static final int MAX_QUANTITY = 10;
 	
 	/**
 	 * Max theta

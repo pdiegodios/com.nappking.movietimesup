@@ -25,11 +25,11 @@ public class Rotator {
     private float mCoeffVelocity = 0.05f;
     private float mVelocity;
     
-    private static final int DEFAULT_DURATION = 250;
+    private static final int DEFAULT_DURATION = 100;
     private static final int SCROLL_MODE = 0;
     private static final int FLING_MODE = 1;
     
-    private final float mDeceleration = 240.0f;
+    private final float mDeceleration = 250.0f;
     
     
     /**
@@ -239,7 +239,7 @@ public class Rotator {
         mMode = FLING_MODE;
         mFinished = false;
 
-        float velocity = velocityAngle;
+        float velocity = velocityAngle/4;
      
         mVelocity = velocity;
         mDuration = (int)(1000.0f * Math.sqrt(2.0f * mCoeffVelocity * 

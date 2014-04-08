@@ -101,6 +101,7 @@ public class FilmActivity extends DBActivity{
 	Animation animSlideOutBottom;
 	Animation animSlideOutTop; 
 	Animation animSlideOutTopLifes; 
+	Animation bounce;
 	AnimationDrawable transition;
 	AnimationDrawable camerablink;
 	AnimationListener listenerTitle;
@@ -133,6 +134,7 @@ public class FilmActivity extends DBActivity{
 	ImageView iEnding;
 	ImageView iPoints;
 	ImageView iCamera;
+	ImageView iWildcard;
 	TextView textseconds;
 	TextView texttitleclue;
 	TextView textclue;
@@ -359,13 +361,22 @@ public class FilmActivity extends DBActivity{
 	        mCountDown=new CountDownTimer((mCurrentSeconds+1)*1000,1000) {
 	        	boolean lastSecondsSounding = false;
 	        	boolean toFinish = true;
+	        	boolean wildcardShown = false;
 		        @Override
 		        public void onTick(long millisUntilFinished) {
-		        	if(mCurrentSeconds<11 && !lastSecondsSounding){
-		        		lastSecondsSounding = true;
-		        		beeps.reset();
-		        		beeps = MediaPlayer.create(getBaseContext(), R.raw.final_beeps);
-		        		beeps.start();
+		        	if(mCurrentSeconds<11){
+			        	if(!lastSecondsSounding || (wildcardShown && iWildcard.getVisibility()==View.INVISIBLE)){
+			        		lastSecondsSounding = true;
+			        		beeps.reset();
+			        		beeps = MediaPlayer.create(getBaseContext(), R.raw.final_beeps);
+			        		beeps.start();
+			        		if(mUser.getWildcard()>0 && !wildcardShown){
+			        			bounce=AnimationUtils.loadAnimation(getBaseContext(), R.anim.bouncing_bigger);
+			        			iWildcard.startAnimation(bounce);
+			        			iWildcard.setVisibility(View.VISIBLE);
+			        			wildcardShown=true;
+			        		}
+			        	}
 		        	}
 		        	if(mCurrentSeconds<=0 && toFinish){
 		        		textseconds.setText("");
@@ -418,6 +429,7 @@ public class FilmActivity extends DBActivity{
 			}
 			textseconds.setText("");
 			this.iAnswer.setClickable(false);
+			this.iWildcard.setVisibility(View.INVISIBLE);
 			if(mInTime){ //USER WIN POINTS & UNLOCK THE MOVIE
 				//Unlock movie and add points to User score
 				this.iEnding.setImageResource(R.drawable.coin);
@@ -534,6 +546,7 @@ public class FilmActivity extends DBActivity{
      	iPoints = 				(ImageView) findViewById(R.id.points);
      	iAnswer = 				(ImageView) findViewById(R.id.answer);
      	iCamera = 				(ImageView) findViewById(R.id.camera);
+     	iWildcard = 			(ImageView) findViewById(R.id.wildcard);
      	bgenre = 				(ImageButton) findViewById(R.id.genre);
      	bdate = 				(ImageButton) findViewById(R.id.date);
      	blocation = 			(ImageButton) findViewById(R.id.location);
@@ -688,6 +701,7 @@ public class FilmActivity extends DBActivity{
      	linearButtons.setVisibility(View.INVISIBLE);
      	title.setVisibility(View.INVISIBLE);	
      	iAnswer.setVisibility(View.INVISIBLE);
+     	iWildcard.setVisibility(View.INVISIBLE);
 		iLife1.setVisibility(View.INVISIBLE);
 		iLife2.setVisibility(View.INVISIBLE);		
 		iLife3.setVisibility(View.INVISIBLE);
@@ -891,6 +905,18 @@ public class FilmActivity extends DBActivity{
 			@Override
 			public void onClick(View v) {
 				imm.showSoftInput(title, 0);
+			}
+		});
+		iWildcard.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				mCurrentSeconds = mCurrentSeconds + 25;
+				mUser.setWildcard(mUser.getWildcard()-1);
+				iWildcard.clearAnimation();
+				iWildcard.setVisibility(View.INVISIBLE);
+				
+				if(beeps.isPlaying())
+					beeps.stop();
 			}
 		});
 		iAnswer.setOnClickListener(new OnClickListener() {			

@@ -15,7 +15,6 @@ import com.nappking.movietimesup.entities.User;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +34,8 @@ public class SelectorCinemaActivity extends DBActivity{
 	private List<Cinema> mCinemas;
 	private GridView grid;
 	private ImageView search;
+	private ImageView stats;
 	private Animation bounce;
-    private AnimationDrawable statsAnimation;
     private int moviesToUnlock;
     private int unlockedCinemas;
 	
@@ -46,15 +45,14 @@ public class SelectorCinemaActivity extends DBActivity{
 		setContentView(R.layout.activity_grid_cinema);		
      	grid = 	(GridView) findViewById(R.id.grid);	
      	search = (ImageView) findViewById(R.id.search);
+     	stats = (ImageView) findViewById(R.id.stats);
 		bounce = AnimationUtils.loadAnimation(this, R.anim.bouncing_bigger);
-     	statsAnimation = (AnimationDrawable) findViewById(R.id.stats).getBackground();
 		setListeners();
 	}
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
-     	statsAnimation.start();
 		search.startAnimation(bounce);
 		update();
 		updateUser();
@@ -63,7 +61,6 @@ public class SelectorCinemaActivity extends DBActivity{
 	@Override
 	protected void onPause() {
 		search.clearAnimation();
-     	statsAnimation.stop();
 		super.onPause();
 	}
 	
@@ -160,6 +157,13 @@ public class SelectorCinemaActivity extends DBActivity{
 			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(getBaseContext(), FilmSearchActivity.class);
+				startActivity(myIntent);				
+			}
+		});
+		stats.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent(getBaseContext(), StatsActivity.class);
 				startActivity(myIntent);				
 			}
 		});
