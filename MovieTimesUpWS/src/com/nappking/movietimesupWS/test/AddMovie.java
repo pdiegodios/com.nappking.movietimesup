@@ -24,37 +24,37 @@ public class AddMovie {
 		//VALUES
 		String action = SAVE;
 		
-		int id = 51;
+		int id = 92;
 		int points = 1;
-		int cinema = 4;
-		int year = 2008;
+		int cinema = 3;
+		int year = 1994;
 		boolean masterpiece = false;
 		boolean cult = true;
-		String title = "El caballero oscuro";
-		String alternative_title = "El caballero de la noche";
-		String original_title = "The Dark Knight";
+		String title = "Dos tontos muy tontos";
+		String alternative_title = "Una pareja de idiotas";
+		String original_title = "Dumb and Dumber";
 		String continent = "AM";
 		String country = "Estados Unidos";
-		String director = "Christopher Nolan";
-		String genre = "Thriller";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SY317_CR0,0,214,317_.jpg";
-		String  filmaffinity_id = "867354";
-		String imdb_id = "tt0468569";
-		String actor1="Christian Bale";
-		String actor2="Heath Ledger";
-		String actor3="Aaron Eckhart";
-		String character1="Bruce Wayne";
-		String character2="Joker";
-		String character3="Harvey Dent";
-		String other1 ="el icónico actor que ejerce de antagonista murió de sobredosis de ansiolíticos meses antes del estreno de la película";
-		String other2 ="El rodaje tuvo lugar principalmente en Chicago, aunque también en Hong Kong, Los Angeles y distintas localizaciones de Inglaterra";
-		String other3 ="Es la primera película sobre el personaje que no lleve su nombre en el título";
-		String quote1="O mueres como un héroe, o vives lo suficiente para verte convertido en el villano";
-		String quote2="¿Qué te parece un truco de magia? Voy a hacer que este lápiz desaparezca... ¡TARÁAAAAA!¡Ha desaparecido!";
-		String quote3="Es el héroe que Gotham se merece, pero no el que necesita ahora mismo. (...) Es un guardián silencioso, un protector vigilante... Un caballero oscuro";
-		String plot="X regresa para continuar su guerra contra el crimen. Con la ayuda del teniente Y y del Fiscal del Distrito Z, X se propone destruir " +
-				"el crimen organizado en la ciudad de Gotham. El triunvirato demuestra su eficacia, pero, de repente, aparece un nuevo criminal que desencadena " +
-				"el caos y tiene aterrados a los ciudadanos";
+		String director = "Peter Farrelly";
+		String genre = "Comedia";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMzA5MTE0NTUwOV5BMl5BanBnXkFtZTgwOTgyMDUxMDE@._V1_SY317_CR0,0,214,317_.jpg";
+		String  filmaffinity_id = "688273";
+		String imdb_id = "tt0109686";
+		String actor1="Lauren Holly";
+		String actor2="Jeff Daniels";
+		String actor3="Jim Carrey";
+		String character1="Lloyd";
+		String character2="Harry";
+		String character3="Mary";
+		String other1 ="Crítica El País:\"Insufrible y casposa comedia que desaprovecha todo su metraje en unas gracias de lo más chabacano. Impresentable\"";
+		String other2 ="En principio al actor principal le ofrecieron 700,000$; pero coincidiendo con el estreno de Ace Ventura, renegoció hasta los $7 millones";
+		String other3 ="El actor se retiró la funda que cubre sus dientes astillados años atrás para dar una apariencia más estúpida";
+		String quote1="Perdonen a mi amigo, es un poco lento... ¡La ciudad está por ese camino!";
+		String quote2="según el mapa llevamos solo 10 centímetros, espero que tengamos bastante dinero para gasolina";
+		String quote3="¡No tenemos dinero para comer! ¡No tenemos dinero para llegar a Aspen! ¡No tenemos dinero para dormir!";
+		String plot="La vida de X y Z, dos amigos de una estupidez supina, es un auténtico desastre. El primero trabaja como chófer " +
+				"de una limousina, y el segundo se dedica a transportar perros. Cuando X se enamora de una chica de buena posición, " +
+				"que deja olvidado un maletín en el coche, los dos amigos emprenden un viaje por todo el país para devolvérselo.";
 
 		
 		//CLIENT

@@ -5,64 +5,82 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/gallery">
-        
+    
     <LinearLayout 
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
-	    <LinearLayout 
-	        android:orientation="horizontal"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="@dimen/achieve_bar_padding"
-	        android:layout_marginRight="@dimen/achieve_bar_padding">
-	        
-	        <TextView 
-	            android:id="@+id/achieve_10"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:gravity="center"
-	            android:textStyle="bold"
-	            android:textColor="@color/white"
-	            android:paddingRight="@dimen/achieve_bar_padding"
-	            android:textSize="@dimen/text_size2"
-	            android:text="20"/>
-	        
-	        <TextView 
-	            android:id="@+id/achieve_25"
-	            android:textStyle="bold"
-	            android:textColor="@color/white"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1.02"            
-	            android:textSize="@dimen/text_size2"
-	            android:text="50"/>
-	        
-	        <TextView 
-	            android:id="@+id/achieve_50"
-	            android:textStyle="bold"
-	            android:textColor="@color/white"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:layout_marginRight="@dimen/achieve_bar_padding"
-	            android:textSize="@dimen/text_size2"
-	            android:text="100"/>
-	        
-	        <TextView 
-	            android:id="@+id/achieve_100"
-	            android:textStyle="bold"
-	            android:textColor="@color/white"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:gravity="right"
-	            android:textSize="@dimen/text_size2"
-	            android:text="200"/>
-	        
-	    </LinearLayout>
-	    
+	    <FrameLayout 
+			android:layout_marginTop="@dimen/achieve_bar_padding"
+	        android:layout_marginLeft="@dimen/grid_horizontal_spacing"
+	        android:layout_marginRight="@dimen/grid_horizontal_spacing"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		    <LinearLayout
+		        android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+		        <TextView 
+		            android:id="@+id/achieve_10"
+		            android:layout_height="wrap_content"
+		            android:layout_width="match_parent"
+		            android:gravity="center"
+		            android:layout_weight="4"
+		            android:textStyle="bold"
+		            android:textColor="@color/white"
+		            android:textSize="@dimen/text_size2"
+		            android:text="20"/>
+		        <TextView 
+		            android:layout_height="wrap_content"
+		            android:layout_width="match_parent"
+		            android:gravity="center"
+		            android:layout_weight="1"/>
+		    </LinearLayout>
+		    
+		    
+		    <LinearLayout
+		        android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+		        <TextView 
+		            android:id="@+id/achieve_25"
+		            android:layout_height="wrap_content"
+		            android:layout_width="match_parent"
+		            android:gravity="center"
+		            android:layout_weight="1"
+		            android:textStyle="bold"
+		            android:textColor="@color/white"
+		            android:textSize="@dimen/text_size2"
+		            android:text="50"/>
+		        <TextView 
+		            android:layout_height="wrap_content"
+		            android:layout_width="match_parent"
+		            android:gravity="center"
+		            android:layout_weight="1"/>
+		    </LinearLayout>
+		    
+		    <TextView 
+		        android:id="@+id/achieve_50"
+		        android:paddingRight="@dimen/achieve_bar_padding"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+		        android:textStyle="bold"
+		        android:textColor="@color/white"
+		        android:textSize="@dimen/text_size2"
+		        android:gravity="center"
+		        android:text="100"/>
+			        
+		    <TextView 
+		        android:id="@+id/achieve_100"
+		        android:textStyle="bold"
+		        android:textColor="@color/white"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:gravity="right"
+		        android:textSize="@dimen/text_size2"
+		        android:text="200"/>
+	    </FrameLayout>
 	    
 	    <FrameLayout 
 	        android:layout_alignParentTop="true"
@@ -81,10 +99,10 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="match_parent"
 		        android:layout_gravity="center"
-		        android:layout_marginLeft="@dimen/achieve_bar_padding"
-		        android:layout_marginRight="@dimen/grid_margin_text"
 		        android:scaleType="fitXY"
-		        android:src="@drawable/progress_achieves"/>
+		        android:layout_marginLeft="@dimen/grid_horizontal_spacing"
+		        android:layout_marginRight="@dimen/grid_horizontal_spacing"
+		        android:src="@drawable/progress"/>
 		    
 	    </FrameLayout>
 	    
@@ -110,7 +128,7 @@
 	        <TextView 
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_weight="1"            
+	            android:layout_weight="1.02"            
 	            android:textStyle="bold"
 	            android:textColor="@color/white"
 	            android:textSize="@dimen/text_size2"
@@ -137,45 +155,51 @@
 	            android:text="+2000''"/>
 	        
 	    </LinearLayout>
-    <LinearLayout 
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/grid_margin_text">
-		<TextView 
-		    android:id="@+id/achieve_description"
-		    android:layout_height="wrap_content"
-		    android:layout_width="fill_parent"
-		    android:gravity="center"
-		    android:textSize="@dimen/text_size4"
-		    android:textStyle="italic"
-		    android:textColor="@color/white"/>        
-    </LinearLayout>
-    </LinearLayout>            
+	    	    
+	    
+	    <LinearLayout 
+	        android:orientation="vertical"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginTop="@dimen/grid_margin_text">
+			<TextView 
+			    android:id="@+id/achieve_description"
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent"
+			    android:gravity="center"
+			    android:textSize="@dimen/text_size4"
+			    android:textStyle="italic"
+			    android:textColor="@color/white"/>        
+	    </LinearLayout>
+	    
+	</LinearLayout>    
+         
     
+   	<LinearLayout 
+   	    android:orientation="vertical"
+   	    android:gravity="center"
+   	    android:layout_marginBottom="@dimen/main_margin_medium"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="fill_parent">
+    	<ImageView 
+    	    android:layout_width="match_parent"
+    	    android:layout_height="match_parent"
+    	    android:layout_weight="1.6"
+    	    android:src="@android:color/transparent"/>
+        <ImageView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"  
+    	    android:layout_weight="1"
+			android:scaleType="fitXY"
+            android:src="@drawable/logo_3d"/>
+   	</LinearLayout>
+   	
     <RelativeLayout 
-        android:layout_marginTop="@dimen/grid_size_small"
-        android:paddingLeft="@dimen/grid_vertical_spacing"
-        android:paddingRight="@dimen/grid_vertical_spacing"
-        android:layout_marginBottom="@dimen/grid_horizontal_spacing"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"   
         android:layout_gravity="center"
         android:gravity="center">
-    	<LinearLayout 
-    	    android:orientation="vertical"
-    	    android:gravity="bottom|center_horizontal"
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent">
-	        <ImageView 
-		        android:layout_width="fill_parent"
-		        android:layout_height="@dimen/main_panel_size_bigger"  
-		        android:layout_marginBottom="@dimen/main_margin_medium"
-		        android:layout_gravity="bottom"
-				android:scaleType="fitXY"
-	            android:src="@drawable/logo_3d"/>
-    	</LinearLayout>
         
 	    <TextView
 	        android:id="@+id/number"
@@ -185,19 +209,18 @@
 	        android:textColor="@color/white"
 			android:textStyle="bold"
 			android:textSize="@dimen/text_size9_5"/>
-	    
+
 	    <com.nappking.movietimesup.widget.carousel.Carousel
 	        android:id="@+id/carousel"
-	        android:layout_marginBottom="@dimen/grid_horizontal_spacing"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"       
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"   
 	        android:layout_centerInParent="true"         
 	        pj:Items="@array/carousel_entries"
 	        pj:Names="@array/carousel_names"
 	        pj:SelectedItem="0"
 	        pj:UseReflection="false"
-	        android:animationDuration="200" />	        
-	    
+	        android:animationDuration="200" />	 
+ 
     </RelativeLayout>
     
     

@@ -67,5 +67,6 @@
     
     <dimen name="search_cover_width">313dp</dimen>
     <dimen name="search_cover_height">484dp</dimen>
+
     
 </resources>
