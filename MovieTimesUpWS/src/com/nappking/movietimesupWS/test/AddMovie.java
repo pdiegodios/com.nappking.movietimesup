@@ -26,35 +26,38 @@ public class AddMovie {
 		
 		int id = 92;
 		int points = 1;
-		int cinema = 3;
-		int year = 1994;
+		int cinema = 4;
+		int year = 1995;
 		boolean masterpiece = false;
-		boolean cult = true;
-		String title = "Dos tontos muy tontos";
-		String alternative_title = "Una pareja de idiotas";
-		String original_title = "Dumb and Dumber";
+		boolean cult = false;
+		String title = "Seven";
+		String alternative_title = "Pecados capitales";
+		String original_title = "Se7en";
 		String continent = "AM";
 		String country = "Estados Unidos";
-		String director = "Peter Farrelly";
-		String genre = "Comedia";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMzA5MTE0NTUwOV5BMl5BanBnXkFtZTgwOTgyMDUxMDE@._V1_SY317_CR0,0,214,317_.jpg";
-		String  filmaffinity_id = "688273";
-		String imdb_id = "tt0109686";
-		String actor1="Lauren Holly";
-		String actor2="Jeff Daniels";
-		String actor3="Jim Carrey";
-		String character1="Lloyd";
-		String character2="Harry";
-		String character3="Mary";
-		String other1 ="Crítica El País:\"Insufrible y casposa comedia que desaprovecha todo su metraje en unas gracias de lo más chabacano. Impresentable\"";
-		String other2 ="En principio al actor principal le ofrecieron 700,000$; pero coincidiendo con el estreno de Ace Ventura, renegoció hasta los $7 millones";
-		String other3 ="El actor se retiró la funda que cubre sus dientes astillados años atrás para dar una apariencia más estúpida";
-		String quote1="Perdonen a mi amigo, es un poco lento... ¡La ciudad está por ese camino!";
-		String quote2="según el mapa llevamos solo 10 centímetros, espero que tengamos bastante dinero para gasolina";
-		String quote3="¡No tenemos dinero para comer! ¡No tenemos dinero para llegar a Aspen! ¡No tenemos dinero para dormir!";
-		String plot="La vida de X y Z, dos amigos de una estupidez supina, es un auténtico desastre. El primero trabaja como chófer " +
-				"de una limousina, y el segundo se dedica a transportar perros. Cuando X se enamora de una chica de buena posición, " +
-				"que deja olvidado un maletín en el coche, los dos amigos emprenden un viaje por todo el país para devolvérselo.";
+		String director = "David Fincher";
+		String genre = "Thriller";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BMTQwNTU3MTE4NF5BMl5BanBnXkFtZTcwOTgxNDM2Mg@@._V1_SX214_.jpg";
+		String  filmaffinity_id = "575149";
+		String imdb_id = "tt0114369";
+		String actor1="Kevin Spacey";
+		String actor2="Brad Pitt";
+		String actor3="Morgan Freeman";
+		String character1="Somerset";
+		String character2="David Mills";
+		String character3="John Doe";
+		String other1 ="Durante toda la película el número 7 está muy presente";
+		String other2 ="El presupuesto de la película era tan corto que la escena final iba a rodarse sin el helicóptero";
+		String other3 ="Spoiler: El motivo por el que el asesino no dejaba huellas en la escena del crimen era porque se las había lijado";
+		String quote1="Hemingway escribió: \"El mundo es un buen lugar por el que vale la pena luchar\"... Sólo estoy de acuerdo con la segunda parte.";
+		String quote2="Que el cabrón tenga un carné de biblioteca no significa que sea Yoda";
+		String quote3="La venganza es necesaria, que estalle... la ira";
+		String plot="El veterano teniente X, del departamento de homicidios, está a punto de jubilarse y ser reemplazado " +
+				"por el ambicioso e impulsivo detective Y. Ambos tendrán que colaborar en la resolución de una serie de " +
+				"asesinatos cometidos por un psicópata que toma como base la relación de los siete pecados capitales: " +
+				"gula, pereza, soberbia, avaricia, envidia, lujuria e ira. Los cuerpos de las víctimas, sobre los que el " +
+				"asesino se ensaña de manera impúdica, se convertirán para los policías en un enigma que les obligará a viajar " +
+				"al horror y la barbarie más absoluta";
 
 		
 		//CLIENT

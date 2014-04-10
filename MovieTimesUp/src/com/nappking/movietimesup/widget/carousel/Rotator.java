@@ -29,7 +29,7 @@ public class Rotator {
     private static final int SCROLL_MODE = 0;
     private static final int FLING_MODE = 1;
     
-    private final float mDeceleration = 250.0f;
+    private final float mDeceleration = 240.0f;
     
     
     /**
@@ -87,7 +87,7 @@ public class Rotator {
      * negative.
      */
     public float getCurrVelocity() {
-        return mCoeffVelocity * mVelocity - mDeceleration * timePassed() /* / 2000.0f*/;
+        return mCoeffVelocity * mVelocity - mDeceleration * timePassed();
     }
 
     /**
@@ -239,7 +239,7 @@ public class Rotator {
         mMode = FLING_MODE;
         mFinished = false;
 
-        float velocity = velocityAngle/4;
+        float velocity = velocityAngle;
      
         mVelocity = velocity;
         mDuration = (int)(1000.0f * Math.sqrt(2.0f * mCoeffVelocity * 
