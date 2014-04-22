@@ -34,7 +34,9 @@ public class User implements Serializable{
     public static final String CINEMAS =	"cinemas";
     public static final String WILDCARD =	"wildcard";
     public static final String MASTERPIECE ="masterpiece";
+    public static final String MASTERPIECESOLD ="masterpieceSold";
     public static final String CULT =		"cult";
+    public static final String CULTSOLD =	"cultSold";
     public static final String AMERICA =	"america";
     public static final String EUROPE =		"europe";
     public static final String ASIA =		"asia";
@@ -71,8 +73,12 @@ public class User implements Serializable{
     private int wildcard;
     @DatabaseField(columnName = MASTERPIECE)
     private int masterpiece;
+    @DatabaseField(columnName = MASTERPIECESOLD)
+    private int masterpieceSold;
     @DatabaseField(columnName = CULT)
     private int cult;
+    @DatabaseField(columnName = CULTSOLD)
+    private int cultSold;
     @DatabaseField(columnName = AMERICA)
     private int america;
     @DatabaseField(columnName = EUROPE)
@@ -99,9 +105,11 @@ public class User implements Serializable{
     public long getLastForeground()				{return this.lastForeground;}
     public int getDays()						{return this.days;}
     public int getMovies()						{return this.movies;}
-    public int getMasterpiece()					{return this.masterpiece;}
     public int getWildcard()					{return this.wildcard;}
+    public int getMasterpiece()					{return this.masterpiece;}
+    public int getMasterpieceSold()				{return this.masterpieceSold;}
     public int getCult()						{return this.cult;}
+    public int getCultSold()					{return this.cultSold;}
     public int getAmerica()						{return this.america;}
     public int getEurope()						{return this.europe;}
     public int getAsia()						{return this.asia;}
@@ -127,9 +135,11 @@ public class User implements Serializable{
     public void setLastForeground(long millis)						{this.lastForeground = millis;}
     public void setDays(int days)									{this.days = days;}
     public void setMovies(int movies)								{this.movies = movies;}
-    public void setMasterpiece(int masterpiece)						{this.masterpiece = masterpiece;}
     public void setWildcard(int wildcard)							{this.wildcard = wildcard;}
+    public void setMasterpiece(int masterpiece)						{this.masterpiece = masterpiece;}
+    public void setMasterpieceSold(int masterpieceSold)				{this.masterpieceSold = masterpieceSold;}
     public void setCult(int cult)									{this.cult = cult;}
+    public void setCultSold(int cultSold)							{this.cultSold = cultSold;}
     public void setAmerica(int america)								{this.america = america;}
     public void setEurope(int europe)								{this.europe = europe;}
     public void setAsia(int asia)									{this.asia = asia;}

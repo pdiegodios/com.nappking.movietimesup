@@ -268,28 +268,28 @@ public class ShopActivity extends DBActivity{
     private void onBuyButtonClicked() {
 		switch(mSelection){
 		case TICKET_20:
-			mUser.setCult(mUser.getCult()-1);
+			mUser.setCultSold(mUser.getCultSold()+1);
 			uploadUser(20);
 			break;
 		case TICKET_WILDCARD:
-			mUser.setCult(mUser.getCult()-2);
+			mUser.setCultSold(mUser.getCultSold()+2);
 			mUser.setWildcard(mUser.getWildcard()+1);
 			uploadUser(0);
 			break;
 		case TICKET_100:
-			mUser.setCult(mUser.getCult()-3);
+			mUser.setCultSold(mUser.getCultSold()+3);
 			uploadUser(100);
 			break;
 		case TICKET_200:
-			mUser.setMasterpiece(mUser.getMasterpiece()-1);
+			mUser.setMasterpieceSold(mUser.getMasterpieceSold()+1);
 			uploadUser(200);
 			break;
 		case TICKET_500:
-			mUser.setCult(mUser.getCult()-10);
+			mUser.setCultSold(mUser.getCultSold()+10);
 			uploadUser(500);
 			break;
 		case TICKET_1000:
-			mUser.setMasterpiece(mUser.getMasterpiece()-3);
+			mUser.setMasterpieceSold(mUser.getMasterpieceSold()+3);
 			uploadUser(1000);
 			break;
 		case TICKET_2000:
@@ -467,8 +467,8 @@ public class ShopActivity extends DBActivity{
     public void updateUi() {
     	int seconds = mUser.getSeconds();
     	int wildcards = mUser.getWildcard();
-    	int masterpieces = mUser.getMasterpiece();
-    	int cult_movies = mUser.getCult();
+    	int masterpieces = mUser.getMasterpiece() - mUser.getMasterpieceSold();
+    	int cult_movies = mUser.getCult() - mUser.getCultSold();
     	
     	//Update User info
     	if(mUser!=null){

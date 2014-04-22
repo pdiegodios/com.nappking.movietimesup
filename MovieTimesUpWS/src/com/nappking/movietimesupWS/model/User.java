@@ -24,7 +24,9 @@ public class User {
     public static final String MOVIES = 	"movies";
     public static final String WILDCARD =	"wildcard";
     public static final String MASTERPIECE ="masterpiece";
+    public static final String MASTERPIECESOLD ="masterpieceSold";
     public static final String CULT =		"cult";
+    public static final String CULTSOLD =	"cultSold";
     public static final String AMERICA =	"america";
     public static final String EUROPE =		"europe";
     public static final String ASIA =		"asia";
@@ -43,7 +45,9 @@ public class User {
     private int movies;
     private int wildcard;
     private int masterpiece;
+    private int masterpieceSold;
     private int cult;
+    private int cultSold;
     private int america;
     private int europe;
     private int asia;
@@ -67,8 +71,10 @@ public class User {
     public int getDays()							{return this.days;}
     public int getMovies()							{return this.movies;}
     public int getMasterpiece()						{return this.masterpiece;}
-    public int getWildcard()						{return this.wildcard;}
+    public int getMasterpieceSold()					{return this.masterpieceSold;}
     public int getCult()							{return this.cult;}
+    public int getCultSold()						{return this.cultSold;}
+    public int getWildcard()						{return this.wildcard;}
     public int getAmerica()							{return this.america;}
     public int getEurope()							{return this.europe;}
     public int getAsia()							{return this.asia;}
@@ -89,8 +95,10 @@ public class User {
 	public void setDays(int days)										{this.days=days;} 	
 	public void setMovies(int movies)									{this.movies=movies;}
     public void setMasterpiece(int masterpiece)							{this.masterpiece = masterpiece;}
+    public void setMasterpieceSold(int masterpieceSold)					{this.masterpieceSold = masterpieceSold;}
     public void setWildcard(int wildcard)								{this.wildcard = wildcard;}
     public void setCult(int cult)										{this.cult = cult;}
+    public void setCultSold(int cultSold)								{this.cultSold = cultSold;}
     public void setAmerica(int america)									{this.america = america;}
     public void setEurope(int europe)									{this.europe = europe;}
     public void setAsia(int asia)										{this.asia = asia;}

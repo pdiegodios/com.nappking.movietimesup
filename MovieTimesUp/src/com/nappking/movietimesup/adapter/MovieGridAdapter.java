@@ -20,7 +20,7 @@ public class MovieGridAdapter extends BaseAdapter{
 	private List<String> mLocked;
 	private List<String> mUnlocked;
 	private Context mContext;
-    public ImageLoader imageLoader; 
+    private ImageLoader mImageLoader; 
     
     public MovieGridAdapter(Context context, List<Movie> movies, List<String> locked, List<String> unlocked) {
         super();
@@ -28,7 +28,7 @@ public class MovieGridAdapter extends BaseAdapter{
         this.mLocked = locked;
         this.mUnlocked = unlocked;
         this.mContext = context;
-        imageLoader=new ImageLoader(mContext.getApplicationContext());
+        mImageLoader=new ImageLoader(mContext);
     }
     
     public List<Movie> getList(){
@@ -89,7 +89,7 @@ public class MovieGridAdapter extends BaseAdapter{
         else {
         	//Movie was unlocked so you can see the poster and see the specific data  
 			v.progress.setVisibility(View.VISIBLE);            		
-            imageLoader.DisplayImage(id, movie.getPoster(), v.poster, v.progress);
+			mImageLoader.DisplayImage(id, movie.getPoster(), v.poster, v.progress);
     		v.mark.setImageResource(R.drawable.bookmark);
     		v.title.setVisibility(View.VISIBLE);
     		v.title.setText(movie.getTitle());
@@ -100,8 +100,8 @@ public class MovieGridAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            LayoutInflater layout = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layout.inflate(R.layout.item_film, null);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_film, null);
             holder = new ViewHolder();
             holder.progress = (ProgressBar) convertView.findViewById(R.id.progress);
             holder.poster = (ImageView) convertView.findViewById(R.id.movieButton);

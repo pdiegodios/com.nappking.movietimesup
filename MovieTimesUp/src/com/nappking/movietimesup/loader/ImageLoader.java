@@ -36,13 +36,13 @@ public class ImageLoader {
     private Map<ImageView, Integer> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, Integer>());
     ExecutorService executorService;
     Handler handler=new Handler();//handler to display images in UI thread
+    final int default_image=R.drawable.filmstripnoimage;
     
     public ImageLoader(Context context){
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
     
-    final int default_image=R.drawable.filmstripnoimage;
     public void DisplayImage(int id, String url, ImageView imageView, ProgressBar progress){
         imageViews.put(imageView, id);
         Bitmap bitmap=memoryCache.get(id);

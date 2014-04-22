@@ -17,7 +17,7 @@ import android.widget.ImageView;
 public class CoverAdapter extends BaseAdapter {
 	private List<Movie> mMovies;
 	private Context mContext;
-    public ImageLoader imageLoader; 
+    private ImageLoader mImageLoader; 
     private final int mWidth;
     private final int mHeight;
 
@@ -26,7 +26,7 @@ public class CoverAdapter extends BaseAdapter {
         this.mContext = context;
         this.mWidth = Math.round(mContext.getResources().getDimension(R.dimen.search_cover_width));
         this.mHeight =  Math.round(mContext.getResources().getDimension(R.dimen.search_cover_height));
-        imageLoader=new ImageLoader(mContext.getApplicationContext());
+        mImageLoader=new ImageLoader(mContext.getApplicationContext());
     }
     
     public void setList(List<Movie> movies){
@@ -54,7 +54,7 @@ public class CoverAdapter extends BaseAdapter {
         ImageView image = new ImageView(mContext);
         image.setLayoutParams(new CoverFlow.LayoutParams(mWidth,mHeight));
         image.setScaleType(ImageView.ScaleType.FIT_XY);
-		imageLoader.DisplayImage(movie.getId(), movie.getPoster(), image, null);
+		mImageLoader.DisplayImage(movie.getId(), movie.getPoster(), image, null);
         BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
         drawable.setAntiAlias(true);
         return image;

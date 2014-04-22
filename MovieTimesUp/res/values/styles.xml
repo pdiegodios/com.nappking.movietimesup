@@ -12,6 +12,10 @@
     	<item name="android:keepScreenOn">true</item>
 	    <item name="android:windowBackground">@drawable/gradientbackground</item>
 	</style>	
+    <style name="Theme.empty" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+    	<item name="android:windowNoTitle">true</item>
+    	<item name="android:keepScreenOn">true</item>
+	</style>	
     <style name="Theme.movie" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
     	<item name="android:windowNoTitle">true</item>
     	<item name="android:keepScreenOn">true</item>

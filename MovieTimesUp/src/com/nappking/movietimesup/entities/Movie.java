@@ -34,6 +34,7 @@ public class Movie implements Serializable{
     public static final String POINTS = "points";
     public static final String FILMAFFINITY_ID = "filmaffinityId";
     public static final String IMDB_ID = "imdbId";
+    public static final String STREAM = "stream";
     public static final String CINEMA = "cinema";
     public static final String MASTERPIECE = "masterpiece";
     public static final String CULT = "cult";
@@ -82,12 +83,14 @@ public class Movie implements Serializable{
     private String		filmaffinityId;
     @DatabaseField(columnName = IMDB_ID)
     private String 		imdbId;
+    @DatabaseField(columnName = STREAM)
+    private String 		stream;
     @DatabaseField(columnName = CINEMA)
     private int 		cinema;
     @DatabaseField(columnName = MASTERPIECE)
     private boolean		masterpiece;
     @DatabaseField(columnName = CULT)
-    private boolean 		cult;
+    private boolean 	cult;
     
     
     //GETTERS
@@ -110,6 +113,7 @@ public class Movie implements Serializable{
 	public int getPoints()	 			{return points;}
 	public String getFilmaffinityId()	{return filmaffinityId;}
 	public String getImdbId()	 		{return imdbId;}
+	public String getStream()	 		{return stream;}
 	public int getCinema()	 			{return cinema;}
 	public boolean getMasterpiece()		{return masterpiece;}
 	public boolean getCult()	 		{return cult;}
@@ -142,6 +146,7 @@ public class Movie implements Serializable{
 	public void setPoints(int points) 				{this.points = points;}
 	public void setFilmaffinityId(String faId)		{this.filmaffinityId = faId;}
 	public void setImdbID(String imdbId)			{this.imdbId = imdbId;}
+	public void setStream(String stream)			{this.stream = stream;}
 	public void setCinema(int cinema)				{this.cinema = cinema;}
 	public void setMasterpiece(boolean masterpiece)	{this.masterpiece = masterpiece;}
 	public void setCult(boolean cult)	 			{this.cult = cult;}

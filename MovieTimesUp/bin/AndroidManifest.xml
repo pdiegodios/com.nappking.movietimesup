@@ -42,7 +42,7 @@
         <activity
             android:name=".ScoreboardActivity"
             android:label="@string/title_activity_home" 
-            android:theme="@style/Theme.street"
+            android:theme="@style/Theme.empty"
            	android:screenOrientation="landscape" >
         </activity>
         <activity
@@ -59,35 +59,42 @@
         </activity>
         <activity
             android:name=".SelectorCinemaActivity"
+            android:theme="@style/Theme.empty"
             android:label="@string/title_activity_home" 
-            android:theme="@style/Theme.gradient"
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".FilmActivity"
+            android:theme="@style/Theme.empty"
             android:label="@string/title_activity_home" 
-            android:theme="@style/Theme.gradient"
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".FilmInfoActivity"
-            android:theme="@style/Theme.gradient"
+            android:theme="@style/Theme.empty"
             android:label="@string/title_activity_home" 
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".FilmSearchActivity"
-            android:theme="@style/Theme.gradient"
+            android:theme="@style/Theme.empty"
             android:label="@string/title_activity_home" 
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".StatsActivity"
-            android:theme="@style/Theme.gradient"
+            android:theme="@style/Theme.empty"
+            android:label="@string/title_activity_home" 
+            android:windowSoftInputMode="adjustResize|stateHidden"
+           	android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".TutorialSlideActivity"
+            android:theme="@style/Theme.empty"
             android:label="@string/title_activity_home" 
             android:windowSoftInputMode="adjustResize|stateHidden"
            	android:screenOrientation="landscape">

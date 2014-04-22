@@ -18,8 +18,8 @@ public class MemoryCache {
     private long limit=1000000;//max memory in bytes
 
     public MemoryCache(){
-        //use 25% of available heap size
-        setLimit(Runtime.getRuntime().maxMemory()/4);
+        //use 12.5% of available heap size    	
+        setLimit(Runtime.getRuntime().maxMemory()/8);
     }
     
     public void setLimit(long new_limit){
@@ -31,7 +31,6 @@ public class MemoryCache {
         try{
             if(!cache.containsKey(id))
                 return null;
-            //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78 
             return cache.get(id);
         }catch(NullPointerException ex){
             ex.printStackTrace();
@@ -68,7 +67,6 @@ public class MemoryCache {
 
     public void clear() {
         try{
-            //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78 
             cache.clear();
             size=0;
         }catch(NullPointerException ex){

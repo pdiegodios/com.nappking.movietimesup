@@ -26,38 +26,37 @@ public class AddMovie {
 		
 		int id = 92;
 		int points = 1;
-		int cinema = 4;
-		int year = 1995;
+		int cinema = 5;
+		int year = 1998;
 		boolean masterpiece = false;
 		boolean cult = false;
-		String title = "Seven";
-		String alternative_title = "Pecados capitales";
-		String original_title = "Se7en";
+		String title = "Salvar al soldado Ryan";
+		String alternative_title = "Rescatando al soldado Ryan";
+		String original_title = "Saving Private Ryan";
 		String continent = "AM";
 		String country = "Estados Unidos";
-		String director = "David Fincher";
-		String genre = "Thriller";
-		String poster = "http://ia.media-imdb.com/images/M/MV5BMTQwNTU3MTE4NF5BMl5BanBnXkFtZTcwOTgxNDM2Mg@@._V1_SX214_.jpg";
-		String  filmaffinity_id = "575149";
-		String imdb_id = "tt0114369";
-		String actor1="Kevin Spacey";
-		String actor2="Brad Pitt";
-		String actor3="Morgan Freeman";
-		String character1="Somerset";
-		String character2="David Mills";
-		String character3="John Doe";
-		String other1 ="Durante toda la película el número 7 está muy presente";
-		String other2 ="El presupuesto de la película era tan corto que la escena final iba a rodarse sin el helicóptero";
-		String other3 ="Spoiler: El motivo por el que el asesino no dejaba huellas en la escena del crimen era porque se las había lijado";
-		String quote1="Hemingway escribió: \"El mundo es un buen lugar por el que vale la pena luchar\"... Sólo estoy de acuerdo con la segunda parte.";
-		String quote2="Que el cabrón tenga un carné de biblioteca no significa que sea Yoda";
-		String quote3="La venganza es necesaria, que estalle... la ira";
-		String plot="El veterano teniente X, del departamento de homicidios, está a punto de jubilarse y ser reemplazado " +
-				"por el ambicioso e impulsivo detective Y. Ambos tendrán que colaborar en la resolución de una serie de " +
-				"asesinatos cometidos por un psicópata que toma como base la relación de los siete pecados capitales: " +
-				"gula, pereza, soberbia, avaricia, envidia, lujuria e ira. Los cuerpos de las víctimas, sobre los que el " +
-				"asesino se ensaña de manera impúdica, se convertirán para los policías en un enigma que les obligará a viajar " +
-				"al horror y la barbarie más absoluta";
+		String director = "Steven Spielberg";
+		String genre = "Bélico";
+		String poster = "http://ia.media-imdb.com/images/M/MV5BNjczODkxNTAxN15BMl5BanBnXkFtZTcwMTcwNjUxMw@@._V1_SY317_CR9,0,214,317_AL_.jpg";
+		String  filmaffinity_id = "353018";
+		String imdb_id = "tt0120815";
+		String stream = "";
+		String actor1="Tom Hanks";
+		String actor2="Tom Sizemore";
+		String actor3="Matt Damon";
+		String character1="Capitán John Miller";
+		String character2="Sargento Horvath";
+		String character3="Soldado James Ryan";
+		String other1 ="Basada en hechos reales: En 1943, los cuatro hermanos Niland, fueron reclutados para luchar en Europa. Tres murieron.";
+		String other2 ="Se utilizaron lisiados auténticos para las escenas de gente con miembros amputados.";
+		String other3 ="Ese año compitió en los Oscars con otra película del mismo género: \"La delgada línea roja\"";
+		String quote1="Cada centímetro de esta playa es un objetivo. Si os quedais aquí, es para morir.";
+		String quote2="Si Dios está con nosotros... ¿Quién está con ellos?";
+		String quote3="Espero que ese X valga la pena y que cuando regrese a casa cure alguna enfermedad o invente una nueva bombilla de larga duración.";
+		String plot="Segunda Guerra Mundial (1939-1945). Tras el desembarco de los Aliados en Normandía, a un grupo de soldados americanos " +
+				"se le encomienda una peligrosa misión: poner a salvo al soldado X. Los hombres de la patrulla del capitán Y deben arriesgar " +
+				"sus vidas para encontrar a este soldado, cuyos tres hermanos han muerto en la guerra. Lo único que se sabe del soldado X es " +
+				"que se lanzó con su escuadrón de paracaidistas detrás de las líneas enemigas. ";
 
 		
 		//CLIENT
@@ -84,6 +83,7 @@ public class AddMovie {
 		pson.put(Movie.POINTS, points);
 		pson.put(Movie.FILMAFFINITY, filmaffinity_id);
 		pson.put(Movie.IMDB, imdb_id);
+		//pson.put(Movie.STREAM, stream);
 		pson.put(Movie.CINEMA, cinema);
 		pson.put(Movie.MASTERPIECE, masterpiece);
 		pson.put(Movie.CULT, cult);

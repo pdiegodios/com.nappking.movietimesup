@@ -19,7 +19,6 @@ import com.nappking.movietimesup.task.WebServiceTask;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +66,7 @@ public class CinemaActivity extends DBActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);		
+		Log.i("CinemaActivity", "onCreate");
 		setContentView(R.layout.activity_grid_film);		
 		
      	//initiate elements
@@ -85,7 +85,6 @@ public class CinemaActivity extends DBActivity{
     	selectUnlocked =	(ImageButton) findViewById(R.id.itemsUnlocked);
     	mTextSizeBig = (int) Math.round(getResources().getDimension(R.dimen.text_size5) / getResources().getDisplayMetrics().density);
     	mTextSizeNormal = (int) Math.round(getResources().getDimension(R.dimen.text_size3) / getResources().getDisplayMetrics().density);
-
      	
     	mSelectedMovies = new ArrayList<Movie>();
     	mState = ALL;		
@@ -93,18 +92,21 @@ public class CinemaActivity extends DBActivity{
 	}
 	
 	@Override
-	protected void onResume(){
+	protected void onResume(){	
+		Log.i("CinemaActivity", "onResume");
 		super.onResume();
 		update(false);
 		updateUser();
 	}
 	
 	@Override
-	protected void onPause() {
+	protected void onPause() {	
+		Log.i("CinemaActivity", "onPause");
 		super.onPause();
 	}
 	
-	private void update(boolean stateChanged){     	
+	private void update(boolean stateChanged){	
+		Log.i("CinemaActivity", "update");     	
 		//We obtain all the movies & the user
 		try {
 			if(mMovies==null){
@@ -123,9 +125,11 @@ public class CinemaActivity extends DBActivity{
 		}
 		//MovieListAdapter to show correctly the movies
 		if (grid.getAdapter() == null || stateChanged) {
-			MovieGridAdapter movieAdapter = new MovieGridAdapter(this, mSelectedMovies, mLockedMovies, mUnlockedMovies);		
+			Log.i("ADAPTER CINEMA", "START");
+			MovieGridAdapter movieAdapter = new MovieGridAdapter(getApplicationContext(), mSelectedMovies, mLockedMovies, mUnlockedMovies);		
 			grid.setAdapter(movieAdapter);
 		}else{
+			Log.i("ADAPTER CINEMA", "SETVALUES");
 			((MovieGridAdapter)grid.getAdapter()).setValues(mLockedMovies, mUnlockedMovies);
 		}
 		txPoints.setText(user.getScore()+"");
@@ -148,7 +152,8 @@ public class CinemaActivity extends DBActivity{
 	
 	
 	//To update item returned from FilmActivity or unlocked from this class
-	private void updateItemAt(int index){
+	private void updateItemAt(int index){	
+		Log.i("CinemaActivity", "updateItemAt");
 		update(false);
 		Log.i("UPDATE ITEM", "Index:"+index);
 		if(index!=-1){
@@ -157,7 +162,8 @@ public class CinemaActivity extends DBActivity{
 		}
 	}
 	
-	public void setListeners(){
+	public void setListeners(){	
+		Log.i("CinemaActivity", "setListeners");
 		grid.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -166,7 +172,7 @@ public class CinemaActivity extends DBActivity{
 				final int index = position;
 				
 				if(mLockedMovies.contains(movie.getId()+"")){ //Locked movie
-		            final Dialog dialog = new Dialog(CinemaActivity.this, R.style.SlideDialog);
+		            final Dialog dialog = new Dialog(getBaseContext(), R.style.SlideDialog);
 		            dialog.setContentView(R.layout.dialog_clapper_option);
 		            dialog.setCancelable(true);
 		            //instantiate elements in the dialog
@@ -209,7 +215,7 @@ public class CinemaActivity extends DBActivity{
 							else{
 								//Dialog inviting to buy seconds
 								dialog.dismiss();
-								final Dialog dialogBuy = new Dialog(CinemaActivity.this, R.style.SlideDialog);
+								final Dialog dialogBuy = new Dialog(getBaseContext(), R.style.SlideDialog);
 								dialogBuy.setContentView(R.layout.dialog_clapper_option);
 								dialogBuy.setCancelable(true);
 					            Button cancelButton = (Button) dialogBuy.findViewById(R.id.cancelButton);
@@ -228,7 +234,7 @@ public class CinemaActivity extends DBActivity{
 								buyButton.setOnClickListener(new OnClickListener() { //Buy									
 									@Override
 									public void onClick(View v) { //Call operations to buy some seconds
-										Intent i = new Intent(CinemaActivity.this, ShopActivity.class);
+										Intent i = new Intent(getBaseContext(), ShopActivity.class);
 										startActivity(i);
 										dialogBuy.dismiss();
 									}
